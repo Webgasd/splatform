@@ -1,0 +1,23 @@
+{
+  "status": "success",
+  "result": {
+    "pageNo": 1,
+    "page_size": 10,
+    "total_count": 60,
+    "page_count": 6,
+    "item_list": [
+      {
+        "id": 1,
+        "unit": "济南市历下百汇果篮水果店",
+        "type":"散装食品",
+        "name": "巨峰",
+        "supplier": "舒玉华",
+        "time": " ",
+        "day": "3天",
+        "num":"1",
+        "specification": "20kg",
+        "date":"2019-6-28"
+      }
+    ]
+  }
+}

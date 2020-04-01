@@ -1,0 +1,20 @@
+{
+  "status": "success",
+  "result": {
+    "pageNo": 1,
+    "page_size": 10,
+    "total_count": 60,
+    "page_count": 6,
+    "item_list": [
+      {
+        "id": 1,
+        "num":"1",
+        "name": "缤纷十二选套餐"
+      }, {
+        "id": 2,
+        "num":"2",
+        "name": "招牌牛肉饭"
+      }
+    ]
+  }
+}

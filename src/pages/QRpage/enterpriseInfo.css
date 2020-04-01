@@ -1,0 +1,59 @@
+.EnterpriseInfo-outer {
+    position: relative;
+
+}
+
+.EnterpriseInfo {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+.EnterpriseInfo-head {
+    width: 100%;
+}
+
+.EnterpriseInfo-grade {
+    margin: 5px 0;
+}
+
+.EnterpriseInfo-grade-title {
+    width: 100%;
+    text-align: center;
+    color: #ffff01;
+    margin: auto;
+    background: #3266ff;
+    font-size: 1.2rem;
+    padding: 10px 0;
+    font-weight: 500;
+}
+
+.EnterpriseInfo-grade-body {
+    position: relative;
+    width: 100%;
+    height: 200px;
+    background-color: #0067B6;
+    margin-bottom: 5px;
+}
+
+.EnterpriseInfo-grade-body-text {
+    margin: 0;
+    text-align: center;
+    color: #fff;
+    font-size: 1rem;
+    padding: 5px 0;
+}
+
+footer {
+    border-top: 1px solid #ccc;
+    color: #333;
+    position: fixed;
+    bottom: 0;
+    z-index: 999;
+    background: #fff;
+    height: 45px;
+    width: 100%;
+    line-height: 45px;
+    font-size: .9rem;
+    padding-left: 10px;
+}

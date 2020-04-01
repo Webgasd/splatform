@@ -1,0 +1,24 @@
+{
+  "status": "success",
+  "result": {
+    "pageNo": 1,
+    "page_size": 10,
+    "total_count": 60,
+    "page_count": 6,
+    "item_list": [
+      {
+        "id": 1,
+        "unit": "济南历下一江鲜烤全鱼店",
+        "area": "大明湖街道",
+        "name":"餐具",
+        "amount":"387",
+        "date":"2019-02-23",
+        "person":"张三",
+        "start": "12:24",
+        "end1": "13:01",
+        "way": "热力消毒",
+        "remark": "备注一"
+      }
+    ]
+  }
+}

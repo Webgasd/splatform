@@ -1,0 +1,101 @@
+{
+    "status": "success",
+    "result": {
+      "page": 1,
+      "page_size": 10,
+      "total_count": 60,
+      "page_count": 6,
+      "item_list": [
+        {
+          "id": 1,
+          "code": "监督管理局",
+          "name": "办公室",
+          "acl_module_id": "张三",
+          "url": 1,
+          "type": "负责人",
+          "status": "9",
+          "seq": "17812345678",
+          "operator": "执法人员",
+          "operator_time": "执法人员",
+          "operator_ip": "执法人员"
+        },
+        {
+          "id": 2,
+          "unit": "监督管理局",
+          "department": "办公室",
+          "name": "张三",
+          "sex": 2,
+          "duties": "工作人员",
+          "number": "22",
+          "telephone": "17812345678",
+          "type": "执法人员"
+        },
+        {
+          "id": 3,
+          "unit": "监督管理局",
+          "department": "办公室",
+          "name": "张三",
+          "sex": 1,
+          "duties": "科员",
+          "number": "5",
+          "telephone": "17812345678",
+          "type": "监管人员"
+        },
+        {
+          "id": 4,
+          "unit": "监督管理局",
+          "department": "办公室",
+          "name": "张三",
+          "sex": 1,
+          "duties": "负责人",
+          "number": "15",
+          "telephone": "17812345678",
+          "type": "其他"
+        },
+        {
+          "id": 5,
+          "unit": "监督管理局",
+          "department": "办公室",
+          "name": "张三",
+          "sex": 1,
+          "duties": "科员",
+          "number": "13",
+          "telephone": "17812345678",
+          "type": "监管人员"
+        },
+        {
+          "id": 6,
+          "unit": "监督管理局",
+          "department": "办公室",
+          "name": "张三",
+          "sex": 1,
+          "duties": "工作人员",
+          "number": "12",
+          "telephone": "17812345678",
+          "type": "其他"
+        },
+        {
+          "id": 7,
+          "unit": "监督管理局",
+          "department": "办公室",
+          "name": "张三",
+          "sex": 2,
+          "duties": "负责人",
+          "number": "23",
+          "telephone": "17812345678",
+          "type": "其他"
+        },
+        {
+          "id": 8,
+          "unit": "监督管理局",
+          "department": "办公室",
+          "name": "张三",
+          "sex": 1,
+          "duties": "副科员",
+          "number": "123",
+          "telephone": "17812345678",
+          "type": "其他"
+        }
+      ]
+    }
+  }

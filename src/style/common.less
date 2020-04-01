@@ -1,0 +1,235 @@
+@import './default.less';
+@import './loading.less';
+ul,li{
+  list-style: none;
+}
+.clearfix{
+  &::after{
+    content:' ';
+    clear:both;
+    display: block;
+    visibility: hidden;
+  }
+}
+
+.content{
+  position: relative;
+  overflow-y: auto;
+  height: calc(100vh - 80px);
+}
+.mainContent{
+  position: relative;
+  padding: 15px 15px 0 15px;
+  min-height: 800px;
+  .ant-modal-wrap{
+    position:absolute;
+    overflow: visible;
+  }
+  .ant-modal{
+    top:25px;
+  }
+  .ant-modal-mask{
+    top:80px;
+    right: 18px;
+  }
+}
+
+.content-wrap{
+  background: #ffffff;
+  border: 1px solid #e8e8e8;
+  margin-top: -3px;
+  .ant-table-wrapper{
+    margin-left: -1px;
+    margin-right: -2px;
+  }
+}
+.ant-card{
+  button{
+    margin-right: 10px;
+  }
+}
+.button-box{
+  position: relative;
+  margin-top: -15px;
+  float:right;
+}
+
+.button-box-left{
+  position: relative;
+  margin-top: -15px;
+  float:left;
+  width: 500px;
+}
+
+.msgIndexBox {
+  background: #ddd;
+  height: 30px;
+  line-height: 30px;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.msgIndexBox .msgIndex {
+  width: 20%;
+  height: 30px;
+  line-height: 30px;
+  float: left;
+  cursor: pointer;
+}
+
+.msgIndexBox .showIndex {
+  background: #558FF2;
+  color: #fff;
+}
+
+.msgContent {
+  height: 600px;
+  overflow-y: auto;
+}
+.msgChange {
+  height: 200px;
+  overflow-y: auto;
+}
+
+.commonEnterpriseBox {
+  border: 1px solid #ddd;
+  padding: .35em .635em .75em;
+  margin-bottom: 10px;
+}
+
+.commonEnterpriseBox .commonEnterpriseBoxHead {
+  line-height: 30px;
+  padding: 0 10px;
+  display: inline-block;
+  color: #fff;
+  height: 30px;
+  margin-top: 5px;
+  margin-bottom: 10px;
+  background: #558FF2;
+}
+
+.commonEnterpriseBox table {
+  width: 100%;
+}
+
+.commonEnterpriseBox table tr td {
+  border: 1px solid #ddd;
+  font-size: 12px;
+  padding: 5px;
+  text-align: center;
+}
+.commonEnterpriseBox table th{
+  border: 1px solid #ddd;
+  padding: 5px 5px;
+  font-size: 12px;
+  text-align: center;
+  background-color: #EFEFEF;
+}
+
+
+.ant-drawer-content{
+  background-color:#00152900;
+  .ant-drawer-wrapper-body{
+    background:#001529a1
+  }
+  .ant-drawer-wrapper-body .ant-drawer-header{
+    background:#00152900
+  }
+  .ant-drawer-wrapper-body .ant-drawer-body{
+    background:#00152900;
+    .ant-menu-dark{
+      background:#00152900
+    }
+    .ant-menu-dark .ant-menu-sub{
+      background:#00152900;
+      box-shadow: 0 0 0 rgba(0, 0, 0, 0.45) inset;
+    }
+  }
+}
+
+.textButtonBox{
+  width: fit-content;
+  height: 21px;
+}
+
+.textButton{
+  color: #558FF2;
+  float: left;
+  margin-left: 15px;
+  cursor:pointer;
+}
+
+.stopTextButton{
+  color: #FF3300;
+  float: left;
+  margin-left: 15px;
+  cursor:pointer;
+}
+
+.textButton:hover{
+  color:#895D52
+}
+.hov:hover{
+  background-color:yellow;
+  width:100px;
+}
+
+.stopTextButton:hover{
+  color:#895D52
+}
+.commonEnterpriseBox .checkDate .ant-input{
+  width:100px;
+}
+.commonEnterpriseBox .checkStartMinute .input{
+  size:70px;
+}
+.clickRowStyl {
+  background: rgba(255,51,0,0.7) !important;
+}
+.ant-table-tbody:hover>.clickRowStyl:hover>td {
+  background: rgb(255,51,0);
+}
+
+ .ant-table-tbody > tr.ant-table-row-selected td {
+   background-color:rgba(0,0,0,0) !important;
+ }
+
+.clickRowStylText{
+  color:#FF3300;
+}
+
+.warningRowStyl {
+  background: rgba(252,206,16,0.7) !important;
+}
+
+.ant-table-tbody:hover>.warningRowStyl:hover>td {
+  background: rgb(252,206,16);
+}
+
+.divposition{
+  margin-top: 10px;
+  margin-left: 14px;
+}
+.divposition1{
+  margin-top: 10px;
+  margin-left:5px;
+}
+.topContent .topBox{
+  border: 1px solid #E6E9EC;
+  border-radius:15px;
+  height:85px;
+  margin: 5px;
+  width: 150px;
+  float: left;
+}
+
+.BMap_cpyCtrl {
+  display: none;
+}
+.anchorBL {
+  display: none;
+}
+
+
+
+

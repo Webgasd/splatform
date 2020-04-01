@@ -1,0 +1,64 @@
+.container{
+    position: relative;
+}
+.drawTest{
+    left: 20%;
+    top: 0;
+    width: 30%;
+    height: 40px;
+    background: #f8fdff;
+    position: absolute;/*这里一定要设置*/
+    z-index: 999999;/*这里是该元素与显示屏的距离，据说越大越好，因为没有它也是可以的*/
+    /*margin-top: 40%;*/
+    /*margin-left: -209px;*/
+    -moz-transition: .5s ease-in-out;/*这里为了兼容其他浏览器*/
+    -o-transition: .5s ease-in-out;
+}
+.select{
+    right: 0;
+    top: 0;
+    width: 20%;
+    height: 30px;
+    background: #f8fdff;
+    position: absolute;/*这里一定要设置*/
+    z-index: 999999;/*这里是该元素与显示屏的距离，据说越大越好，因为没有它也是可以的*/
+    -moz-transition: .5s ease-in-out;/*这里为了兼容其他浏览器*/
+    -o-transition: .5s ease-in-out;
+}
+
+/*.amap-ui-smp-ifwn-content-body {*/
+    /*background: #333333 !important;*/
+    /*border: none !important;*/
+/*}*/
+/*.amap-ui-smp-ifwn-combo-sharp{*/
+    /*background:none !important;*/
+/*}*/
+.custom-input-card{
+    width: 18rem;
+}
+
+.custom-input-card .btn:last-child{
+    margin-left: 1rem;
+}
+
+.content-window-card{
+    position: relative;
+    width: 23rem;
+    height: 10rem;
+    /*padding: 0.05rem 0 0 0.75rem;*/
+    box-shadow: none;
+    bottom: 0;
+    left: 0;
+}
+
+.content-window-card p{
+    height: 1rem;
+}
+.amap-info-close{
+    top:4px !important;
+    right: 0 !important;
+}
+.amap-info-content{
+    padding: 0 !important;
+    /*overflow: inherit !important;*/
+}

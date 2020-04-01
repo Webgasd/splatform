@@ -1,0 +1,113 @@
+{
+    "status": "success",
+      "result": {
+        "pageNo": 1,
+        "page_size": 10,
+        "total_count": 60,
+        "page_count": 6,
+        "item_list": [
+          {
+            "id": 1,
+            "enterprisename":"企业名称",
+            "producttype": "产品类型",
+            "productname": "产品名称",
+            "supplier": "供应商",
+            "validdate":"有效日期",
+            "inventory":"当前库存",   
+            "productiondate": "生产日期"
+           
+          },
+          {
+            "id": 2,
+            "enterprisename":"企业名称",
+            "producttype": "产品类型",
+            "productname": "产品名称",
+            "supplier": "供应商",
+            "validdate":"有效日期",
+            "inventory":"当前库存",   
+            "productiondate": "生产日期"
+      
+          },
+          {
+            "id": 3,
+            "enterprisename":"企业名称",
+            "producttype": "产品类型",
+            "productname": "产品名称",
+            "supplier": "供应商",
+            "validdate":"有效日期",
+            "inventory":"当前库存",   
+            "productiondate": "生产日期"
+          },
+          {
+            "id": 4,
+            "enterprisename":"企业名称",
+            "producttype": "产品类型",
+            "productname": "产品名称",
+            "supplier": "供应商",
+            "validdate":"有效日期",
+            "inventory":"当前库存",   
+            "productiondate": "生产日期"
+          },
+          {
+            "id": 5,
+            "enterprisename":"企业名称",
+            "producttype": "产品类型",
+            "productname": "产品名称",
+            "supplier": "供应商",
+            "validdate":"有效日期",
+            "inventory":"当前库存",   
+            "productiondate": "生产日期"
+          },
+          {
+            "id": 6,
+            "enterprisename":"企业名称",
+            "producttype": "产品类型",
+            "productname": "产品名称",
+            "supplier": "供应商",
+            "validdate":"有效日期",
+            "inventory":"当前库存",   
+            "productiondate": "生产日期"
+          },
+          {
+            "id": 7,
+            "enterprisename":"企业名称",
+            "producttype": "产品类型",
+            "productname": "产品名称",
+            "supplier": "供应商",
+            "validdate":"有效日期",
+            "inventory":"当前库存",   
+            "productiondate": "生产日期"
+          },
+          {
+            "id": 8,
+            "enterprisename":"企业名称",
+            "producttype": "产品类型",
+            "productname": "产品名称",
+            "supplier": "供应商",
+            "validdate":"有效日期",
+            "inventory":"当前库存",   
+            "productiondate": "生产日期"
+          },
+          {
+            "id": 9,
+            "enterprisename":"企业名称",
+            "producttype": "产品类型",
+            "productname": "产品名称",
+            "supplier": "供应商",
+            "validdate":"有效日期",
+            "inventory":"当前库存",   
+            "productiondate": "生产日期"
+          },
+          {
+            "id": 10,
+            "enterprisename":"企业名称",
+            "producttype": "产品类型",
+            "productname": "产品名称",
+            "supplier": "供应商",
+            "validdate":"有效日期",
+            "inventory":"当前库存",   
+            "productiondate": "生产日期"
+          }
+        ]
+      }
+    }

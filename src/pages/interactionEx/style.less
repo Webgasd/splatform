@@ -1,0 +1,97 @@
+@border-color:rgb(184, 184, 184);
+    .form-detail-wrap{
+        border-bottom: 1px solid @border-color;
+        .ant-radio-wrapper{
+            margin-right:20px
+        }
+    
+        .ant-form-explain{
+            position: absolute
+        }
+        .ant-form-item-required::before{
+            content: '';
+        }
+        .ant-form-item-required::after{
+            display: inline-block;
+            margin-right: 4px;
+            color: #f5222d;
+            font-size: 14px;
+            font-family: SimSun, sans-serif;
+            line-height: 1;
+            content: '*'!important
+        }
+    }
+        .form-detail-wrap>.ant-form-inline> .row-my >.ant-row{
+            .ant-form-item-label-left{
+                background: #eaeaea;
+                border-right: 1px solid @border-color;
+                border-left: 1px solid @border-color;
+                padding:0 5px;
+                width: 100px;
+            }
+            
+        }
+        .form-detail-wrap>.ant-form-inline> .row-my >.ant-row.long-text>.ant-form-item-label-left{
+            line-height: unset;
+            white-space: normal
+        }
+        .form-detail-wrap>.ant-form-inline> .row-my >.ant-row:first-child{
+            .ant-form-item-label-left{
+                background: #eaeaea;
+                border-right: 1px solid @border-color;
+                border-left: none;
+                width: 100px;
+            }
+        }
+    
+        .form-detail-wrap>.ant-form-inline> .row-my{
+            // .disabled-input-my{
+            //     background-color:white;
+            //     color:rgba(0, 0, 0, 0.65)
+            // }
+            border-top:1px solid @border-color;
+            border-left:1px solid @border-color;
+            border-right:1px solid @border-color;
+        }
+        .form-detail-wrap>.ant-form-inline> .deal-result>.ant-row>.ant-form-item-label-left{
+            background:#4CAF50!important;
+        }
+    
+        .form-detail-wrap>.ant-form-inline{
+            .ant-form-item{
+                display: inline-flex;
+        }
+        } 
+        .form-detail-wrap>.ant-form-inline .ant-form-item > .ant-form-item-control-wrapper{
+            padding: 0 6px;
+            .input-my-1{
+                width: 165px
+            }
+            .input-my-2{
+                width: 445px
+            }
+            .input-my-3{
+                width: 725px;
+            }
+            .input-my-4{
+                width: 460px
+            }
+            .textarea-my-1{
+                width:725px;
+                margin: 10px 0;
+            }
+        }
+.editAreaBody{
+    margin-left: 10px;
+    margin-right: 10px;
+    border: 1px solid  #B1B4BA;
+}
+
+.noticeInputTitle{
+    text-align: right;
+    float: left;
+    width: 50px;
+}
+.noticeInputContent{
+    float: left;
+}

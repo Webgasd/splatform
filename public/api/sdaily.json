@@ -1,0 +1,32 @@
+{
+  "status": "success",
+  "result": {
+    "page": 1,
+    "page_size": 10,
+    "total_count": 60,
+    "page_count": 6,
+    "item_list": [
+      {
+        "id": 1,
+        "action":"结束检查",
+        "time": "2019-05-11",
+        "description": " ",
+        "person": "周鹤春"
+      },
+      {
+        "id": 2,
+        "action": "添加",
+        "time": "2019-05-18",
+        "description": "参加一次监督检查",
+        "person": "周鹤春"
+      },
+      {
+        "id": 3,
+        "action":"添加",
+        "time": "2019-05-21",
+        "description": " ",
+        "person": "周鹤春"
+      }
+    ]
+  }
+}

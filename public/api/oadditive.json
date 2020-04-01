@@ -1,0 +1,88 @@
+{
+    "status": "success",
+    "result": {
+      "pageNo": 1,
+      "page_size": 10,
+      "total_count": 20,
+      "page_count": 2,
+      "item_list": [
+        {
+          "id": 1,
+          "enterprise": "企业名称",
+          "recordNo": "备案号",
+          "recordDate": "备案时间",
+          "administrator": "食品安全管理员",
+          "publicity": "公示状态",
+          "userunit":"使用单位",
+          "foodadditive":"使用的食品添加剂名称",
+          "manufacturer":"生产厂家",
+          "specifications":"规格",
+          "number":"数量",
+          "purpose":"用途",
+          "quantity":"添加剂添加量规定量",
+          "actualquantity":"实际量",
+          "instrument":"添加用计量器具名称",
+          "usedate":"使用日期",
+          "extra":"备注"
+         
+        },
+        {
+          "id": 2,
+          "enterprise": "企业名称",
+          "recordNo": "备案号",
+          "recordDate": "备案时间",
+          "administrator": "食品安全管理员",
+          "publicity": "公示状态",
+          "userunit":"使用单位",
+          "foodadditive":"使用的食品添加剂名称",
+          "manufacturer":"生产厂家",
+          "specifications":"规格",
+          "number":"数量",
+          "purpose":"用途",
+          "quantity":"添加剂添加量规定量",
+          "actualquantity":"实际量",
+          "instrument":"添加用计量器具名称",
+          "usedate":"使用日期",
+          "extra":"备注"
+        },
+        {
+          "id": 3,
+          "enterprise": "企业名称",
+          "recordNo": "备案号",
+          "recordDate": "备案时间",
+          "administrator": "食品安全管理员",
+          "publicity": "公示状态",
+          "userunit":"使用单位",
+          "foodadditive":"使用的食品添加剂名称",
+          "manufacturer":"生产厂家",
+          "specifications":"规格",
+          "number":"数量",
+          "purpose":"用途",
+          "quantity":"添加剂添加量规定量",
+          "actualquantity":"实际量",
+          "instrument":"添加用计量器具名称",
+          "usedate":"使用日期",
+          "extra":"备注"
+        },
+        {
+          "id": 4,
+          "enterprise": "企业名称",
+          "recordNo": "备案号",
+          "recordDate": "备案时间",
+          "administrator": "食品安全管理员",
+          "publicity": "公示状态",
+          "userunit":"使用单位",
+          "foodadditive":"使用的食品添加剂名称",
+          "manufacturer":"生产厂家",
+          "specifications":"规格",
+          "number":"数量",
+          "purpose":"用途",
+          "quantity":"添加剂添加量规定量",
+          "actualquantity":"实际量",
+          "instrument":"添加用计量器具名称",
+          "usedate":"使用日期",
+          "extra":"备注"
+        }
+      ]
+    }
+  }

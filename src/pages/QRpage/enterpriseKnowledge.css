@@ -1,0 +1,78 @@
+.EnterpriseKnowledge {
+    width: 95%;
+    margin: 10px auto;
+    overflow: hidden;
+    font-size: 1.5rem;
+    font-family: "微软雅黑";
+}
+
+.EnterpriseKnowledge img {
+    width: 98% !important;
+    margin: auto;
+    height: 98% !important;
+    display: block;
+}
+
+.EnterpriseKnowledge h5 {
+    text-indent: 40px;
+    font-family: Microsoft Yahei;
+}
+
+.Knowledge {
+    margin: 0 auto;
+    height: auto;
+    background: #efefef;
+}
+
+header {
+    width: 100%;
+    height: 45px;
+}
+
+.Knowledge-head {
+    width: 100%;
+    height: 45px;
+    overflow: hidden;
+    left: 0;
+    position: fixed;
+    top: 0;
+    z-index: 9998;
+    background: #1758cc;
+    color: #fff;
+    line-height: 45px;
+    text-align: center;
+    font-size: 1.2rem;
+}
+
+.Knowledge-head-back {
+    position: absolute;
+    left: -5px;
+    top: -2px;
+    width: 40px;
+    display: block;
+    height: 46px;
+}
+
+.Knowledge-head a img {
+    width: 18px;
+}
+
+.Knowledge-head a {
+    color: #fff;
+    text-shadow: none;
+    float: left;
+    line-height: 45px;
+}
+
+.Knowledge-head a:nth-child(2) {
+    width: 100%;
+}
+
+.Knowledge-head a small {
+    font-size: 18px;
+    color: #fff !important;
+}
+
+a {
+    text-decoration: none;
+}

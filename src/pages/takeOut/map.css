@@ -1,0 +1,570 @@
+/*.MainContainer {*/
+    /*width: 100%;*/
+    /*height: 100vh;	!* 重点一 *!*/
+    /*margin: 0 auto;*/
+    /*!*background-image: url(./image/bj2.jpg);*!*/
+    /*background-repeat: no-repeat;*/
+    /*background-size: cover; !* 重点二 *!*/
+    /*overflow: hidden;*/
+/*}*/
+
+.gridSupervision{
+    height: 100%;
+    width: 100%;
+    /*margin-top: 1rem;*/
+    background-color: rgba(255,255,255,0) !important;
+}
+
+.wholeNumberContent .content-window-card{
+    overflow:hidden;
+    background-color: rgba(0,0,0,0.62);
+    position: relative;
+    width: 32rem;
+    min-height: 27rem;
+    box-shadow: none;
+    color:rgba(255,255,255,1);
+    bottom: 0;
+    left: 0;
+}
+.bottom-center .amap-info-sharp{
+    border-top: 10px solid rgba(255,255,255,0.9) !important;
+}
+
+/*label格式*/
+
+.title{
+    background-color: rgba(26,68,96,0.82);
+    color: #f8fdff;
+    height: 2rem;
+    font-size: 1.2rem;
+    line-height: 2rem;
+    text-align: center
+}
+.pic-dom{
+    width: 100%;
+    height: 8rem;
+}
+.pic{
+    float: left;
+    width: 45%;
+    height: 90%;
+    margin-top: 2%;
+    margin-left: 3%;
+    border: 2px solid #8ff4fd;
+    background-color: rgba(45, 42, 42, 0.5);
+    text-align: center;
+    line-height: 700%;
+}
+.pic text{
+    vertical-align: bottom;
+}
+.pic img{
+    width: 100%;
+    height: 100%;
+    vertical-align: top;
+    margin-left: 0.2px;
+}
+.middle{
+    width: 96%;
+    height: 10%;
+    margin-left: 2%;
+    border-bottom:1px  dashed #333333;
+    display: inline-block;
+    vertical-align: bottom;
+}
+.middle img{
+    margin-left: 3%;
+}
+.middle text{
+    font-size: 18px;
+    font-weight:bolder;
+    font-size-adjust: inherit;
+    vertical-align: middle;
+}
+.middle-info{
+    width: 96%;
+    height: 10%;
+    margin-left: 2%;
+    display: inline-block;
+    border-bottom:1px dashed #333333;
+    vertical-align: middle;
+}
+.middle-info-text{
+    margin-left: 2%;
+    float: left;
+    width: auto;
+    height: 100%;
+    line-height: 300%;
+    vertical-align: bottom;
+}
+.middle-info-text1{
+    float: left;
+    width: auto;
+    height: 100%;
+    margin-left: 20%;
+    line-height: 300%;
+    vertical-align: bottom;
+}
+.bottom-icon{
+    float: right;
+    width: 10%;
+    height: 10%;
+    margin-top: 2%;
+    margin-right: 1%;
+}
+.content-window-card p{
+    height: 1rem;
+}
+.amap-info-close{
+    top:2% !important;
+    right: 1% !important;
+}
+.amap-info-content{
+    padding: 0 !important;
+    background-color: rgba(0,0,0,0);
+    box-shadow: 0px 0px 15px #556580;
+    /*overflow: inherit !important;*/
+}
+
+/*label弹窗样式*/
+.labelTitle{
+    background-color: rgba(26,68,96,0.82);
+    color: #f8fdff;
+    height: 2rem;
+    font-size: 1.2rem;
+    line-height: 2rem;
+    text-align: center
+}
+.content-window-card .Top{
+    width: 94%;
+    height: 9rem;
+    margin-left: 3%;
+    margin-top: 3%;
+}
+.content-window-card .Top .TopPic{
+    float: left;
+    width: 35%;
+    height: 100%;
+    background-color: rgba(95,90,90,0.7);
+}
+.content-window-card .Top .TopPic .Pic{
+    width: 92%;
+    height: 92%;
+    margin-top: 4%;
+    margin-left: 4%;
+    background-color: rgba(204,204,204,0.1);
+    border:1px solid #fff;
+    /*line-height: 900%;*/
+    text-align: center;
+}
+.content-window-card .Top .TopPic .Pic img{
+    width: 100%;
+    height: 100%;
+}
+.content-window-card .Top .TopPic .Pic text{
+}
+.content-window-card .Top .TopInfo{
+    float: left;
+    width: 60%;
+    margin-left: 5%;
+    margin-bottom: 1.5%;
+    height: 30%;
+    background-color: rgba(242,242,242,0.1);
+    line-height: 300%;
+}
+.content-window-card .Top .TopInfo text{
+    margin-left: 3%;
+    vertical-align: middle;
+}
+.content-window-card .labelMiddle{
+    width: 94%;
+    height: 4rem;
+    margin-left: 3%;
+    margin-top: 3%;
+    background-color: rgba(242,242,242,0.1);
+}
+.content-window-card .labelMiddle .middleLeft{
+    float: left;
+    width: 20%;
+    height: 100%;
+    margin-left: 3%;
+    line-height: 400%;
+}
+.content-window-card .labelMiddle .middleLeft text{
+    font-size: 18px;
+    font-weight: bold;
+    vertical-align: middle;
+}
+.content-window-card .labelMiddle .middleDiliver{
+    float: left;
+    width: 0.3%;
+    height: 80%;
+    margin-top: 1%;
+    background-color: #000000;
+}
+.content-window-card .labelMiddle .middleRight{
+    float: left;
+    width: 70%;
+    height: 100%;
+    margin-left: 5%;
+    margin-top: 2%;
+}
+.content-window-card .labelMiddle .middleRight text{
+    /*// font-weight: bold;*/
+}
+.content-window-card .Bottom{
+    width: 94%;
+    height: 40%;
+    margin-left: 3%;
+}
+.content-window-card .Bottom .BottomTitle{
+    width: 100%;
+    height: 28%;
+    line-height: 200%;
+    color: rgba(24,164,204,1);
+}
+.content-window-card .Bottom .BottomTitle text{
+    font-size: 18px;
+    font-weight: bold;
+    vertical-align: middle;
+}
+.content-window-card .Bottom .BottomDiliver{
+    width: 100%;
+    height: 0.1rem;
+    background-color: rgba(19,188,239,1);
+    margin-bottom: 3%;
+    margin-top: 2%;
+}
+.content-window-card .Bottom .BottomInfo{
+    float: left;
+    width: 33%;
+    height: 15%;
+    font-size: 16px;
+}
+.content-window-card .Bottom .BottomInfo text0{
+    color: #10f74e;
+}
+.content-window-card .Bottom .BottomInfo text1{
+    color: #5be7e8;
+}
+.content-window-card .Bottom .BottomInfo text2{
+    color: #ffbb3a;
+}
+.content-window-card .Bottom .BottomInfo text3{
+    color: #0099FF;
+}
+
+/*各个浏览器下 全屏状态下背景色设置*!6p6p*!*/
+.MainContainer :-webkit-full-screen {
+    background-color: #ffffff !important;
+      width: 100vw ;
+      height: 100vh ;
+    vertical-align: middle;
+}
+.MainContainer :-moz-full-screen {
+    background-color: #ffffff !important;
+      width: 100vw ;
+      height: 100vh ;
+    vertical-align: middle;
+}
+.MainContainer :-ms-fullscreen {
+    /*background-color: #113355 !important;*/
+    background-color: #ffffff !important;
+      width: 100vw ;
+      height: 100vh ;
+    vertical-align: middle;
+}
+.MainContainer :fullscreen {
+    background-color: #ffffff !important;
+    /*background-color: #113355 !important;*/
+      width: 100vw ;
+      height: 100vh ;
+    vertical-align: middle;
+}
+
+
+/*//界面布局*/
+.MainContainer{
+    background-color: #113355;
+    height: 80rem;
+}
+.MustMainContainer{
+    margin-top: 1rem;
+}
+.HorizontalLine{
+    margin-left: 1vw;
+    margin-top: 5rem;
+    width: 98%;
+    height: 1px;
+    background-color: rgba(82,203,255,1);
+    position: absolute;
+}
+.LeftVerticalLine{
+    position: absolute;
+    margin-top: 3rem;
+    margin-left: 2vw;
+    width: 1px;
+    height: 15rem;
+    background-color:  rgba(82,203,255,1);
+}
+.RightVerticalLine{
+    position: absolute;
+    margin-top: 1rem;
+    margin-left: 97.5vw;
+    width: 1px;
+    height: 10rem;
+    background-color:  rgba(82,203,255,1);
+}
+.TitleFirst{
+    margin-left: 3rem;
+    /*width: 5rem;*/
+    margin-top: 0.6rem;
+}
+.TitleSecond{
+    border: 1px solid #ffffff;
+    border-radius: 7px;
+    height: 2.8rem;
+    margin-left: 1%;
+    margin-top: 0.6rem;
+    background-color: rgba(255,255,255,0.15);
+    line-height: 250%;
+}
+.TitleSecond text{
+    font-size: 0.8vw;
+    vertical-align: middle;
+    margin-left: 30%;
+    font-family: 宋体;
+    color: rgba(100,190,255,1);
+}
+.TitleSecond .gridTreeSelect{
+    margin-left: 1rem;
+    /*margin-top: 3%;*/
+    width: 80%;
+    color: rgba(100,190,255,1);
+    vertical-align: middle;
+
+}
+.TitleSecond .gridTreeSelect .ant-select {
+    vertical-align: middle;
+}
+.TitleSecond .gridTreeSelect .ant-select-selection--single{
+    height: 1.8rem;
+}
+.TitleSecond .gridTreeSelect .ant-select-selection{
+    background-color: rgba(255, 255, 255, 0);
+}
+.TitleThird{
+    margin-left: 10%;
+    margin-top: 0.6rem;
+    /*border: 1px solid rgba(255,255,255,1);*/
+    /*background-color: rgba(255,255,255,0.3);*/
+    border-radius: 7px;
+    width: 27%;
+}
+.TitleThird img{
+    margin-left: 4%;
+}
+.TitleThird text{
+    margin-left: 1rem;
+    font-size: 1.3vw;
+    vertical-align: middle;
+    font-family: 宋体;
+    color: white;
+    font-weight: bold;
+}
+.TitleForth{
+    border: 1px solid #ffffff;
+    border-radius: 7px;
+    height: 2.8rem;
+    margin-left: 11%;
+    margin-top: 0.6rem;
+    background-color: rgba(255,255,255,0.15);
+    line-height: 250%;
+}
+.TitleForth text{
+    vertical-align: middle;
+    margin-left: 2rem;
+    font-size: 0.8vw;
+    font-family: 宋体;
+    color: rgba(211,202,65,1);
+}
+.TitleForth .gridTreeSelect{
+    margin-left: 1rem;
+    /*margin-top: 1%;*/
+    width: 50%;
+    color: rgba(100,190,255,1);
+}
+.TitleForth .gridTreeSelect .ant-select {
+    vertical-align: middle;
+}
+.TitleForth .gridTreeSelect .ant-select-selection--single{
+    height: 1.8rem;
+}
+.TitleForth .gridTreeSelect .ant-select-selection{
+    background-color: rgba(255, 255, 255, 0);
+}
+.TitleFifth{
+    vertical-align: middle;
+    margin-top: 0.6rem;
+    margin-left: 2rem;
+}
+.TitleFifth button{
+    width: 7rem;
+    height: 2.5rem;
+    background-color: rgba(255,255,255,0.3);
+    border-radius: 7px;
+    border: 0px solid ;
+    font-size: 1.1rem;
+    font-family: 宋体;
+    font-weight: bold;
+    color: rgba(198,206,103,1);
+}
+
+/*数字展示div*/
+.leftNumberInfo{
+    margin-top: 3%;
+    width: 65%;
+    height: 10rem;
+    background-color: rgba(255,255,255,0.2);
+    border-bottom: 1rem;
+    border-radius:  0.3rem 0.3rem 1rem 1rem;
+}
+.leftNumberInfo .firstInfo{
+    width: 100%;
+    height: 3rem;
+    background-color: rgba(22,155,213,0.7);
+    border-radius: 0.3rem 0.3rem 1rem 1rem;
+    text-align: center;
+}
+.leftNumberInfo .firstInfo text{
+    font-weight: bold;
+    font-size: 1.5rem;
+    color: white;
+    line-height: 200%;
+    vertical-align: middle;
+}
+.leftNumberInfo .secondInfo{
+    margin-top: 1rem;
+    width: 100%;
+    height: 5rem;
+    background-color: rgba(255,255,255,0.65);
+    border-radius: 0.3rem 0.3rem 1rem 1rem;
+    text-align: center;
+}
+.leftNumberInfo .secondInfo text{
+    font-size: 2.5rem;
+    color: #113355;
+    line-height: 200%;
+    vertical-align: middle;
+    font-weight: bold;
+    font-style: italic;
+}
+.leftNumberInfo .thirdInfo{
+    margin-top: 1rem;
+    width: 100%;
+    height: 3rem;
+    background-color: rgba(204,0,0,1);
+    border-radius: 0.3rem 0.3rem 1rem 1rem;
+    text-align: center;
+}
+.leftNumberInfo .thirdInfo text{
+    font-weight: bold;
+    font-size: 1.5rem;
+    color: white;
+    line-height: 200%;
+    vertical-align: middle;
+}
+.leftNumberInfo .forthInfo{
+    margin-top: 1rem;
+    width: 100%;
+    height: 4rem;
+    background-color: rgba(255,255,255,0.65);
+    border-radius: 0.3rem 0.3rem 1rem 1rem;
+    text-align: center;
+}
+.leftNumberInfo .forthInfo text{
+    font-size: 2.5rem;
+    color: rgba(204,0,0,1);
+    line-height: 200%;
+    vertical-align: middle;
+    font-weight: bold;
+    font-style: italic;
+}
+
+.wholeNumberContent .filterCard {
+    position: absolute;
+    margin-left: 18%;
+    width: 80%;
+    height: 3rem;
+    background-color:  rgba(82,203,255,0.3);
+    border-radius: 5px;
+    z-index: 10;
+}
+.wholeNumberContent .filterCard text{
+    font-size: 1.1rem;
+    margin-left: 5%;
+    color: white;
+}
+.wholeNumberContent .filterCard input{
+    width: 60%;
+    height: 2rem;
+    margin-left: 5%;
+    border-radius: 5px;
+    margin-top: 0.5rem;
+    border: 0;
+    background: rgba(255,255,255,0.3);
+}
+.wholeNumberContent .filterCard .ant-btn{
+    margin-left: 40px;
+    background-color: rgba(255,255,255,0.5);
+}
+
+
+/*card样式*/
+.leftBottomCard{
+    margin-left: 3rem;
+    width: 96%;
+    height: 21rem;
+}
+.rightTopCard{
+    margin:2rem;
+    width: 100%;
+    height: 34rem;
+}
+.rightBottomCard{
+    margin:2rem;
+    width: 100%;
+    height: 34rem;
+}
+/*//修改card样式*/
+.MainContainer .ant-card{
+    background-color: #11335599 !important;
+    border: 1px solid rgb(0,204,255);
+    border-radius: 0.7rem;
+}
+.MainContainer.ant-card-type-inner .ant-card-head-title{
+    padding: 0px;
+}
+.MainContainer .rightTop .ant-card-type-inner .ant-card-head{
+    margin-top:1rem;
+    margin-left: 1px;
+    background-color: rgba(102,102,204,0.7);
+    border-bottom: 0px;
+    /*border: 1px solid rgba(89,204,251,1);*/
+}
+.MainContainer .rightBottom .ant-card-type-inner .ant-card-head{
+    margin-top:1rem;
+    margin-left: 1px;
+    background-color: rgba(102,204,255,0.7);
+    border-bottom: 0px;
+    /*border: 1px solid rgba(89,204,251,1);*/
+}
+.MainContainer .leftBottom .ant-card-type-inner .ant-card-head{
+    margin-top:1rem;
+    margin-left: 1px;
+    background-color: rgba(0,204,204,0.7);
+    border-bottom: 0px;
+    /*border: 1px solid rgba(89,204,251,1);*/
+}
+
+

@@ -1,0 +1,350 @@
+ table {
+			
+				font-size: 14px;
+			}
+			
+			table th {
+
+				padding: 10px;
+			}
+			
+			table td {
+				padding: 10px;
+			}
+			
+			table.vertical {
+				-webkit-writing-mode: vertical-lr;
+				-moz-writing-mode: vertical-lr;
+				-ms-writing-mode: tb-lr;
+				writing-mode: vertical-lr;
+			}
+			
+			table.vertical th,
+			table.vertical td {
+				width: 100px;
+				height: 14px;
+			}			
+			table.vertical div {
+				-webkit-writing-mode: horizontal-tb;
+				-moz-writing-mode: horizontal-tb;
+				-ms-writing-mode: lr-tb;
+				writing-mode: horizontal-tb;
+			}
+ .indicators .box {
+  float: left;
+  width: 250px;
+  height: 200px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.indicators .box .boxName{
+  float: none;
+  width: 250px;
+  height: 80px;
+  font-size: 25px;
+  line-height: 70px;
+  color: #fff;
+  text-align: center;
+  border-style:solid;
+  border-width: 1px;
+}
+
+.indicators .box .boxNumber{
+  float: left;
+  width: 250px;
+  text-align: center;
+  height: 80px;
+  line-height: 70px;
+  margin-top: 10px;
+  color: #fff;
+  font-size: 50px;
+  font-weight: bold;
+  background-color: #0F2043;
+}
+
+ .detection .box {
+  margin: 10px;
+}
+
+.box .detectionTable {
+  width: 100%;
+}
+
+.control .controlContent .detection .box .detectionTable tbody{
+  display:block;
+  height:400px;
+  overflow-y:scroll;
+}
+
+.control .controlContent .detection .box .detectionTable tbody tr{
+  display:table;
+  width:100%;
+  table-layout:fixed;
+}
+
+.control .controlContent .detection .box .detectionTable thead {
+  display:table;
+  table-layout:fixed;
+  width: calc( 100% - 5px )
+}
+
+.control .controlContent .detection .box .detectionTable tr td {
+  border: 1px solid #fff;
+  font-size: 10px;
+  color: #8e99ba;
+  line-height: 20px;
+  text-align: center;
+}
+
+.control .controlContent .enterpriseDynamic .box .insideBox {
+  float: left;
+  margin-left: 20px;
+  margin-top: 10px;
+  width: 180px;
+  height: 80px;
+  background-color: #0F2043;
+  border: 1px solid #4EC1EF;
+  padding: 5px;
+}
+
+.control .controlContent .enterpriseDynamic .box .boxIcon {
+  float: left;
+  margin: 13px 5px;
+}
+
+.control .controlContent .enterpriseDynamic .box .boxIcon img {
+  width: 40px;
+}
+
+ .control .controlContent .enterpriseDynamic .box .boxText {
+   margin-top: 8px;
+   float: left;
+   color: #4EC1EF;
+   font-size: 14px;
+ }
+
+.control .controlContent .enterpriseDynamic .box .boxText strong {
+  font-size: 22px;
+  font-weight: 400;
+}
+
+.control .controlContent .onlineRate .box {
+  margin: 10px 30px 22px;
+}
+
+.control .controlContent .onlineRate .box .maxLength {
+  width: 130px;
+  height: 8px;
+  background-color: #29253A;
+}
+
+.control .controlContent .onlineRate .box table {
+  text-align: center;
+  width: 100%;
+}
+
+.control .controlContent .onlineRate .box table tr {
+  border-bottom: 1px solid #4EC1EF;
+  height: 26px;
+  line-height: 26px;
+  font-size: 12px;
+  color: #fff;
+}
+
+.control .controlContent .chain {
+  width: 500px;
+  margin: 0 auto;
+  height: 200px;
+  -webkit-perspective: 800px;
+  -moz-perspective: 800px;
+  perspective: 800px;
+  -webkit-transition: top 0.5s;
+  -moz-transition: top 0.5s;
+  transition: top 0.5s;
+  position: relative;
+}
+
+.control .controlContent .chain .container {
+  position: absolute;
+  width: 256px;
+  height: 144px;
+  left: 120px;
+  top: 50px;
+  cursor: pointer;
+  -webkit-transition: -webkit-transform 1s;
+  -moz-transition: -moz-transform 1s;
+  transition: transform 1s;
+  -webkit-transform-style: preserve-3d;
+  -moz-transform-style: preserve-3d;
+  transform-style: preserve-3d;
+  -webkit-animation: photoRotate 18s ease-in-out infinite 2s;
+  animation: photoRotate 18s ease-in-out infinite 2s;
+}
+
+.control .controlContent .chain .container .example {
+  width: 256px;
+  height: 144px;
+  overflow: hidden;
+  -webkit-transition: opacity 1s, -webkit-transform 1s;
+  -moz-transition: opacity 1s, -moz-transform 1s;
+  transition: opacity 1s, transform 1s;
+  position: absolute;
+  bottom: 0;
+}
+
+.control .controlContent .chain .container .example img{
+  width: 144px;
+}
+
+.control .controlContent .chain .container .example:nth-child(1) {
+  -webkit-transform: rotateY(0deg) translateZ(117.6px);
+  transform: rotateY(0deg) translateZ(117.6px);
+}
+
+.control .controlContent .chain .container .example:nth-child(2) {
+  -webkit-transform: rotateY(72deg) translateZ(117.6px);
+  transform: rotateY(72deg) translateZ(117.6px);
+}
+
+.control .controlContent .chain .container .example:nth-child(3) {
+  -webkit-transform: rotateY(144deg) translateZ(117.6px);
+  transform: rotateY(144deg) translateZ(117.6px);
+}
+
+.control .controlContent .chain .container .example:nth-child(4) {
+  -webkit-transform: rotateY(216deg) translateZ(117.6px);
+  transform: rotateY(216deg) translateZ(117.6px);
+}
+
+.control .controlContent .chain .container .example:nth-child(5) {
+  -webkit-transform: rotateY(288deg) translateZ(117.6px);
+  transform: rotateY(288deg) translateZ(117.6px);
+}
+
+.control .controlContent .chain .container .example:nth-child(6) {
+  -webkit-transform: rotateY(360deg) translateZ(98px);
+  transform: rotateY(360deg) translateZ(98px);
+}
+
+@-webkit-keyframes photoRotate {
+  0% {
+    -webkit-transform: rotateY(0deg);
+    transform: rotateY(0deg);
+  }
+  20% {
+    -webkit-transform: rotateY(72deg);
+    transform: rotateY(72deg);
+  }
+  40% {
+    -webkit-transform: rotateY(144deg);
+    transform: rotateY(144deg);
+  }
+  60% {
+    -webkit-transform: rotateY(216deg);
+    transform: rotateY(216deg);
+  }
+  80% {
+    -webkit-transform: rotateY(288deg);
+    transform: rotateY(288deg);
+  }
+  100% {
+    -webkit-transform: rotateY(360deg);
+    transform: rotateY(360deg);
+  }
+}
+
+@keyframes photoRotate {
+  0% {
+    -webkit-transform: rotateY(0deg);
+    transform: rotateY(0deg);
+  }
+  20% {
+    -webkit-transform: rotateY(72deg);
+    transform: rotateY(72deg);
+  }
+  40% {
+    -webkit-transform: rotateY(144deg);
+    transform: rotateY(144deg);
+  }
+  60% {
+    -webkit-transform: rotateY(216deg);
+    transform: rotateY(216deg);
+  }
+  80% {
+    -webkit-transform: rotateY(288deg);
+    transform: rotateY(288deg);
+  }
+  100% {
+    -webkit-transform: rotateY(360deg);
+    transform: rotateY(360deg);
+  }
+}
+
+.control .controlContent .chain .imgFont{
+  position: absolute;
+  text-align: center;
+  top: 45px;
+  left: 50px;
+  color: #fff;
+}
+
+.control .controlContent .chain hr{
+  position: absolute;
+  border: 1px solid #75552E;
+}
+
+.control .controlContent .provinceMap .leftBody{
+  width: 150px;
+  float: left;
+  margin-top: 40px;
+}
+
+.control .controlContent .provinceMap .leftBody .leftBox{
+  background-color: #0a2043;
+  color: #9113f2;
+  text-align: center;
+  width: 120px;
+  height: 60px;
+  line-height: 30px;
+  font-size: 18px;
+  font-weight: bold;
+  float: left;
+  margin-left: 30px;
+  margin-top: 10px;
+}
+
+.control .controlContent .provinceMap .rightBody{
+  float: left;
+}
+
+.control .controlContent .provinceMap table{
+  margin-top: 30px;
+  width:100%;
+}
+
+.control .controlContent .provinceMap .outRound{
+  width:90px;
+  height: 90px;
+  padding: 5px;
+  border-radius: 50%;
+  margin: 0 auto;
+}
+
+.control .controlContent .provinceMap .inRound{
+  width:80px;
+  height: 80px;
+  border-radius: 50%;
+  background-color: #010F1C;
+  text-align: center;
+  color: #0F5980;
+  font-size: 12px;
+  padding-top: 20px;
+}
+
+.control .controlContent .provinceMap .inRound p{
+  font-size: 18px;
+}
+.processing .tdDiv {
+  height: 140px;
+}

@@ -1,0 +1,92 @@
+{
+  "status": "success",
+    "result": {
+      "page": 1,
+      "page_size": 10,
+      "total_count": 25,
+      "page_count": 3,
+      "list": [
+        {
+          "id": 1,
+          "username": "局长",
+          "sex": 1,
+          "state": "1",
+          "age": 15,
+          "isMarried": 1499305790000,
+          "birthday":"2000-01-01",
+          "address": "北京市海淀区",
+          "time": "09:00:00"
+        },
+        {
+          "id": 2,
+          "username": "局长",
+          "sex": 1,
+          "state": "2",
+          "age": 15,
+          "interest": 60,
+          "isMarried": 1499305790000,
+          "birthday":"2000-01-01",
+          "address": "北京市海淀区",
+          "time": "09:00:00"
+        },
+        {
+          "id": 3,
+          "username": "局长",
+          "sex": 0,
+          "state": "3",
+          "age": 15,
+          "interest": 22,
+          "isMarried": 1499305790000,
+          "birthday":"2000-01-01",
+          "address": "北京市海淀区",
+          "time": "09:00:00"
+        },
+        {
+          "id": 4,
+          "username": "局长",
+          "sex": 0,
+          "state": "张晨晨",
+          "age": 19,
+          "isMarried": 1499305790000,
+          "birthday":"2000-01-01",
+          "address": "北京市海淀区",
+          "time": "09:00:00"
+        },
+        {
+          "id": 5,
+          "username": "局长",
+          "sex": 0,
+          "state": "张晨晨",
+          "age": 75,
+          "isMarried": 1499305790000,
+          "birthday":"2000-01-01",
+          "address": "北京市海淀区",
+          "time": "09:00:00"
+        },
+        {
+          "id": 6,
+          "username": "局长",
+          "sex": 0,
+          "state": "张晨晨",
+          "age": 45,
+          "isMarried": 1499305790000,
+          "birthday":"2000-01-01",
+          "address": "北京市海淀区",
+          "time": "09:00:00"
+          
+        },
+        {
+          "id": 7,
+          "username": "局长",
+          "sex": 0,
+          "state": "张晨晨",
+          "age": 65,
+          "isMarried": 1499305790000,
+          "birthday":"2000-01-01",
+          "address": "北京市海淀区",
+          "time": "09:00:00"
+          
+        }
+      ]
+    }
+  }

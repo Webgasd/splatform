@@ -1,0 +1,105 @@
+{
+  "status": "success",
+  "result": [
+    {
+      "status": 0,
+      "user_id": 1,
+      "user_name": "董丽"
+    },
+    {
+      "status": 0,
+      "user_id": 2,
+      "user_name": "侯桂英"
+    },
+    {
+      "status": 0,
+      "user_id": 3,
+      "user_name": "曾超"
+    },
+    {
+      "status": 0,
+      "user_id": 4,
+      "user_name": "钱平"
+    },
+    {
+      "status": 1,
+      "user_id": 5,
+      "user_name": "姚强"
+    },
+    {
+      "status": 0,
+      "user_id": 6,
+      "user_name": "郑勇"
+    },
+    {
+      "status": 0,
+      "user_id": 7,
+      "user_name": "邓军"
+    },
+    {
+      "status": 0,
+      "user_id": 8,
+      "user_name": "魏芳"
+    },
+    {
+      "status": 0,
+      "user_id": 9,
+      "user_name": "尹芳"
+    },
+    {
+      "status": 1,
+      "user_id": 10,
+      "user_name": "林桂英"
+    },
+    {
+      "status": 1,
+      "user_id": 11,
+      "user_name": "赖静"
+    },
+    {
+      "status": 1,
+      "user_id": 12,
+      "user_name": "林艳"
+    },
+    {
+      "status": 0,
+      "user_id": 13,
+      "user_name": "卢涛"
+    },
+    {
+      "status": 1,
+      "user_id": 14,
+      "user_name": "彭刚"
+    },
+    {
+      "status": 0,
+      "user_id": 15,
+      "user_name": "任艳"
+    },
+    {
+      "status": 1,
+      "user_id": 16,
+      "user_name": "丁敏"
+    },
+    {
+      "status": 1,
+      "user_id": 17,
+      "user_name": "龚磊"
+    },
+    {
+      "status": 1,
+      "user_id": 18,
+      "user_name": "林敏"
+    },
+    {
+      "status": 0,
+      "user_id": 19,
+      "user_name": "乔芳"
+    },
+    {
+      "status": 0,
+      "user_id": 20,
+      "user_name": "何秀兰"
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "status": "success",
+  "result": {
+    "page": 1,
+    "page_size": 10,
+    "total_count": 25,
+    "page_count": 3,
+    "item_list": [
+      {
+        "id": 1,
+        "year": "2019",
+        "kind": "日常检查",
+        "area":"千佛山街道",
+        "checkclass":"aaa",
+        "grid": "济南",
+        "permitnum": "4512164",
+        "principal": "张三",
+        "mechanism": "监管局",
+        "phonenum": "17800000000",
+        "Accompanying": "李四",
+        "lawperson": "王五",
+        "lawnum": "54685265",
+        "lasttime": "2019.05.05",
+        "caddress": "某省某市某区",
+        "date":"2019年01月18日14时9分至14时15分",
+        "person":"周鹤春",
+        "result":"符合",
+        "resultdeal":"通过",
+        "rate":" ",
+        "num":1,
+        "yn":"否",
+        "achieve":"已完成"
+      }
+    ]
+  }
+}

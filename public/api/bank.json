@@ -1,0 +1,111 @@
+{
+    "status": "success",
+      "result": {
+        "pageNo": 1,
+        "page_size": 10,
+        "total_count": 60,
+        "page_count": 6,
+        "item_list": [
+          {
+            "id": 1,
+            "materialcategory":"原料类别",
+            "materialname": "原料名称",
+            "specifications": "净含量",
+            "manufacturer": "生产商",
+            "brand":"品牌",
+            "state":"状态",
+            "extra":"描述"
+          },
+          {
+            "id": 2,
+            "materialcategory":"原料类别",
+            "materialname": "原料名称",
+            "specifications": "净含量",
+            "manufacturer": "生产商",
+            "brand":"品牌",
+            "state":"状态",
+            "extra":"描述"
+          },
+          {
+            "id": 3,
+            "materialcategory":"原料类别",
+            "materialname": "原料名称",
+            "specifications": "净含量",
+            "manufacturer": "生产商",
+            "brand":"品牌",
+            "state":"状态",
+            "extra":"描述"
+          },
+          {
+            "id": 4,
+            "materialcategory":"原料类别",
+            "materialname": "原料名称",
+            "specifications": "净含量",
+            "manufacturer": "生产商",
+            "brand":"品牌",
+            "state":"状态",
+            "extra":"描述"
+          },
+          {
+            "id": 5,
+            "materialcategory":"原料类别",
+            "materialname": "原料名称",
+            "specifications": "净含量",
+            "manufacturer": "生产商",
+            "brand":"品牌",
+            "state":"状态",
+            "extra":"描述"
+          },
+          {
+            "id": 6,
+            "materialcategory":"原料类别",
+            "materialname": "原料名称",
+            "specifications": "净含量",
+            "manufacturer": "生产商",
+            "brand":"品牌",
+            "state":"状态",
+            "extra":"描述"
+          },
+          {
+            "id": 7,
+            "materialcategory":"原料类别",
+            "materialname": "原料名称",
+            "specifications": "净含量",
+            "manufacturer": "生产商",
+            "brand":"品牌",
+            "state":"状态",
+            "extra":"描述"
+          },
+          {
+            "id": 8,
+            "materialcategory":"原料类别",
+            "materialname": "原料名称",
+            "specifications": "净含量",
+            "manufacturer": "生产商",
+            "brand":"品牌",
+            "state":"状态",
+            "extra":"描述"
+          },
+          {
+            "id": 9,
+            "materialcategory":"原料类别",
+            "materialname": "原料名称",
+            "specifications": "净含量",
+            "manufacturer": "生产商",
+            "brand":"品牌",
+            "state":"状态",
+            "extra":"描述"
+          },
+          {
+            "id": 10,
+            "materialcategory":"原料类别",
+            "materialname": "原料名称",
+            "specifications": "净含量",
+            "manufacturer": "生产商",
+            "brand":"品牌",
+            "state":"状态",
+            "extra":"描述"
+          }
+        ]
+      }
+    }

@@ -1,0 +1,67 @@
+{
+  "status": "success",
+  "result": {
+    "page": 1,
+    "page_size": 10,
+    "total_count": 20,
+    "page_count": 2,
+    "list": [
+      {
+        "id": 1,
+        "code": "20171015095130_26",
+        "name": "进入企业管理界面",
+        "aclModuleId": 1,
+        "url": "/sys/product/product.page",
+        "type": 1,
+        "status": 1,
+        "seq": 1,
+        "remark": "",
+        "operator": "Admin",
+        "operateTime": "2017-10-15T09:51:30.000+0000",
+        "operateIp": "0:0:0:0:0:0:0:1"
+      },
+      {
+        "id": 2,
+        "code": "20171015095322_14",
+        "name": "查询企业列表",
+        "aclModuleId": 1,
+        "url": "/sys/product/page.json",
+        "type": 2,
+        "status": 1,
+        "seq": 2,
+        "remark": "",
+        "operator": "Admin",
+        "operateTime": "2017-10-15T09:53:22.000+0000",
+        "operateIp": "0:0:0:0:0:0:0:1"
+      },
+      {
+        "id": 3,
+        "code": "20171015095350_69",
+        "name": "增加企业",
+        "aclModuleId": 1,
+        "url": "/sys/product/online.json",
+        "type": 2,
+        "status": 1,
+        "seq": 3,
+        "remark": "",
+        "operator": "Admin",
+        "operateTime": "2017-10-15T09:53:51.000+0000",
+        "operateIp": "0:0:0:0:0:0:0:1"
+      },
+      {
+        "id": 4,
+        "code": "20171015095420_7",
+        "name": "删除企业",
+        "aclModuleId": 1,
+        "url": "/sys/product/offline.json",
+        "type": 2,
+        "status": 1,
+        "seq": 4,
+        "remark": "",
+        "operator": "Admin",
+        "operateTime": "2017-10-15T10:11:28.000+0000",
+        "operateIp": "0:0:0:0:0:0:0:1"
+      }
+    ]
+  }
+}

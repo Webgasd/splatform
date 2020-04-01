@@ -1,0 +1,91 @@
+{
+    "status": "success",
+      "result": {
+        "pageNo": 1,
+        "page_size": 10,
+        "total_count": 60,
+        "page_count": 6,
+        "item_list": [
+          {
+            "id": 1,
+            "enterprise":"企业名称",
+            "kind": "类型",
+            "purchasedate": "处理日期",    
+            "acceptor": "处理人",
+            "extra":"说明" 
+          },
+          {
+            "id": 2,
+            "enterprise":"企业名称",
+            "kind": "类型",
+            "purchasedate": "进货日期",    
+            "acceptor": "验收人",
+            "extra":"说明"
+          },
+          {
+            "id": 3,
+            "enterprise":"企业名称",
+            "kind": "类型",
+            "purchasedate": "进货日期",    
+            "acceptor": "验收人",
+            "extra":"说明" 
+          },
+          {
+            "id": 4,
+            "enterprise":"企业名称",
+            "kind": "类型",
+            "purchasedate": "进货日期",    
+            "acceptor": "验收人",
+            "extra":"说明"
+          },
+          {
+            "id": 5,
+            "enterprise":"企业名称",
+            "kind": "类型",
+            "purchasedate": "进货日期",    
+            "acceptor": "验收人",
+            "extra":"说明"
+          },
+          {
+            "id": 6,
+            "enterprise":"企业名称",
+            "kind": "类型",
+            "purchasedate": "进货日期",    
+            "acceptor": "验收人",
+            "extra":"说明"
+          },
+          {
+            "id": 7,
+            "enterprise":"企业名称",
+            "kind": "类型",
+            "purchasedate": "进货日期",    
+            "acceptor": "验收人",
+            "extra":"说明"
+          },
+          {
+            "id": 8,
+            "enterprise":"企业名称",
+            "kind": "类型",
+            "purchasedate": "进货日期",    
+            "acceptor": "验收人",
+            "extra":"说明" 
+          },
+          {
+            "id": 9,
+            "enterprise":"企业名称",
+            "kind": "类型",
+            "purchasedate": "进货日期",    
+            "acceptor": "验收人",
+            "extra":"说明"
+          },
+          {
+            "id": 10,
+            "enterprise":"企业名称",
+            "kind": "类型",
+            "purchasedate": "进货日期",    
+            "acceptor": "验收人",
+            "extra":"说明"
+          }
+        ]
+      }
+    }

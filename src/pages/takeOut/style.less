@@ -1,0 +1,478 @@
+@font-face {
+  font-family: 'LCD';
+  src: url('./img/DS-DIGI.TTF');
+}
+
+.TakeOut ::-webkit-scrollbar{
+  width: 5px;/* 纵向滚动条*/
+  height: 5px;/* 横向滚动条 */
+  background-color: #061528;
+}
+
+/*定义滚动条轨道 内阴影*/
+.TakeOut ::-webkit-scrollbar-track{
+  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0);
+  background-color: #061528;
+}
+
+/*定义滑块 内阴影*/
+.TakeOut ::-webkit-scrollbar-thumb{
+  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0);
+  background-color: #000;
+}
+
+.TakeOut {
+  min-width: 100%;
+  display: inline-block;
+  min-height: 100%;
+  position: absolute;
+  background-repeat:no-repeat;
+  background-size:cover;
+}
+
+.TakeOut table {
+  width: 100%;
+}
+
+.takeOutHeader {
+  height: 90px;
+}
+
+.takeOutHeader .splitLine img{
+  width: 520px;
+  height: 30px;
+  position: absolute;
+  top:55px;
+}
+
+.takeOutHeader .headerLeft {
+  float: left;
+  left: 0px;
+  min-width: 520px;
+  padding-left: 15px;
+}
+
+.takeOutHeader .headerCenter {
+  background-repeat:no-repeat;
+  background-size:cover;
+  color: #DBE3EE;
+  font-size: 18px;
+  font-weight: bold;
+  width: 490px;
+  height: 60px;
+  line-height: 60px;
+  text-align: center;
+  float: left;
+  margin: 0 auto;
+}
+
+.takeOutHeader .headerCenter .headerCenterContent {
+  background-image: -webkit-linear-gradient(bottom, #0BAAFF, #fff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.takeOutHeader .headerRight {
+  float: right;
+  right: 0px;
+  min-width: 520px;
+  padding-right: 15px;
+}
+
+.takeOutHeader .headerLeft .headerLabel {
+  margin-top: 10px;
+  margin-left: 10px;
+  transform: skew(30deg);
+  height: 40px;
+  width: 90px;
+  background-color: #496A9B;
+  border-radius: 8px 0 8px 0;
+  float: left;
+}
+
+.takeOutHeader .headerLeft .headerLabel .labelContent {
+  height: 34px;
+  width: 84px;
+  margin: 3px 3px;
+  border-radius: 6px 0 6px 0;
+  background-color: #304185;
+  text-align: center;
+  line-height: 30px;
+  color: #4EC1EF;
+  font-weight: 600;
+  font-size: 12px;
+}
+
+.takeOutHeader .headerLeft .headerLabel .labelContent .contentText{
+  transform: skew(-30deg);
+}
+
+.takeOutHeader .headerRight .headerLabel {
+  margin-top: 10px;
+  margin-left: 5px;
+  height: 40px;
+  background-color: #5E76A5;
+  padding: 3px;
+  border-radius: 3px;
+  float: right;
+}
+
+.takeOutHeader .headerRight .headerLabel .labelContent {
+  height: 34px;
+  padding: 5px;
+  background-color: #304185;
+  text-align: center;
+  line-height: 20px;
+  color: #4EC1EF;
+  font-weight: 600;
+  font-size: 10px;
+}
+
+.takeOutHeader .headerRight .headerLabel .labelContent select{
+  background-color: #304185;
+  border: 0px;
+}
+
+.takeOutHeader .headerRight .headerTime {
+  margin-top: -5px;
+  margin-right: 10px;
+  color: #4EC1EF;
+  margin-left: 10px;
+  float: right;
+}
+
+.takeOutHeader .headerRight .headerTime .timeFirst {
+  font-size: 20px;
+}
+
+.takeOutHeader .headerRight .headerTime .timeSecond {
+  font-size: 18px;
+}
+
+.takeOutHeader hr {
+  border: 1px solid #3CA6DA;
+  margin-left: 30px;
+  margin-right: 30px;
+}
+
+.TakeOut .commonTableTitle {
+  width: 400px;
+  height: 25px;
+  text-align: center;
+  color: #4FFAFF;
+}
+
+.TakeOut .commonTableTitle img{
+  width: 60px;
+  height: 20px;
+  text-align: center;
+  color: #4FFAFF;
+}
+
+.TakeOut .tdDiv {
+  padding: 5px;
+  border: 1px solid #103564;
+  width: 390px;
+  margin: 0 5px;
+  height: 225px;
+  position: relative;
+}
+
+.TakeOut .tdDiv .leftTop {
+  width: 10px;
+  height: 2px;
+  background-color: #3CA6DA;
+  top: 0px;
+  left: 0px;
+  position: absolute;
+}
+
+.TakeOut .tdDiv .rightTop {
+  width: 10px;
+  height: 2px;
+  background-color: #3CA6DA;
+  top: 0px;
+  right: 0px;
+  position: absolute;
+}
+
+.TakeOut .tdDiv .leftBottom {
+  width: 10px;
+  height: 2px;
+  background-color: #3CA6DA;
+  bottom: 0px;
+  left: 0px;
+  position: absolute;
+}
+
+.TakeOut .tdDiv .rightBottom {
+  width: 10px;
+  height: 2px;
+  background-color: #3CA6DA;
+  bottom: 0px;
+  right: 0px;
+  position: absolute;
+}
+
+.TakeOut .scanningDynamics .tdDiv .tableBody {
+  height: 180px;
+  overflow-y: hidden;
+  position: relative;
+}
+
+.TakeOut .scanningDynamics .tdDiv .scanningDynamicsTable {
+  width: 100%;
+}
+
+.TakeOut .scanningDynamics .tdDiv .scanningDynamicsTable .td1{
+  width: 80px;
+}
+
+.TakeOut .scanningDynamics .tdDiv .scanningDynamicsTable .td2{
+  width: 220px;
+}
+
+.TakeOut .scanningDynamics .tdDiv .scanningDynamicsTable .td3{
+  width: 80px;
+}
+
+@keyframes scanningDynamicsTableAnimation
+{
+  from {top:0;}
+  to {top:-20px;}
+}
+
+.TakeOut .scanningDynamics .tdDiv .tableBody .scanningDynamicsTable {
+  position: absolute;
+  top: 0px;
+  animation:scanningDynamicsTableAnimation 2s infinite;
+}
+
+.TakeOut .scanningDynamics .tdDiv .scanningDynamicsTable tr td {
+  text-align: center;
+  overflow: hidden;
+  word-wrap:break-word;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+.TakeOut .scanningDynamics table thead tr td {
+  background-color: #03398B;
+  color: #26CAD6;
+  text-align: center;
+  font-size: 10px;
+  height: 30px;
+  line-height: 30px;
+}
+
+.TakeOut .scanningDynamics table tbody tr td {
+  color: #26CAD6;
+  text-align: center;
+  font-size: 10px;
+  height: 18px;
+  line-height: 18px;
+}
+
+.TakeOut .shopDistribution .tdDiv{
+  min-width: 700px;
+  color: #4BCDEF;
+}
+
+.TakeOut .shopDistribution .tdDiv table tr td{
+  text-align: center;
+  padding: 5px;
+}
+
+.TakeOut .shopDistribution .tdDiv .shopDistributionHeader {
+  min-width: 700px;
+}
+
+.TakeOut .shopDistribution .tdDiv .shopDistributionHeader .left{
+  float: left;
+  width: 170px;
+  height: 50px;
+  margin: 3px 0 15px 0;
+  text-align: center;
+  padding-top: 10px;
+  font-weight: bold;
+  font-size: 12px;
+  background-repeat:no-repeat;
+  background-size:cover;
+}
+
+.TakeOut .shopDistribution .tdDiv .shopDistributionHeader .left strong{
+  font-weight: normal;
+  font-size: 20px;
+  color: #F5C21B;
+}
+
+.TakeOut .shopDistribution .tdDiv .shopDistributionHeader .right{
+  float: right;
+  margin-top: 17px;
+  margin-right: 15px;
+  width: 200px;
+}
+
+.TakeOut .shopDistribution .tdDiv .shopDistributionHeader .right .ant-calendar-picker-input {
+  background-color: #113A8B;
+  border: 0px;
+}
+
+.TakeOut .shopDistribution table thead tr td {
+  background-color: #113A8B;
+  font-size: 12px;
+  height: 30px;
+  line-height: 30px;
+}
+
+.TakeOut .shopDistribution table tbody tr td {
+  font-size: 12px;
+  height: 30px;
+  line-height: 30px;
+}
+
+.TakeOut .regulationsNumber .tdDiv {
+  height: 140px;
+  padding: 5px 15px;
+}
+
+.TakeOut .regulationsNumber .tdDiv hr{
+  border: 0.5px solid #3CA6DA;
+}
+
+.TakeOut .regulationsNumber .tdDiv .regulationsNumberContent {
+  height: 32px;
+  margin-left: 70px;
+}
+
+.TakeOut .regulationsNumber .tdDiv .regulationsNumberLabel {
+  float: left;
+  background-color: #282879;
+  font-size: 12px;
+  height: 32px;
+  line-height: 32px;
+  width: 120px;
+  text-align: center;
+  color: #fff;
+  margin-right: 15px;
+}
+
+.TakeOut .regulationsNumber .tdDiv .regulationsNumberText {
+  border-radius: 2px;
+  float: left;
+  background-color: #52C1EE;
+  margin-left: 3px;
+  height: 32px;
+  line-height: 32px;
+  width: 17px;
+  text-align: center;
+  font-size: 18px;
+  font-weight: 500;
+  color: #fff;
+  position: relative;
+}
+
+.TakeOut .regulationsNumber .tdDiv .regulationsNumberText hr {
+  position: absolute;
+  border: 1px solid #000;
+  width: 17px;
+  top: 7px;
+}
+
+.TakeOut .processing .tdDiv {
+  height: 140px;
+}
+
+.TakeOut .violationStatics .tdDiv .tableBody {
+  height: 180px;
+  overflow-y: hidden;
+  position: relative;
+}
+
+.TakeOut .violationStatics .tdDiv .violationStaticsTable {
+  width: 100%;
+}
+
+.TakeOut .violationStatics .tdDiv .violationStaticsTable .td1{
+  width: 65px;
+}
+
+.TakeOut .violationStatics .tdDiv .violationStaticsTable .td2{
+  width: 45px;
+}
+
+@keyframes violationStaticsTableAnimation
+{
+  from {top:0;}
+  to {top:-20px;}
+}
+
+.TakeOut .violationStatics .tdDiv .tableBody .violationStaticsTable {
+  position: absolute;
+  top: 0px;
+  animation:violationStaticsTableAnimation 2s infinite;
+}
+
+
+.TakeOut .violationStatics .tdDiv .violationStaticsTable tr td {
+  text-align: center;
+}
+
+.TakeOut .violationStatics table thead tr td {
+  background-color: #113A8B;
+  color: #4FFAFF;
+  text-align: center;
+  font-size: 10px;
+  height: 30px;
+  line-height: 15px;
+}
+
+.TakeOut .violationStatics table tbody tr td {
+  color: lawngreen;
+  text-align: center;
+  font-size: 10px;
+  height: 20px;
+  line-height: 20px;
+}
+
+.TakeOut .wholeNumber .wholeNumberHeader {
+  width: 600px;
+  height: 100px;
+  margin: 0 auto;
+  background-repeat:no-repeat;
+  background-size:cover;
+}
+
+.TakeOut .wholeNumber .wholeNumberHeader .numberLabel {
+  height: 100px;
+  line-height: 100px;
+  margin-left: 80px;
+  float: left;
+  color: #4ED4F9;
+}
+
+.TakeOut .wholeNumber .wholeNumberHeader .numberBox {
+  float: left;
+  height: 50px;
+  width: 30px;
+  line-height: 50px;
+  text-align: center;
+  font-size: 56px;
+  font-family: 'LCD';
+  margin: 25px 5px;
+  background-color: #182395;
+  color: #F9C010;
+}
+.TakeOut .wholeNumber .wholeNumberContent {
+  height: 400px;
+}
+.TakeOut .wholeNumber .wholeNumberContent a {
+  float: left;
+  height: 20px;
+  width: 60px;
+  text-align: center;
+  font-size: 16px;
+  //font-family: 'LCD';
+  //background-color: #182395;
+  color: #F9C010 ;
+}

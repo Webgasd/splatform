@@ -1,0 +1,95 @@
+@import './../../style/default.less';
+.header{
+   position: fixed;
+   width: 100%;
+  //background-color:transparent;//@colorM;
+  .header-top{
+    height: 50px;
+    line-height: 50px;
+    padding: 0 15px;
+    text-align: right;
+    background-image:url('./u3.png');
+    a{
+      margin-left: 40px;
+    }
+    .ant-carousel .slick-dots-bottom{
+      display:none!important;
+    }
+    .bannerText{
+      margin-top: 3px;
+      float: left;
+      margin-left: 5px;
+      color: #FFFFFF;
+      font-size: 23px;
+    }
+  }
+  .breadcrumb{
+    height: 30px;
+    background: #1A1A1A;
+    .ant-tabs.ant-tabs-card .ant-tabs-card-bar .ant-tabs-tab-active{
+      height: 30px;
+      line-height: 30px;
+      background: #353535 !important;
+      color: #FFFFFF !important;
+      margin-right: 0px;
+    }
+    .ant-tabs.ant-tabs-card .ant-tabs-card-bar .ant-tabs-tab{
+      height: 30px;
+      line-height: 30px;
+      background: #1A1A1A;
+      color: #727272;
+      margin-right: 0px;
+      //border-radius:0;
+      border-top:none; border-left:none; border-right:1px solid #FFFFFF;
+    }
+    .ant-tabs.ant-tabs-card .ant-tabs-card-bar .ant-tabs-tab:hover{
+      color: #FFFFFF;
+    }
+    .ant-tabs.ant-tabs-card .ant-tabs-card-bar .ant-tabs-nav-container{
+      height: 30px;
+      margin: 0 10px;
+    }
+    .ant-tabs.ant-tabs-card .ant-tabs-card-bar .ant-tabs-tab .ant-tabs-close-x{
+      color: #FFFFFF;
+      margin-bottom: 5px;
+      margin-left: 5px;
+      margin-right: -10px;
+    }
+    .ant-tabs-bar{
+      margin: 0;
+    }
+  }
+}
+.simple-page{
+  .header-top{
+    background:#1890ff;
+    color:@colorM;
+  }
+}
+.ant-drawer-wrapper-body{
+  background: #001529;
+  .ant-drawer-title {
+    margin: 0;
+    color: rgb(252, 253, 253);
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 22px;
+  }
+  .ant-drawer-header {
+    position: relative;
+    padding: 16px 24px;
+    color: rgba(0, 0, 0, 0.65);
+    background: #001529;
+    border-bottom: 1px solid #e8e8e8;
+    border-radius: 4px 4px 0 0;
+  }
+  .ant-drawer-body {
+    padding: 24px;
+    font-size: 14px;
+    background: #001529;
+    line-height: 1.5;
+    word-wrap: break-word;
+  }
+}
+
+

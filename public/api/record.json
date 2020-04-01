@@ -1,0 +1,92 @@
+{
+  "status": "success",
+    "result": {
+      "page": 1,
+      "page_size": 10,
+      "total_count": 60,
+      "page_count": 6,
+      "item_list": [
+        {
+            "id": 1,
+            "num":1,
+            "movedate": "2018-08-11",
+            "old": "店长",
+            "new": "经理",
+            "recorddate": "2019-01-11"
+        },
+        {
+            "id": 2,
+            "num":2,
+            "movedate": "2018-08-11",
+            "old": "店长",
+            "new": "经理",
+            "recorddate": "2019-01-11"
+        },
+        {
+            "id": 3,
+            "num":1,
+            "movedate": "2018-08-11",
+            "old": "店长",
+            "new": "经理",
+            "recorddate": "2019-01-11"
+        },
+        {
+          "id": 4,
+          "num":1,
+          "movedate": "2018-08-11",
+          "old": "店长",
+          "new": "经理",
+          "recorddate": "2019-01-11"
+      },
+      {
+        "id": 5,
+        "num":1,
+        "movedate": "2018-08-11",
+        "old": "店长",
+        "new": "经理",
+        "recorddate": "2019-01-11"
+      },
+      {
+      "id": 6,
+      "num":1,
+      "movedate": "2018-08-11",
+      "old": "店长",
+      "new": "经理",
+      "recorddate": "2019-01-11"
+     },
+     {
+    "id": 7,
+    "num":1,
+    "movedate": "2018-08-11",
+    "old": "店长",
+    "new": "经理",
+    "recorddate": "2019-01-11"
+     },
+    {
+    "id": 8,
+    "num":1,
+     "movedate": "2018-08-11",
+    "old": "店长",
+    "new": "经理",
+    "recorddate": "2019-01-11"
+    },
+   {
+  "id": 9,
+  "num":1,
+  "movedate": "2018-08-11",
+  "old": "店长",
+  "new": "经理",
+  "recorddate": "2019-01-11"
+   },
+  {
+  "id": 10,
+  "num":1,
+  "movedate": "2018-08-11",
+  "old": "店长",
+  "new": "经理",
+  "recorddate": "2019-01-11"
+   }
+       
+      ]
+    }
+  }

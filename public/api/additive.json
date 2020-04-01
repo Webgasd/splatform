@@ -1,0 +1,48 @@
+{
+    "status": "success",
+    "result": {
+      "pageNo": 1,
+      "page_size": 10,
+      "total_count": 20,
+      "page_count": 2,
+      "item_list": [
+        {
+          "id": 1,
+          "enterprise": "企业名称",
+          "recordNo": "备案号",
+          "recordDate": "备案时间",
+          "administrator": "食品安全管理员",
+          "publicity": "公示状态",
+          "userunit":"使用单位"
+         
+        },
+        {
+          "id": 2,
+          "enterprise": "企业名称",
+          "recordNo": "备案号",
+          "recordDate": "备案时间",
+          "administrator": "食品安全管理员",
+          "publicity": "公示状态",
+          "userunit":"使用单位"
+        },
+        {
+          "id": 3,
+          "enterprise": "企业名称",
+          "recordNo": "备案号",
+          "recordDate": "备案时间",
+          "administrator": "食品安全管理员",
+          "publicity": "公示状态",
+          "userunit":"使用单位"
+        },
+        {
+          "id": 4,
+          "enterprise": "企业名称",
+          "recordNo": "备案号",
+          "recordDate": "备案时间",
+          "administrator": "食品安全管理员",
+          "publicity": "公示状态",
+          "userunit":"使用单位"
+        }
+      ]
+    }
+  }

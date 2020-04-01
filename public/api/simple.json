@@ -1,0 +1,37 @@
+{
+  "status": "success",
+  "result": {
+    "pageNo": 1,
+    "page_size": 10,
+    "total_count": 60,
+    "page_count": 6,
+    "item_list": [
+      {
+        "id": 1,
+        "unit": "济南市历下区金色贝贝幼儿园",
+        "area": "智远街道",
+        "date":"2019-7-5",
+        "type":"三十人以上聚餐",
+        "meal":"早餐",
+        "num":"266",
+        "matter": "火腿花卷蒸鸡蛋玉米粥",
+        "name1": "蒸鸡蛋",
+        "material1": "南山南鸡蛋好胡萝卜",
+        "state1": "已留样",
+        "num1": "200",
+        "name3": "火腿花卷",
+        "material3": "火腿面粉",
+        "state3": "已留样",
+        "num3": "200",
+        "name4": "玉米粥",
+        "material4": "玉米面",
+        "state4": "已留样",
+        "num4": "200",
+        "name5": "纯奶",
+        "material5": "纯奶",
+        "state5": "已留样",
+        "num5": "160"
+      }
+    ]
+  }
+}

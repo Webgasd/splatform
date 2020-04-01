@@ -1,0 +1,51 @@
+{
+  "status": "success",
+  "result": {
+    "page": 1,
+    "page_size": 10,
+    "total_count": 60,
+    "page_count": 6,
+    "item_list": [
+      {
+        "id": 1,
+        "name": "特大型餐馆",
+        "category": "食品经营企业"
+      },
+      {
+        "id": 2,
+        "name": "特大型餐馆",
+        "category": "食品经营企业"
+      },
+      {
+        "id": 3,
+        "name": "特大型餐馆",
+        "category": "食品经营企业"
+      },
+      {
+        "id": 4,
+        "name": "特大型餐馆",
+        "category": "食品经营企业"
+      },
+      {
+        "id": 5,
+        "name": "特大型餐馆",
+        "category": "食品经营企业"
+      },
+      {
+        "id": 6,
+        "name": "特大型餐馆",
+        "category": "食品经营企业"
+      },
+      {
+        "id": 7,
+        "name": "特大型餐馆",
+        "category": "食品经营企业"
+      },
+      {
+        "id": 8,
+        "name": "特大型餐馆",
+        "category": "食品经营企业"
+      }
+    ]
+  }
+}

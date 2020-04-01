@@ -1,0 +1,28 @@
+{
+  "status": "success",
+  "result": {
+    "pageNo": 1,
+    "page_size": 10,
+    "total_count": 60,
+    "page_count": 6,
+    "item_list": [
+      {
+        "id": 1,
+        "unit":"山东儒馨餐饮管理有限公司",
+        "num":"0001",
+        "name":"澳洲烹汁牛肉",
+        "price":"57",
+        "type": "热菜",
+        "remarks": "澳洲烹汁牛肉"
+      }, {
+        "id": 2,
+        "unit":"山东儒馨餐饮管理有限公司",
+        "num":"0002",
+        "name":"波士顿龙虾意面",
+        "price":"148",
+        "type": "热菜",
+        "remarks": "波士顿龙虾意面"
+      }
+    ]
+  }
+}

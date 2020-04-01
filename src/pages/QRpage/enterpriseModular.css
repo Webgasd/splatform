@@ -1,0 +1,59 @@
+.EnterpriseModular {
+    width: 100%;
+}
+
+.EnterpriseModular-title {
+    width: 100%;
+    background: linear-gradient(#a5adf7, #7e87d1);
+    padding: 10px;
+    color: #fff;
+    font-size: .95rem;
+    border: none;
+    display: block;
+    overflow: hidden;
+}
+
+.EnterpriseModular-title-img {
+    width: 23px;
+    height: 23px;
+    float: left;
+}
+
+.EnterpriseModular-title-text {
+    float: left;
+    padding: 0 10px;
+}
+
+.EnterpriseModular-title-return {
+    width: 24px;
+    height: 24px;
+    float: left;
+}
+
+.EnterpriseModular-body {
+    padding: 10px;
+    background-color: #EEF7F5;
+    display: none;
+    visibility: hidden;
+}
+
+.EnterpriseModular-body ul li {
+    color: #747575;
+    font-size: .8rem;
+    margin-bottom: 5px;
+}
+
+.EnterpriseModular-body ul li lable {
+    margin-left: 5px;
+}
+
+label {
+    cursor: default;
+}
+
+li, ul {
+    list-style: none outside none;
+    padding: 0;
+    margin: 0;
+}
+

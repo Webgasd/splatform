@@ -1,0 +1,297 @@
+.train-exam-index{
+*{padding:0;margin: 0;}
+*{margin: 0;padding:0;}
+ul{list-style: none;}
+img{display: block;}
+h1,h2,h3{font-size: 16px;font-weight: normal;}
+a{text-decoration: none;color: #333333;}
+p{font-size: 16px;}
+
+.l{float: left;}
+.r{float: right;}
+.clear::after{content: "";display: block;clear: both;}
+
+.menu{
+  width: 240px;
+  height: calc( 100% - 14px);
+  margin: 7px 14px;
+  border: rgb(158, 169, 183) solid 2px;
+}
+
+.menu ul li{
+  background:rgb(24,50,84);
+  height:320px;
+  padding:24px 0 0 14px;
+}
+.menu ul li h2{
+  line-height: 140%;
+  color: #FFFFFF;
+  font-size: 24px;
+}
+
+.menu ul li:first-child{
+  border-bottom: rgb(158, 169, 183) 4px solid;
+  color:white;
+}
+.menu ul li:last-child{
+  color:#E85F18;
+  box-sizing: border-box;
+}
+
+.main{
+  height:calc(100vh - 12px);
+  border:2px solid #DBDBDB;
+  margin: 4px 4px;
+  overflow-y: auto;
+}
+
+
+
+.main ul li .center table{
+  border-collapse: collapse;
+  margin:10px 0 0 12px;
+  width: 740px;
+}
+.main ul li .imgz
+{
+  border: 2px #CFE2A1 dashed;
+  width: 90px;
+  height:100px;
+  margin:6px 8px;
+  background: #E3E4E3;
+}
+.main ul li span{
+  color:#A9ABAD;
+  display: block;
+  text-align: center;
+  position: relative;
+  top:40%;
+}
+
+.train-course-list{
+  .main ul li .center table{
+    border-collapse: collapse;
+    margin:8px 0 0 60px;
+    width: 720px;
+  }
+
+  .menu ul li p.progress{
+    color:rgb(24,50,84);
+    width:160px;
+    height: 160px;
+    background: white;
+    border-radius: 50%;
+    text-align: center;
+    position: relative;top:20px;left:25px;
+    font-size: 64px;font-weight: bold;
+    padding: 30px 0;
+    box-sizing: border-box;
+  }
+  .menu ul li .time{
+    display: block;
+    width: 50px;
+    height: 50px;
+    border-radius:50% ;
+    color:rgb(24,50,84);
+    background: white;
+    text-align: center;
+    font-weight: bold;
+    box-sizing: border-box;
+    padding: 14px 0;
+    position: relative;
+    font-size: 16px;
+    margin-top: -5px;
+    left: 70%;
+  }
+
+  .menu ul li .tips{
+    color: white;
+  }
+
+  .menu ul li .arrive{
+    color:red;
+    line-height:50px;
+    font-size: 40px;
+    padding-right:16px;
+  }
+
+
+  .main ul li .center td{
+    color: #000000;
+    font-size: 16px;
+    line-height: 30px;
+    padding-right: 30px;
+  }
+  .main ul li .center .classname
+  {
+    color:#F3F4F6;
+    box-shadow: 0px 2px 2px 3px #CDCCCB ;
+    font-size: 18px;
+    padding:8px;
+    margin-top: 10px;
+    overflow: hidden;
+    /* width: 80%; */
+    position: relative;
+    border: 1px solid #32C9C9;
+    background: #32C9C9;
+    width: 740px;
+  }
+  .main ul li .right{
+    margin:10px 8px 0 0;
+    border-radius:6px ;
+    background:#FF660C;
+    border:1px solid #FF660C;
+
+  }
+  .main ul li  .right .rl{
+    font-size: 16px;
+    background: #FF660C;
+    color: black;
+    width: 100px;
+    height: 50px;
+    position: relative;
+    top:5px;
+  }
+  .main ul li  .right .rr{
+    font-size: 28px;
+    background: #FFBF72;
+    color: white;
+    width: 100px;
+    height: 50px;
+    line-height: 58px;;
+  }
+  .main ul li .center .btn{
+    background: #A3E3E3;
+    color: white;
+    line-height: 24px;
+    font-size: 16px;
+    padding: 2px 10px;
+    box-shadow: 0px 3px 2px 3px #30C9C9 ;
+    border: 1px solid white;
+    border-radius: 4px;
+    position: relative;
+    top: -5px;
+  }
+  .main li{
+    margin:12px 18px 10px 18px;
+    height:128px ;
+    border: 1px solid #CDCCCB;
+    box-shadow: 2px 2px 2px 3px #D5D5D5 ;
+    overflow: hidden;
+  }
+  .left-tips{
+    width: 100px;
+    background: red;
+    transform: rotate(-45deg);
+    border:1px red solid;
+    color:white;
+    float: left;
+    top: -4px;
+    left: -45px;
+    height: 22px;
+    font-size: 10px;
+    line-height: 26px;
+  }
+  .total-course{
+    color:#FF7628;
+    border:1px solid #E7F3CC ;
+    box-shadow: 2px 0px 2px 3px #D5D5D5;
+    height: 50px;
+    border-radius: 10px;
+    text-align:center;
+    line-height: 40px;
+    position: relative;
+    right: -50px;
+    width: 280px;
+  }
+  .total-course-number{
+    font-size: 32px;
+    line-height: 45px;
+  }
+}
+  .exam-course-list{
+    .menu ul li p.progress{
+      color:rgb(24,50,84);width:160px;
+      height: 160px;
+      background: white;border-radius: 50%;text-align: center;
+      position: relative;top:24px;left:48px;
+      font-size: 48px;font-weight: bold;
+      padding: 40px 0;
+      box-sizing: border-box;
+    }
+    .main ul li .center td{
+      line-height: 24px;
+      padding-right: 40px;
+      font-size: 16px;
+      color: #000000;
+    }
+    .main ul li .center .active{
+      background: #30FFFF;
+      border-radius: 4px;
+    }
+    .main ul li .center .active2{
+      background: #B5FFFF;
+      border-radius: 4px;
+      font-weight:bold;
+    }
+    .main ul li .center .classname
+    {
+      color:#F3F4F6;
+      box-shadow: 0px 2px 2px 3px #CDCCCB ;
+      font-size: 18px;
+      padding:8px;
+      margin-top: 10px;
+      overflow: hidden;
+      /* width: 80%; */
+    }
+    .main ul li .right{
+      margin:10px 8px 0 0;
+      border-radius:6px ;
+      border: 1px #04CBFD solid;
+      background: #0ED7FF;
+    }
+    .main ul li  .right .rl{
+      font-size: 16px;
+      background: #0ED7FF;
+      color: black;
+      width: 100px;
+      height: 50px;
+      position: relative;
+      top:15px;
+    }
+    .main ul li  .right .rr{
+      font-size: 28px;
+      background: #7FE0FF;
+      color: white;
+      width: 100px;
+      height: 50px;
+    }
+    .main ul li .center .btn{
+      background: #183254;
+      color: white;
+      line-height: 24px;
+      font-size: 16px;
+      padding: 2px 10px;
+      box-shadow: 0px 3px 2px 3px #61748B ;
+      border: 1px solid white;
+      border-radius: 4px;
+      position: relative;
+      top: -5px;
+    }
+    .main li{
+      margin:12px 18px 10px 18px;
+      height:130px ;
+      border: 1px solid #CDCCCB;
+      box-shadow: 2px 2px 2px 3px #D5D5D5 ;
+      overflow: hidden;
+    }
+    .elect-number{
+      display: block;
+      text-align: right;
+      color:red;
+      font-size: 20px;
+      position: relative;
+      left: 22px;
+    }
+  }
+}

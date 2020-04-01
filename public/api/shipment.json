@@ -1,0 +1,22 @@
+{
+  "status": "success",
+  "result": {
+    "pageNo": 1,
+    "page_size": 10,
+    "total_count": 60,
+    "page_count": 6,
+    "item_list": [
+      {
+        "id": 1,
+        "unit": "山东宏济堂制药集团股份有限公司济南分公司",
+        "type":"预包装食品",
+        "name": "阿胶山楂（小）",
+        "supplier": "山东宏济堂制药集团济南阿胶制品有限公司",
+        "time": " ",
+        "day": "12个月",
+        "num":"5",
+        "date":"2019-6-29"
+      }
+    ]
+  }
+}
