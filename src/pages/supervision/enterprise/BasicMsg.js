@@ -66,27 +66,14 @@ class BasicMsg extends Component{
         })
     })
 
-    changeMsgIndex(index){
-        this.setState({
-            msgIndex:index
-        })
-    }
-
-    changeInput=(value,option)=>{
-        let input = {...this.props.input,[option]:value}
-        this.props.changeEnterprise(input);
-    }
+    
+    
     changeYearAssessment=(value,option)=>{
         let configs={'A':'一次','B':'两次','C':'三次','D':'四次','不评定':'一次'}
         let input = {...this.props.input,[option]:value,patrolFrequency:configs[value]}
         this.props.changeEnterprise(input);
     }
-    onCheckChange=(value,option)=>{
-        this.setState({
-            msgIndex:value[value.length-1]
-        })
-        this.changeInput(value.join(','),option)
-    }
+   
     renderTreeNodes =(data)=>{
         return data.map((item) => {
                 if (item.childrenList.length) {
@@ -109,12 +96,33 @@ class BasicMsg extends Component{
             }
             return <TreeNode title={item.name} value={item.id} key={item.id} dataRef={item}/>;
         });
-    getContent =()=>{
+
+
+    changeInput=(value,option)=>{
+        let input = {...this.props.input,[option]:value}
+        this.props.changeEnterprise(input);
+    }
+    changeMsgIndex(index){
+        this.setState({
+            msgIndex:index
+        })
+    }
+    onCheckChange=(value,option)=>{
+        this.setState( (prevState) => ({
+            msgIndex:value[value.length-1]
+            }), () => { console.log("value.length："+value.length,"value:"+value,"msgIndex:"+this.state.msgIndex) 
+            })
+
+        this.changeInput(value.join(','),option)
+    }
+
+    getContent =()=>{console.log("getContent执行")
         let data;
-        if(!this.state.msgIndex){
+        if(!this.state.msgIndex){console.log("执行 if(!this.state.msgIndex)")
             let permissionType=this.props.input.permissionType||'';
             data = permissionType.split(',')[0];
-            if(data){
+
+            if(data){console.log("data"+data)
                 this.setState({
                     msgIndex: data
                 })
@@ -141,6 +149,7 @@ class BasicMsg extends Component{
     render() {
         const formData=this.props.input||{};
         const checkStatus = this.props.type=='detail'?true:false;
+       
         return (
             <div>
             <div className='commonEnterpriseBox'>
@@ -257,11 +266,15 @@ class BasicMsg extends Component{
                     </tr>
                     <tr>
                         <td>企业许可证类型</td>
-                        <td colSpan={5}><Select value={formData.permissionType?formData.permissionType.split(','):[]} mode="tags" style={{width:800}}onChange={(value)=>this.onCheckChange(value,"permissionType")} disabled={checkStatus}>
-                            {(this.props.industryList||[]).map((item)=>(
-                                <Option value={item.remark}>{item.name}</Option>
-                            ))}
-                        </Select></td>
+                        <td colSpan={5}><Select value={formData.permissionType?formData.permissionType.split(','):[]} mode="tags" style={{width:800}}
+                                onChange={(value)=>this.onCheckChange(value,"permissionType")} disabled={checkStatus}>
+
+                                {(this.props.industryList||[]).map((item)=>(
+                                    <Option value={item.remark}>{item.name}</Option>
+                                ))}
+
+                                </Select>
+                        </td>
                     </tr>
                     </tbody>
                 </table>

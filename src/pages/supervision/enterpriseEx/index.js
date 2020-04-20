@@ -1,15 +1,13 @@
 import React,{Component} from 'react';
-import {Card, Button, Modal, Icon, Upload, message} from 'antd';
-import  BaseForm  from '../../../components/BaseForm';
+import {Card, Button, Modal, Icon, Upload, message,Row,Col} from 'antd';
+import  BaseForm  from '../../../components/BaseFormNew';
 import ETable from '../../../components/ETable';
 import Utils from "../../../utils";
 import axios from "../../../axios";
 import QRCode  from 'qrcode.react';
 import Add from './Add';
 import moment from "moment";
-import MapPosition from './MapPosition';
 import '../../../style/common.less';
-
 import {connect} from "react-redux";
 import {changeEnterprise, clearEnterprise} from '../../../redux/action'
 import {commonUrl} from "../../../axios/commonSrc";
@@ -27,7 +25,7 @@ import {baseUrl} from "../../../axios/commonSrc";
         changeEnterprise
     }
 )
- class enterpriseInformation extends Component{
+ class EnterpriseInformation extends Component{
     state = {
         selectedRowKeys: [], // Check here to configure the default column
         headStatus:false,
@@ -55,7 +53,7 @@ import {baseUrl} from "../../../axios/commonSrc";
             data: {
                 params:{}
             }
-        }).then((res)=>{
+        }).then((res)=>{console.log(res)
             if(res.status == "success"){
                 this.setState({
                     statistics:res.data
@@ -72,7 +70,7 @@ import {baseUrl} from "../../../axios/commonSrc";
                 params:{...this.params,areaList:[this.params.areaList],industryList:[this.params.industryList]}
 
             }
-        }).then((res)=>{
+        }).then((res)=>{console.log(res)
             if(res.status == "success"){
                 let list  = res.data.data.map((item,i)=>{
                     item.key = i;
@@ -95,7 +93,7 @@ import {baseUrl} from "../../../axios/commonSrc";
             data:{
                 params:{}
             }
-        }).then((res)=>{
+        }).then((res)=>{console.log(res)
             if(res.status == "success"){
                 this.setState({
                     deptTree: res.data.deptTree
@@ -110,7 +108,7 @@ import {baseUrl} from "../../../axios/commonSrc";
             data:{
                 params:{}
             }
-        }).then((res)=>{
+        }).then((res)=>{console.log(res)
             if(res.status == "success"){
                 this.setState({
                     deptAllList: res.data
@@ -124,7 +122,7 @@ import {baseUrl} from "../../../axios/commonSrc";
             data:{
                 params:{}
             }
-        }).then((res)=>{
+        }).then((res)=>{console.log(res)
             if(res.status == "success"){
                 this.setState({
                     areaAllList: res.data
@@ -204,20 +202,22 @@ import {baseUrl} from "../../../axios/commonSrc";
    }
     }
 
-    handlePosition = (index) =>{
+    // 尚未用到
+    // handlePosition = (index) =>{
 
-    }
-    handleState = (index) =>{
+    // }
+    // handleState = (index) =>{
 
-    }
+    // }
+    // handleDaily = (index) =>{
+
+    // }
+
     handleQr = (item) =>{
        this.setState({
            isQrcodeVisible:true,
            qrUrl:baseUrl+'/#/enterpriseInfoNew?id='+item.id
        })
-    }
-    handleDaily = (index) =>{
-
     }
     onSelectChange = (selectedRowKeys) => {
         Modal.info('selectedRowKeys changed: ', selectedRowKeys);
@@ -272,34 +272,38 @@ import {baseUrl} from "../../../axios/commonSrc";
                     })
                 }
             })
-        }else if(type=="stop"){
-            Modal.confirm({
-                text:'信息',
-                content:item.isStop==0?'是否确定停用':'是否确定启用',
-                onOk:()=>{
-                    axios.ajax({
-                        url: '/supervision/enterprise/changeStop',
-                        data: {
-                            params: {
-                                id: item.id
-                            }
-                        }
-                    }).then((res)=>{
-                        if(res.status == 'success'){
-                            this.requestList();
-                        }
-                    })
-                }
-            })
-        }else if(type=="map"){
-            this.setState({
-                title:type=='地图定位',
-                isMapVisible:true,
-                AreaId:item.grid,
-                enterpriseId:item.id,
-                type
-            })
         }
+        // 原停用状态
+        // else if(type=="stop"){
+        //     Modal.confirm({
+        //         text:'信息',
+        //         content:item.isStop==0?'是否确定停用':'是否确定启用',
+        //         onOk:()=>{
+        //             axios.ajax({
+        //                 url: '/supervision/enterprise/changeStop',
+        //                 data: {
+        //                     params: {
+        //                         id: item.id
+        //                     }
+        //                 }
+        //             }).then((res)=>{
+        //                 if(res.status == 'success'){
+        //                     this.requestList();
+        //                 }
+        //             })
+        //         }
+        //     })
+        // }
+        // 原地图定位
+        // else if(type=="map"){
+        //     this.setState({
+        //         title:type=='地图定位',
+        //         isMapVisible:true,
+        //         AreaId:item.grid,
+        //         enterpriseId:item.id,
+        //         type
+        //     })
+        // }
     }
     updateAndTransform=()=>{
         axios.ajax({
@@ -312,260 +316,311 @@ import {baseUrl} from "../../../axios/commonSrc";
     }
     
 
-    render() {
-        let _this =this;
-        const columns = [
-            {
-                title: '企业名称',
-                dataIndex: 'enterpriseName'
-            }, {
-                title: '企业规模',
-                dataIndex: 'enterpriseScale'
-            },{
-                title: '社会信用代码',
-                dataIndex: 'idNumber'
-            }, {
-                title: '所在区域',
-                dataIndex: 'area',
-                render(area){
-                    let data=(_this.state.areaAllList||[]).find((item)=>item.id==area)||{};
-                    return data.name;
-                }
-            }, {
-                title: '所属网格',
-                dataIndex: 'grid',
-                render(grid){
-                    let data = (_this.state.areaAllList||[]).find((item)=>item.id==grid)||{};
-                    return data.name;
-                }
-            }, {
-                title: '责任监管机构',
-                dataIndex: 'regulators',
-                render(regulators){
-                    let data = (_this.state.deptAllList||[]).find((item)=>item.id==regulators)||{};
-                    return data.name;
-                }
-            }, {
-                title: '责任监管人员',
-                dataIndex: 'supervisor',
-            },{
-                title: '停用状态',
-                dataIndex: 'isStop',
-                render(isStop){
-                    if (isStop == 0) {
-                        return "启用"
-                    } else {
-                        return "停用"
-                    }
-                }
-            },
-            {
-                title: '操作',
-                dataIndex:'operation',
-                render:(text, record)=>{
-                    return <div className='textButtonBox'>
-                        <div className='textButton' onClick={() => { this.handleOperator('detail',record)}}>查看</div>
-                        {this.props.acl.indexOf('/modify')>-1? <div className='textButton' onClick={()=> {this.handleOperator('edit',record)}}>修改</div>:null}
-                        {this.props.acl.indexOf('/delete')>-1? <div className='textButton'  onClick={()=> {this.handleOperator('delete',record)}}>删除</div>:null}
-                        <div className='textButton' onClick={()=> {this.handleOperator('map',record)}}>地图定位</div>
-                        {this.props.acl.indexOf('/modify')>-1? <div className={record.isStop==0?'textButton':'stopTextButton'} onClick={() => { this.handleOperator('stop',record)}}>{record.isStop==0?'停用':'启用'}</div>:null}
-                         <div className='textButton'  onClick={() => { this.handleQr(record) }}>二维码</div>
-                        {/*<Col span={3}><div className='textButton'  onClick={() => { this.handleDaily = (record) }}>日志</div></Col>*/}
-                    </div>
-
+render() {
+    let _this =this;
+    const columns = [
+        {
+            title: '主体分类',
+            dataIndex: 'operationMode'
+        },
+        {
+            title: '市场主体名称',
+            dataIndex: 'enterpriseName',
+            render(text,record){return <div style={{float:"left"}}>{"  ".replace(/ /g, "\u00a0")}{text}</div>}
+        }, {
+            title: '统一信用代码',
+            dataIndex: 'idNumber',
+            render(text,record){return <div style={{float:"left"}}>{"  ".replace(/ /g, "\u00a0")}{text}</div>}
+        },{
+            title: '法定代表人',
+            dataIndex: 'legalPerson'
+        }, {
+            title: '所在区域',
+            dataIndex: 'area',
+            render(area){
+                let data=(_this.state.areaAllList||[]).find((item)=>item.id==area)||{};
+                return data.name;
+            }
+        },  {
+            title: '日常监管机构',
+            dataIndex: 'regulators',
+            render(regulators){
+                let data = (_this.state.deptAllList||[]).find((item)=>item.id==regulators)||{};
+                return data.name;
+            }
+        }, {
+            title: '日常监管责任人',
+            dataIndex: 'supervisor',
+        },{
+            title: '经营状态',
+            dataIndex: 'businessState',
+            render(businessState){
+                if (businessState === 0) {
+                    return "新增"
+                } if (businessState === 1) {
+                    return "正常"
+                } else if(businessState === 2){
+                    return "异常"
                 }
             }
-        ]
-        const formList = [
-            {
-                type: 'INPUT',
-                label: '企业名称',
-                field: 'enterpriseName'
-            }, {
-                type: 'INPUT',
-                label: '社会信用代码',
-                field: 'creditCode'
-            },{
-                type: 'INPUT',
-                label: '许可证号',
-                field: 'licenseNumber'
-            },{
-                type: 'AREA_TREE',
-                label: '所属区域',
-                field: 'areaList',
-                placeholder: '请选择所属区域',
-                width: 150,
-                list: Utils.getDataSource(this.props.areaList||[])
-            },{
-                type: 'SELECT',
-                label: '企业规模',
-                field: 'enterpriseScale',
-                placeholder: '请选择企业规模',
-                width: 150,
-                list: [{id: '超大', name: '超大'}, {id: '大型', name: '大型'}, {id: '中型', name: '中型'}, {id: '小型', name: '小型'}]
-            },{
-                type: 'SELECT',
-                label: '停用状态',
-                field: 'isStop',
-                placeholder: '请选择停用状态',
-                width: 150,
-                list: [{id: 0, name: '启用'}, {id: 1, name: '停用'}]
-            },{
-                type: 'SELECT',
-                label: '许可状态',
-                field: 'permissionStatus',
-                placeholder: '请选择许可状态',
-                width: 150,
-                list: [{id: '正常', name: '正常'},{id: '延续', name: '延续'},{id: '变更', name: '变更'},{id: '注销', name: '注销'},{id: '撤销', name: '撤销'}]
-            } ,{
-                type: 'TREE',
-                label: '责任监管机构',
-                field: 'dept',
-                placeholder: '请选择责任监管机构',
-                width: 150,
-                list: Utils.getDataSource(this.state.deptTree||[])
-            },{
-                type: 'INPUT',
-                label: '责任监管人员',
-                field: 'supervisor'
-            },{
-                type: 'SELECT',
-                label: '许可类型',
-                field: 'industryList',
-                placeholder: '请选择许可类型',
-                width: 150,
-                list:(_this.props.industryList||[]).map((item)=>{return{id:item.remark,name:item.name}})
-            },{
-                type: 'TIME',
-                label: '许可有效期限',
-                field: 'Time'
-            }
-        ]
-        const SearchForm =<div style={{display:'table-cell',verticalAlign:'middle',paddingLeft:30}}>
-                        <BaseForm formList={formList} filterSubmit={this.handleFilterSubmit}/></div>
-        const Information = <div className='topContent'>
-            <div span={3} className='topBox'>
-                <div style={{fontSize:16,color:"#000000",fontWeight:1000}}>
-                    <Icon type="profile" style={{ fontSize: '25px', color: '#FF9900' ,marginLeft:5,margin:10}} />
-                   总数
-                </div>
-                <div style={{margin:10,marginLeft:5}}>数量: {this.state.total||''} 家</div>
-            </div>
-            {(this.props.industryList||[]).map((item)=>
-            {return (this.state.statistics||{})[item.id]?<div className='topBox'>
-                <div style={{fontSize:16,color:"#000000",fontWeight:1000}}>
-                    <Icon type="profile" style={{ fontSize: '25px', color: '#FF9900' ,marginLeft:5,margin:10}} />
-                    {item.name}
-                </div>
-                <div style={{margin:10,marginLeft:5}}>数量: {(this.state.statistics||{})[item.id]} 家</div>
-            </div>:<div></div>}
-               )}
-            </div>
-        return (
-            <div ref="enterprise">
-                {this.props.userType==1?null:<div style={{height:120,display:'table',width:'100%'}}>
-                    {this.state.headStatus?Information:SearchForm}
-                </div>}
+        },
+        {
+            title: '操作',
+            dataIndex:'operation',
+            render:(text, record)=>{
+                return <div className='textButtonBox'>
+                    <div className='textButton' onClick={() => { this.handleOperator('detail',record)}}>查看</div>
 
-                <Card style={{marginTop:10,marginRight:30,marginLeft:30}}>
-                    {this.props.userType==1?null:<div className='button-box-left'>
-                        <Button type="primary" onClick={()=>this.setState({headStatus:this.state.headStatus?false:true})}>{this.state.headStatus?'查询':'统计'}</Button>
-                    </div>}
-                    <div className='button-box'>
-                        {this.props.acl.indexOf('/add')>-1?<Button type="primary" onClick={()=>this.handleOperator('create',null)}>添加</Button>:null}
-                        {this.props.acl.indexOf('/modify')>-1?<Button type="primary" onClick={()=>this.updateAndTransform()}>更新定位</Button>:null}
-                        {this.props.acl.indexOf('/import')>-1?  <Upload action={commonUrl+"/supervision/enterprise/importExcel"}
-                                showUploadList={false}
-                                onChange={(info)=>{
-                                    if (info.file.status === 'done') {
-                                        if(info.file.response.status=='success'){
-                                            alert(info.file.response.status);
-                                        }else {
-                                            alert(info.file.response.data.errMsg);
-                                        }
-                                        this.requestList();
-                                    } else if (info.file.status === 'error') {
-                                        if(info.file.response.status=='success'){
-                                            alert(info.file.response.status);
-                                        }else {
-                                            alert(info.file.response.data.errMsg);
-                                        }
+                    {this.props.acl.indexOf('/modify')>-1? <div className='textButton' onClick={()=> {this.handleOperator('edit',record)}}>修改</div>:null}
+
+                    {this.props.acl.indexOf('/delete')>-1? <div className='textButton'  onClick={()=> {this.handleOperator('delete',record)}}>删除</div>:null}
+
+                    {/* <div className='textButton' onClick={()=> {this.handleOperator('map',record)}}>地图定位</div> */}
+
+                    {/* {this.props.acl.indexOf('/modify')>-1? 
+                        <div className={record.isStop==0?'textButton':'stopTextButton'} onClick={() => {this.handleOperator('stop',record)}}>
+                            {record.isStop==0?'停用':'启用'}
+                        </div>
+                        :null} */}
+
+                    <div className='textButton'  onClick={() => { this.handleQr(record) }}>二维码</div>
+
+                    {/*<Col span={3}><div className='textButton'  onClick={() => { this.handleDaily = (record) }}>日志</div></Col>*/}
+                </div>
+
+            }
+        }
+    ]
+    const formList = [
+        {
+            type: 'INPUT',
+            label: '市场主体名称',
+            field: 'enterpriseName'
+        }, {
+            type: 'INPUT',
+            label: '统一信用代码',
+            field: 'idNumber'
+        },{
+            type: 'INPUT',
+            label: '许可证号',
+            field: 'licenseNumber'//此处可能有问题
+        },{
+            type: 'SELECT',
+            label: '许可类型',
+            field: 'industryList',
+            placeholder: '请选择许可类型',
+            width: 150,
+            list:(_this.props.industryList||[]).map((item)=>{return{id:item.remark,name:item.name}})
+        },
+        {
+            type: 'AREA_TREE',
+            label: '所属区域',
+            field: 'areaList',
+            placeholder: '请选择所属区域',
+            width: 150,
+            list: Utils.getDataSource(this.props.areaList||[])
+        },{
+            type: 'TREE',
+            label: '监管机构',
+            field: 'dept',
+            placeholder: '请选择责任监管机构',
+            width: 150,
+            list: Utils.getDataSource(this.state.deptTree||[])
+        },{
+            type: 'INPUT',
+            label: '监管责任人',
+            field: 'supervisor'
+        },{
+            type: 'SELECT',
+            label: '主体分类',
+            field: 'operationMode',
+            placeholder: '请选择主体分类',
+            width: 150,
+            list: [{id: '个体经营户', name: '个体经营户'}, {id: '国有企业', name: '国有企业'}, {id: '有限责任公司', name: '有限责任公司'},
+                     {id: '合伙经营', name: '合伙经营'},{id: '事业单位', name: '事业单位'},{id: '其他', name: '其他'}]
+        },{
+            type: 'SELECT',
+            label: '经营状态',
+            field: 'businessState',
+            placeholder: '请选择经营状态',
+            width: 150,
+            list: [{id: 0, name: '新增'}, {id: 1, name: '正常'},{id: 2, name: '异常'}]
+        },{
+            type: 'INPUT',
+            label: '住所/经营场所',
+            field: 'businessAddress'
+        },
+        {
+            type: 'INPUT',
+            label: '经营范围',
+            field: 'businessScale'
+        },{
+            type: 'INPUT',
+            label: '许可项目',//此处不对
+            field: 'supervisor'
+        },
+    ]
+
+    //查询表单
+    const SearchForm =<div style={{display:'table-cell',verticalAlign:'middle'}}>
+                    <BaseForm formList={formList} filterSubmit={this.handleFilterSubmit}/></div>
+
+    //统计信息
+    const Information = <div className='topContent'>
+        <div span={3} className='topBox'>
+            <div style={{fontSize:16,color:"#000000",fontWeight:1000}}>
+                <Icon type="profile" style={{ fontSize: '25px', color: '#FF9900' ,marginLeft:5,margin:10}} />
+                总数
+            </div>
+            <div style={{margin:10,marginLeft:5}}>数量: {this.state.total||''} 家</div>
+        </div>
+            {/* 以下为旧版的根据 行业类别 统计信息 */}
+        {/* {(this.props.industryList||[]).map((item)=>
+        {return (this.state.statistics||{})[item.id]?<div className='topBox'>
+            <div style={{fontSize:16,color:"#000000",fontWeight:1000}}>
+                <Icon type="profile" style={{ fontSize: '25px', color: '#FF9900' ,marginLeft:5,margin:10}} />
+                {item.name}
+            </div>
+            <div style={{margin:10,marginLeft:5}}>数量: {(this.state.statistics||{})[item.id]} 家</div>
+        </div>:<div></div>}
+            )} */}
+        </div>
+
+    return (
+        <div ref="enterprise">
+            <Card style={{marginTop:10,marginLeft:30,marginRight:30}}>
+                <Row>
+                    <Col span={2}>
+                        {this.props.userType==1?null:
+                        <div style={{borderRight:'1px soild #dddddd'}}>
+                            <Row> 
+                                <span style={{marginLeft:'15%',fontSize:'x-large',color:'RGB(82, 147, 243)'}}>操作台</span>
+                            </Row>
+                            <Row>
+                                <Button icon="search" size='large' style={{marginBottom:5}} onClick={()=>this.setState({headStatus:false})}>数据查询</Button>     
+                            </Row>
+                            <Row> 
+                                <Button icon="desktop" size='large' style={{marginTop:5}} onClick={()=>this.setState({headStatus:true})}>数据统计</Button>
+                            </Row>
+                        </div>}
+                    </Col>
+                    <Col span={1} style={{width:1}}>
+                    <div style={{width:1,height:160,background: 'rgba(0, 0, 0, 0.15)'}}></div>
+                    </Col>
+                    <Col span={21}>
+                        {this.props.userType==1?null:
+                        <div style={{display:'table'}}>
+                        {this.state.headStatus?Information:SearchForm}
+                        </div>}
+                    </Col>
+                </Row>
+            </Card>
+               
+        
+
+            <Card style={{marginTop:10,marginRight:30,marginLeft:30}}>
+                <div className='button-box-left'>
+                    <Button style={{color:'red'}}>批量删除</Button>
+                </div>
+                <div className='button-box'>
+                    {this.props.acl.indexOf('/add')>-1?<Button type="primary" onClick={()=>this.handleOperator('create',null)}>新增</Button>:null}
+                    {this.props.acl.indexOf('/modify')>-1?<Button style={{backgroundColor:'RGB(153, 204, 51)'}} onClick={()=>this.updateAndTransform()}>更新定位</Button>:null}
+                    {this.props.acl.indexOf('/import')>-1?<Upload action={commonUrl+"/supervision/enterprise/importExcel"}
+                            showUploadList={false}
+                            onChange={(info)=>{
+                                if (info.file.status === 'done') {
+                                    if(info.file.response.status=='success'){
+                                        alert(info.file.response.status);
+                                    }else {
+                                        alert(info.file.response.data.errMsg);
                                     }
-                                }}>
-                            <Button type="primary" >导入</Button>
-                        </Upload>:null}
-                        {/*<Button type="primary" onClick={this.handleDelete}>删除</Button>*/}
-                    </div>
-                    <div style={{marginTop:30}} className="enterpriseTableContent">
-                        {/*使用封装好的ETable组件实现角色列表的展示*/}
-                        <ETable
-                            updateSelectedItem={Utils.updateSelectedItem.bind(this)}
-                            selectedRowKeys={this.state.selectedRowKeys}
-                            selectedIds={this.state.selectedIds}
-                            selectedItem={this.state.selectedItem}
-                            dataSource={this.state.list}
-                            pagination={this.state.pagination}
-                            rowClassName={this.setRowClassName}
-                            columns={columns}
-                            row_selection = 'checkbox'
-                        />
-                    </div>
-                </Card>
-                <Modal
-                    title={this.state.title}
-                    visible={this.state.isVisible}
-                    destroyOnClose
-                    onOk={this.handleSubmit}
-                    okText="确定"
-                    cancelText="取消"
-                    maskClosable={false}
-                    getContainer={()=>this.refs.enterprise}
-                    footer={this.state.type=='detail'?null:React.ReactNode}
-                    width={1000}
-                    onCancel={()=>{
-                        this.props.clearEnterprise();
-                        this.setState({
-                            isVisible:false,
-                        })
-                    }}
-                >
-                    <Add deptTree={Utils.getDataSource(this.state.deptTree||[])} gridTree={Utils.getDataSource(this.state.gridTree||[])} type={this.state.type}/>
-                </Modal>
-                <Modal
-                    footer={null}
-                    title={this.state.title}
-                    visible={this.state.isMapVisible}
-                    destroyOnClose
-                    width={800}
-                    onCancel={()=>{
-                        this.setState({
-                            isMapVisible:false,
-                        })
-                    }}
-                >
-                    <MapPosition AreaId={this.state.AreaId} enterpriseId={this.state.enterpriseId}/>
-                </Modal>
-                <Modal
-                    footer={null}
-                    title={"二维码"}
-                    visible={this.state.isQrcodeVisible}
-                    destroyOnClose
-                    width={250}
-                    onCancel={()=>{
-                        this.setState({
-                            isQrcodeVisible:false,
-                        })
-                    }}
-                >
-                    <QRCode
-                        value={this.state.qrUrl}  //value参数为生成二维码的链接
-                        size={200} //二维码的宽高尺寸
-                        fgColor="#000000"  //二维码的颜色
+                                    this.requestList();
+                                } else if (info.file.status === 'error') {
+                                    if(info.file.response.status=='success'){
+                                        alert(info.file.response.status);
+                                    }else {
+                                        alert(info.file.response.data.errMsg);
+                                    }
+                                }
+                            }}>
+                        <Button style={{backgroundColor:'RGB(255, 153, 0)'}}>数据导入</Button>
+                    </Upload>:null}
+                    <Button style={{backgroundColor:'RGB(204, 153, 0)'}}>数据导出</Button>
+                    <Button style={{backgroundColor:'RGB(102, 204, 255)'}}>模板下载</Button>
+                </div>
+
+                <div style={{marginTop:30}} className="enterpriseTableContent">
+                    {/*使用封装好的ETable组件实现角色列表的展示*/}
+                    <ETable
+                        updateSelectedItem={Utils.updateSelectedItem.bind(this)}
+                        selectedRowKeys={this.state.selectedRowKeys}
+                        selectedIds={this.state.selectedIds}
+                        selectedItem={this.state.selectedItem}
+                        dataSource={this.state.list}
+                        pagination={this.state.pagination}
+                        rowClassName={this.setRowClassName}
+                        columns={columns}
+                        row_selection = 'checkbox'
                     />
-                </Modal>
-            </div>
-        );
-    }
+                </div>
+            </Card>
+            <Modal
+                title={this.state.title}
+                visible={this.state.isVisible}
+                destroyOnClose
+                onOk={this.handleSubmit}
+                okText="确定"
+                cancelText="取消"
+                maskClosable={false}
+                getContainer={()=>this.refs.enterprise}
+                footer={this.state.type=='detail'?null:React.ReactNode}
+                width={1000}
+                onCancel={()=>{
+                    this.props.clearEnterprise();
+                    this.setState({
+                        isVisible:false,
+                    })
+                }}
+            >
+                <Add deptTree={Utils.getDataSource(this.state.deptTree||[])} gridTree={Utils.getDataSource(this.state.gridTree||[])} type={this.state.type}/>
+            </Modal>
+
+            {/* 原来的企业首页地图定位 */}
+            {/* <Modal
+                footer={null}
+                title={this.state.title}
+                visible={this.state.isMapVisible}
+                destroyOnClose
+                width={800}
+                onCancel={()=>{
+                    this.setState({
+                        isMapVisible:false,
+                    })
+                }}
+            >
+                <MapPosition AreaId={this.state.AreaId} enterpriseId={this.state.enterpriseId}/>
+            </Modal> */}
+            <Modal
+                footer={null}
+                title={"二维码"}
+                visible={this.state.isQrcodeVisible}
+                destroyOnClose
+                width={250}
+                onCancel={()=>{
+                    this.setState({
+                        isQrcodeVisible:false,
+                    })
+                }}
+            >
+                <QRCode
+                    value={this.state.qrUrl}  //value参数为生成二维码的链接
+                    size={200} //二维码的宽高尺寸
+                    fgColor="#000000"  //二维码的颜色
+                />
+            </Modal>
+        </div>
+    );
 }
-export default enterpriseInformation;
+}
+export default EnterpriseInformation;
 
