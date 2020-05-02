@@ -36,6 +36,7 @@ const Option=Select.Option;
     render(){
 
         const videoInfo = this.props.videoInfo || {};
+        console.log(videoInfo)
         const list = this.props.videoInfo.list||[];
         
         return (

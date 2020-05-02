@@ -25,7 +25,7 @@ const ButtonGroup = Button.Group;
     onCheckChange=(value)=>{
         this.changeInput(value.join(','),'classification')
     }
-    handleFile = (info) => {
+    handleFile = (info) => {console.log(info)
         const fileList = info.fileList;
         if (info.file.status === 'done') {
             message.success(`${info.file.name} 上传成功`);
@@ -153,7 +153,7 @@ const ButtonGroup = Button.Group;
                         <Upload
                             disabled={checkStatus}
                             action={commonUrl+'/upload/uploadPicture'}
-                            onChange={this.handleFile}
+                            onChange={(info)=>this.handleFile(info)}
                             showUploadList={false}
                             fileList={formData.propagandaEnclosure}>
                             <Button>

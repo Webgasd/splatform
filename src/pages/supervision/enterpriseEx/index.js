@@ -12,6 +12,7 @@ import {connect} from "react-redux";
 import {changeEnterprise, clearEnterprise} from '../../../redux/action'
 import {commonUrl} from "../../../axios/commonSrc";
 import {baseUrl} from "../../../axios/commonSrc";
+import Abnormal from './childrenForm/Abnormal'
 
 @connect(
     state=>({
@@ -27,6 +28,7 @@ import {baseUrl} from "../../../axios/commonSrc";
 )
  class EnterpriseInformation extends Component{
     state = {
+        abnormalData:{},
         selectedRowKeys: [], // Check here to configure the default column
         headStatus:false,
     };
@@ -160,39 +162,39 @@ import {baseUrl} from "../../../axios/commonSrc";
             }
         })
     }
-    handleDelete = ()=>{
-        let item = this.state.selectedItem;
-        let _this = this;
-            if(!item){
-                Modal.info({
-                    title: '信息',
-                    content: '请选择一个用户'
-                })
-                return;
-            }
-            Modal.confirm({
-                content:'确定要删除此用户吗？',
-                onOk:()=>{
-                    axios.ajax({
-                        url:'/post.json',
-                        data:{
-                            params:{
-                                id:item.id
-                            }
-                        }
-                    }).then((res)=>{
-                        if(res.status == "success"){
-                            _this.setState({
-                                isVisible:false
-                            })
-                            _this.requestList();
-                        }
-                    })
-                }
+    // handleDelete = ()=>{
+    //     let item = this.state.selectedItem;
+    //     let _this = this;
+    //         if(!item){
+    //             Modal.info({
+    //                 title: '信息',
+    //                 content: '请选择一个用户'
+    //             })
+    //             return;
+    //         }
+    //         Modal.confirm({
+    //             content:'确定要删除此用户吗？',
+    //             onOk:()=>{
+    //                 axios.ajax({
+    //                     url:'/post.json',
+    //                     data:{
+    //                         params:{
+    //                             id:item.id
+    //                         }
+    //                     }
+    //                 }).then((res)=>{
+    //                     if(res.status == "success"){
+    //                         _this.setState({
+    //                             isVisible:false
+    //                         })
+    //                         _this.requestList();
+    //                     }
+    //                 })
+    //             }
 
-            })
+    //         })
            
-    }
+    // }
     setRowClassName = (record) => {
    if(moment(record.endTime).isBetween(moment(),moment().add(1,'month')) ){
         return 'warningRowStyl';
@@ -314,6 +316,50 @@ import {baseUrl} from "../../../axios/commonSrc";
             else if(res.data.update==false)message.success("已经是最新状态")
         }})
     }
+    handleAbnormal=(item)=>{
+            axios.ajax({
+                url:'/supervision/enterprise/getById',
+                data:{
+                    params:{
+                       id:item.id
+                    }
+                }
+            }).then((res)=>{
+                if(res.status =='success'){
+                    this.setState({
+                        isAbnormalVisible:true,
+                        enterpriseData:res.data
+                    })
+                }
+            })
+    }
+    handleSubmitAbnormal=()=>{
+
+        if(!this.state.abnormalData.abnormalType)
+        {
+          Modal.error({title:"异常情形为必选"})
+            return
+        }
+        axios.ajax({
+            url:'abnormal/insertContent',
+            data:{
+                params:{
+                   enterpriseId:this.state.enterpriseData.id,
+                   abnormal:this.state.abnormalData.abnormalType,
+                   abnormalContent:this.state.abnormalData.abnormalContent
+                }
+            }
+        }).then((res)=>{
+            if(res.status =='success'){
+                this.setState({
+                    isAbnormalVisible:false,
+                    enterpriseData:'',
+                    abnormalData:''
+                })
+                this.requestList();
+            }
+        })
+    }
     
 
 render() {
@@ -375,6 +421,10 @@ render() {
 
                     {this.props.acl.indexOf('/delete')>-1? <div className='textButton'  onClick={()=> {this.handleOperator('delete',record)}}>删除</div>:null}
 
+                    <div className='textButton'  onClick={() => { this.handleAbnormal(record) }}>异常报送</div>
+
+                    <div className='textButton'  onClick={() => { this.handleQr(record) }}>二维码</div>
+
                     {/* <div className='textButton' onClick={()=> {this.handleOperator('map',record)}}>地图定位</div> */}
 
                     {/* {this.props.acl.indexOf('/modify')>-1? 
@@ -383,7 +433,7 @@ render() {
                         </div>
                         :null} */}
 
-                    <div className='textButton'  onClick={() => { this.handleQr(record) }}>二维码</div>
+                    
 
                     {/*<Col span={3}><div className='textButton'  onClick={() => { this.handleDaily = (record) }}>日志</div></Col>*/}
                 </div>
@@ -616,6 +666,28 @@ render() {
                     value={this.state.qrUrl}  //value参数为生成二维码的链接
                     size={200} //二维码的宽高尺寸
                     fgColor="#000000"  //二维码的颜色
+                />
+            </Modal>
+            <Modal
+                title={"企业异常报送"}
+                visible={this.state.isAbnormalVisible}
+                destroyOnClose
+                onOk={this.handleSubmitAbnormal}
+                okText="确定"
+                cancelText="取消"
+                maskClosable={false}
+                width={500}
+                onCancel={()=>{
+                    this.setState({
+                        isAbnormalVisible:false,
+                        enterpriseData:'',
+                        abnormalData:''
+                    })
+                }}
+            >
+                <Abnormal enterpriseData={this.state.enterpriseData||{}}
+                         abnormalData = {this.state.abnormalData||{}}
+                        dispatchAbnormalData={(data)=>{this.setState({abnormalData:data})}}
                 />
             </Modal>
         </div>

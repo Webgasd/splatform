@@ -4,6 +4,14 @@ import connect from "react-redux/es/connect/connect";
 import {changeEnterprise} from "../../../../redux/action";
 import FoodProduction from './FoodProduction';
 import FoodBusiness from './FoodBusiness';
+import DrugBusiness from './DrugBusiness';
+import DrugProduction from './DrugProduction';
+import MedicalDeviceBusiness from './MedicalDeviceBusiness';
+import MedicalDeviceProduction from './MedicalDeviceProduction';
+import CosmeticsProduction from './CosmeticsProduction';
+import SmallRestaurant from './SmallRestaurant';
+import SmallWorkshop from './SmallWorkshop';
+import IndustrialProduct from './IndustrialProduct'
 import SelectBox from './SelectBox';
 
 
@@ -28,23 +36,41 @@ class LicenseInfo extends Component{
     }
     
 
-    changeMsgIndex(index){
+    changePermission=(index,name)=>{
+
         this.setState({
-            msgIndex:index
+            msgIndex:name,
+            index
         })
     }
 
     getContent =()=>{
         
-        if(!this.props.input.msgIndex){
+        if(!this.state.msgIndex){
             return;
         }
         // eslint-disable-next-line default-case
-        switch (this.props.input.msgIndex) {
+        switch (this.state.msgIndex) {
             case '食品经营':
-                return <FoodBusiness type={this.props.type}/>
+                return <FoodBusiness type={this.props.type} index={this.state.index}/>
             case '食品生产':
-                return <FoodProduction type={this.props.type}/>
+                return <FoodProduction type={this.props.type} index={this.state.index}/>
+            case '药品经营':
+                return <DrugBusiness type={this.props.type} index={this.state.index}/>
+            case '药品生产':
+                return <DrugProduction type={this.props.type} index={this.state.index}/>
+            case '医疗器械经营':
+                return <MedicalDeviceBusiness type={this.props.type} index={this.state.index}/>
+            case '医疗器械生产':
+                return <MedicalDeviceProduction type={this.props.type} index={this.state.index}/>
+            case '化妆品生产':
+                return <CosmeticsProduction type={this.props.type} index={this.state.index}/>
+            case '小餐饮服务':
+                return <SmallRestaurant type={this.props.type} index={this.state.index}/>
+            case '小作坊':
+                return <SmallWorkshop type={this.props.type} index={this.state.index}/>
+            case '工业产品生产':
+                return <IndustrialProduct type={this.props.type} index={this.state.index}/>
         }
     }
     handleSelectBox=()=>{
@@ -58,33 +84,51 @@ class LicenseInfo extends Component{
         })
 
     }
-   
-
-   
+    
     render() {
         const formData=this.props.input||{};
         const checkStatus = this.props.type ==='detail'?true:false;
+
         return (
             <div>
                 <Row>
                     <Col span={4}>
                         <div  className='commonEnterpriseBox' style={{marginTop:20,height:560}}>
-                        <div className='permission-title-text'>许可证类型</div>
-                        {(formData.permissionList?formData.permissionList:[]).map((item,index)=>{
+                            <div className='permission-title-text'>许可证类型</div>
+                        
+                            {(formData.foodBusinessList?formData.foodBusinessList:[]).map((item,index)=>(  
+                            <Button style={{width:'100%',marginTop:6}} onClick={()=>{this.changePermission(index,"食品经营")}}>{"食品经营"+(index>0?index+1:'')}</Button>))}
 
-                            // eslint-disable-next-line default-case
-                            switch (item) {
-                                case '食品经营':
-                                    return <Button>食品经营</Button>
-                                case '食品生产':
-                                    return <Button>食品生产</Button>
-                            }
+                            {(formData.smallCaterList?formData.smallCaterList:[]).map((item,index)=>(  
+                            <Button style={{width:'100%',marginTop:6}} onClick={()=>{this.changePermission(index,"小餐饮服务")}}>{"小餐饮服务"+(index>0?index+1:'')}</Button>))}
 
-                        })}
-                        <div style={{position:"absolute",bottom:20,left: "50%", transform: "translate(-50%, -50%)"}}>
-   
-                        <Button onClick={()=>{this.handleSelectBox()}} style={{backgroundColor:"RGB(255, 102, 0)",width:100}}>类型管理</Button> 
-                        </div>
+                            {(formData.smallWorkshopList?formData.smallWorkshopList:[]).map((item,index)=>(  
+                            <Button style={{width:'100%',marginTop:6}} onClick={()=>{this.changePermission(index,"小作坊")}}>{"小作坊"+(index>0?index+1:'')}</Button>))}
+
+                            {(formData.foodProduceList?formData.foodProduceList:[]).map((item,index)=>(  
+                            <Button style={{width:'100%',marginTop:6}} onClick={()=>{this.changePermission(index,"食品生产")}}>{"食品生产"+(index>0?index+1:'')}</Button>))}
+
+                            {(formData.drugsBusinessList?formData.drugsBusinessList:[]).map((item,index)=>(  
+                            <Button style={{width:'100%',marginTop:6}} onClick={()=>{this.changePermission(index,"药品经营")}}>{"药品经营"+(index>0?index+1:'')}</Button>))}
+                            
+                            {(formData.drugsProduceList?formData.drugsProduceList:[]).map((item,index)=>(  
+                            <Button style={{width:'100%',marginTop:6}} onClick={()=>{this.changePermission(index,"药品生产")}}>{"药品生产"+(index>0?index+1:'')}</Button>))}
+                            
+                            {(formData.cosmeticsList?formData.cosmeticsList:[]).map((item,index)=>(  
+                            <Button style={{width:'100%',marginTop:6}} onClick={()=>{this.changePermission(index,"化妆品生产")}}>{"化妆品生产"+(index>0?index+1:'')}</Button>))}
+                            
+                            {(formData.medicalProduceList?formData.medicalProduceList:[]).map((item,index)=>(  
+                            <Button style={{width:'100%',marginTop:6}} onClick={()=>{this.changePermission(index,"医疗器械生产")}}>{"医疗器械生产"+(index>0?index+1:'')}</Button>))}
+                            
+                            {(formData.medicalBusinessList?formData.medicalBusinessList:[]).map((item,index)=>(  
+                            <Button style={{width:'100%',marginTop:6}} onClick={()=>{this.changePermission(index,"医疗器械经营")}}>{"医疗器械经营"+(index>0?index+1:'')}</Button>))}
+                            
+                            {(formData.industrialProductsList?formData.industrialProductsList:[]).map((item,index)=>(  
+                            <Button style={{width:'100%',marginTop:6}} onClick={()=>{this.changePermission(index,"工业产品生产")}}>{"工业产品生产"+(index>0?index+1:'')}</Button>))}
+
+                            <div style={{position:"absolute",bottom:20,left: "50%", transform: "translate(-50%, -50%)"}}>
+                            <Button onClick={()=>{this.handleSelectBox()}} style={{backgroundColor:"RGB(255, 102, 0)",width:100}} disabled={checkStatus}>类型管理</Button> 
+                            </div>
                             
                     
                         </div>
@@ -92,7 +136,7 @@ class LicenseInfo extends Component{
                     <Col span={20}>  
                         <div className='commonEnterpriseBox' style={{marginTop:20}}>
                         <div className='permission-title-text'>许可信息</div>
-                        {this.props.input.msgIndex?this.getContent():<Empty description={<span>点击类型管理添加许可信息</span>}/>}
+                        {this.state.msgIndex?this.getContent():<Empty description={<span>点击类型管理添加许可信息</span>}/>}
                         
                     
                         </div>
@@ -113,7 +157,7 @@ class LicenseInfo extends Component{
                         })
                     }}
             >
-                    <SelectBox/>
+                    <SelectBox changePermission={this.changePermission}/>
                 </Modal>
         </div>
             

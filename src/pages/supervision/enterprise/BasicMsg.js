@@ -116,13 +116,13 @@ class BasicMsg extends Component{
         this.changeInput(value.join(','),option)
     }
 
-    getContent =()=>{console.log("getContent执行")
+    getContent =()=>{
         let data;
-        if(!this.state.msgIndex){console.log("执行 if(!this.state.msgIndex)")
+        if(!this.state.msgIndex){
             let permissionType=this.props.input.permissionType||'';
             data = permissionType.split(',')[0];
 
-            if(data){console.log("data"+data)
+            if(data){
                 this.setState({
                     msgIndex: data
                 })
