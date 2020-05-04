@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import {Select, Input,Icon, Radio, Modal,TreeSelect,DatePicker} from 'antd';
+import {Select, Input,Icon, Radio, Modal,TreeSelect,DatePicker, Checkbox} from 'antd';
 import connect from "react-redux/es/connect/connect";
 import {changeEnterprise} from "../../../redux/action";
 import Utils from './../../../utils';
@@ -143,15 +143,15 @@ class BasicMsg extends Component{
                         <td colSpan={3}><Input value={formData.registeredAddress} onChange={(e)=>this.changeInput(e.target.value,"registeredAddress")} placeholder={"请输入企业住所或经营场所地址"} disabled={checkStatus}/></td>
                     </tr>
                     <tr>
-                        <td>法人/负责人<span style={{color:'#FF3300'}}>*</span></td>
-                        <td><Input value={formData.legalPerson} onChange={(e)=>this.changeInput(e.target.value,"legalPerson")} placeholder={"请输入法人/负责人"} disabled={checkStatus}/></td>
+                        <td>法定代表人<span style={{color:'#FF3300'}}>*</span></td>
+                        <td><Input value={formData.legalPerson} onChange={(e)=>this.changeInput(e.target.value,"legalPerson")} placeholder={"请输入法人名称"} disabled={checkStatus}/></td>
                         
                         <td>证件号码</td>
                         <td><Input value={formData.ipIdNumber} onChange={(e)=>this.changeInput(e.target.value,"ipIdNumber")} placeholder={"请输入负责人证件号码"} disabled={checkStatus}/></td>
                     </tr>
                     <tr>
                         <td>负责人/联系人</td>
-                        <td><Input value={formData.cantacts} onChange={(e)=>this.changeInput(e.target.value,"cantacts")} placeholder={"请输入联系人"} disabled={checkStatus}/></td>
+                        <td><Input value={formData.cantacts} onChange={(e)=>this.changeInput(e.target.value,"cantacts")} placeholder={"请输入负责人/联系人姓名"} disabled={checkStatus}/></td>
                         <td>联系电话</td>
                         <td ><Input value={formData.cantactWay}  onChange={(e)=>this.changeInput(e.target.value,"cantactWay")} placeholder={"请输入联系方式"} disabled={checkStatus}/></td>
                     </tr>
@@ -161,12 +161,12 @@ class BasicMsg extends Component{
                         <td>营业期限至</td>
                         <td><Input value={formData.businessTermEnd}  onChange={(e)=>this.changeInput(e.target.value,"businessTermEnd")} placeholder={"请输入截至日期,不填则默认:长期"} style={{width:'74%'}} disabled={checkStatus}/>
                         {/* 下面的radio还有问题 */}
-                            <Radio checked={formData.businessTermEnd?false:true} style={{marginLeft:2}} disabled={checkStatus}>默认:长期</Radio>
+                            <Checkbox checked={formData.businessTermEnd?false:true} style={{marginLeft:2}} disabled={checkStatus}>默认:长期</Checkbox>
                         </td>
                     </tr>
                     <tr>
                         <td>发证日期</td> 
-                        <td><DatePicker style={{width:'100%'}} format="YYYY-MM-DD" allowClear={false} value={formData.givenDate=moment(formData.givenDate)} onChange={(value)=>this.changeInput(value,"givenDate")} placeholder="请选择发证日期" disabled={checkStatus}/></td>
+                        <td><DatePicker style={{width:'100%'}} value={formData.givenDate==null?null:moment(formData.givenDate)} onChange={(value)=>this.changeInput(value,"givenDate")} placeholder="请选择发证日期"format="YYYY-MM-DD" disabled={checkStatus}/></td>
                         <td>登记机关</td>
                         <td ><Input value={formData.givenGov}  onChange={(e)=>this.changeInput(e.target.value,"givenGov")} placeholder={"请输入登记机关"} disabled={checkStatus}/></td>
                     </tr>
@@ -196,15 +196,15 @@ class BasicMsg extends Component{
                     </tr>
                     <tr>
                         <td>日常监管机构</td>
-                        <td><TreeSelect value={formData.regulators} onChange={(value)=>this.changeInput(value,"regulators")} placeholder={"请选择机构"} disabled={checkStatus}>
+                        <td><TreeSelect value={formData.regulators} onChange={(value)=>this.changeInput(value,"regulators")} placeholder={"请选择日常监管责任机构"} disabled={checkStatus}>
                             {Utils.renderTreeNodes(this.state.deptTree||[])}
                         </TreeSelect></td>
                         <td>日常监管负责人</td>
-                        <td><Input value={formData.supervisor}  disabled={checkStatus?true:(formData.regulators?false:true)} onClick={()=>this.setState({isVisible:true,personType:'supervisor'})} placeholder={"请选择监管人员"} suffix={<Icon type="search" />}/></td>
+                        <td><Input value={formData.supervisor}  disabled={checkStatus?true:(formData.regulators?false:true)} onClick={()=>this.setState({isVisible:true,personType:'supervisor'})} placeholder={"请选择日常监管负责人"} suffix={<Icon type="search" />}/></td>
                     </tr>
                     <tr>
                         <td>所属网格</td>
-                        <td><TreeSelect value={formData.grid} onFocus={(treeNode)=>this.loadGridData(treeNode)} disabled={checkStatus?true:(formData.area?false:true)} onChange={(value)=>this.changeInput(value,"grid")} placeholder={"请选择网格"}>
+                        <td><TreeSelect value={formData.grid} onFocus={(treeNode)=>this.loadGridData(treeNode)} disabled={checkStatus?true:(formData.area?false:true)} onChange={(value)=>this.changeInput(value,"grid")} placeholder={"请选择所属网格"}>
                             {this.renderGridNodes(this.state.gridTree||[])}
                             </TreeSelect></td>
                         <td>网格人员</td>

@@ -127,25 +127,25 @@ class FilterForm extends Component{
                     formItemList.push(DATE)
                 }
                 else if(item.type == 'INPUT'){
-                    const INPUT = <Col span={6}><FormItem label={label} key={field} {...formItemLayout}>
+                    const INPUT = <Col span={6}><FormItem style={{marginBottom:0}} label={label} key={field} {...formItemLayout}>
                         {
                             getFieldDecorator(field,{
                                 initialValue: initialValue
                             })(
-                                <Input style={{width:150}} type="text" placeholder={placeholder} />
+                                <Input type="text" placeholder={placeholder} />
                             )
                         }
                     </FormItem></Col>;
                     formItemList.push(INPUT)
                 } else if (item.type == 'SELECT') {
                    
-                    const SELECT = <Col span={6}><FormItem label={label} key={field} {...formItemLayout}>
+                    const SELECT = <Col span={6}><FormItem style={{marginBottom:0}} label={label} key={field} {...formItemLayout}>
                         {
                             getFieldDecorator(field, {
                                 initialValue: initialValue
                             })(
                                 <Select
-                                    style={{ width: width }}
+                                    // style={{ width: width }}
                                     placeholder={placeholder}
                                 >
                                     <Option value={null}>{placeholder}</Option>
@@ -170,13 +170,13 @@ class FilterForm extends Component{
                 </FormItem>;
                     formItemList.push(CHECKBOX)
                   }else if(item.type == 'TREE'){
-                    const TREE = <Col span={6}><FormItem label={label} key={field} {...formItemLayout}>
+                    const TREE = <Col span={6}><FormItem style={{marginBottom:0}} label={label} key={field} {...formItemLayout}>
                         {
                             getFieldDecorator(field,{
                                 initialValue: initialValue
                             })(
                                 <TreeSelect
-                                    style={{ width: width }}
+                                    // style={{ width: width }}
                                 >
                                         {this.renderTreeNodes(item.list)}
                                 </TreeSelect>
@@ -185,13 +185,13 @@ class FilterForm extends Component{
                     </FormItem></Col>;
                     formItemList.push(TREE)
                 }else if(item.type == 'AREA_TREE'){
-                    const AREA_TREE = <Col span={6}><FormItem label={label} key={field} {...formItemLayout}>
+                    const AREA_TREE = <Col span={6}><FormItem style={{marginBottom:0}} label={label} key={field} {...formItemLayout}>
                         {
                             getFieldDecorator(field,{
                                 initialValue: initialValue
                             })(
                                 <TreeSelect
-                                    style={{ width: width }}
+                                    // style={{ width: width }}
                                 >
                                     {this.renderAreaTreeNodes(item.list)}
                                 </TreeSelect>
@@ -206,13 +206,14 @@ class FilterForm extends Component{
     }
     render(){
         return (
-            <Form layout="inline">
+            <Form>
                 <Row>
                     { this.initFormList() }
                 </Row>
                 <FormItem style={{float:"right"}}>
-                    <Button type="primary" style={{ margin: '0 20px' }} onClick={this.handleFilterSubmit}>查询</Button>
                     <Button onClick={this.reset}>重置</Button>
+                    <Button type="primary" style={{ margin: '0 20px' }} onClick={this.handleFilterSubmit}>搜索</Button>
+                   
                 </FormItem>
             </Form>
         );

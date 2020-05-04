@@ -97,37 +97,37 @@ class LicenseInfo extends Component{
                             <div className='permission-title-text'>许可证类型</div>
                         
                             {(formData.foodBusinessList?formData.foodBusinessList:[]).map((item,index)=>(  
-                            <Button style={{width:'100%',marginTop:6}} onClick={()=>{this.changePermission(index,"食品经营")}}>{"食品经营"+(index>0?index+1:'')}</Button>))}
+                            <Button style={{width:'100%',marginTop:6,backgroundColor:'RGB(246, 246, 246)',color:'RGB(0,51,153)'}} onClick={()=>{this.changePermission(index,"食品经营")}}>{"食品经营"+(index>0?index+1:'')}</Button>))}
 
                             {(formData.smallCaterList?formData.smallCaterList:[]).map((item,index)=>(  
-                            <Button style={{width:'100%',marginTop:6}} onClick={()=>{this.changePermission(index,"小餐饮服务")}}>{"小餐饮服务"+(index>0?index+1:'')}</Button>))}
+                            <Button style={{width:'100%',marginTop:6,backgroundColor:'RGB(246, 246, 246)',color:'RGB(0,51,153)'}} onClick={()=>{this.changePermission(index,"小餐饮服务")}}>{"小餐饮服务"+(index>0?index+1:'')}</Button>))}
 
                             {(formData.smallWorkshopList?formData.smallWorkshopList:[]).map((item,index)=>(  
-                            <Button style={{width:'100%',marginTop:6}} onClick={()=>{this.changePermission(index,"小作坊")}}>{"小作坊"+(index>0?index+1:'')}</Button>))}
+                            <Button style={{width:'100%',marginTop:6,backgroundColor:'RGB(246, 246, 246)',color:'RGB(0,51,153)'}} onClick={()=>{this.changePermission(index,"小作坊")}}>{"小作坊"+(index>0?index+1:'')}</Button>))}
 
                             {(formData.foodProduceList?formData.foodProduceList:[]).map((item,index)=>(  
-                            <Button style={{width:'100%',marginTop:6}} onClick={()=>{this.changePermission(index,"食品生产")}}>{"食品生产"+(index>0?index+1:'')}</Button>))}
+                            <Button style={{width:'100%',marginTop:6,backgroundColor:'RGB(246, 246, 246)',color:'RGB(0,51,153)'}} onClick={()=>{this.changePermission(index,"食品生产")}}>{"食品生产"+(index>0?index+1:'')}</Button>))}
 
                             {(formData.drugsBusinessList?formData.drugsBusinessList:[]).map((item,index)=>(  
-                            <Button style={{width:'100%',marginTop:6}} onClick={()=>{this.changePermission(index,"药品经营")}}>{"药品经营"+(index>0?index+1:'')}</Button>))}
+                            <Button style={{width:'100%',marginTop:6,backgroundColor:'RGB(246, 246, 246)',color:'RGB(0,51,153)'}} onClick={()=>{this.changePermission(index,"药品经营")}}>{"药品经营"+(index>0?index+1:'')}</Button>))}
                             
                             {(formData.drugsProduceList?formData.drugsProduceList:[]).map((item,index)=>(  
-                            <Button style={{width:'100%',marginTop:6}} onClick={()=>{this.changePermission(index,"药品生产")}}>{"药品生产"+(index>0?index+1:'')}</Button>))}
+                            <Button style={{width:'100%',marginTop:6,backgroundColor:'RGB(246, 246, 246)',color:'RGB(0,51,153)'}} onClick={()=>{this.changePermission(index,"药品生产")}}>{"药品生产"+(index>0?index+1:'')}</Button>))}
                             
                             {(formData.cosmeticsList?formData.cosmeticsList:[]).map((item,index)=>(  
-                            <Button style={{width:'100%',marginTop:6}} onClick={()=>{this.changePermission(index,"化妆品生产")}}>{"化妆品生产"+(index>0?index+1:'')}</Button>))}
+                            <Button style={{width:'100%',marginTop:6,backgroundColor:'RGB(246, 246, 246)',color:'RGB(0,51,153)'}} onClick={()=>{this.changePermission(index,"化妆品生产")}}>{"化妆品生产"+(index>0?index+1:'')}</Button>))}
                             
                             {(formData.medicalProduceList?formData.medicalProduceList:[]).map((item,index)=>(  
-                            <Button style={{width:'100%',marginTop:6}} onClick={()=>{this.changePermission(index,"医疗器械生产")}}>{"医疗器械生产"+(index>0?index+1:'')}</Button>))}
+                            <Button style={{width:'100%',marginTop:6,backgroundColor:'RGB(246, 246, 246)',color:'RGB(0,51,153)'}} onClick={()=>{this.changePermission(index,"医疗器械生产")}}>{"医疗器械生产"+(index>0?index+1:'')}</Button>))}
                             
                             {(formData.medicalBusinessList?formData.medicalBusinessList:[]).map((item,index)=>(  
-                            <Button style={{width:'100%',marginTop:6}} onClick={()=>{this.changePermission(index,"医疗器械经营")}}>{"医疗器械经营"+(index>0?index+1:'')}</Button>))}
+                            <Button style={{width:'100%',marginTop:6,backgroundColor:'RGB(246, 246, 246)',color:'RGB(0,51,153)'}} onClick={()=>{this.changePermission(index,"医疗器械经营")}}>{"医疗器械经营"+(index>0?index+1:'')}</Button>))}
                             
                             {(formData.industrialProductsList?formData.industrialProductsList:[]).map((item,index)=>(  
-                            <Button style={{width:'100%',marginTop:6}} onClick={()=>{this.changePermission(index,"工业产品生产")}}>{"工业产品生产"+(index>0?index+1:'')}</Button>))}
+                            <Button style={{width:'100%',marginTop:6,backgroundColor:'RGB(246, 246, 246)',color:'RGB(0,51,153)'}} onClick={()=>{this.changePermission(index,"工业产品生产")}}>{"工业产品生产"+(index>0?index+1:'')}</Button>))}
 
                             <div style={{position:"absolute",bottom:20,left: "50%", transform: "translate(-50%, -50%)"}}>
-                            <Button onClick={()=>{this.handleSelectBox()}} style={{backgroundColor:"RGB(255, 102, 0)",width:100}} disabled={checkStatus}>类型管理</Button> 
+                            <Button onClick={()=>{this.handleSelectBox()}} style={{backgroundColor:"RGB(255, 102, 0)",width:100,color:'white'}} disabled={checkStatus}>类型管理</Button> 
                             </div>
                             
                     
@@ -135,10 +135,8 @@ class LicenseInfo extends Component{
                     </Col>
                     <Col span={20}>  
                         <div className='commonEnterpriseBox' style={{marginTop:20}}>
-                        <div className='permission-title-text'>许可信息</div>
-                        {this.state.msgIndex?this.getContent():<Empty description={<span>点击类型管理添加许可信息</span>}/>}
-                        
-                    
+                            <div className='permission-title-text'>许可信息</div>
+                            {this.state.msgIndex?this.getContent():<Empty style={{height:528}} description={<span>点击类型管理添加许可信息</span>}/>}
                         </div>
                     </Col>
                 </Row>

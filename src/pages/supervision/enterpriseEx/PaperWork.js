@@ -155,7 +155,7 @@ function getBase64(img, callback) {
                                     }
                                 </Upload>
                             </td>
-                            <td ><TextArea rows={4} value={formData.introduction} onChange={(e)=>this.changeInput(e.target.value,"introduction")} placeholder={"请输入简介"} disabled={checkStatus}/></td>
+                            <td ><TextArea rows={4} value={formData.introduction} onChange={(e)=>this.changeInput(e.target.value,"introduction")} placeholder={"请输入企业基本介绍"} disabled={checkStatus}/></td>
                         </tr>
                         </tbody>
                     </table>   

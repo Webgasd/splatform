@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import { Button} from 'antd';
+import { Button,Tooltip} from 'antd';
 import connect from "react-redux/es/connect/connect";
 import {changeEnterprise} from "../../../../redux/action";
 
@@ -186,34 +186,36 @@ class SelectBox extends Component{
                     <div className='permission-title-text'>已选许可证</div>
     
                         {(formData.foodBusinessList?formData.foodBusinessList:[]).map((item,index)=>(  
-                        <Button style={{margin:10}} onClick={()=>{this.handeDelete(index,"食品经营")}}>{"食品经营"+(index>0?index+1:'')}</Button>))}
+                        <Button style={{margin:10,backgroundColor:'RGB(246, 246, 246)',color:'RGB(0,51,153)'}} onClick={()=>{this.handeDelete(index,"食品经营")}}>{"食品经营"+(index>0?index+1:'')}</Button>))}
 
                         {(formData.smallCaterList?formData.smallCaterList:[]).map((item,index)=>(  
-                        <Button style={{margin:10}} onClick={()=>{this.handeDelete(index,"小餐饮服务")}}>{"小餐饮服务"+(index>0?index+1:'')}</Button>))}
+                        <Button style={{margin:10,backgroundColor:'RGB(246, 246, 246)',color:'RGB(0,51,153)'}} onClick={()=>{this.handeDelete(index,"小餐饮服务")}}>{"小餐饮服务"+(index>0?index+1:'')}</Button>))}
 
                         {(formData.smallWorkshopList?formData.smallWorkshopList:[]).map((item,index)=>(  
-                        <Button style={{margin:10}} onClick={()=>{this.handeDelete(index,"小作坊")}}>{"小作坊"+(index>0?index+1:'')}</Button>))}
+                        <Button style={{margin:10,backgroundColor:'RGB(246, 246, 246)',color:'RGB(0,51,153)'}} onClick={()=>{this.handeDelete(index,"小作坊")}}>{"小作坊"+(index>0?index+1:'')}</Button>))}
 
                         {(formData.foodProduceList?formData.foodProduceList:[]).map((item,index)=>(  
-                        <Button style={{margin:10}} onClick={()=>{this.handeDelete(index,"食品生产")}}>{"食品生产"+(index>0?index+1:'')}</Button>))}
+                        <Button style={{margin:10,backgroundColor:'RGB(246, 246, 246)',color:'RGB(0,51,153)'}} onClick={()=>{this.handeDelete(index,"食品生产")}}>{"食品生产"+(index>0?index+1:'')}</Button>))}
 
                         {(formData.drugsBusinessList?formData.drugsBusinessList:[]).map((item,index)=>(  
-                        <Button style={{margin:10}} onClick={()=>{this.handeDelete(index,"药品经营")}}>{"药品经营"+(index>0?index+1:'')}</Button>))}
+                        <Button style={{margin:10,backgroundColor:'RGB(246, 246, 246)',color:'RGB(0,51,153)'}} onClick={()=>{this.handeDelete(index,"药品经营")}}>{"药品经营"+(index>0?index+1:'')}</Button>))}
                         
                         {(formData.drugsProduceList?formData.drugsProduceList:[]).map((item,index)=>(  
-                        <Button style={{margin:10}} onClick={()=>{this.handeDelete(index,"药品生产")}}>{"药品生产"+(index>0?index+1:'')}</Button>))}
+                        <Button style={{margin:10,backgroundColor:'RGB(246, 246, 246)',color:'RGB(0,51,153)'}} onClick={()=>{this.handeDelete(index,"药品生产")}}>{"药品生产"+(index>0?index+1:'')}</Button>))}
                         
                         {(formData.cosmeticsList?formData.cosmeticsList:[]).map((item,index)=>(  
-                        <Button style={{margin:10}} onClick={()=>{this.handeDelete(index,"化妆品生产")}}>{"化妆品生产"+(index>0?index+1:'')}</Button>))}
+                        <Button style={{margin:10,backgroundColor:'RGB(246, 246, 246)',color:'RGB(0,51,153)'}} onClick={()=>{this.handeDelete(index,"化妆品生产")}}>{"化妆品生产"+(index>0?index+1:'')}</Button>))}
                         
                         {(formData.medicalProduceList?formData.medicalProduceList:[]).map((item,index)=>(  
-                        <Button style={{margin:10}} onClick={()=>{this.handeDelete(index,"医疗器械生产")}}>{"医疗器械生产"+(index>0?index+1:'')}</Button>))}
+                        <Button style={{margin:10,backgroundColor:'RGB(246, 246, 246)',color:'RGB(0,51,153)'}} onClick={()=>{this.handeDelete(index,"医疗器械生产")}}>{"医疗器械生产"+(index>0?index+1:'')}</Button>))}
                         
                         {(formData.medicalBusinessList?formData.medicalBusinessList:[]).map((item,index)=>(  
-                        <Button style={{margin:10}} onClick={()=>{this.handeDelete(index,"医疗器械经营")}}>{"医疗器械经营"+(index>0?index+1:'')}</Button>))}
+                        <Button style={{margin:10,backgroundColor:'RGB(246, 246, 246)',color:'RGB(0,51,153)'}} onClick={()=>{this.handeDelete(index,"医疗器械经营")}}>{"医疗器械经营"+(index>0?index+1:'')}</Button>))}
                         
                         {(formData.industrialProductsList?formData.industrialProductsList:[]).map((item,index)=>(  
-                        <Button style={{margin:10}} onClick={()=>{this.handeDelete(index,"工业产品生产")}}>{"工业产品生产"+(index>0?index+1:'')}</Button>))}
+                        <Button style={{margin:10,backgroundColor:'RGB(246, 246, 246)',color:'RGB(0,51,153)'}} onClick={()=>{this.handeDelete(index,"工业产品生产")}}>{"工业产品生产"+(index>0?index+1:'')}</Button>))}
+                    
+                        <span style={{position:"absolute",bottom:'21em',right: "-4%", transform: "translate(-50%, -50%)"}}>点击按钮删除许可</span>
                         
                 </div>
 
@@ -222,7 +224,7 @@ class SelectBox extends Component{
                     <div className='permission-title-text'>可选许可证</div>
                         {(this.props.industryList||[]).map((item,index)=>(
 
-                            <Button style={{margin:10}}  onClick={()=>{this.handleSelect(item.name)}}>{item.name}</Button>
+                            <Button style={{margin:10,backgroundColor:'RGB(246, 246, 246)',color:'RGB(0,51,153)'}}  onClick={()=>{this.handleSelect(item.name)}}>{item.name}</Button>
 
                         ))}
                 </div>

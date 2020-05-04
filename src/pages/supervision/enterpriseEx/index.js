@@ -411,7 +411,7 @@ render() {
             }
         },
         {
-            title: '操作',
+            title: '控制台',
             dataIndex:'operation',
             render:(text, record)=>{
                 return <div className='textButtonBox'>
@@ -497,8 +497,8 @@ render() {
             list: [{id: 0, name: '新增'}, {id: 1, name: '正常'},{id: 2, name: '异常'}]
         },{
             type: 'INPUT',
-            label: '住所/经营场所',
-            field: 'businessAddress'
+            label: '法定代表人',
+            field: 'legalPerson'
         },
         {
             type: 'INPUT',
@@ -511,8 +511,8 @@ render() {
         },
     ]
 
-    //查询表单
-    const SearchForm =<div style={{display:'table-cell',verticalAlign:'middle'}}>
+    //查询表单style={{display:'table-cell',verticalAlign:'middle'}}
+    const SearchForm =<div >
                     <BaseForm formList={formList} filterSubmit={this.handleFilterSubmit}/></div>
 
     //统计信息
@@ -540,11 +540,11 @@ render() {
         <div ref="enterprise">
             <Card style={{marginTop:10,marginLeft:30,marginRight:30}}>
                 <Row>
-                    <Col span={2}>
+                    <Col span={3}>
                         {this.props.userType==1?null:
-                        <div style={{borderRight:'1px soild #dddddd'}}>
-                            <Row> 
-                                <span style={{marginLeft:'15%',fontSize:'x-large',color:'RGB(82, 147, 243)'}}>操作台</span>
+                        <div style={{marginLeft:'3em'}}>
+                            <Row style={{marginBottom:5}}> 
+                                <span style={{marginLeft:'15%',fontSize:'x-large',color:'RGB(63, 127, 189)',fontWeight:"bold"}}>操作台</span>
                             </Row>
                             <Row>
                                 <Button icon="search" size='large' style={{marginBottom:5}} onClick={()=>this.setState({headStatus:false})}>数据查询</Button>     
@@ -554,19 +554,17 @@ render() {
                             </Row>
                         </div>}
                     </Col>
-                    <Col span={1} style={{width:1}}>
+                    <Col span={1}>
                     <div style={{width:1,height:160,background: 'rgba(0, 0, 0, 0.15)'}}></div>
                     </Col>
-                    <Col span={21}>
+                    <Col span={20}  style={{marginLeft:'-7em'}}>
                         {this.props.userType==1?null:
-                        <div style={{display:'table'}}>
+                        <div>
                         {this.state.headStatus?Information:SearchForm}
                         </div>}
                     </Col>
                 </Row>
             </Card>
-               
-        
 
             <Card style={{marginTop:10,marginRight:30,marginLeft:30}}>
                 <div className='button-box-left'>
@@ -574,7 +572,7 @@ render() {
                 </div>
                 <div className='button-box'>
                     {this.props.acl.indexOf('/add')>-1?<Button type="primary" onClick={()=>this.handleOperator('create',null)}>新增</Button>:null}
-                    {this.props.acl.indexOf('/modify')>-1?<Button style={{backgroundColor:'RGB(153, 204, 51)'}} onClick={()=>this.updateAndTransform()}>更新定位</Button>:null}
+                    {this.props.acl.indexOf('/modify')>-1?<Button style={{backgroundColor:'RGB(153, 204, 51)',color:'white'}} onClick={()=>this.updateAndTransform()}>全局定位更新</Button>:null}
                     {this.props.acl.indexOf('/import')>-1?<Upload action={commonUrl+"/supervision/enterprise/importExcel"}
                             showUploadList={false}
                             onChange={(info)=>{
@@ -593,10 +591,10 @@ render() {
                                     }
                                 }
                             }}>
-                        <Button style={{backgroundColor:'RGB(255, 153, 0)'}}>数据导入</Button>
+                        <Button style={{backgroundColor:'RGB(255, 153, 0)',color:'white'}}>数据导入</Button>
                     </Upload>:null}
-                    <Button style={{backgroundColor:'RGB(204, 153, 0)'}}>数据导出</Button>
-                    <Button style={{backgroundColor:'RGB(102, 204, 255)'}}>模板下载</Button>
+                    <Button style={{backgroundColor:'RGB(204, 153, 0)',color:'white'}}>数据导出</Button>
+                    <Button style={{backgroundColor:'RGB(102, 204, 255)',color:'white'}}>模板下载</Button>
                 </div>
 
                 <div style={{marginTop:30}} className="enterpriseTableContent">
@@ -619,7 +617,7 @@ render() {
                 visible={this.state.isVisible}
                 destroyOnClose
                 onOk={this.handleSubmit}
-                okText="确定"
+                okText="保存"
                 cancelText="取消"
                 maskClosable={false}
                 getContainer={()=>this.refs.enterprise}
