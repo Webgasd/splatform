@@ -46,6 +46,7 @@ import {baseUrl} from "../../../axios/commonSrc";
         this.requestDeptGrid();
         this.requestAllDept();
         this.requestAllArea()
+        this.requestAbnormalList();
     }
 
     requestStatistics=()=>{
@@ -58,6 +59,20 @@ import {baseUrl} from "../../../axios/commonSrc";
             if(res.status == "success"){
                 this.setState({
                     statistics:res.data
+                })
+            }
+        })
+    }
+    requestAbnormalList=()=>{
+        axios.noLoadingAjax({
+            url:'/abnormal/getList',
+            data: {
+                params:{}
+            }
+        }).then((res)=>{
+            if(res.status == "success"){
+                this.setState({
+                    abnormalList:res.data
                 })
             }
         })
@@ -235,26 +250,17 @@ import {baseUrl} from "../../../axios/commonSrc";
         }
         
     }
-    updateAndTransform=()=>{
-        axios.ajax({
-            url:'/grid/points/transform'
-        }).then((res)=>
-        {if(res.status=='success') {
-            if(res.data.update==true)message.success("更新成功")
-            else if(res.data.update==false)message.success("已经是最新状态")
-        }})
-    }
     handleChangeNormal=(record)=>{
         axios.ajax({
             url:'/abnormal/changeNormal',
             data:{
                 params:{
-                   id:record.id
+                   enterpriseId:record.id
                 }
             }
         }).then((res)=>{
             if(res.status =='success'){
-                message.success(`${record.enterprisename} 已恢复正常`);
+                message.success(`${record.enterpriseName} 已恢复正常`);
                 this.requestList();
             }
         })
@@ -297,15 +303,10 @@ render() {
             }
         },{
             title: '异常情形',
-            dataIndex: 'abnormal',
-            render(abnormal){
-                if (abnormal === 0) {
-                    return "无数据"
-                } if (abnormal === 1) {
-                    return "异常测试2"
-                } else if(abnormal === 2){
-                    return "异常测试1"
-                }
+            dataIndex: 'abnormalId',
+            render(abnormalId){
+                let data=(_this.state.abnormalList||[]).find((item)=>item.id==abnormalId)||{};
+                return data.content;
             }
         },
         {
@@ -346,7 +347,7 @@ render() {
             label: '许可类型',
             field: 'industryList',
             placeholder: '请选择许可类型',
-            // width: 150,
+            
             list:(_this.props.industryList||[]).map((item)=>{return{id:item.remark,name:item.name}})
         },
         {
@@ -354,14 +355,14 @@ render() {
             label: '所属区域',
             field: 'areaList',
             placeholder: '请选择所属区域',
-            width: 150,
+           
             list: Utils.getDataSource(this.props.areaList||[])
         },{
             type: 'TREE',
             label: '监管机构',
             field: 'dept',
             placeholder: '请选择责任监管机构',
-            width: 150,
+            
             list: Utils.getDataSource(this.state.deptTree||[])
         },{
             type: 'INPUT',
@@ -372,13 +373,20 @@ render() {
             label: '主体分类',
             field: 'operationMode',
             placeholder: '请选择主体分类',
-            width: 150,
+          
             list: [{id: '个体经营户', name: '个体经营户'}, {id: '国有企业', name: '国有企业'}, {id: '有限责任公司', name: '有限责任公司'},
                      {id: '合伙经营', name: '合伙经营'},{id: '事业单位', name: '事业单位'},{id: '其他', name: '其他'}]
         },{
             type: 'INPUT',
             label: '住所/经营场所',
             field: 'registeredAddress'
+        },
+        {
+            type: 'SELECT',
+            label: '异常情形',
+            field: 'abnormalId',
+            placeholder: '请选择异常情形',
+            list:(_this.state.abnormalList||[]).map((item)=>{return{id:item.id,name:item.content}})
         },
     ]
 

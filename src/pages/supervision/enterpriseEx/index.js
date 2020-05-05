@@ -367,7 +367,7 @@ render() {
     const columns = [
         {
             title: '主体分类',
-            dataIndex: 'operationMode'
+            dataIndex: 'operationMode',
         },
         {
             title: '市场主体名称',
@@ -401,11 +401,11 @@ render() {
             title: '经营状态',
             dataIndex: 'businessState',
             render(businessState){
-                if (businessState === 0) {
+                if (businessState === 1) {
                     return "新增"
-                } if (businessState === 1) {
+                } if (businessState === 2) {
                     return "正常"
-                } else if(businessState === 2){
+                } else if(businessState === 3){
                     return "异常"
                 }
             }
@@ -594,7 +594,7 @@ render() {
                         <Button style={{backgroundColor:'RGB(255, 153, 0)',color:'white'}}>数据导入</Button>
                     </Upload>:null}
                     <Button style={{backgroundColor:'RGB(204, 153, 0)',color:'white'}}>数据导出</Button>
-                    <Button style={{backgroundColor:'RGB(102, 204, 255)',color:'white'}}>模板下载</Button>
+                    {/* <Button style={{backgroundColor:'RGB(102, 204, 255)',color:'white'}}>模板下载</Button> */}
                 </div>
 
                 <div style={{marginTop:30}} className="enterpriseTableContent">

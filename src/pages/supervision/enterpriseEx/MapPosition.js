@@ -19,12 +19,17 @@ const AMap=window.AMap;
 )
  class App extends React.Component{
     state={
-        AreaId:this.props.AreaId,
+        AreaId:this.props.input.grid,
         EnterpriseId:this.props.enterpriseId
+    }
+    
+    changeInput=(value,option)=>{
+        let input = {...this.props.input,[option]:value}
+        this.props.changeEnterprise(input);
     }
     componentDidMount () {
         this.map = new AMap.Map('mapContainer', {
-            center:[117.000923,36.675807],
+            center:[118.679394,37.419493],
             zoom:12,
             resizeEnable: true
         });
@@ -68,16 +73,9 @@ const AMap=window.AMap;
             })
         }
         function getEnterpriseAddress(){
-            axios.ajax({
-                url:'/supervision/enterprise/getById',
-                data:{params:{id:that.state.EnterpriseId}}
-            }).then((res)=>{
-                if (res.status == "success") {
-                    let address=res.data.registeredAddress
-                    console.log(address)
-                    geoCode(address);
-                }
-            })
+                let address=this.props.input.registeredAddress
+                console.log(address)
+                geoCode(address);
         }
         axios.ajax({
             url:'/grid/points/getPointByEnterpriseId',
@@ -162,19 +160,27 @@ const AMap=window.AMap;
                             <Row>
                             <div className='commonEnterpriseBoxHead'>数据定位</div>
                             <table>
+                                
+                               <Radio.Group style={{width:'100%'}} value={formData.gpsFlag}
+                               onChange={(e)=>this.changeInput(e.target.value,"gpsFlag")}  disabled={checkStatus}>
                                 <tbody>
-                                <tr>
-                                    <td rowSpan={2}>选择定位方式</td>
-                                    <td><Radio style={{float:"left"}}>使用默认地址定位</Radio></td>
-                                </tr>
-                                <tr>
-                                    <td><Radio style={{float:"left"}}>使用经纬度定位</Radio></td>
-                                </tr>
+                                    <tr>
+                                        <td rowSpan={2}>选择定位方式<span style={{color:'#FF3300'}}>*</span></td>
+                                        <td style={{textAlign:"left",width:'80%'}}><Radio value={0} >使用默认地址定位</Radio> </td>
+                                    </tr>
+                                    <tr>
+                                        <td style={{textAlign:"left"}}><Radio value={1} >使用经纬度定位</Radio></td>
+                                    </tr>
+                                </tbody>
+                               </Radio.Group>
+                            </table>
+
+                            <table style={{marginTop:-5}}>
+                               <tbody>
                                 <tr>
                                     <td>经纬度</td>
                                     <td><Input placeholder={"请输入经纬度"} /></td>
                                 </tr>
-                                    
                                 </tbody>
                             </table>
                             </Row>
@@ -199,12 +205,12 @@ const AMap=window.AMap;
                                     {/*<Row>{this.state.address}</Row>*/}
                                     {/*<Row> 新定位的地址:</Row>*/}
                                     {/*<Row> {this.state.newAddress} </Row>*/}
-                                    {/* <Row>新定位的经纬度：<br/>{this.state.newPoint}</Row> */}
+                                    <Row>新定位的经纬度：<br/>{this.state.newPoint}</Row>
                                 {/*</Col>*/}
-                                {/* <Col span={18}> */}
-                                    {/* <input type="button" value="修改保存" onClick={()=>this.save()}/> */}
+                                <Col span={18}>
+                                    <input type="button" value="修改保存" onClick={()=>this.save()}/>
                                     <div id={"mapContainer"} style={{width:400,height:240}}/>
-                                {/* </Col> */}
+                                </Col>
                             {/* </Row> */}
                 {/* *********************** */}
                         </Col>
