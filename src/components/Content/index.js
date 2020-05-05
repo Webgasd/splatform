@@ -5,6 +5,7 @@ const Home = loadable(()=>import('./../../pages/home'));
 const Footer = loadable(()=>import('../Footer'));
 const EnterpriseInformation = loadable(()=>import('../../pages/supervision/enterprise'));
 const EnterpriseInformationEx = loadable(()=>import('../../pages/supervision/enterpriseEx'));
+const AbnormalEnterprise = loadable(()=>import('../../pages/supervision/enterpriseEx/AbnormalEnterprise'));
 const ShowPoint = loadable(()=>import('../../pages/grid/showPoint'));
 const DrawGrid = loadable(()=>import('../../pages/grid/drawGrid'));
 const ShowGrid = loadable(()=>import('../../pages/grid/showGrid'));
@@ -171,6 +172,9 @@ export default class Content extends Component{
                 return <EnterpriseInformation/>
             case   '/enterpriseInformationEx':
                 return <EnterpriseInformationEx/>
+            case   '/enterpriseAbnormal':
+                return <AbnormalEnterprise/>
+          
             case '/grid/showPoint':
                 return <ShowPoint/>
             case '/grid/drawGrid':
