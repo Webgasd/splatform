@@ -386,7 +386,7 @@ render() {
             label: '异常情形',
             field: 'abnormalId',
             placeholder: '请选择异常情形',
-            list:(_this.state.abnormalList||[]).map((item)=>{return{id:item.id,name:item.content}})
+            list: (_this.state.abnormalList||[]).map((item)=>{return{id:item.id,name:item.content}})
         },
     ]
 

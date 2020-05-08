@@ -20,36 +20,59 @@ const AMap=window.AMap;
  class App extends React.Component{
     state={
         AreaId:this.props.input.grid,
-        EnterpriseId:this.props.enterpriseId
+        EnterpriseId:this.props.enterpriseId,
     }
-    
+
+    componentDidMount () {
+    }
+  
     changeInput=(value,option)=>{
         let input = {...this.props.input,[option]:value}
         this.props.changeEnterprise(input);
     }
-    componentDidMount () {
+    getMap = (address,option,type)=>{
+        
         this.map = new AMap.Map('mapContainer', {
-            center:[118.679394,37.419493],
+            center:[118.680936,37.440335],
             zoom:12,
             resizeEnable: true
         });
         let geocoder,marker;
         let that=this;
-        function geoCode(address) {
+
+        if(option === "default"&& type != "detail"){
+            that.changeInput(0,"gpsFlag")
+            
             AMap.plugin('AMap.Geocoder', function() {
                 geocoder = new AMap.Geocoder({
                     // city 指定进行编码查询的城市，支持传入城市名、adcode 和 citycode
-                    // city: '济南'
+                    // city: '东营'
                 });
-                let lnglat=[]
+               
                 geocoder.getLocation(address, function(status, result) {
                     if (status === 'complete' && result.info === 'OK') {
+                        let lnglat=[]
                         lnglat = result.geocodes[0].location;
-                        // message.success("定位成功")
+                        message.success("定位成功")
+                        marker = new AMap.Marker({
+                            position: lnglat,   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
+                            draggable:false
+                        });
+                        that.map.add(marker);
+                        that.map.setFitView(marker)
+                        that.changeInput('',"location")
                     }else {
-                        lnglat = [117.076455,36.666412];
-                         message.error("地址有误，请重新定位")
+                         message.error("地址有误，请输入详细地址并点击默认定位按钮刷新地图")
                     }
+
+                })
+            })
+        }
+
+        if(option === "manual"&& type != "detail"){
+            that.changeInput(1,"gpsFlag")
+                if(that.props.input.location){
+                   let lnglat = that.props.input.location.split(',')
                     marker = new AMap.Marker({
                         position: lnglat,   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
                         draggable:true
@@ -57,79 +80,115 @@ const AMap=window.AMap;
                     that.map.add(marker);
                     that.map.setFitView(marker)
                     marker.on("dragend",function (e) {
-                        let point=e.lnglat
-                        let point1=[];
-                        point1.push(point.lng);
-                        point1.push(point.lat);
-                        let point2=point1.join(",");
-                        that.setState({
-                            newPoint:point2,
-                        })
-                        console.log(point2)
-                        // that.getAddress(point)///根据拖动得到的点获取地址
-                    });
-                })
+                    message.success("经纬度修改成功")
+                    that.changeInput((e.lnglat.lng+','+e.lnglat.lat),"location")
+                    // that.getAddress(point)///根据拖动得到的点获取地址
+                    })
 
+                }else{
+                    AMap.plugin('AMap.Geocoder', function() {
+                    geocoder = new AMap.Geocoder({
+                        // city 指定进行编码查询的城市，支持传入城市名、adcode 和 citycode
+                        // city: '东营'
+                    });
+                    geocoder.getLocation(address, function(status, result) {
+                        if (status === 'complete' && result.info === 'OK') {
+                            let lnglat = result.geocodes[0].location;
+                            that.changeInput((lnglat.lng+','+lnglat.lat),"location")
+                            marker = new AMap.Marker({
+                                position: lnglat,   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
+                                draggable:true
+                            });
+                            that.map.add(marker);
+                            that.map.setFitView(marker)
+                            marker.on("dragend",function (e) {
+                            message.success("经纬度修改成功")
+                            that.changeInput((e.lnglat.lng+','+e.lnglat.lat),"location")
+                            // that.getAddress(point)///根据拖动得到的点获取地址
+                            })
+                        }else {
+                            let lnglat = [118.680936,37.440335]
+                            that.changeInput(lnglat.join(','),"location")
+                            marker = new AMap.Marker({
+                                position: lnglat,   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
+                                draggable:true
+                            });
+                            that.map.add(marker);
+                            that.map.setFitView(marker)
+                            marker.on("dragend",function (e) {
+                            message.success("经纬度修改成功")
+                            that.changeInput((e.lnglat.lng+','+e.lnglat.lat),"location")
+                            // that.getAddress(point)///根据拖动得到的点获取地址
+                            })
+                        }
+                     })
+                    })
+                }
+        }
+        if(option === "input"&& type != "detail"){
+            marker = new AMap.Marker({
+                position: address.split(','),   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
+                draggable:true
+            });
+            that.map.add(marker);
+            that.map.setFitView(marker)
+            marker.on("dragend",function (e) {
+                message.success("经纬度修改成功")
+                that.changeInput((e.lnglat.lng+','+e.lnglat.lat),"location")
             })
         }
-        function getEnterpriseAddress(){
-                let address=this.props.input.registeredAddress
-                console.log(address)
-                geoCode(address);
+
+        if(type == "detail"){
+            if(that.props.input.location&&that.props.input.gpsFlag == 1){
+                let lnglat = that.props.input.location.split(',')
+                marker = new AMap.Marker({
+                    position: lnglat,   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
+                    draggable:false
+                });
+                that.map.add(marker);
+                that.map.setFitView(marker)
+                message.success("已标记手动定位")
+            }else if(that.props.input.position){
+                let lnglat = that.props.input.position.split(',')
+                marker = new AMap.Marker({
+                    position: lnglat,   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
+                    draggable:false
+                });
+                that.map.add(marker);
+                that.map.setFitView(marker)
+                message.success("已标记默认定位")
+            }else{
+                message.error("无此企业定位")
+            }
         }
-        axios.ajax({
-            url:'/grid/points/getPointByEnterpriseId',
-            data:{
-                params:{id:this.state.EnterpriseId}
-            }
-        }).then((res)=>{
-           if (res.status == "success") {
-               if (res.data && res.data.point.length>0) {
-                   let point=res.data.point
-                   let point1=point.split(",")
-                   marker = new AMap.Marker({
-                       position: [JSON.parse(point1[0]),JSON.parse(point1[1])],   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
-                       draggable:true
-                   });
-                   that.map.add(marker);
-                   that.map.setFitView(marker)
-                   marker.on("dragend",function (e) {
-                       let point=e.lnglat
-                       let point1=[];
-                       point1.push(point.lng);
-                       point1.push(point.lat);
-                       let point2=point1.join(",");
-                       that.setState({
-                           newPoint:point2,
-                       })
-                   });
-               }else {
-                   getEnterpriseAddress();
-               }
-           }else {
-               getEnterpriseAddress();
-           }
-        })
+        // if(option === "search"){
+
+        //     AMap.service(["AMap.PlaceSearch"], function() {
+        //         //构造地点查询类
+        //         var placeSearch = new AMap.PlaceSearch({ 
+        //             map: that.map, // 展现结果的地图实例
+                    
+        //             city: "东营", // 兴趣点城市
+                  
+        //         });
+        //         //关键字查询
+        //         placeSearch.search(address, function (status, result) {
+        //             console.log(result)
+        //             // 查询成功时，result即对应匹配的POI信息
+        //          })
+        //     });
+        // }
     }
-    save=()=>{
-        axios.PostAjax({
-            url:"/grid/points/addPoint",
-            data:{
-                params:{
-                    areaId:this.state.AreaId,
-                    enterpriseId:this.state.EnterpriseId,
-                    point:this.state.newPoint
-                }
-            }
-        }).then((res)=>{
-            if(res.status=="success"){
-               if (res.data.done == true) {
-                   message.success("更新成功")
-               }
-            }
+    
+    handleSearchInput=(value)=>{
+        this.setState({
+            searchAddress:value
         })
+
     }
+    
     render() {
+    
         const formData=this.props.input||{};
         const checkStatus = this.props.type=='detail'?true:false;
         return (
@@ -141,11 +200,11 @@ const AMap=window.AMap;
                     <tbody>
                     <tr>
                         <td>市场主体名称</td>
-                        <td colSpan={3}><Input placeholder={"请输入企业名称"} value={formData.enterpriseName} disabled={checkStatus}/></td>
+                        <td colSpan={3}><Input placeholder={"请输入企业名称"} value={formData.enterpriseName} onChange={(e)=>this.changeInput(e.target.value,"enterpriseName")} disabled={checkStatus}/></td>
                     </tr>
                     <tr>
                         <td>企业默认定位<span style={{color:'#FF3300'}}>*</span></td>
-                        <td colSpan={3}><Input value={formData.registeredAddress}  placeholder={"企业住所或经营场所地址"} disabled={checkStatus}/></td>
+                        <td colSpan={3}><Input value={formData.registeredAddress} onChange={(e)=>this.changeInput(e.target.value,"registeredAddress")} placeholder={"企业住所或经营场所地址"} disabled={checkStatus}/></td>
                     </tr>
                     </tbody>
                 </table>
@@ -160,28 +219,30 @@ const AMap=window.AMap;
                             <Row>
                             <div className='commonEnterpriseBoxHead'>数据定位</div>
                             <table>
-                                
-                               <Radio.Group style={{width:'100%'}} value={formData.gpsFlag}
-                               onChange={(e)=>this.changeInput(e.target.value,"gpsFlag")}  disabled={checkStatus}>
-                                <tbody>
-                                    <tr>
-                                        <td rowSpan={2}>选择定位方式<span style={{color:'#FF3300'}}>*</span></td>
-                                        <td style={{textAlign:"left",width:'80%'}}><Radio value={0} >使用默认地址定位</Radio> </td>
-                                    </tr>
-                                    <tr>
-                                        <td style={{textAlign:"left"}}><Radio value={1} >使用经纬度定位</Radio></td>
-                                    </tr>
-                                </tbody>
-                               </Radio.Group>
-                            </table>
-
-                            <table style={{marginTop:-5}}>
-                               <tbody>
+                            <tbody>
+                                <tr>
+                                    <td rowSpan={2} style={{width:'27%'}}>{this.props.type==='detail'?"查看企业定位":"选择定位方式"}<span style={{color:'#FF3300'}}>*</span></td>
+                                    <td style={{display:(this.props.type=='detail'?"none":"block")}}>
+                                        <div onClick={()=>this.getMap(formData.registeredAddress,"default",this.props.type)} 
+                                        className={formData.gpsFlag===0?'mapOnClick':'mapNoClick'}>使用默认地址定位 </div> 
+                                    </td>
+                                    <td style={{display:(this.props.type=='detail'?"block":"none"),textAlign:"left"}}>
+                                        <Button onClick={()=>this.getMap(formData.registeredAddress,"detail",this.props.type)}>查看企业定位</Button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style={{display:(this.props.type=='detail'?"none":"block")}}>
+                                        <div onClick={()=>this.getMap(formData.registeredAddress,"manual",this.props.type)} 
+                                         className={formData.gpsFlag===1?'mapOnClick':'mapNoClick'}>使用经纬度定位</div>
+                                    </td>
+                                </tr>
                                 <tr>
                                     <td>经纬度</td>
-                                    <td><Input placeholder={"请输入经纬度"} /></td>
+                                    <td style={{textAlign:'left'}}><Input style={{width:'75%'}} value={formData.location} onChange={(e)=>this.changeInput(e.target.value,"location")} disabled={checkStatus||formData.gpsFlag === 0} />
+                                        <Button style={{color:'#558ff2',marginLeft:3}}  onClick={()=>this.getMap(formData.location,"input",this.props.type)} disabled={checkStatus||formData.gpsFlag === 0}>确定</Button>
+                                    </td>
                                 </tr>
-                                </tbody>
+                            </tbody>
                             </table>
                             </Row>
                             <Row>
@@ -189,15 +250,17 @@ const AMap=window.AMap;
                             <table>
                                 <tbody>
                                 <tr>  
-                                    <td><Input style={{width:'80%'}} placeholder={"请输入位置或企业名称"}/><Button style={{color:'#558ff2'}}>搜索</Button></td>
+                                    <td><Input value={this.state.searchAddress} onChange={(e)=>this.handleSearchInput(e.target.value)} style={{width:'80%'}} placeholder={"请输入位置或企业名称"}/>
+                                        <Button onClick={()=>this.getMap(this.state.searchAddress,"search",this.props.type)} style={{color:'#558ff2',marginLeft:3}}>搜索</Button>
+                                    </td>
                                     
                                 </tr>
                                 </tbody>
                             </table>
                             </Row>
                         </Col>
-                        <Col span={2}></Col>
-                        <Col span={12}>
+                        <Col span={1}></Col>
+                        <Col span={13} style={{ border: '1px solid #ddd'}}>
                 {/* *******************************以下为旧版mapPosition************** */}
                             {/* <Row> */}
                                 {/*<Col span={6}>*/}
@@ -205,12 +268,12 @@ const AMap=window.AMap;
                                     {/*<Row>{this.state.address}</Row>*/}
                                     {/*<Row> 新定位的地址:</Row>*/}
                                     {/*<Row> {this.state.newAddress} </Row>*/}
-                                    <Row>新定位的经纬度：<br/>{this.state.newPoint}</Row>
+                                    {/* <Row>新定位的经纬度：<br/>{this.state.newPoint}</Row> */}
                                 {/*</Col>*/}
-                                <Col span={18}>
-                                    <input type="button" value="修改保存" onClick={()=>this.save()}/>
-                                    <div id={"mapContainer"} style={{width:400,height:240}}/>
-                                </Col>
+                                
+                                    {/* <input type="button" value="修改保存" onClick={()=>this.save()} style={{display:formData.gpsFlag===1?"block":"none"}}/> */}
+                                    <div id={"mapContainer"} style={{height:260}}/>
+                                
                             {/* </Row> */}
                 {/* *********************** */}
                         </Col>
