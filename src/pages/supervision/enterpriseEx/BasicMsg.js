@@ -213,9 +213,9 @@ class BasicMsg extends Component{
                     <tr>
                         <td>企业经营状态</td>
                         <td colSpan={1}><Radio.Group value={formData.businessState} onChange={(e)=>this.changeInput(e.target.value,"businessState")} style={{width:"100%"}} disabled={checkStatus}>
-                            <Radio value={1} style={{color:'RGB(179, 204, 0)'}}>新增</Radio>
-                            <Radio value={2} style={{color:'red'}}>正常</Radio>
-                            <Radio value={3} style={{color:'blue'}}>异常</Radio>
+                            <Radio value={1} style={{color:'RGB(48, 165, 253)'}}>新增</Radio>
+                            <Radio value={2} style={{color:'RGB(153, 204, 0)'}}>正常</Radio>
+                            <Radio value={3} style={{color:'RGB(255, 0, 0)'}}>异常</Radio>
                            </Radio.Group>
                         </td>
                         <td>企业信用等级</td>

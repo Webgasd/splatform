@@ -222,13 +222,18 @@ const AMap=window.AMap;
                             <tbody>
                                 <tr>
                                     <td rowSpan={2} style={{width:'27%'}}>{this.props.type==='detail'?"查看企业定位":"选择定位方式"}<span style={{color:'#FF3300'}}>*</span></td>
-                                    <td style={{display:(this.props.type=='detail'?"none":"block")}}>
-                                        <div onClick={()=>this.getMap(formData.registeredAddress,"default",this.props.type)} 
-                                        className={formData.gpsFlag===0?'mapOnClick':'mapNoClick'}>使用默认地址定位 </div> 
+                                    <td>
+                                        {this.props.type=='detail'?
+                                            <Button onClick={()=>this.getMap(formData.registeredAddress,"detail",this.props.type)}>查看企业定位</Button>:
+                                            <div onClick={()=>this.getMap(formData.registeredAddress,"default",this.props.type)} 
+                                                className={formData.gpsFlag===0?'mapOnClick':'mapNoClick'}>使用默认地址定位
+                                            </div>}
+                                        {/* <div onClick={()=>this.getMap(formData.registeredAddress,"default",this.props.type)} 
+                                        className={formData.gpsFlag===0?'mapOnClick':'mapNoClick'}>使用默认地址定位 </div>  */}
                                     </td>
-                                    <td style={{display:(this.props.type=='detail'?"block":"none"),textAlign:"left"}}>
+                                    {/* <td style={{display:(this.props.type=='detail'?"block":"none"),textAlign:"left"}}>
                                         <Button onClick={()=>this.getMap(formData.registeredAddress,"detail",this.props.type)}>查看企业定位</Button>
-                                    </td>
+                                    </td> */}
                                 </tr>
                                 <tr>
                                     <td style={{display:(this.props.type=='detail'?"none":"block")}}>
@@ -271,7 +276,7 @@ const AMap=window.AMap;
                                     {/* <Row>新定位的经纬度：<br/>{this.state.newPoint}</Row> */}
                                 {/*</Col>*/}
                                 
-                                    {/* <input type="button" value="修改保存" onClick={()=>this.save()} style={{display:formData.gpsFlag===1?"block":"none"}}/> */}
+                                    {/* <input type="button" value="修改保存" onClick={()=>this.save()}/> */}
                                     <div id={"mapContainer"} style={{height:260}}/>
                                 
                             {/* </Row> */}

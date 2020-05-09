@@ -79,6 +79,43 @@ class LicenseInfo extends Component{
         })
     }
     handleCloseModal=()=>{
+        const data = this.props.input||{}
+        let permissionList=[]
+
+        if(data.foodBusinessList){
+            permissionList.push("foodbusiness")
+        }
+        if(data.smallCaterList){
+            permissionList.push("smallCater")
+        }
+        if(data.smallWorkshopList){
+            permissionList.push("smallWorkshop")
+        }
+        if(data.foodProduceList){
+            permissionList.push("foodProduce")
+        }
+        if(data.drugsBusinessList){
+            permissionList.push("drugsBusiness")
+        }
+        if(data.drugsProduceList){
+            permissionList.push("drugsProduce")
+        }
+        if(data.cosmeticsList){
+            permissionList.push("cosmetics")
+        }
+        if(data.medicalProduceList){
+            permissionList.push("medicalProduce")
+        }
+        if(data.medicalBusinessList){
+            permissionList.push("medicalBusiness")
+        }
+        if(data.industrialProductsList){
+            permissionList.push("industrialProducts")
+        }
+
+        let permissionFamily = permissionList.join(',')
+        let input = {...this.props.input,permissionFamily}
+        this.props.changeEnterprise(input)
         this.setState({
             modalVisible:false
         })
@@ -148,12 +185,9 @@ class LicenseInfo extends Component{
                     okText="确定"
                     cancelText="取消"
                     maskClosable={false}
+                    closable={false}
                     width={640}
-                    onCancel={()=>{
-                        this.setState({
-                            modalVisible:false,
-                        })
-                    }}
+                    onCancel={this.handleCloseModal}
             >
                     <SelectBox changePermission={this.changePermission}/>
                 </Modal>

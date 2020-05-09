@@ -87,7 +87,7 @@ class IndustrialProduct extends Component{
                     </tr>
                     <tr>
                         <td >产品名称</td>
-                        <td colSpan={3}><TextArea placeholder="请填写经营项目" value={formData.productsName} onChange={(e)=>this.changeInput(e.target.value,"productsName",index)} rows={5}  disabled={checkStatus}/></td>
+                        <td colSpan={3}><TextArea  maxLength={100} placeholder="请填写经营项目" value={formData.productsName} onChange={(e)=>this.changeInput(e.target.value,"productsName",index)} rows={5}  disabled={checkStatus}/></td>
                        
                     </tr>
                     <tr>

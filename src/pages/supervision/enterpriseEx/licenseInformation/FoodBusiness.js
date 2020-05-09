@@ -125,7 +125,7 @@ class FoodBusiness extends Component{
                     </tr>
                     <tr>
                         <td >经营项目</td>
-                        <td colSpan={3}><TextArea placeholder="请填写经营项目" value={formData.businessProject} onChange={(e)=>this.changeInput(e.target.value,"businessProject",index)} rows={5}  disabled={checkStatus}/></td>
+                        <td colSpan={3}><TextArea maxLength={100} placeholder="请填写经营项目" value={formData.businessProject} onChange={(e)=>this.changeInput(e.target.value,"businessProject",index)} rows={5}  disabled={checkStatus}/></td>
                        
                     </tr>
                     <tr>

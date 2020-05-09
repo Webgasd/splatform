@@ -88,7 +88,7 @@ class CosmeticsProduction extends Component{
                     </tr>
                     <tr>
                         <td >许可项目</td>
-                        <td colSpan={3}><TextArea placeholder="请填写许可项目" value={formData.licenseProject} onChange={(e)=>this.changeInput(e.target.value,"licenseProject",index)} rows={5}  disabled={checkStatus}/></td>
+                        <td colSpan={3}><TextArea maxLength={100} placeholder="请填写许可项目" value={formData.licenseProject} onChange={(e)=>this.changeInput(e.target.value,"licenseProject",index)} rows={5}  disabled={checkStatus}/></td>
                        
                     </tr>
                     <tr>

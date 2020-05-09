@@ -91,7 +91,7 @@ class SmallRestaurant extends Component{
                     </tr>
                     <tr>
                         <td >经营项目</td>
-                        <td colSpan={3}><TextArea placeholder="请填写经营项目" value={formData.mainSubject} onChange={(e)=>this.changeInput(e.target.value,"mainSubject",index)} rows={5}  disabled={checkStatus}/></td>
+                        <td colSpan={3}><TextArea maxLength={100} placeholder="请填写经营项目" value={formData.mainSubject} onChange={(e)=>this.changeInput(e.target.value,"mainSubject",index)} rows={5}  disabled={checkStatus}/></td>
                        
                     </tr>
                     <tr>

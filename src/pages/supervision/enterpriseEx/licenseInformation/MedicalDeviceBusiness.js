@@ -91,7 +91,7 @@ class MedicalDeviceBusiness extends Component{
                     </tr>
                     <tr>
                         <td >经营范围</td>
-                        <td colSpan={3}><TextArea placeholder="请填写经营范围" value={formData.medicalSubject} onChange={(e)=>this.changeInput(e.target.value,"medicalSubject",index)} rows={5}  disabled={checkStatus}/></td>
+                        <td colSpan={3}><TextArea maxLength={100} placeholder="请填写经营范围" value={formData.medicalSubject} onChange={(e)=>this.changeInput(e.target.value,"medicalSubject",index)} rows={5}  disabled={checkStatus}/></td>
                        
                     </tr>
                     <tr>

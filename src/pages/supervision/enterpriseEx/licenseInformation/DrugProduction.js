@@ -93,7 +93,7 @@ class DrugProduction extends Component{
                     </tr>
                     <tr>
                         <td >生产范围</td>
-                        <td colSpan={3}><TextArea placeholder="请填写药品经营范围" value={formData.businessScope} onChange={(e)=>this.changeInput(e.target.value,"businessScope",index)} rows={5}  disabled={checkStatus}/></td>
+                        <td colSpan={3}><TextArea maxLength={100} placeholder="请填写药品经营范围" value={formData.businessScope} onChange={(e)=>this.changeInput(e.target.value,"businessScope",index)} rows={5}  disabled={checkStatus}/></td>
                        
                     </tr>
                     <tr>

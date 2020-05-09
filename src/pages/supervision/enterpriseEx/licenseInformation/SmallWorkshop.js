@@ -85,7 +85,7 @@ class SmallWorkshop extends Component{
                     </tr>
                     <tr>
                         <td >食品类别</td>
-                        <td colSpan={3}><TextArea placeholder="请填写经营项目" value={formData.foodType} onChange={(e)=>this.changeInput(e.target.value,"foodType",index)} rows={5}  disabled={checkStatus}/></td>
+                        <td colSpan={3}><TextArea maxLength={100} placeholder="请填写经营项目" value={formData.foodType} onChange={(e)=>this.changeInput(e.target.value,"foodType",index)} rows={5}  disabled={checkStatus}/></td>
                        
                     </tr>
                     <tr>

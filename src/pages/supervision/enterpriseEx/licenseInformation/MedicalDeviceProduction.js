@@ -88,7 +88,7 @@ class MedicalDeviceProduction extends Component{
                     </tr>
                     <tr>
                         <td>生产范围</td>
-                        <td colSpan={3}><TextArea placeholder="请填写生产范围" value={formData.produceScale} onChange={(e)=>this.changeInput(e.target.value,"produceScale",index)} rows={5}  disabled={checkStatus}/></td>
+                        <td colSpan={3}><TextArea maxLength={100} placeholder="请填写生产范围" value={formData.produceScale} onChange={(e)=>this.changeInput(e.target.value,"produceScale",index)} rows={5}  disabled={checkStatus}/></td>
                        
                     </tr>
                     <tr>

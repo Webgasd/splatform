@@ -250,7 +250,23 @@ import Abnormal from './childrenForm/Abnormal'
                         type
                     })
                     let data = res.data;
-                    this.props.changeEnterprise({...data,propagandaEnclosure:JSON.parse(data.propagandaEnclosure||JSON.stringify([]))});
+                    this.props.changeEnterprise({...data,
+                        propagandaEnclosure:JSON.parse(data.propagandaEnclosure||JSON.stringify([])),
+                        businessLicensePhoto:JSON.parse(data.businessLicensePhoto||JSON.stringify([])),
+                        foodBusinessPhotos:JSON.parse(data.foodBusinessPhotos||JSON.stringify([])),
+                        smallCaterPhotos:JSON.parse(data.smallCaterPhotos||JSON.stringify([])),
+                        smallWorkshopPhotos:JSON.parse(data.smallWorkshopPhotos||JSON.stringify([])),
+                        foodProducePhotos:JSON.parse(data.foodProducePhotos||JSON.stringify([])),
+                        drugsBusinessPhotos:JSON.parse(data.drugsBusinessPhotos||JSON.stringify([])),
+                        drugsProducePhotos:JSON.parse(data.drugsProducePhotos||JSON.stringify([])),
+                        cosmeticsUsePhotos:JSON.parse(data.cosmeticsUsePhotos||JSON.stringify([])),
+                        medicalProducePhotos:JSON.parse(data.medicalProducePhotos||JSON.stringify([])),
+                        medicalBusinessPhotos:JSON.parse(data.medicalBusinessPhotos||JSON.stringify([])),
+                        industrialProductsPhotos:JSON.parse(data.industrialProductsPhotos||JSON.stringify([])),
+                        publicityPhotos:JSON.parse(data.publicityPhotos||JSON.stringify([])),
+                        certificatePhotos:JSON.parse(data.certificatePhotos||JSON.stringify([])),
+                        otherPhotos:JSON.parse(data.otherPhotos||JSON.stringify([]))
+                    });
                 }
             })
         }else if(type=="delete"){
@@ -494,7 +510,7 @@ render() {
             field: 'businessState',
             placeholder: '请选择经营状态',
             width: 150,
-            list: [{id: 0, name: '新增'}, {id: 1, name: '正常'},{id: 2, name: '异常'}]
+            list: [{id: 0, name: '新增'}, {id: 1, name: '正常'}]
         },{
             type: 'INPUT',
             label: '法定代表人',
@@ -504,26 +520,59 @@ render() {
             type: 'INPUT',
             label: '经营范围',
             field: 'businessScale'
-        },{
-            type: 'INPUT',
-            label: '许可项目',//此处不对
-            field: 'supervisor'
-        },
+         },
+        //  {
+        //     type: 'INPUT',
+        //     label: '许可项目',//此处不对
+        //     field: 'supervisor'
+        // },
     ]
 
     //查询表单style={{display:'table-cell',verticalAlign:'middle'}}
-    const SearchForm =<div >
-                    <BaseForm formList={formList} filterSubmit={this.handleFilterSubmit}/></div>
-
+    const SearchForm =<div > <BaseForm formList={formList} filterSubmit={this.handleFilterSubmit}/></div>
+                           
     //统计信息
-    const Information = <div className='topContent'>
-        <div span={3} className='topBox'>
-            <div style={{fontSize:16,color:"#000000",fontWeight:1000}}>
-                <Icon type="profile" style={{ fontSize: '25px', color: '#FF9900' ,marginLeft:5,margin:10}} />
-                总数
+    const Information = 
+    <Row>
+        <Col span={5}>
+         <div className='statisticsBigBox'>
+            <div style={{margin:6,fontSize:'large',fontWeight:"bold"}}>企业主体总计数量</div>
+            <div style={{height:1,width:'100%',background: '#E6E9EC'}}></div>
+            <div style={{fontSize:34,color:"RGB(38, 167, 220)",fontWeight:400}}>
+                <img src={require("./img/市场主体图标.png")} style={{height:50,margin:15}} alt=""/>
+                {this.state.total||''}
             </div>
-            <div style={{margin:10,marginLeft:5}}>数量: {this.state.total||''} 家</div>
+            <div style={{float:"right",margin:5}}>单位：家</div>
         </div>
+        </Col>
+
+        <Col span={5}>
+            <Row>
+                <div className='statisticsLittleBox'>
+                <Row>
+                    <Col span={5}><img src={require("./img/公司类.png")} style={{height:40,marginTop:14,marginLeft:11}} alt=""/></Col>
+                    <Col span={1}offset={1}><div style={{height:69,width:1,background: '#E6E9EC'}}></div></Col>
+                    <Col span={6}><div style={{marginTop:20,fontSize:'large',fontWeight:"bold"}}>公司类</div> </Col>
+                    <Col span={6}offset={1}><div style={{fontSize:34,color:"RGB(38, 167, 220)",fontWeight:400,marginTop:4}}>9821</div></Col>
+                </Row>
+                    <div style={{float:"right",marginTop:-20}}>单位：家</div>
+                 </div>
+            </Row>
+
+            <Row style={{marginTop:10}}>
+                <div className='statisticsLittleBox'>
+                <Row>
+                    <Col span={5}><img src={require("./img/个体类.png")} style={{height:40,marginTop:14,marginLeft:11}} alt=""/></Col>
+                    <Col span={1}offset={1}><div style={{height:69,width:1,background: '#E6E9EC'}}></div></Col>
+                    <Col span={6}><div style={{marginTop:20,fontSize:'large',fontWeight:"bold"}}>个体类</div> </Col>
+                    <Col span={6}offset={1}><div style={{fontSize:34,color:"RGB(38, 167, 220)",fontWeight:400,marginTop:4}}>9821</div></Col>
+                </Row>
+                    <div style={{float:"right",marginTop:-20}}>单位：家</div>
+                </div>
+            </Row>
+        </Col>
+       
+    </Row>
             {/* 以下为旧版的根据 行业类别 统计信息 */}
         {/* {(this.props.industryList||[]).map((item)=>
         {return (this.state.statistics||{})[item.id]?<div className='topBox'>
@@ -534,7 +583,7 @@ render() {
             <div style={{margin:10,marginLeft:5}}>数量: {(this.state.statistics||{})[item.id]} 家</div>
         </div>:<div></div>}
             )} */}
-        </div>
+        
 
     return (
         <div ref="enterprise">
@@ -542,20 +591,24 @@ render() {
                 <Row>
                     <Col span={3}>
                         {this.props.userType==1?null:
-                        <div style={{marginLeft:'3em'}}>
+                        <div style={{marginLeft:'1.5em'}}>
                             <Row style={{marginBottom:5}}> 
-                                <span style={{marginLeft:'15%',fontSize:'x-large',color:'RGB(63, 127, 189)',fontWeight:"bold"}}>操作台</span>
+                                <span style={{marginLeft:'20%',fontSize:'x-large',color:'RGB(63, 127, 189)',fontWeight:"bold"}}>操作台</span>
                             </Row>
                             <Row>
-                                <Button icon="search" size='large' style={{marginBottom:5}} onClick={()=>this.setState({headStatus:false})}>数据查询</Button>     
+                                <div style={{marginBottom:5,width:135,height:45,cursor: "pointer"}} onClick={()=>this.setState({headStatus:false})}>
+                                    {this.state.headStatus == false?<img src={require("./img/数据查询【开】.png")} style={{height:'100%'}} alt=""/>:<img src={require("./img/数据查询【关】.png")} style={{height:'100%'}} alt=""/>}
+                                </div>     
                             </Row>
                             <Row> 
-                                <Button icon="desktop" size='large' style={{marginTop:5}} onClick={()=>this.setState({headStatus:true})}>数据统计</Button>
+                                <div  style={{marginTop:5,width:135,height:45,cursor: "pointer"}} onClick={()=>this.setState({headStatus:true})}>
+                                {this.state.headStatus?<img src={require("./img/数据统计【开】.png")} style={{height:'100%'}} alt=""/>:<img src={require("./img/数据统计【关】.png")} style={{height:'100%'}} alt=""/>}
+                                </div>
                             </Row>
                         </div>}
                     </Col>
                     <Col span={1}>
-                    <div style={{width:1,height:160,background: 'rgba(0, 0, 0, 0.15)'}}></div>
+                    <div style={{width:1,height:180,background: 'rgba(0, 0, 0, 0.15)'}}></div>
                     </Col>
                     <Col span={20}  style={{marginLeft:'-7em'}}>
                         {this.props.userType==1?null:
@@ -593,7 +646,7 @@ render() {
                             }}>
                         <Button style={{backgroundColor:'RGB(255, 153, 0)',color:'white'}}>数据导入</Button>
                     </Upload>:null}
-                    <Button style={{backgroundColor:'RGB(204, 153, 0)',color:'white'}}>数据导出</Button>
+                    {/* <Button style={{backgroundColor:'RGB(204, 153, 0)',color:'white'}}>数据导出</Button> */}
                     {/* <Button style={{backgroundColor:'RGB(102, 204, 255)',color:'white'}}>模板下载</Button> */}
                 </div>
 

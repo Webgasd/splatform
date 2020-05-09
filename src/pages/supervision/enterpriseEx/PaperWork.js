@@ -110,7 +110,7 @@ function getBase64(img, callback) {
             );
         }
         let input = {...this.props.input}
-        input.frontDoorPhoto=[file];
+        input.propagandaEnclosure=[file];
         this.props.changeEnterprise(input);
     };
     
@@ -118,9 +118,9 @@ function getBase64(img, callback) {
         const formData=this.props.input||{};
         const checkStatus = this.props.type=='detail'?true:false;
         const { previewVisible, previewImage,modifyVisible } = this.state;
-        //    下面为贴过来的，有问题
+        //    下方处理门头照片
         const imageUrl = this.state.imageUrl||'';
-        const frontDoorPhoto = this.props.input.frontDoorPhoto||[];
+        const propagandaEnclosure = this.props.input.propagandaEnclosure||[];
         const uploadButton = (
             <div>
                 <Icon type={this.state.loading ? 'loading' : 'plus'} />
@@ -143,13 +143,13 @@ function getBase64(img, callback) {
                                     showUploadList={false}
                                     accept='image/png,image/jpeg'
                                     action={commonUrl+"/upload/uploadPicture"}
-                                    fileList={frontDoorPhoto}
+                                    fileList={propagandaEnclosure}
                                     onChange={this.handleChange}
                                 >
                                     {imageUrl?<img style={{height:'10%'}} src={imageUrl}  alt="avatar" />:
                                         (
-                                            frontDoorPhoto.length>=1&&!this.state.loading?
-                                            <img style={{height:'10%'}} src={commonUrl+"/upload/picture/"+frontDoorPhoto[0].response.data}  alt="avatar"/>
+                                            propagandaEnclosure.length>=1&&!this.state.loading?
+                                            <img style={{height:'10%'}} src={commonUrl+"/upload/picture/"+propagandaEnclosure[0].response.data}  alt="avatar"/>
                                             :uploadButton
                                         )
                                     }
