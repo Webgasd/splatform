@@ -11,6 +11,7 @@ const ShowPoint = loadable(()=>import('../../pages/grid/showPoint'));
 const DrawGrid = loadable(()=>import('../../pages/grid/drawGrid'));
 const ShowGrid = loadable(()=>import('../../pages/grid/showGrid'));
 const SmileMap = loadable(()=>import('../../pages/grid/smileMap'));
+const DataMap = loadable(()=>import('../../pages/supervision/map'));
 const RoleManager = loadable(()=>import('../../pages/permission/roleManager'));
 const PermManager = loadable(()=>import('../../pages/permission/permManger'));
 const DeptManger = loadable(()=>import('../../pages/permission/deptManager'));
@@ -186,6 +187,8 @@ export default class Content extends Component{
                 return <ShowGrid/>
             case '/grid/smileMap':
                 return <SmileMap/>
+            case '/dataMap':
+                return <DataMap/>
             case '/person/employee':
                 return <Employee/>
             case '/person/goverment':
