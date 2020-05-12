@@ -83,7 +83,7 @@ class LicenseInfo extends Component{
         let permissionList=[]
 
         if(data.foodBusinessList){
-            permissionList.push("foodbusiness")
+            permissionList.push("foodBusiness")
         }
         if(data.smallCaterList){
             permissionList.push("smallCater")
