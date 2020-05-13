@@ -82,34 +82,34 @@ class LicenseInfo extends Component{
         const data = this.props.input||{}
         let permissionList=[]
 
-        if(data.foodBusinessList){
-            permissionList.push("foodbusiness")
+        if(data.foodBusinessList.length !== 0){
+            permissionList.push("foodBusiness")
         }
-        if(data.smallCaterList){
+        if(data.smallCaterList.length !== 0){
             permissionList.push("smallCater")
         }
-        if(data.smallWorkshopList){
+        if(data.smallWorkshopList.length !== 0){
             permissionList.push("smallWorkshop")
         }
-        if(data.foodProduceList){
+        if(data.foodProduceList.length !== 0){
             permissionList.push("foodProduce")
         }
-        if(data.drugsBusinessList){
+        if(data.drugsBusinessList.length !== 0){
             permissionList.push("drugsBusiness")
         }
-        if(data.drugsProduceList){
+        if(data.drugsProduceList.length !== 0){
             permissionList.push("drugsProduce")
         }
-        if(data.cosmeticsList){
+        if(data.cosmeticsList.length !== 0){
             permissionList.push("cosmetics")
         }
-        if(data.medicalProduceList){
+        if(data.medicalProduceList.length !== 0){
             permissionList.push("medicalProduce")
         }
-        if(data.medicalBusinessList){
+        if(data.medicalBusinessList.length !== 0){
             permissionList.push("medicalBusiness")
         }
-        if(data.industrialProductsList){
+        if(data.industrialProductsList.length !== 0){
             permissionList.push("industrialProducts")
         }
 

@@ -376,6 +376,11 @@ import Abnormal from './childrenForm/Abnormal'
             }
         })
     }
+    openStatisticBox=()=>{
+        this.setState({
+            statisticBoxVisible:true
+        })
+    }
     
 
 render() {
@@ -546,30 +551,74 @@ render() {
         </div>
         </Col>
 
-        <Col span={5}>
+        <Col span={5} style={{marginLeft:36}}>
             <Row>
                 <div className='statisticsLittleBox'>
                 <Row>
                     <Col span={5}><img src={require("./img/公司类.png")} style={{height:40,marginTop:14,marginLeft:11}} alt=""/></Col>
                     <Col span={1}offset={1}><div style={{height:69,width:1,background: '#E6E9EC'}}></div></Col>
                     <Col span={6}><div style={{marginTop:20,fontSize:'large',fontWeight:"bold"}}>公司类</div> </Col>
-                    <Col span={6}offset={1}><div style={{fontSize:34,color:"RGB(38, 167, 220)",fontWeight:400,marginTop:4}}>9821</div></Col>
+                    <Col span={6}offset={1}><div style={{fontSize:34,color:"RGB(38, 167, 220)",fontWeight:400,marginTop:4}}>***</div></Col>
                 </Row>
                     <div style={{float:"right",marginTop:-20}}>单位：家</div>
                  </div>
             </Row>
-
             <Row style={{marginTop:10}}>
                 <div className='statisticsLittleBox'>
                 <Row>
                     <Col span={5}><img src={require("./img/个体类.png")} style={{height:40,marginTop:14,marginLeft:11}} alt=""/></Col>
                     <Col span={1}offset={1}><div style={{height:69,width:1,background: '#E6E9EC'}}></div></Col>
                     <Col span={6}><div style={{marginTop:20,fontSize:'large',fontWeight:"bold"}}>个体类</div> </Col>
-                    <Col span={6}offset={1}><div style={{fontSize:34,color:"RGB(38, 167, 220)",fontWeight:400,marginTop:4}}>9821</div></Col>
+                    <Col span={6}offset={1}><div style={{fontSize:34,color:"RGB(38, 167, 220)",fontWeight:400,marginTop:4}}>***</div></Col>
                 </Row>
                     <div style={{float:"right",marginTop:-20}}>单位：家</div>
                 </div>
             </Row>
+        </Col>
+
+        <Col span={5} style={{marginLeft:-28}}>
+            <Row>
+                <div className='statisticsLittleBox'>
+                <Row>
+                    <Col span={5}><img src={require("./img/合作社.png")} style={{height:40,marginTop:14,marginLeft:11}} alt=""/></Col>
+                    <Col span={1}offset={1}><div style={{height:69,width:1,background: '#E6E9EC'}}></div></Col>
+                    <Col span={6}><div style={{marginTop:20,fontSize:'large',fontWeight:"bold"}}>合作社</div> </Col>
+                    <Col span={6}offset={1}><div style={{fontSize:34,color:"RGB(38, 167, 220)",fontWeight:400,marginTop:4}}>***</div></Col>
+                </Row>
+                    <div style={{float:"right",marginTop:-20}}>单位：家</div>
+                 </div>
+            </Row>
+            <Row style={{marginTop:10}}>
+                <div className='statisticsLittleBox'>
+                <Row>
+                    <Col span={5}><img src={require("./img/其他类.png")} style={{height:40,marginTop:14,marginLeft:11}} alt=""/></Col>
+                    <Col span={1}offset={1}><div style={{height:69,width:1,background: '#E6E9EC'}}></div></Col>
+                    <Col span={6}><div style={{marginTop:20,fontSize:'large',fontWeight:"bold"}}>其他类</div> </Col>
+                    <Col span={6}offset={1}><div style={{fontSize:34,color:"RGB(38, 167, 220)",fontWeight:400,marginTop:4}}>***</div></Col>
+                </Row>
+                    <div style={{float:"right",marginTop:-20}}>单位：家</div>
+                </div>
+            </Row>
+        </Col>
+
+        <Col span={2} style={{marginLeft:-20}}>
+            <div className='statisticsJumpBox' onClick={()=>this.openStatisticBox()}>
+                <img src={require("./img/市场主体图标.png")} style={{height:52,marginTop:35,marginLeft:33}} alt=""/>
+                <div style={{color:"RGB(38, 167, 220)",marginTop:20,marginLeft:25}}>加载更多</div>
+                </div>
+        </Col>
+        <Col span={7} style={{marginLeft:10}}>
+            <div className='statisticsTipsBox'>
+                <div style={{color:"RGB(153, 204, 51)",marginTop:10,marginLeft:7,fontSize:'medium'}}>状态提示:</div>
+                <div style={{height:1,width:'100%',background: '#E6E9EC',marginTop:5}}></div>
+                <div>
+                    <div style={{width:30,height:15,background:'RGB(255, 118, 95)',borderRadius:5,float:"left",margin:20}}></div>
+                    <div style={{marginTop:16,float:"left"}}>许可证超期报警</div>
+                    <br/>
+                    <div style={{width:30,height:15,background:'RGB(253, 221, 110)',borderRadius:5,marginTop:33,marginLeft:20}}></div>
+                    <div style={{marginTop:-19,marginLeft:72,float:"left"}}>许可证超期预警（30天内）</div>
+                </div>
+            </div>
         </Col>
        
     </Row>
@@ -741,6 +790,26 @@ render() {
                         dispatchAbnormalData={(data)=>{this.setState({abnormalData:data})}}
                 />
             </Modal>
+            {/* <Modal
+                title={"数据统计"}
+                visible={this.state.statisticBoxVisible}
+                destroyOnClose
+                footer={null}
+                maskClosable={false}
+                width={800}
+                onCancel={()=>{
+                    this.setState({
+                        isAbnormalVisible:false,
+                        enterpriseData:'',
+                        abnormalData:''
+                    })
+                }}
+            >
+                <Abnormal enterpriseData={this.state.enterpriseData||{}}
+                         abnormalData = {this.state.abnormalData||{}}
+                        dispatchAbnormalData={(data)=>{this.setState({abnormalData:data})}}
+                />
+            </Modal> */}
         </div>
     );
 }
