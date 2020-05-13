@@ -82,34 +82,34 @@ class LicenseInfo extends Component{
         const data = this.props.input||{}
         let permissionList=[]
 
-        if(data.foodBusinessList.length !== 0){
+        if(data.foodBusinessList&&data.foodBusinessList.length !== 0){
             permissionList.push("foodBusiness")
         }
-        if(data.smallCaterList.length !== 0){
+        if(data.smallCaterList&&data.smallCaterList.length !== 0){
             permissionList.push("smallCater")
         }
-        if(data.smallWorkshopList.length !== 0){
+        if(data.smallWorkshopList&&data.smallWorkshopList.length !== 0){
             permissionList.push("smallWorkshop")
         }
-        if(data.foodProduceList.length !== 0){
+        if(data.foodProduceList&&data.foodProduceList.length !== 0){
             permissionList.push("foodProduce")
         }
-        if(data.drugsBusinessList.length !== 0){
+        if(data.drugsBusinessList&&data.drugsBusinessList.length !== 0){
             permissionList.push("drugsBusiness")
         }
-        if(data.drugsProduceList.length !== 0){
+        if(data.drugsProduceList&&data.drugsProduceList.length !== 0){
             permissionList.push("drugsProduce")
         }
-        if(data.cosmeticsList.length !== 0){
+        if(data.cosmeticsList&&data.cosmeticsList.length !== 0){
             permissionList.push("cosmetics")
         }
-        if(data.medicalProduceList.length !== 0){
+        if(data.medicalProduceList&&data.medicalProduceList.length !== 0){
             permissionList.push("medicalProduce")
         }
-        if(data.medicalBusinessList.length !== 0){
+        if(data.medicalBusinessList&&data.medicalBusinessList.length !== 0){
             permissionList.push("medicalBusiness")
         }
-        if(data.industrialProductsList.length !== 0){
+        if(data.industrialProductsList&&data.industrialProductsList.length !== 0){
             permissionList.push("industrialProducts")
         }
 
