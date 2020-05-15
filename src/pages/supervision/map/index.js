@@ -25,6 +25,7 @@ import { SearchOutlined } from '@ant-design/icons';
 import axios from "../../../axios";
 import ReactEcharts from 'echarts-for-react'
 const { Search } = Input;
+
 export default class map extends React.Component{
     state={
         iCount:0,
@@ -40,8 +41,32 @@ export default class map extends React.Component{
         searchType:1,
 
     }
+    params = {
+        pageNo:1,
+        industryList:'',
+        areaList:''
+    }
 
     componentDidMount() {
+
+        // axios.PostAjax({
+        //     url: "/grid/points/getSmilePoints",
+        //     data: {
+        //         params:{
+        //             ...this.params,
+        //             areaList:[this.params.areaList],
+        //             industryList:[this.params.industryList],
+        //         }
+        //     }
+        // }).then(
+        //         res => this.setData(res)
+        //     )
+        //     .catch(e => console.log(e))
+        //     .finally(() => {
+        //         this.setState({
+        //             requestLoading: false
+        //         })
+        //     })
 
         // let params={}
         // fetchPost("http://localhost:8080/back/grid/points/getSmilePoints1",params)
@@ -112,9 +137,9 @@ export default class map extends React.Component{
     render(){
         const {iCount,cCount,qCount,hCount}=this.state;
         return (
-            <div style ={{width:"1340px"}}>
+            <div style ={{width:"100%"}}>
                 <div id="leftPanel" >
-                <div id="topPanel" className="grayBox">
+                    <div id="topPanel" className="grayBox">
                     <div className="rightGrayBox" style={{textAlign:"center",width:"100px",fontSize:"18px",color:"#1890ff",float:"left" }}>
                         <div style={{fontWeight: "bold"}}>数据地图</div>
                         <div style={{fontWeight: "bold"}}>控制台</div>
@@ -123,7 +148,7 @@ export default class map extends React.Component{
                         <div className="rightGrayBox" style={{width: "45px", float: "left"}}>
                             <img src={a0}  width="30px"/></div>
                         <div style={{marginTop: "5px", fontWeight: "bold"}}  onClick={()=>this.Map.onlyDisplay(0)}>市场主体</div>
-                        &nbsp;<span > &nbsp;</span>
+                        &nbsp;<span >{iCount+cCount+qCount+hCount}&nbsp;</span>
                     </div>
                     <div className="grayBox omStat">
                         <div className="rightGrayBox" style={{width:"45px",float:"left"}}><img src={i1} width="30px"/></div>
@@ -154,9 +179,9 @@ export default class map extends React.Component{
                     </div>
 
                 </div>
-                <div style ={{width:"1020px",height:"630px",border:"5px solid #DCDCDC"}} className="grayBox">
-                    <Map ref={this.onRef} transferValue={value=>this.setStateFromMap(value)} />
-                </div>
+                    <div style ={{width:"100%",height:"630px",border:"5px solid #DCDCDC"}} className="grayBox">
+                        <Map ref={this.onRef} transferValue={value=>this.setStateFromMap(value)} />
+                    </div>
                 </div>
                 <div id="rightPanel" >
                     <div className="grayBox" style ={{width:"300px",height:"100px",marginBottom:"5px"}}>

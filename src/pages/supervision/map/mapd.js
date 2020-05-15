@@ -20,6 +20,7 @@ import nav3 from "./images/nav3.png";
 import nav4 from "./images/nav4.png";
 import { message } from 'antd';
 // import {fetchPost1} from "../../../static/util/fetch";
+import axios from "../../../axios";
 const AMap = window.AMap;
 
 export default class mapd extends React.Component {
@@ -47,6 +48,11 @@ export default class mapd extends React.Component {
         detailDisplay:"none",
         requestLoading: true,
     }
+     params = {
+        pageNo:1,
+        industryList:'',
+        areaList:''
+    }
 
     componentDidMount() {
         this.map = new AMap.Map("container", {
@@ -58,27 +64,32 @@ export default class mapd extends React.Component {
         this.map.on('click', ()=> {
             this.setState({detailDisplay:"none"})
         });
-        AMap.plugin('AMap.Geocoder', function(){
-            this.geocoder = new AMap.Geocoder({
-            city: "370500", //城市设为东营
+        let geocoder;
+        AMap.plugin('AMap.Geocoder', function() {
+            geocoder = new AMap.Geocoder({
+                city: "370500",
+                // city: '东营'
             });
-        });
-       
+        })
+        
+        // this.geocoder = new AMap.Geocoder({
+        //     city: "370500", //城市设为东营
+        // });
 
-        // this.setData(global.constants.mapData);
-       //  let params={}
-       //  fetchPost1("http://localhost:8080/back/grid/points/getSmilePoints1",params)
-       //      .then(
-       //          res => this.setData(res)
-       //      ).catch(e => console.log(e))
-       //      .finally(() => {
-       //          this.setState({
-       //              requestLoading: false
-       //          })
-       //      })
-
-
-
+        axios.PostAjax({
+            url: "/grid/points/getSmilePoints",
+            data: {
+                params:{
+                    ...this.params,
+                    areaList:[this.params.areaList],
+                    industryList:[this.params.industryList],
+                }
+            }
+        }).then((res)=>{
+            if(res.status == "success"){
+                this.setData(res.data)
+            }
+        })
     }
 
     displayMakers=()=>{//先加再减，实现企业主体和状态二维操作
@@ -136,7 +147,13 @@ export default class mapd extends React.Component {
             this.detailDispaly({});
         }
         let marker = new AMap.Marker();
-        this.geocoder.getLocation(address, (status, result)=> {
+        let geocoder;
+        AMap.plugin('AMap.Geocoder', function() {
+            geocoder = new AMap.Geocoder({
+                city: "370500",
+                // city: '东营'
+            });
+            geocoder.getLocation(address, (status, result)=> {
             if (status === 'complete' && result.geocodes.length) {
                 var lnglat = result.geocodes[0].location
                 marker.setPosition(lnglat);
@@ -145,6 +162,8 @@ export default class mapd extends React.Component {
                 message.info('根据地址查询位置失败');
             }
         })
+        })
+        
     }
     markerClick = (e) => {
         if(this.map.getZoom()===18) {
@@ -237,7 +256,7 @@ export default class mapd extends React.Component {
     render() {
         return (
             <div>
-                <div id="container" style={{width: "1010px", height: "620px"}}></div>
+                <div id="container" style={{width: "100%", height: "620px"}}></div>
                 <div id="input-card">
                     <div style={{height:"25px",background: "#000", color: "#99FFFF",padding:"2px"}}>
                         &nbsp;&nbsp;企业定位坐标</div>

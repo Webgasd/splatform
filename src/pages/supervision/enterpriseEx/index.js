@@ -12,7 +12,8 @@ import {connect} from "react-redux";
 import {changeEnterprise, clearEnterprise} from '../../../redux/action'
 import {commonUrl} from "../../../axios/commonSrc";
 import {baseUrl} from "../../../axios/commonSrc";
-import Abnormal from './childrenForm/Abnormal'
+import Abnormal from './childrenForm/Abnormal';
+import StatisticBox from './childrenForm/StatisticBox'
 
 @connect(
     state=>({
@@ -50,12 +51,17 @@ import Abnormal from './childrenForm/Abnormal'
     }
 
     requestStatistics=()=>{
-        axios.noLoadingAjax({
-            url:'/supervision/enterprise/getStatistics',
+        axios.PostAjax({
+            url:'/supervision/enterprise/getCountPC',
             data: {
-                params:{}
+                params:{
+                    ...this.params,
+                    areaList:[this.params.areaList],
+                    industryList:[this.params.industryList],
+                    indexNum:0
+                }
             }
-        }).then((res)=>{console.log(res)
+        }).then((res)=>{
             if(res.status == "success"){
                 this.setState({
                     statistics:res.data
@@ -162,39 +168,40 @@ import Abnormal from './childrenForm/Abnormal'
             }
         })
     }
-    // handleDelete = ()=>{
-    //     let item = this.state.selectedItem;
-    //     let _this = this;
-    //         if(!item){
-    //             Modal.info({
-    //                 title: '信息',
-    //                 content: '请选择一个用户'
-    //             })
-    //             return;
-    //         }
-    //         Modal.confirm({
-    //             content:'确定要删除此用户吗？',
-    //             onOk:()=>{
-    //                 axios.ajax({
-    //                     url:'/post.json',
-    //                     data:{
-    //                         params:{
-    //                             id:item.id
-    //                         }
-    //                     }
-    //                 }).then((res)=>{
-    //                     if(res.status == "success"){
-    //                         _this.setState({
-    //                             isVisible:false
-    //                         })
-    //                         _this.requestList();
-    //                     }
-    //                 })
-    //             }
+    handleDelete = ()=>{
+        let item = this.state.selectedItem;
+        let _this = this;
+            if(!item){
+                Modal.info({
+                    title: '信息',
+                    content: '请选择一个用户'
+                })
+                return;
+            }
+            Modal.confirm({
+                content:'确定要删除此用户吗？',
+                onOk:()=>{
+                    axios.ajax({
+                        url:'/post.json',
+                        data:{
+                            params:{
+                                id:item.id
+                            }
+                        }
+                    }).then((res)=>{
+                        if(res.status == "success"){
+                            _this.setState({
+                                isVisible:false
+                            })
+                            _this.requestList();
+                        }
+                    })
+                }
 
-    //         })
+            })
            
-    // }
+    }
+
     setRowClassName = (record) => {
    if(moment(record.endTime).isBetween(moment(),moment().add(1,'month')) ){
         return 'warningRowStyl';
@@ -291,37 +298,7 @@ import Abnormal from './childrenForm/Abnormal'
                 }
             })
         }
-        // 原停用状态
-        // else if(type=="stop"){
-        //     Modal.confirm({
-        //         text:'信息',
-        //         content:item.isStop==0?'是否确定停用':'是否确定启用',
-        //         onOk:()=>{
-        //             axios.ajax({
-        //                 url: '/supervision/enterprise/changeStop',
-        //                 data: {
-        //                     params: {
-        //                         id: item.id
-        //                     }
-        //                 }
-        //             }).then((res)=>{
-        //                 if(res.status == 'success'){
-        //                     this.requestList();
-        //                 }
-        //             })
-        //         }
-        //     })
-        // }
-        // 原地图定位
-        // else if(type=="map"){
-        //     this.setState({
-        //         title:type=='地图定位',
-        //         isMapVisible:true,
-        //         AreaId:item.grid,
-        //         enterpriseId:item.id,
-        //         type
-        //     })
-        // }
+
     }
     updateAndTransform=()=>{
         axios.ajax({
@@ -385,6 +362,8 @@ import Abnormal from './childrenForm/Abnormal'
 
 render() {
     let _this =this;
+    console.log(this.state)
+    const statistics = this.state.statistics ||{}
     const columns = [
         {
             title: '主体分类',
@@ -558,7 +537,7 @@ render() {
                     <Col span={5}><img src={require("./img/公司类.png")} style={{height:40,marginTop:14,marginLeft:11}} alt=""/></Col>
                     <Col span={1}offset={1}><div style={{height:69,width:1,background: '#E6E9EC'}}></div></Col>
                     <Col span={6}><div style={{marginTop:20,fontSize:'large',fontWeight:"bold"}}>公司类</div> </Col>
-                    <Col span={6}offset={1}><div style={{fontSize:34,color:"RGB(38, 167, 220)",fontWeight:400,marginTop:4}}>***</div></Col>
+                    <Col span={6}offset={1}><div style={{fontSize:34,color:"RGB(38, 167, 220)",fontWeight:400,marginTop:4}}>{statistics?statistics.enterprise:''}</div></Col>
                 </Row>
                     <div style={{float:"right",marginTop:-20}}>单位：家</div>
                  </div>
@@ -569,7 +548,7 @@ render() {
                     <Col span={5}><img src={require("./img/个体类.png")} style={{height:40,marginTop:14,marginLeft:11}} alt=""/></Col>
                     <Col span={1}offset={1}><div style={{height:69,width:1,background: '#E6E9EC'}}></div></Col>
                     <Col span={6}><div style={{marginTop:20,fontSize:'large',fontWeight:"bold"}}>个体类</div> </Col>
-                    <Col span={6}offset={1}><div style={{fontSize:34,color:"RGB(38, 167, 220)",fontWeight:400,marginTop:4}}>***</div></Col>
+                    <Col span={6}offset={1}><div style={{fontSize:34,color:"RGB(38, 167, 220)",fontWeight:400,marginTop:4}}>{statistics?statistics.individual:''}</div></Col>
                 </Row>
                     <div style={{float:"right",marginTop:-20}}>单位：家</div>
                 </div>
@@ -583,7 +562,7 @@ render() {
                     <Col span={5}><img src={require("./img/合作社.png")} style={{height:40,marginTop:14,marginLeft:11}} alt=""/></Col>
                     <Col span={1}offset={1}><div style={{height:69,width:1,background: '#E6E9EC'}}></div></Col>
                     <Col span={6}><div style={{marginTop:20,fontSize:'large',fontWeight:"bold"}}>合作社</div> </Col>
-                    <Col span={6}offset={1}><div style={{fontSize:34,color:"RGB(38, 167, 220)",fontWeight:400,marginTop:4}}>***</div></Col>
+                    <Col span={6}offset={1}><div style={{fontSize:34,color:"RGB(38, 167, 220)",fontWeight:400,marginTop:4}}>{statistics?statistics.cooperation:''}</div></Col>
                 </Row>
                     <div style={{float:"right",marginTop:-20}}>单位：家</div>
                  </div>
@@ -594,7 +573,7 @@ render() {
                     <Col span={5}><img src={require("./img/其他类.png")} style={{height:40,marginTop:14,marginLeft:11}} alt=""/></Col>
                     <Col span={1}offset={1}><div style={{height:69,width:1,background: '#E6E9EC'}}></div></Col>
                     <Col span={6}><div style={{marginTop:20,fontSize:'large',fontWeight:"bold"}}>其他类</div> </Col>
-                    <Col span={6}offset={1}><div style={{fontSize:34,color:"RGB(38, 167, 220)",fontWeight:400,marginTop:4}}>***</div></Col>
+                    <Col span={6}offset={1}><div style={{fontSize:34,color:"RGB(38, 167, 220)",fontWeight:400,marginTop:4}}>{statistics?statistics.others:''}</div></Col>
                 </Row>
                     <div style={{float:"right",marginTop:-20}}>单位：家</div>
                 </div>
@@ -622,18 +601,8 @@ render() {
         </Col>
        
     </Row>
-            {/* 以下为旧版的根据 行业类别 统计信息 */}
-        {/* {(this.props.industryList||[]).map((item)=>
-        {return (this.state.statistics||{})[item.id]?<div className='topBox'>
-            <div style={{fontSize:16,color:"#000000",fontWeight:1000}}>
-                <Icon type="profile" style={{ fontSize: '25px', color: '#FF9900' ,marginLeft:5,margin:10}} />
-                {item.name}
-            </div>
-            <div style={{margin:10,marginLeft:5}}>数量: {(this.state.statistics||{})[item.id]} 家</div>
-        </div>:<div></div>}
-            )} */}
-        
 
+        
     return (
         <div ref="enterprise">
             <Card style={{marginTop:10,marginLeft:30,marginRight:30}}>
@@ -670,7 +639,7 @@ render() {
 
             <Card style={{marginTop:10,marginRight:30,marginLeft:30}}>
                 <div className='button-box-left'>
-                    <Button style={{color:'red'}}>批量删除</Button>
+                    <Button style={{color:'red'}} onClick={()=>this.handleDelete()} >批量删除</Button>
                 </div>
                 <div className='button-box'>
                     {this.props.acl.indexOf('/add')>-1?<Button type="primary" onClick={()=>this.handleOperator('create',null)}>新增</Button>:null}
@@ -790,26 +759,22 @@ render() {
                         dispatchAbnormalData={(data)=>{this.setState({abnormalData:data})}}
                 />
             </Modal>
-            {/* <Modal
+            <Modal
                 title={"数据统计"}
                 visible={this.state.statisticBoxVisible}
                 destroyOnClose
                 footer={null}
-                maskClosable={false}
-                width={800}
+                width={1000}
                 onCancel={()=>{
                     this.setState({
-                        isAbnormalVisible:false,
-                        enterpriseData:'',
-                        abnormalData:''
+                        statisticBoxVisible:false,
                     })
                 }}
             >
-                <Abnormal enterpriseData={this.state.enterpriseData||{}}
-                         abnormalData = {this.state.abnormalData||{}}
-                        dispatchAbnormalData={(data)=>{this.setState({abnormalData:data})}}
-                />
-            </Modal> */}
+                <StatisticBox
+                 total = {this.state.total ||{}}
+                 />
+            </Modal>
         </div>
     );
 }

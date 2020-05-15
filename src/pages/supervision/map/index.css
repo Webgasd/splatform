@@ -13,15 +13,16 @@
 #leftPanel{
     float:left;
     margin:10px;
+    width:74%;
 }
 #rightPanel{
-    width:300px;
+    width:24%;
     height:710px;
     float:right;
     margin-top:10px;
 }
 #topPanel{
-    width:1020px;
+    width:100%;
     height:70px;
     border:1px solid #DCDCDC;
     margin:0 auto;
