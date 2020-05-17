@@ -21,10 +21,14 @@ import nav4 from "./images/nav4.png";
 import { message } from 'antd';
 // import {fetchPost1} from "../../../static/util/fetch";
 import axios from "../../../axios";
+import {commonUrl} from "../../../axios/commonSrc";
 const AMap = window.AMap;
 
 export default class mapd extends React.Component {
-    state = {
+    constructor(props){
+        super(props);
+
+    this.state = {
         datai1: [],
         datai2: [],
         datai3: [],
@@ -39,15 +43,18 @@ export default class mapd extends React.Component {
         dataq3: [],
         t1:0,//全部，企业，个体，合作社，其他
         t2:0,//全部，新增，正常，异常
-        companyPic:cp,
-        companyName:"东营区荣欣超市有限公司",
-        companyBoss:"王小二",
-        companyTel:"1554466778",
-        companyId:"234239084JK9w403",
-        companyAddress:"东营市东营区上独领上可上书法家深刻理解的0923号",
+        propagandaEnclosure:[],
+        enterpriseName:"东营区荣欣超市有限公司",
+        legalPerson:"王小二",
+        cantactWay:"1554466778",
+        idNumber:"234239084JK9w403",
+        registeredAddress:"东营市东营区上独领上可上书法家深刻理解的0923号",
         detailDisplay:"none",
         requestLoading: true,
     }
+    window.detailDispaly=(value)=>this.detailDispaly(value);
+    }
+    
      params = {
         pageNo:1,
         industryList:'',
@@ -143,56 +150,96 @@ export default class mapd extends React.Component {
         this.setState({t2:t2},()=>{ this.displayMakers()});
     }
     changePosition =(searchType,address)=>{
+        let that = this;
         if(searchType=="1"){
-            this.detailDispaly({});
+            
+            axios.PostAjax({
+                url: "/grid/points/getSmilePoints",
+                data: {
+                    params:{
+                        ...that.params,
+                        areaList:[that.params.areaList],
+                        industryList:[that.params.industryList],
+                        enterpriseName:address
+                    }
+                }
+            }).then((res)=>{
+                if(res.status == "success" && res.data.length >= 1){
+                    let position1 = res.data[0].point.split(',')
+                    let marker = new AMap.Marker();
+                    marker = new AMap.Marker({
+                        position: position1,   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
+                        draggable:false
+                    });
+                    that.map.add(marker);
+                    that.map.setFitView(marker);
+                    that.detailDispaly(JSON.stringify({}));
+                }
+                else{
+                    message.error("未搜索到该企业")
+                }
+            })
         }
-        let marker = new AMap.Marker();
-        let geocoder;
+        else{
+            let marker = new AMap.Marker();
+            let geocoder;
+        
         AMap.plugin('AMap.Geocoder', function() {
             geocoder = new AMap.Geocoder({
-                city: "370500",
+                // city 指定进行编码查询的城市，支持传入城市名、adcode 和 citycode
                 // city: '东营'
             });
-            geocoder.getLocation(address, (status, result)=> {
+        geocoder.getLocation(address, (status, result)=> {
             if (status === 'complete' && result.geocodes.length) {
                 var lnglat = result.geocodes[0].location
-                marker.setPosition(lnglat);
-                this.map.setFitView(marker);
+                message.success("定位成功")
+                marker = new AMap.Marker({
+                    position: lnglat,   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
+                    draggable:false
+                });
+                that.map.add(marker);
+                that.map.setFitView(marker);
             }else{
                 message.info('根据地址查询位置失败');
             }
         })
-        })
+    })
+        }
         
+    
     }
     markerClick = (e) => {
         if(this.map.getZoom()===18) {
-            alert(e.target.makers)
             var infoWindow = new AMap.InfoWindow({offset: new AMap.Pixel(0, -30)});
             let content = "<div style='max-height:200px;width:250px;'>";
             content += "<div style='margin-top:-7px;font-size:15px;font-weight:bold;color:#d9363e'>同定位企业</div>";
             content += "<div id='companyLists'style='yellow;max-height:100px;width:250px;overflow-y:auto'>"
-
-            // content+="<div class='bottomGrayBox'style='font-size:13px;font-family:黑体;min-width:200px'>" + e.target.content.enterpriseName + "</div>"
-            content += "<div  class='bottomGrayBox'style='font-size:13px;font-family:黑体;min-width:200px'>东营企业1</div>";
-            content += "<div class='bottomGrayBox'style='font-size:13px;font-family:黑体;min-width:200px'>东营企业2</div>";
-            content += "<div class='bottomGrayBox'style='font-size:13px;font-family:黑体;min-width:200px'>东营企业2</div>";
-            content += "<div class='bottomGrayBox'style='font-size:13px;font-family:黑体;min-width:200px'>东营企业2</div>";
-            content += "<div class='bottomGrayBox'style='font-size:13px;font-family:黑体;min-width:200px'>东营企业2</div>";
+            for(let i=0;i<e.markers.length;i++){
+                let asd = JSON.stringify(e.markers[i].content)
+                content += "<div  class='bottomGrayBox'style='font-size:13px;font-family:黑体;min-width:200px;cursor:pointer' onclick= detailDispaly('"+asd+"')>"+e.markers[i].content.enterpriseName+"</div>";
+            }
             content += "</div>";
             content += "</div>";
             infoWindow.setContent(content);
-           // this.setState({detailDisplay: "inline"})
-            let inputs = document.querySelectorAll(".bottomGrayBox");
-            inputs.forEach((list)=> {
-                list.onClick = ()=>alert();
-            });
+
             infoWindow.open(this.map, e.lnglat);
 
         }
     }
+
     detailDispaly =(item)=>{
-        this.setState({detailDisplay:"inline"})
+        let content = JSON.parse(item)
+        this.setState({
+            detailDisplay:"inline",
+            propagandaEnclosure:JSON.parse(content.propagandaEnclosure||JSON.stringify([])),
+            // propagandaEnclosure:content.propagandaEnclosure,
+            enterpriseName:content.enterpriseName,
+            legalPerson:content.legalPerson,
+            cantactWay:content.cantactWay,
+            idNumber:content.idNumber,
+            registeredAddress:content.registeredAddress,
+
+        })
     }
     //赋予表格数据
     setData = (list) => {
@@ -243,7 +290,11 @@ export default class mapd extends React.Component {
         w.location.href='https://www.amap.com/search?query='+this.state.companyAddress
     }
     toNav1=()=>{
-
+        //  this.setState({
+        //     visible:true,
+        // })
+        // let data = this.state.BaseInfo;
+        // this.props.changeEnterprise({...data,propagandaEnclosure:JSON.parse(data.propagandaEnclosure||JSON.stringify([]))});
     }
     toNav2=()=>{
 
@@ -288,14 +339,17 @@ export default class mapd extends React.Component {
                 <div id="companyInfo" >
                     <div className={"bottomGrayBox"}>&nbsp;&nbsp;<img src={detailPic}/>数据信息</div>
                     <div style={{display:this.state.detailDisplay}}>
-                        <img src={this.state.companyPic} width={"300px"} height={"150px"}/>
-                        <div className={"bottomGrayBox"} style={{fontSize: "18px",fontWeight:"bold"}}>&nbsp;&nbsp;{this.state.companyName}</div>
+                        {this.state.propagandaEnclosure.length>=1?
+                            <img src={commonUrl+"/upload/picture/"+this.state.propagandaEnclosure[0].response.data} width={"300px"} height={"150px"}/>:
+                            <img src=""  width={"300px"} height={"150px"}/>
+                        }
+                        <div className={"bottomGrayBox"} style={{fontSize: "18px",fontWeight:"bold"}}>&nbsp;&nbsp;{this.state.enterpriseName}</div>
                         <div className={"bottomGrayBox"} >
-                            法&nbsp;定&nbsp;代&nbsp;表&nbsp;人：{this.state.companyBoss}<br/>
-                            联&nbsp;&nbsp;系&nbsp;&nbsp;&nbsp;电&nbsp;&nbsp;话：{this.state.companyTel}<br/>
-                            统一信用代码：{this.state.companyId}<br/>
+                            法&nbsp;定&nbsp;代&nbsp;表&nbsp;人：{this.state.legalPerson}<br/>
+                            联&nbsp;&nbsp;系&nbsp;&nbsp;&nbsp;电&nbsp;&nbsp;话：{this.state.cantactWay}<br/>
+                            统一信用代码：{this.state.idNumber}<br/>
                             <div style={{float: "left"}}>企&nbsp;&nbsp;业&nbsp;&nbsp;&nbsp;地&nbsp;&nbsp;址：</div>
-                                <div style={{paddingLeft:"100px",width: "290px"}}>{this.state.companyAddress}</div>
+                                <div style={{paddingLeft:"100px",width: "290px"}}>{this.state.registeredAddress}</div>
                             <div style={{height:"10px"}}></div>
                             <div style={{textAlign: "right"}}>
                                 <img src={nav1} onClick={this.toNav1} width='30px' height='30px'/>&nbsp;&nbsp;

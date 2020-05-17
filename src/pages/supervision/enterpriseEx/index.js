@@ -169,24 +169,22 @@ import StatisticBox from './childrenForm/StatisticBox'
         })
     }
     handleDelete = ()=>{
-        let item = this.state.selectedItem;
+        let ids = this.state.selectedIds;
         let _this = this;
-            if(!item){
+            if(!ids){
                 Modal.info({
                     title: '信息',
-                    content: '请选择一个用户'
+                    content: '请选择用户'
                 })
                 return;
             }
             Modal.confirm({
-                content:'确定要删除此用户吗？',
+                content:'确定要删除这些用户吗？',
                 onOk:()=>{
                     axios.ajax({
-                        url:'/post.json',
+                        url:'/supervision/enterprise/delete',
                         data:{
-                            params:{
-                                id:item.id
-                            }
+                            params:{...ids}
                         }
                     }).then((res)=>{
                         if(res.status == "success"){

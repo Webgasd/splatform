@@ -38,48 +38,13 @@ export default class map extends React.Component{
         data:[],
         requestLoading:true,
         position:"",
-        searchType:1,
+        searchType:"1",
 
     }
-    params = {
-        pageNo:1,
-        industryList:'',
-        areaList:''
-    }
+    
 
-    componentDidMount() {
-
-        // axios.PostAjax({
-        //     url: "/grid/points/getSmilePoints",
-        //     data: {
-        //         params:{
-        //             ...this.params,
-        //             areaList:[this.params.areaList],
-        //             industryList:[this.params.industryList],
-        //         }
-        //     }
-        // }).then(
-        //         res => this.setData(res)
-        //     )
-        //     .catch(e => console.log(e))
-        //     .finally(() => {
-        //         this.setState({
-        //             requestLoading: false
-        //         })
-        //     })
-
-        // let params={}
-        // fetchPost("http://localhost:8080/back/grid/points/getSmilePoints1",params)
-        //     .then(
-        //         res => this.setData(res)
-        //     )
-        //     .catch(e => console.log(e))
-        //     .finally(() => {
-        //         this.setState({
-        //             requestLoading: false
-        //         })
-        //     })
-    }
+    componentDidMount() {}
+    
     setStateFromMap=(value)=>{
         this.setState({
             iCount:value.iCount,
