@@ -164,16 +164,28 @@ export default class mapd extends React.Component {
                     }
                 }
             }).then((res)=>{
-                if(res.status == "success" && res.data.length >= 1){
+                if(res.status == "success" && res.data.length == 1){
                     let position1 = res.data[0].point.split(',')
-                    let marker = new AMap.Marker();
-                    marker = new AMap.Marker({
+                    let marker = new AMap.Marker({
                         position: position1,   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
                         draggable:false
-                    });
+                    }); 
                     that.map.add(marker);
-                    that.map.setFitView(marker);
-                    that.detailDispaly(JSON.stringify({}));
+                    that.map.setFitView(marker)
+                    message.success("搜索到一家企业")
+                    that.detailDispaly(JSON.stringify(res.data[0]));
+                }else if(res.status == "success" && res.data.length > 1){
+                    that.map.clearMap()
+                    for(let i in res.data){
+                        let position2 = res.data[i].point.split(',')
+                        let marker = new AMap.Marker({
+                            position: position2,   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
+                            draggable:false
+                        }); 
+                        that.map.add(marker);
+                    }
+                    message.success(`${res.data.length}个搜索结果以标记在地图上`)
+                        that.detailDispaly(JSON.stringify({}));
                 }
                 else{
                     message.error("未搜索到该企业")
@@ -229,7 +241,9 @@ export default class mapd extends React.Component {
 
     detailDispaly =(item)=>{
         let content = JSON.parse(item)
-        this.setState({
+
+        if(content){
+            this.setState({
             detailDisplay:"inline",
             propagandaEnclosure:JSON.parse(content.propagandaEnclosure||JSON.stringify([])),
             // propagandaEnclosure:content.propagandaEnclosure,
@@ -238,8 +252,8 @@ export default class mapd extends React.Component {
             cantactWay:content.cantactWay,
             idNumber:content.idNumber,
             registeredAddress:content.registeredAddress,
-
         })
+        }
     }
     //赋予表格数据
     setData = (list) => {

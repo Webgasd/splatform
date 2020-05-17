@@ -183,7 +183,7 @@ class SelectBox extends Component{
             <div>
                 <div className='commonEnterpriseBox' style={{marginTop:5,height:137}}>
                     
-                    <div className='permission-title-text'>已选许可证</div>
+                    <div className='permission-title-text1'>已选许可证</div>
     
                         {(formData.foodBusinessList?formData.foodBusinessList:[]).map((item,index)=>(  
                         <Button style={{margin:10,backgroundColor:'RGB(246, 246, 246)',color:'RGB(0,51,153)'}} onClick={()=>{this.handeDelete(index,"食品经营")}}>{"食品经营"+(index>0?index+1:'')}</Button>))}
@@ -221,7 +221,7 @@ class SelectBox extends Component{
 
                 <div className='commonEnterpriseBox' style={{marginTop:20}}>
                     
-                    <div className='permission-title-text'>可选许可证</div>
+                    <div className='permission-title-text2'>可选许可证</div>
                         {(this.props.industryList||[]).map((item,index)=>(
 
                             <Button style={{margin:10,backgroundColor:'RGB(246, 246, 246)',color:'RGB(0,51,153)'}}  onClick={()=>{this.handleSelect(item.name)}}>{item.name}</Button>

@@ -130,7 +130,7 @@ class LicenseInfo extends Component{
             <div>
                 <Row>
                     <Col span={4}>
-                        <div  className='commonEnterpriseBox' style={{marginTop:20,height:560}}>
+                        <div  className='commonEnterpriseBox1' style={{marginTop:20,height:560}}>
                             <div className='permission-title-text'>许可证类型</div>
                         
                             {(formData.foodBusinessList?formData.foodBusinessList:[]).map((item,index)=>(  
@@ -171,7 +171,7 @@ class LicenseInfo extends Component{
                         </div>
                     </Col>
                     <Col span={20}>  
-                        <div className='commonEnterpriseBox' style={{marginTop:20}}>
+                        <div className='commonEnterpriseBox1' style={{marginTop:20}}>
                             <div className='permission-title-text'>许可信息</div>
                             {this.state.msgIndex?this.getContent():<Empty style={{height:528}} description={<span>点击类型管理添加许可信息</span>}/>}
                         </div>

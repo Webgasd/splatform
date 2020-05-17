@@ -2,23 +2,24 @@ import React,{Component} from 'react';
 import {Select,Input,Table,Modal} from 'antd';
 import connect from "react-redux/es/connect/connect";
 import {changeEnterprise} from "../../../../redux/action";
+import {changeEmployee, clearEmployee} from "../../../../redux/action";
 import AddForm from './Add'
 
 const Option = Select.Option;
 const { TextArea } = Input;
 @connect(
     state=>({
-        input:state.enterprise
+        input:state.enterprise,
+        employee:state.employee,
     }),
     {
         changeEnterprise,
+        clearEmployee,
+        changeEmployee
     }
 )
 class PersonInfo extends Component{
-    changeInput=(value,option)=>{
-        let input = {...this.props.input,[option]:value}
-        this.props.changeEnterprise(input);
-    }
+  
     render() {
         const formData=this.props.input||{};
         const columns1 = [
@@ -27,6 +28,9 @@ class PersonInfo extends Component{
                 dataIndex: ''
             }, {
                 title: '性别',
+                dataIndex: ''
+            },{
+                title: '职务',
                 dataIndex: ''
             },{
                 title: '健康证号',
@@ -75,7 +79,7 @@ class PersonInfo extends Component{
                 <Table columns={columns1}  />
             </div>
             <div className='commonEnterpriseBox' style={{marginTop:20}}>
-                <div className='permission-title-text'>企业人员信息</div>
+                <div className='permission-title-text'>维保人员信息</div>
                 <Table columns={columns2}  />
             </div>
             {/* <Modal

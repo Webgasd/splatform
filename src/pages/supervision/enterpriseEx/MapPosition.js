@@ -217,7 +217,7 @@ const AMap=window.AMap;
                     <Row>
                         <Col span={10}>
                             <Row>
-                            <div className='commonEnterpriseBoxHead'>数据定位</div>
+                            <div className='commonEnterpriseBoxHead3'>数据定位</div>
                             <table>
                             <tbody>
                                 <tr>
@@ -250,8 +250,8 @@ const AMap=window.AMap;
                             </tbody>
                             </table>
                             </Row>
-                            <Row>
-                            <div className='commonEnterpriseBoxHead'>辅助搜索</div>
+                            <Row style={{marginTop:5}}>
+                            <div className='commonEnterpriseBoxHead3'>辅助搜索</div>
                             <table>
                                 <tbody>
                                 <tr>  

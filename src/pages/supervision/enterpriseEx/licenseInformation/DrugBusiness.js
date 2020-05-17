@@ -132,7 +132,8 @@ class DrugBusiness extends Component{
                 </table>
             {/* 检查及评定 */}
             
-                <div className='commonEnterpriseBoxHead'>检查及评定</div>
+                <div className='commonEnterpriseBoxHead1'>检查及评定</div>
+                <div className='commonEnterpriseBoxHead2'></div>
                 <table style={{width:'50%'}}>
                 <tbody>
                     <tr>
