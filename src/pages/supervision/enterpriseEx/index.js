@@ -447,7 +447,7 @@ render() {
         }, {
             type: 'INPUT',
             label: '统一信用代码',
-            field: 'idNumber'
+            field: 'creditCode'
         },{
             type: 'INPUT',
             label: '许可证号',
@@ -498,11 +498,11 @@ render() {
             label: '法定代表人',
             field: 'legalPerson'
         },
-        // {
-        //     type: 'INPUT',
-        //     label: '经营范围',
-        //     field: 'businessScale'
-        //  },
+        {
+            type: 'INPUT',
+            label: '经营范围',
+            field: 'businessScale'
+         },
         //  {
         //     type: 'INPUT',
         //     label: '许可项目',//此处不对
