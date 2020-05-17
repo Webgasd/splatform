@@ -501,7 +501,7 @@ render() {
         {
             type: 'INPUT',
             label: '经营范围',
-            field: 'businessScale'
+            field: 'enterpriseScale'
          },
         //  {
         //     type: 'INPUT',
