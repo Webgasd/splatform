@@ -283,8 +283,11 @@ export default class EnterpriseInfo extends Component {
                 const list = this.state.videoInfo.list || [];
                 const {httpIp, httpPort, rtmpIp, rtmpPort, vagIp, vagPort, type} = this.state.videoInfo;
                 this.player = videojs('myVideo', {}, function onPlayerReady() { //(id或者refs获取节点，options，回调函数)
-                    let url = type == '海康' ? `http://${httpIp}:${httpPort}/pag/${vagIp}/${vagPort}/${list[0].number}/0/MAIN/TCP/live.m3u8` :
-                        `http://${httpIp}:${httpPort}/live/cameraid/${list[0].number}%24${list[0].channelNumber}/substream/${list[0].byteType}.m3u8`;
+                    let byteType = "MAIN";
+                    if (list[0].byteType === "MAIN" || list[0].byteType === "SUB") byteType = list[0].byteType;
+                    else if (list[0].byteType === "2") byteType = "SUB";
+                    let url = type == '海康' ? `http://${httpIp}:${httpPort}/pag/${vagIp}/${vagPort}/${list[0].number}/0/${byteType}/TCP/live.m3u8` :
+                        `http://${httpIp}:${httpPort}/live/cameraid/${list[0].number}%24${list[0].channelNumber}/substream/${byteType}.m3u8`;
                     this.src(url);
                     this.load();
                     this.play();
@@ -354,8 +357,11 @@ export default class EnterpriseInfo extends Component {
         // console.log("vagIp:" + vagIp);
         // console.log("vagPort:" + vagPort);
         console.log("number:" + number + "channelNumber:" + channelNumber + "byteType:" + byteType);
-        let url = type == '海康' ? `http://${httpIp}:${httpPort}/pag/${vagIp}/${vagPort}/${number}/0/MAIN/TCP/live.m3u8` :
-            `http://${httpIp}:${httpPort}/live/cameraid/${number}%24${channelNumber}/substream/${byteType}.m3u8`;
+        let byteType1 = "MAIN";
+        if (byteType === "MAIN" || byteType === "SUB") byteType1 = byteType;
+        else if (byteType === "2") byteType1 = "SUB";
+        let url = type == '海康' ? `http://${httpIp}:${httpPort}/pag/${vagIp}/${vagPort}/${number}/0/${byteType1}/TCP/live.m3u8` :
+            `http://${httpIp}:${httpPort}/live/cameraid/${number}%24${channelNumber}/substream/${byteType1}.m3u8`;
         console.log("url:" + url);
         this.player.pause();
         this.player.src(url);
