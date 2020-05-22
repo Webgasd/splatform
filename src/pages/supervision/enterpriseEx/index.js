@@ -14,6 +14,7 @@ import {commonUrl} from "../../../axios/commonSrc";
 import {baseUrl} from "../../../axios/commonSrc";
 import Abnormal from './childrenForm/Abnormal';
 import StatisticBox from './childrenForm/StatisticBox'
+import loadingPicture from './img/地图更新中.gif'
 
 @connect(
     state=>({
@@ -21,7 +22,7 @@ import StatisticBox from './childrenForm/StatisticBox'
         industryList:state.industryList,
         areaList:state.areaList,
         userType:state.userType,
-        acl:state.acls['/enterpriseInformation']
+        acl:state.acls['/enterpriseInformationEx']
     }),{
         clearEnterprise,
         changeEnterprise
@@ -299,13 +300,28 @@ import StatisticBox from './childrenForm/StatisticBox'
 
     }
     updateAndTransform=()=>{
-        axios.ajax({
-            url:'/grid/points/transform'
-        }).then((res)=>
-        {if(res.status=='success') {
-            if(res.data.update==true)message.success("更新成功")
-            else if(res.data.update==false)message.success("已经是最新状态")
-        }})
+        Modal.confirm({
+            content:'更新定位需要较长时间，确定执行吗？',
+            onOk:()=>{
+                this.setState({
+                    updateModalVisible:true
+                })
+
+                axios.ajax({
+                    url:'/grid/points/transform'
+                    }).then((res)=>{
+                        this.setState({
+                            updateModalVisible:false
+                        })
+                    if(res.status=='success') {
+                        if(res.data.update==true){
+                            message.success("更新成功")
+                        }else if(res.data.update==false){
+                            message.success("已经是最新状态")
+                        }
+                    }})
+            }
+        })
     }
     handleAbnormal=(item)=>{
             axios.ajax({
@@ -772,6 +788,21 @@ render() {
                 <StatisticBox
                  total = {this.state.total ||{}}
                  />
+            </Modal>
+            <Modal
+                title={"定位中..."}
+                visible={this.state.updateModalVisible}
+                maskClosable={false}
+                closable={false}
+                destroyOnClose
+                footer={null}
+                width={309}
+                centered={true}
+            >
+             <div style={{textAlign:"center"}}>
+                <img src={loadingPicture} alt='' style={{height:200,marginRight:20}}/>
+                <div style={{color:'RGB(153, 204, 51)'}}>定位时间较久，请耐心等待</div>
+            </div>
             </Modal>
         </div>
     );

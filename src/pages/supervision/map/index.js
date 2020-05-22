@@ -1,5 +1,5 @@
 import * as React from "react";
-import Map from "./mapd";
+import Map from "./Mapd";
 import "./index.css";
 import a0 from "./images/0.png";
 import i1 from "./images/11.png";
@@ -21,8 +21,7 @@ import 'echarts/lib/component/legend'
 import 'echarts/lib/component/markPoint'
 import { Input,Button } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
-//import {fetchPost} from "../../../static/util/fetch";
-import axios from "../../../axios";
+
 import ReactEcharts from 'echarts-for-react'
 const { Search } = Input;
 

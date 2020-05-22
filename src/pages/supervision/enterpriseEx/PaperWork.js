@@ -179,8 +179,8 @@ function getBase64(img, callback) {
                             <td>{Utils.formatDateNoTime(item.lastModifiedDate)}</td>
                             <td><ButtonGroup>
                                 <Button type="primary" size="small" onClick={() => { this.handlePreview(item)}}>查看</Button>
-                                <Button type="primary" size="small" onClick={()=> {this.handleFileName(index,item,"businessLicensePhoto")}}>修改名称</Button>
-                                <Button type="primary" size="small" onClick={() => { this.handleFileDelete(index,"businessLicensePhoto")}}>删除</Button>
+                                <Button type="primary" size="small" onClick={()=> {this.handleFileName(index,item,"businessLicensePhoto")}} disabled={checkStatus}>修改名称</Button>
+                                <Button type="primary" size="small" onClick={() => { this.handleFileDelete(index,"businessLicensePhoto")}} disabled={checkStatus}>删除</Button>
                                 </ButtonGroup>
                             </td>
                         </tr>))}
@@ -191,8 +191,8 @@ function getBase64(img, callback) {
                             <td>{Utils.formatDateNoTime(item.lastModifiedDate)}</td>
                             <td><ButtonGroup>
                                 <Button type="primary" size="small" onClick={() => { this.handlePreview(item)}}>查看</Button>
-                                <Button type="primary" size="small" onClick={()=> {this.handleFileName(index,item,"foodBusinessPhotos")}}>修改名称</Button>
-                                <Button type="primary" size="small" onClick={() => { this.handleFileDelete(index,"foodBusinessPhotos")}}>删除</Button>
+                                <Button type="primary" size="small" onClick={()=> {this.handleFileName(index,item,"foodBusinessPhotos")}} disabled={checkStatus}>修改名称</Button>
+                                <Button type="primary" size="small" onClick={() => { this.handleFileDelete(index,"foodBusinessPhotos")}} disabled={checkStatus}>删除</Button>
                                 </ButtonGroup>
                             </td>
                         </tr>))}
@@ -203,8 +203,8 @@ function getBase64(img, callback) {
                             <td>{Utils.formatDateNoTime(item.lastModifiedDate)}</td>
                             <td><ButtonGroup>
                                 <Button type="primary" size="small" onClick={() => { this.handlePreview(item)}}>查看</Button>
-                                <Button type="primary" size="small" onClick={()=> {this.handleFileName(index,item,"smallCaterPhotos")}}>修改名称</Button>
-                                <Button type="primary" size="small" onClick={() => { this.handleFileDelete(index,"smallCaterPhotos")}}>删除</Button>
+                                <Button type="primary" size="small" onClick={()=> {this.handleFileName(index,item,"smallCaterPhotos")}} disabled={checkStatus}>修改名称</Button>
+                                <Button type="primary" size="small" onClick={() => { this.handleFileDelete(index,"smallCaterPhotos")}} disabled={checkStatus}>删除</Button>
                                 </ButtonGroup>
                             </td>
                         </tr>))}
@@ -215,8 +215,8 @@ function getBase64(img, callback) {
                             <td>{Utils.formatDateNoTime(item.lastModifiedDate)}</td>
                             <td><ButtonGroup>
                                 <Button type="primary" size="small" onClick={() => { this.handlePreview(item)}}>查看</Button>
-                                <Button type="primary" size="small" onClick={()=> {this.handleFileName(index,item,"smallWorkshopPhotos")}}>修改名称</Button>
-                                <Button type="primary" size="small" onClick={() => { this.handleFileDelete(index,"smallWorkshopPhotos")}}>删除</Button>
+                                <Button type="primary" size="small" onClick={()=> {this.handleFileName(index,item,"smallWorkshopPhotos")}} disabled={checkStatus}>修改名称</Button>
+                                <Button type="primary" size="small" onClick={() => { this.handleFileDelete(index,"smallWorkshopPhotos")}} disabled={checkStatus}>删除</Button>
                                 </ButtonGroup>
                             </td>
                         </tr>))}
@@ -227,8 +227,8 @@ function getBase64(img, callback) {
                             <td>{Utils.formatDateNoTime(item.lastModifiedDate)}</td>
                             <td><ButtonGroup>
                                 <Button type="primary" size="small" onClick={() => { this.handlePreview(item)}}>查看</Button>
-                                <Button type="primary" size="small" onClick={()=> {this.handleFileName(index,item,"foodProducePhotos")}}>修改名称</Button>
-                                <Button type="primary" size="small" onClick={() => { this.handleFileDelete(index,"foodProducePhotos")}}>删除</Button>
+                                <Button type="primary" size="small" onClick={()=> {this.handleFileName(index,item,"foodProducePhotos")}} disabled={checkStatus}>修改名称</Button>
+                                <Button type="primary" size="small" onClick={() => { this.handleFileDelete(index,"foodProducePhotos")}} disabled={checkStatus}>删除</Button>
                                 </ButtonGroup>
                             </td>
                         </tr>))}
@@ -239,8 +239,8 @@ function getBase64(img, callback) {
                             <td>{Utils.formatDateNoTime(item.lastModifiedDate)}</td>
                             <td><ButtonGroup>
                                 <Button type="primary" size="small" onClick={() => { this.handlePreview(item)}}>查看</Button>
-                                <Button type="primary" size="small" onClick={()=> {this.handleFileName(index,item,"drugsBusinessPhotos")}}>修改名称</Button>
-                                <Button type="primary" size="small" onClick={() => { this.handleFileDelete(index,"drugsBusinessPhotos")}}>删除</Button>
+                                <Button type="primary" size="small" onClick={()=> {this.handleFileName(index,item,"drugsBusinessPhotos")}} disabled={checkStatus}>修改名称</Button>
+                                <Button type="primary" size="small" onClick={() => { this.handleFileDelete(index,"drugsBusinessPhotos")}} disabled={checkStatus}>删除</Button>
                                 </ButtonGroup>
                             </td>
                         </tr>))}
@@ -251,8 +251,8 @@ function getBase64(img, callback) {
                             <td>{Utils.formatDateNoTime(item.lastModifiedDate)}</td>
                             <td><ButtonGroup>
                                 <Button type="primary" size="small" onClick={() => { this.handlePreview(item)}}>查看</Button>
-                                <Button type="primary" size="small" onClick={()=> {this.handleFileName(index,item,"drugsProducePhotos")}}>修改名称</Button>
-                                <Button type="primary" size="small" onClick={() => { this.handleFileDelete(index,"drugsProducePhotos")}}>删除</Button>
+                                <Button type="primary" size="small" onClick={()=> {this.handleFileName(index,item,"drugsProducePhotos")}} disabled={checkStatus}>修改名称</Button>
+                                <Button type="primary" size="small" onClick={() => { this.handleFileDelete(index,"drugsProducePhotos")}} disabled={checkStatus}>删除</Button>
                                 </ButtonGroup>
                             </td>
                         </tr>))}
@@ -263,8 +263,8 @@ function getBase64(img, callback) {
                             <td>{Utils.formatDateNoTime(item.lastModifiedDate)}</td>
                             <td><ButtonGroup>
                                 <Button type="primary" size="small" onClick={() => { this.handlePreview(item)}}>查看</Button>
-                                <Button type="primary" size="small" onClick={()=> {this.handleFileName(index,item,"cosmeticsUsePhotos")}}>修改名称</Button>
-                                <Button type="primary" size="small" onClick={() => { this.handleFileDelete(index,"cosmeticsUsePhotos")}}>删除</Button>
+                                <Button type="primary" size="small" onClick={()=> {this.handleFileName(index,item,"cosmeticsUsePhotos")}} disabled={checkStatus}>修改名称</Button>
+                                <Button type="primary" size="small" onClick={() => { this.handleFileDelete(index,"cosmeticsUsePhotos")}} disabled={checkStatus}>删除</Button>
                                 </ButtonGroup>
                             </td>
                         </tr>))}
@@ -275,8 +275,8 @@ function getBase64(img, callback) {
                             <td>{Utils.formatDateNoTime(item.lastModifiedDate)}</td>
                             <td><ButtonGroup>
                                 <Button type="primary" size="small" onClick={() => { this.handlePreview(item)}}>查看</Button>
-                                <Button type="primary" size="small" onClick={()=> {this.handleFileName(index,item,"medicalProducePhotos")}}>修改名称</Button>
-                                <Button type="primary" size="small" onClick={() => { this.handleFileDelete(index,"medicalProducePhotos")}}>删除</Button>
+                                <Button type="primary" size="small" onClick={()=> {this.handleFileName(index,item,"medicalProducePhotos")}} disabled={checkStatus}>修改名称</Button>
+                                <Button type="primary" size="small" onClick={() => { this.handleFileDelete(index,"medicalProducePhotos")}} disabled={checkStatus}>删除</Button>
                                 </ButtonGroup>
                             </td>
                         </tr>))}
@@ -287,8 +287,8 @@ function getBase64(img, callback) {
                             <td>{Utils.formatDateNoTime(item.lastModifiedDate)}</td>
                             <td><ButtonGroup>
                                 <Button type="primary" size="small" onClick={() => { this.handlePreview(item)}}>查看</Button>
-                                <Button type="primary" size="small" onClick={()=> {this.handleFileName(index,item,"medicalBusinessPhotos")}}>修改名称</Button>
-                                <Button type="primary" size="small" onClick={() => { this.handleFileDelete(index,"medicalBusinessPhotos")}}>删除</Button>
+                                <Button type="primary" size="small" onClick={()=> {this.handleFileName(index,item,"medicalBusinessPhotos")}} disabled={checkStatus}>修改名称</Button>
+                                <Button type="primary" size="small" onClick={() => { this.handleFileDelete(index,"medicalBusinessPhotos")}} disabled={checkStatus}>删除</Button>
                                 </ButtonGroup>
                             </td>
                         </tr>))}
@@ -299,8 +299,8 @@ function getBase64(img, callback) {
                             <td>{Utils.formatDateNoTime(item.lastModifiedDate)}</td>
                             <td><ButtonGroup>
                                 <Button type="primary" size="small" onClick={() => { this.handlePreview(item)}}>查看</Button>
-                                <Button type="primary" size="small" onClick={()=> {this.handleFileName(index,item,"industrialProductsPhotos")}}>修改名称</Button>
-                                <Button type="primary" size="small" onClick={() => { this.handleFileDelete(index,"industrialProductsPhotos")}}>删除</Button>
+                                <Button type="primary" size="small" onClick={()=> {this.handleFileName(index,item,"industrialProductsPhotos")}} disabled={checkStatus}>修改名称</Button>
+                                <Button type="primary" size="small" onClick={() => { this.handleFileDelete(index,"industrialProductsPhotos")}} disabled={checkStatus}>删除</Button>
                                 </ButtonGroup>
                             </td>
                         </tr>))}
@@ -333,8 +333,8 @@ function getBase64(img, callback) {
                             <td>{Utils.formatDateNoTime(item.lastModifiedDate)}</td>
                             <td><ButtonGroup>
                                 <Button type="primary" size="small" onClick={() => { this.handlePreview(item)}}>查看</Button>
-                                <Button type="primary" size="small" onClick={()=> {this.handleFileName(index,item,"publicityPhotos")}}>修改名称</Button>
-                                <Button type="primary" size="small" onClick={() => { this.handleFileDelete(index,"publicityPhotos")}}>删除</Button>
+                                <Button type="primary" size="small" onClick={()=> {this.handleFileName(index,item,"publicityPhotos")}} disabled={checkStatus}>修改名称</Button>
+                                <Button type="primary" size="small" onClick={() => { this.handleFileDelete(index,"publicityPhotos")}} disabled={checkStatus}>删除</Button>
                                 </ButtonGroup>
                             </td>
                         </tr>))}
@@ -345,8 +345,8 @@ function getBase64(img, callback) {
                             <td>{Utils.formatDateNoTime(item.lastModifiedDate)}</td>
                             <td><ButtonGroup>
                                 <Button type="primary" size="small" onClick={() => { this.handlePreview(item)}}>查看</Button>
-                                <Button type="primary" size="small" onClick={()=> {this.handleFileName(index,item,"certificatePhotos")}}>修改名称</Button>
-                                <Button type="primary" size="small" onClick={() => { this.handleFileDelete(index,"certificatePhotos")}}>删除</Button>
+                                <Button type="primary" size="small" onClick={()=> {this.handleFileName(index,item,"certificatePhotos")}} disabled={checkStatus}>修改名称</Button>
+                                <Button type="primary" size="small" onClick={() => { this.handleFileDelete(index,"certificatePhotos")}} disabled={checkStatus}>删除</Button>
                                 </ButtonGroup>
                             </td>
                         </tr>))}
@@ -357,8 +357,8 @@ function getBase64(img, callback) {
                             <td>{Utils.formatDateNoTime(item.lastModifiedDate)}</td>
                             <td><ButtonGroup>
                                 <Button type="primary" size="small" onClick={() => { this.handlePreview(item)}}>查看</Button>
-                                <Button type="primary" size="small" onClick={()=> {this.handleFileName(index,item,"otherPhotos")}}>修改名称</Button>
-                                <Button type="primary" size="small" onClick={() => { this.handleFileDelete(index,"otherPhotos")}}>删除</Button>
+                                <Button type="primary" size="small" onClick={()=> {this.handleFileName(index,item,"otherPhotos")}} disabled={checkStatus}>修改名称</Button>
+                                <Button type="primary" size="small" onClick={() => { this.handleFileDelete(index,"otherPhotos")}} disabled={checkStatus}>删除</Button>
                                 </ButtonGroup>
                             </td>
                         </tr>))}

@@ -1,4 +1,5 @@
-import * as React from "react";
+
+import React,{ Component } from 'react';
 import "./index.css";
 import i1 from "./images/11.png";
 import i2 from "./images/12.png";
@@ -18,13 +19,25 @@ import nav1 from "./images/nav1.png";
 import nav2 from "./images/nav2.png";
 import nav3 from "./images/nav3.png";
 import nav4 from "./images/nav4.png";
-import { message } from 'antd';
+import { message ,Modal} from 'antd';
 // import {fetchPost1} from "../../../static/util/fetch";
 import axios from "../../../axios";
 import {commonUrl} from "../../../axios/commonSrc";
+import connect from "react-redux/es/connect/connect";
+import {changeEnterprise, clearEnterprise} from "../../../redux/action";
+import Add from '../enterpriseEx/Add'
 const AMap = window.AMap;
 
-export default class mapd extends React.Component {
+// @connect(
+//     state=>({
+//         industryList:state.industryList,
+//     }),{
+//         clearEnterprise,
+//         changeEnterprise,
+//     }
+// )
+
+ class Map extends Component {
     constructor(props){
         super(props);
 
@@ -220,7 +233,7 @@ export default class mapd extends React.Component {
         
     
     }
-    markerClick = (e) => {
+    markerClick = (e) => {console.log(e)
         if(this.map.getZoom()===18) {
             var infoWindow = new AMap.InfoWindow({offset: new AMap.Pixel(0, -30)});
             let content = "<div style='max-height:200px;width:250px;'>";
@@ -245,6 +258,7 @@ export default class mapd extends React.Component {
         if(content){
             this.setState({
             detailDisplay:"inline",
+            enterpriseId:content.enterpriseId,
             propagandaEnclosure:JSON.parse(content.propagandaEnclosure||JSON.stringify([])),
             // propagandaEnclosure:content.propagandaEnclosure,
             enterpriseName:content.enterpriseName,
@@ -303,13 +317,40 @@ export default class mapd extends React.Component {
         const w=window.open('about:blank');
         w.location.href='https://www.amap.com/search?query='+this.state.companyAddress
     }
-    toNav1=()=>{
-        //  this.setState({
-        //     visible:true,
-        // })
-        // let data = this.state.BaseInfo;
-        // this.props.changeEnterprise({...data,propagandaEnclosure:JSON.parse(data.propagandaEnclosure||JSON.stringify([]))});
-    }
+    // baseInfo=()=>{
+    //     axios.ajax({
+    //         url:'/supervision/enterprise/getById',
+    //         data:{
+    //             params:{
+    //                id:this.state.enterpriseId
+    //             }
+    //         }
+    //     }).then((res)=>{
+    //         if(res.status =='success'){
+    //             this.setState({
+    //                 isVisible:true,
+    //             })
+    //             let data = res.data;
+    //             this.props.changeEnterprise({...data,
+    //                 propagandaEnclosure:JSON.parse(data.propagandaEnclosure||JSON.stringify([])),
+    //                 businessLicensePhoto:JSON.parse(data.businessLicensePhoto||JSON.stringify([])),
+    //                 foodBusinessPhotos:JSON.parse(data.foodBusinessPhotos||JSON.stringify([])),
+    //                 smallCaterPhotos:JSON.parse(data.smallCaterPhotos||JSON.stringify([])),
+    //                 smallWorkshopPhotos:JSON.parse(data.smallWorkshopPhotos||JSON.stringify([])),
+    //                 foodProducePhotos:JSON.parse(data.foodProducePhotos||JSON.stringify([])),
+    //                 drugsBusinessPhotos:JSON.parse(data.drugsBusinessPhotos||JSON.stringify([])),
+    //                 drugsProducePhotos:JSON.parse(data.drugsProducePhotos||JSON.stringify([])),
+    //                 cosmeticsUsePhotos:JSON.parse(data.cosmeticsUsePhotos||JSON.stringify([])),
+    //                 medicalProducePhotos:JSON.parse(data.medicalProducePhotos||JSON.stringify([])),
+    //                 medicalBusinessPhotos:JSON.parse(data.medicalBusinessPhotos||JSON.stringify([])),
+    //                 industrialProductsPhotos:JSON.parse(data.industrialProductsPhotos||JSON.stringify([])),
+    //                 publicityPhotos:JSON.parse(data.publicityPhotos||JSON.stringify([])),
+    //                 certificatePhotos:JSON.parse(data.certificatePhotos||JSON.stringify([])),
+    //                 otherPhotos:JSON.parse(data.otherPhotos||JSON.stringify([]))
+    //             });
+    //         }
+    //     })
+    // }
     toNav2=()=>{
 
     }
@@ -319,6 +360,23 @@ export default class mapd extends React.Component {
 
 
     render() {
+        const modal=(<Modal
+            title="企业信息"
+           visible={this.state.isVisible}
+           destroyOnClose
+           centered={true}
+           mask={false}
+           width={1000}
+           onCancel={()=>{
+               this.props.clearEnterprise();
+               this.setState({
+                   visible:false,
+               })
+           }}
+           footer={false}
+       >
+             <Add type={"detail"}/>
+       </Modal>)
         return (
             <div>
                 <div id="container" style={{width: "100%", height: "620px"}}></div>
@@ -351,7 +409,7 @@ export default class mapd extends React.Component {
                     </div>
                 </div>
                 <div id="companyInfo" >
-                    <div className={"bottomGrayBox"}>&nbsp;&nbsp;<img src={detailPic}/>数据信息</div>
+                    <div className={"bottomGrayBox"}>&nbsp;&nbsp;<img src={detailPic} alt=''/>数据信息</div>
                     <div style={{display:this.state.detailDisplay}}>
                         {this.state.propagandaEnclosure.length>=1?
                             <img src={commonUrl+"/upload/picture/"+this.state.propagandaEnclosure[0].response.data} width={"300px"} height={"150px"}/>:
@@ -366,10 +424,10 @@ export default class mapd extends React.Component {
                                 <div style={{paddingLeft:"100px",width: "290px"}}>{this.state.registeredAddress}</div>
                             <div style={{height:"10px"}}></div>
                             <div style={{textAlign: "right"}}>
-                                <img src={nav1} onClick={this.toNav1} width='30px' height='30px'/>&nbsp;&nbsp;
-                                <img src={nav2} onClick={this.toNav2}  width='30px' height='30px'/>&nbsp;&nbsp;
-                                <img src={nav3} onClick={this.toNav3}  width='30px' height='30px'/>&nbsp;&nbsp;
-                                <img src={nav4} onClick={this.toGaodeLocation}  width='30px' height='30px'/>&nbsp;&nbsp;
+                                <img src={nav1} onClick={()=>this.baseInfo()} width='30px' height='30px' alt=''/>&nbsp;&nbsp;
+                                <img src={nav2} onClick={this.toNav2}  width='30px' height='30px' alt=''/>&nbsp;&nbsp;
+                                <img src={nav3} onClick={this.toNav3}  width='30px' height='30px' alt=''/>&nbsp;&nbsp;
+                                <img src={nav4} onClick={this.toGaodeLocation}  width='30px' height='30px' alt=''/>&nbsp;&nbsp;
                             </div>
                         </div>
                     </div>
@@ -378,3 +436,4 @@ export default class mapd extends React.Component {
         )
     }
 }
+export default Map;

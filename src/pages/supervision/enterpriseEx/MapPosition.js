@@ -53,7 +53,7 @@ const AMap=window.AMap;
                     if (status === 'complete' && result.info === 'OK') {
                         let lnglat=[]
                         lnglat = result.geocodes[0].location;
-                        message.success("定位成功")
+                        message.success("默认定位成功")
                         marker = new AMap.Marker({
                             position: lnglat,   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
                             draggable:false
@@ -79,6 +79,7 @@ const AMap=window.AMap;
                     });
                     that.map.add(marker);
                     that.map.setFitView(marker)
+                    message.info("可以拖动地图标记点完成手动定位")
                     marker.on("dragend",function (e) {
                     message.success("经纬度修改成功")
                     that.changeInput((e.lnglat.lng+','+e.lnglat.lat),"location")
@@ -101,6 +102,7 @@ const AMap=window.AMap;
                             });
                             that.map.add(marker);
                             that.map.setFitView(marker)
+                            message.info("可以拖动地图标记点完成手动定位")
                             marker.on("dragend",function (e) {
                             message.success("经纬度修改成功")
                             that.changeInput((e.lnglat.lng+','+e.lnglat.lat),"location")
@@ -115,6 +117,7 @@ const AMap=window.AMap;
                             });
                             that.map.add(marker);
                             that.map.setFitView(marker)
+                            message.info("请拖动地图标记点完成手动定位")
                             marker.on("dragend",function (e) {
                             message.success("经纬度修改成功")
                             that.changeInput((e.lnglat.lng+','+e.lnglat.lat),"location")
@@ -161,24 +164,39 @@ const AMap=window.AMap;
                 message.error("无此企业定位")
             }
         }
-        // if(option === "search"){
+        if(option === "search"){
+            that.changeInput(1,"gpsFlag")
 
-        //     AMap.service(["AMap.PlaceSearch"], function() {
-        //         //构造地点查询类
-        //         var placeSearch = new AMap.PlaceSearch({ 
-        //             map: that.map, // 展现结果的地图实例
-                    
-        //             city: "东营", // 兴趣点城市
-                  
-        //         });
-        //         //关键字查询
-        //         placeSearch.search(address, function (status, result) {
-        //             console.log(result)
-        //             // 查询成功时，result即对应匹配的POI信息
-        //          })
-        //     });
-        // }
+            AMap.plugin('AMap.Geocoder', function() {
+                geocoder = new AMap.Geocoder({
+                    // city 指定进行编码查询的城市，支持传入城市名、adcode 和 citycode
+                    // city: '东营'
+                });
+               
+                geocoder.getLocation(address, function(status, result) {
+                    if (status === 'complete' && result.info === 'OK') {
+                        let lnglat = result.geocodes[0].location;
+                        message.success("定位成功")
+                        that.changeInput((lnglat.lng+','+lnglat.lat),"location")
+                        marker = new AMap.Marker({
+                            position: lnglat,   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
+                            draggable:true
+                        });
+                        that.map.add(marker);
+                        that.map.setFitView(marker)
+                        marker.on("dragend",function (e) {
+                        message.success("经纬度修改成功")
+                        that.changeInput((e.lnglat.lng+','+e.lnglat.lat),"location")
+                        // that.getAddress(point)///根据拖动得到的点获取地址
+                        })
+                    }else {
+                        message.error("未搜索到结果")
+                    }
+
+                })
+            })
     }
+}
     
     handleSearchInput=(value)=>{
         this.setState({
@@ -255,8 +273,8 @@ const AMap=window.AMap;
                             <table>
                                 <tbody>
                                 <tr>  
-                                    <td><Input value={this.state.searchAddress} onChange={(e)=>this.handleSearchInput(e.target.value)} style={{width:'80%'}} placeholder={"请输入位置或企业名称"}/>
-                                        <Button onClick={()=>this.getMap(this.state.searchAddress,"search",this.props.type)} style={{color:'#558ff2',marginLeft:3}}>搜索</Button>
+                                    <td><Input value={this.state.searchAddress} onChange={(e)=>this.handleSearchInput(e.target.value)} style={{width:'80%'}} placeholder={"请输入详细地址"} disabled={checkStatus}/>
+                                        <Button onClick={()=>this.getMap(this.state.searchAddress,"search",this.props.type)} style={{color:'#558ff2',marginLeft:3}} disabled={checkStatus}>搜索</Button>
                                     </td>
                                     
                                 </tr>
