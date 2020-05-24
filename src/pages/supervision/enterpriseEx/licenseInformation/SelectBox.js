@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import { Button,Tooltip} from 'antd';
+import { Button,Tooltip, Modal} from 'antd';
 import connect from "react-redux/es/connect/connect";
 import {changeEnterprise} from "../../../../redux/action";
 
@@ -24,70 +24,70 @@ class SelectBox extends Component{
 
     handleSelect =  (name)=>{
             let data = this.props.input||{};
-         if(name == "食品经营"){
+         if(name == "foodBusiness"){
 
             let foodBusinessList=data.foodBusinessList||[];
             foodBusinessList.push({})
             let input = {...this.props.input,foodBusinessList}
             this.props.changeEnterprise(input);
 
-         }else if(name == "小餐饮服务"){
+         }else if(name == "smallCater"){
 
             let smallCaterList=data.smallCaterList||[];
             smallCaterList.push({})
             let input = {...this.props.input,smallCaterList}
             this.props.changeEnterprise(input);
 
-         }else if(name == "小作坊"){
+         }else if(name == "smallWorkshop"){
 
             let smallWorkshopList=data.smallWorkshopList||[];
             smallWorkshopList.push({})
             let input = {...this.props.input,smallWorkshopList}
             this.props.changeEnterprise(input);
 
-         }else if(name == "食品生产"){
+         }else if(name == "foodProduce"){
              
             let foodProduceList=data.foodProduceList||[];
             foodProduceList.push({})
             let input = {...this.props.input,foodProduceList}
             this.props.changeEnterprise(input);
 
-         }else if(name == "药品经营"){
+         }else if(name == "drugsBusiness"){
 
             let drugsBusinessList=data.drugsBusinessList||[];
             drugsBusinessList.push({})
             let input = {...this.props.input,drugsBusinessList}
             this.props.changeEnterprise(input);
 
-         }else if(name == "药品生产"){
+         }else if(name == "drugsProduce"){
 
             let drugsProduceList=data.drugsProduceList||[];
             drugsProduceList.push({})
             let input = {...this.props.input,drugsProduceList}
             this.props.changeEnterprise(input);
 
-         }else if(name == "化妆品生产"){
+         }else if(name == "cosmeticsUse"){
 
             let cosmeticsList=data.cosmeticsList||[];
             cosmeticsList.push({})
             let input = {...this.props.input,cosmeticsList}
             this.props.changeEnterprise(input);
 
-         }else if(name == "医疗器械生产"){
+         }else if(name == "medicalProduce"){
 
             let medicalProduceList=data.medicalProduceList||[];
             medicalProduceList.push({})
             let input = {...this.props.input,medicalProduceList}
             this.props.changeEnterprise(input);
 
-         }else if(name == "医疗器械经营"){
+         }else if(name == "medicalBusiness"){
 
             let medicalBusinessList=data.medicalBusinessList||[];
             medicalBusinessList.push({})
             let input = {...this.props.input,medicalBusinessList}
             this.props.changeEnterprise(input);
 
-         }else if(name == "工业产品生产"){
+         }else if(name == "industrialProducts"){
 
             let industrialProductsList=data.industrialProductsList||[];
             industrialProductsList.push({})
@@ -99,80 +99,87 @@ class SelectBox extends Component{
 
       handeDelete=(index,type)=>{
         let data = this.props.input||{};
-        if(type == "食品经营"){
+        Modal.confirm({
+            content:'确定删除该许可证吗？',
+            onOk:()=>{
+                if(type == "食品经营"){
 
-            let foodBusinessList=data.foodBusinessList||[];
-            foodBusinessList.splice(index, 1)
-            let input = {...this.props.input,foodBusinessList}
-            this.props.changeEnterprise(input)
-        }
-        if(type == "小餐饮服务"){
-
-            let smallCaterList=data.smallCaterList||[];
-            smallCaterList.splice(index, 1)
-            let input = {...this.props.input,smallCaterList}
-            this.props.changeEnterprise(input)
-        }
-        if(type == "小作坊"){
-
-            let smallWorkshopList=data.smallWorkshopList||[];
-            smallWorkshopList.splice(index, 1)
-            let input = {...this.props.input,smallWorkshopList}
-            this.props.changeEnterprise(input)
-        }
-        if(type == "食品生产"){
-
-            let foodProduceList=data.foodProduceList||[];
-            foodProduceList.splice(index, 1)
-            let input = {...this.props.input,foodProduceList}
-            this.props.changeEnterprise(input)
-        }
+                    let foodBusinessList=data.foodBusinessList||[];
+                    foodBusinessList.splice(index, 1)
+                    let input = {...this.props.input,foodBusinessList}
+                    this.props.changeEnterprise(input)
+                }
+                if(type == "小餐饮服务"){
         
-        if(type == "药品经营"){
+                    let smallCaterList=data.smallCaterList||[];
+                    smallCaterList.splice(index, 1)
+                    let input = {...this.props.input,smallCaterList}
+                    this.props.changeEnterprise(input)
+                }
+                if(type == "小作坊"){
+        
+                    let smallWorkshopList=data.smallWorkshopList||[];
+                    smallWorkshopList.splice(index, 1)
+                    let input = {...this.props.input,smallWorkshopList}
+                    this.props.changeEnterprise(input)
+                }
+                if(type == "食品生产"){
+        
+                    let foodProduceList=data.foodProduceList||[];
+                    foodProduceList.splice(index, 1)
+                    let input = {...this.props.input,foodProduceList}
+                    this.props.changeEnterprise(input)
+                }
+                
+                if(type == "药品经营"){
+        
+                    let drugsBusinessList=data.drugsBusinessList||[];
+                    drugsBusinessList.splice(index, 1)
+                    let input = {...this.props.input,drugsBusinessList}
+                    this.props.changeEnterprise(input)
+                }
+                if(type == "药品生产"){
+        
+                    let drugsProduceList=data.drugsProduceList||[];
+                    drugsProduceList.splice(index, 1)
+                    let input = {...this.props.input,drugsProduceList}
+                    this.props.changeEnterprise(input)
+                }
+                if(type == "化妆品生产"){
+        
+                    let cosmeticsList=data.cosmeticsList||[];
+                    cosmeticsList.splice(index, 1)
+                    let input = {...this.props.input,cosmeticsList}
+                    this.props.changeEnterprise(input)
+                }
+                if(type == "医疗器械生产"){
+        
+                    let medicalProduceList=data.medicalProduceList||[];
+                    medicalProduceList.splice(index, 1)
+                    let input = {...this.props.input,medicalProduceList}
+                    this.props.changeEnterprise(input)
+                }
+                if(type == "医疗器械经营"){
+        
+                    let medicalBusinessList=data.medicalBusinessList||[];
+                    medicalBusinessList.splice(index, 1)
+                    let input = {...this.props.input,medicalBusinessList}
+                    this.props.changeEnterprise(input)
+                }
+                if(type == "工业产品生产"){
+        
+                    let industrialProductsList=data.industrialProductsList||[];
+                    industrialProductsList.splice(index, 1)
+                    let input = {...this.props.input,industrialProductsList}
+                    this.props.changeEnterprise(input)
+                }
 
-            let drugsBusinessList=data.drugsBusinessList||[];
-            drugsBusinessList.splice(index, 1)
-            let input = {...this.props.input,drugsBusinessList}
-            this.props.changeEnterprise(input)
-        }
-        if(type == "药品生产"){
-
-            let drugsProduceList=data.drugsProduceList||[];
-            drugsProduceList.splice(index, 1)
-            let input = {...this.props.input,drugsProduceList}
-            this.props.changeEnterprise(input)
-        }
-        if(type == "化妆品生产"){
-
-            let cosmeticsList=data.cosmeticsList||[];
-            cosmeticsList.splice(index, 1)
-            let input = {...this.props.input,cosmeticsList}
-            this.props.changeEnterprise(input)
-        }
-        if(type == "医疗器械生产"){
-
-            let medicalProduceList=data.medicalProduceList||[];
-            medicalProduceList.splice(index, 1)
-            let input = {...this.props.input,medicalProduceList}
-            this.props.changeEnterprise(input)
-        }
-        if(type == "医疗器械经营"){
-
-            let medicalBusinessList=data.medicalBusinessList||[];
-            medicalBusinessList.splice(index, 1)
-            let input = {...this.props.input,medicalBusinessList}
-            this.props.changeEnterprise(input)
-        }
-        if(type == "工业产品生产"){
-
-            let industrialProductsList=data.industrialProductsList||[];
-            industrialProductsList.splice(index, 1)
-            let input = {...this.props.input,industrialProductsList}
-            this.props.changeEnterprise(input)
-        }
-        let name =''
-        let index1 = ''
-        this.props.changePermission(index1,name)
+            }
+        })
+        
+        // let name =''
+        // let index1 = ''
+        // this.props.changePermission(index1,name)
       }
    
 
@@ -224,7 +231,7 @@ class SelectBox extends Component{
                     <div className='permission-title-text2'>可选许可证</div>
                         {(this.props.industryList||[]).map((item,index)=>(
 
-                            <Button style={{margin:10,backgroundColor:'RGB(246, 246, 246)',color:'RGB(0,51,153)'}}  onClick={()=>{this.handleSelect(item.name)}}>{item.name}</Button>
+                            <Button style={{margin:10,backgroundColor:'RGB(246, 246, 246)',color:'RGB(0,51,153)'}}  onClick={()=>{this.handleSelect(item.remark)}}>{item.name}</Button>
 
                         ))}
                 </div>

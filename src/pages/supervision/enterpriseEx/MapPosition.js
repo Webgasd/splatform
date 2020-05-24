@@ -24,6 +24,11 @@ const AMap=window.AMap;
     }
 
     componentDidMount () {
+        this.map = new AMap.Map('mapContainer', {
+            center:[118.680936,37.440335],
+            zoom:12,
+            resizeEnable: true
+        });
     }
   
     changeInput=(value,option)=>{
@@ -31,12 +36,7 @@ const AMap=window.AMap;
         this.props.changeEnterprise(input);
     }
     getMap = (address,option,type)=>{
-        
-        this.map = new AMap.Map('mapContainer', {
-            center:[118.680936,37.440335],
-            zoom:12,
-            resizeEnable: true
-        });
+       
         let geocoder,marker;
         let that=this;
 
@@ -217,12 +217,12 @@ const AMap=window.AMap;
                 <table>
                     <tbody>
                     <tr>
-                        <td>市场主体名称</td>
-                        <td colSpan={3}><Input placeholder={"请输入企业名称"} value={formData.enterpriseName} onChange={(e)=>this.changeInput(e.target.value,"enterpriseName")} disabled={checkStatus}/></td>
+                        <td style={{width:'18%'}}>市场主体名称</td>
+                        <td><Input placeholder={"请输入企业名称"} value={formData.enterpriseName} onChange={(e)=>this.changeInput(e.target.value,"enterpriseName")} disabled={checkStatus}/></td>
                     </tr>
                     <tr>
                         <td>企业默认定位<span style={{color:'#FF3300'}}>*</span></td>
-                        <td colSpan={3}><Input value={formData.registeredAddress} onChange={(e)=>this.changeInput(e.target.value,"registeredAddress")} placeholder={"企业住所或经营场所地址"} disabled={checkStatus}/></td>
+                        <td><Input value={formData.registeredAddress} onChange={(e)=>this.changeInput(e.target.value,"registeredAddress")} placeholder={"企业住所或经营场所地址"} disabled={checkStatus}/></td>
                     </tr>
                     </tbody>
                 </table>
@@ -242,22 +242,19 @@ const AMap=window.AMap;
                                     <td rowSpan={2} style={{width:'27%'}}>{this.props.type==='detail'?"查看企业定位":"选择定位方式"}<span style={{color:'#FF3300'}}>*</span></td>
                                     <td>
                                         {this.props.type=='detail'?
-                                            <Button onClick={()=>this.getMap(formData.registeredAddress,"detail",this.props.type)}>查看企业定位</Button>:
+                                            <Button type="primary" onClick={()=>this.getMap(formData.registeredAddress,"detail",this.props.type)}>查看企业定位</Button>:
                                             <div onClick={()=>this.getMap(formData.registeredAddress,"default",this.props.type)} 
                                                 className={formData.gpsFlag===0?'mapOnClick':'mapNoClick'}>使用默认地址定位
                                             </div>}
-                                        {/* <div onClick={()=>this.getMap(formData.registeredAddress,"default",this.props.type)} 
-                                        className={formData.gpsFlag===0?'mapOnClick':'mapNoClick'}>使用默认地址定位 </div>  */}
                                     </td>
-                                    {/* <td style={{display:(this.props.type=='detail'?"block":"none"),textAlign:"left"}}>
-                                        <Button onClick={()=>this.getMap(formData.registeredAddress,"detail",this.props.type)}>查看企业定位</Button>
-                                    </td> */}
                                 </tr>
                                 <tr>
-                                    <td style={{display:(this.props.type=='detail'?"none":"block")}}>
+                                    {this.props.type=='detail'?'':
+                                    <td>
                                         <div onClick={()=>this.getMap(formData.registeredAddress,"manual",this.props.type)} 
-                                         className={formData.gpsFlag===1?'mapOnClick':'mapNoClick'}>使用经纬度定位</div>
-                                    </td>
+                                            className={formData.gpsFlag===1?'mapOnClick':'mapNoClick'}>使用经纬度定位
+                                         </div>
+                                    </td>}
                                 </tr>
                                 <tr>
                                     <td>经纬度</td>
@@ -284,21 +281,9 @@ const AMap=window.AMap;
                         </Col>
                         <Col span={1}></Col>
                         <Col span={13} style={{ border: '1px solid #ddd'}}>
-                {/* *******************************以下为旧版mapPosition************** */}
-                            {/* <Row> */}
-                                {/*<Col span={6}>*/}
-                                    {/*<Row>所填地址:</Row>*/}
-                                    {/*<Row>{this.state.address}</Row>*/}
-                                    {/*<Row> 新定位的地址:</Row>*/}
-                                    {/*<Row> {this.state.newAddress} </Row>*/}
-                                    {/* <Row>新定位的经纬度：<br/>{this.state.newPoint}</Row> */}
-                                {/*</Col>*/}
-                                
-                                    {/* <input type="button" value="修改保存" onClick={()=>this.save()}/> */}
-                                    <div id={"mapContainer"} style={{height:260}}/>
-                                
-                            {/* </Row> */}
-                {/* *********************** */}
+
+                            <div id={"mapContainer"} style={{height:260}}/>
+                            
                         </Col>
                     </Row>
                 </div>

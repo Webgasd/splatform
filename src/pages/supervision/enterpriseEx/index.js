@@ -376,7 +376,7 @@ import loadingPicture from './img/地图更新中.gif'
 
 render() {
     let _this =this;
-    console.log(this.state)
+    // console.log(this.state)
     const statistics = this.state.statistics ||{}
     const columns = [
         {
