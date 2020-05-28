@@ -23,7 +23,8 @@ export default class AddForm extends Component{
                     <div className={this.state.msgIndex === 2?'msgIndex showIndex':'msgIndex'} onClick={this.changeMsgIndex.bind(this,2)}>3.晨检记录信息</div>
 
                 </div>
-                        {this.state.msgIndex ===0?<Person type={this.props.type} workTypeList={this.props.workTypeList} industryList={this.props.industryList}/>:(this.state.msgIndex ===1?<Record type={this.props.type}/>:<Check type={this.props.type}/>)}
+                {this.state.msgIndex ===0?<Person  workTypeList={this.props.workTypeList} />:
+                    (this.state.msgIndex ===1?<Record />:<Check />)}
             </div>
         );
     }

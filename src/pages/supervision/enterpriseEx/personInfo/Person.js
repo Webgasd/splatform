@@ -5,7 +5,7 @@ import connect from "react-redux/es/connect/connect";
 import {changeEmployee} from "../../../../redux/action";
 import moment from "moment";
 import {commonUrl} from "../../../../axios/commonSrc";
-import EnterpriseForm from '../../../../components/CommonForm/EnterpriseForm';
+
 const Option = Select.Option;
 
 function getBase64(img, callback) {
@@ -16,8 +16,6 @@ function getBase64(img, callback) {
 @connect(
     state=>({
         input:state.employee,
-        userType:state.userType,
-        userInfo:state.userInfo
     }),
     {
         changeEmployee,
@@ -26,10 +24,7 @@ function getBase64(img, callback) {
 class Person extends Component{
     state={}
     componentDidMount() {
-        if(this.props.userType==1){
-            let input = {...this.props.input,companyName:this.props.userInfo.enterpriseName,companyId:this.props.userInfo.id}
-            this.props.changeEmployee(input)
-        }
+       
     }
 
 
@@ -61,9 +56,13 @@ class Person extends Component{
                                         accept='image/png,image/jpeg'
                                         action={commonUrl+"/upload/uploadPicture"}
                                         fileList={photo}
-                                        // onChange={this.handleChange}
                                     >
-                                        {imageUrl ? <img src={imageUrl} style={{height:'130px'}} alt="avatar" />:(photo.length>=1&&!this.state.loading?<img src={commonUrl+"/upload/picture/" +photo[0].response.data} style={{height:'130px'}} alt="avatar" />:uploadButton)}
+                                        {imageUrl ? <img src={imageUrl} style={{height:'130px'}} alt="avatar" />:
+                                            (photo.length>=1&&!this.state.loading?
+                                                <img src={commonUrl+"/upload/picture/" +photo[0].response.data} style={{height:'130px'}} alt="avatar" />:
+                                                uploadButton
+                                            )
+                                        }
                                     </Upload>
                                 </td>
                             </tr>
@@ -126,23 +125,7 @@ class Person extends Component{
                             </tr>
                             </tbody>
                         </table>
-                <Modal
-                    width='1000px'
-                    title="企业信息列表"
-                    visible={this.state.isVisible}
-                    footer={null}
-                    onCancel={()=>{
-                        //this.addForm.props.form.resetFields();//表单重置
-                        this.setState({
-                            isVisible:false
-                        })
-                    }}
-                >
-                    <EnterpriseForm dispatchEnterprise={(item)=>{
-                        this.setState({isVisible:false})
-                        let input = {...this.props.input,companyName:item.enterpriseName,companyId:item.id}
-                        this.props.changeEmployee(input)}} />
-                </Modal>
+                
             </div>
         )
     }

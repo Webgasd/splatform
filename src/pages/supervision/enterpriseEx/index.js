@@ -238,7 +238,8 @@ import loadingPicture from './img/地图更新中.gif'
             this.setState({
                 title:'创建企业信息',
                 isVisible:true,
-                type
+                type,
+                searchEmployee:''
             })
         }else if(type=="edit" || type=='detail'){
             axios.ajax({
@@ -248,12 +249,13 @@ import loadingPicture from './img/地图更新中.gif'
                        id:item.id
                     }
                 }
-            }).then((res)=>{console.log(res)
+            }).then((res)=>{
                 if(res.status =='success'){
                     this.setState({
                         title:type=='edit'?'编辑':'查看详情',
                         isVisible:true,
-                        type
+                        type,
+                        searchEmployee:item.id
                     })
                     let data = res.data;
                     this.props.changeEnterprise({...data,
@@ -715,7 +717,9 @@ render() {
                     })
                 }}
             >
-                <Add deptTree={Utils.getDataSource(this.state.deptTree||[])} gridTree={Utils.getDataSource(this.state.gridTree||[])} type={this.state.type}/>
+                <Add deptTree={Utils.getDataSource(this.state.deptTree||[])} gridTree={Utils.getDataSource(this.state.gridTree||[])} type={this.state.type}
+                 searchEmployee={this.state.searchEmployee}
+                />
             </Modal>
 
             {/* 原来的企业首页地图定位 */}

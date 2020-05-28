@@ -22,14 +22,20 @@ class AddForm extends Component{
                 <div className='msgIndexBox1'>
                     <div className={this.state.msgIndex === 0?'msgIndex1 showIndex1':'msgIndex1'} onClick={this.changeMsgIndex.bind(this,0)}>企业信息</div>
                     <div className={this.state.msgIndex === 1?'msgIndex1 showIndex1':'msgIndex1'} onClick={this.changeMsgIndex.bind(this,1)}>许可信息</div>
-                    <div className={this.state.msgIndex === 2?'msgIndex1 showIndex1':'msgIndex1'} onClick={this.changeMsgIndex.bind(this,2)}>人员信息</div>
+                    {this.props.type == 'create'?'':
+                        <div className={this.state.msgIndex === 2?'msgIndex1 showIndex1':'msgIndex1'} onClick={this.changeMsgIndex.bind(this,2)}>人员信息</div>
+                    }       
                     <div className={this.state.msgIndex === 3?'msgIndex1 showIndex1':'msgIndex1'} onClick={this.changeMsgIndex.bind(this,3)}>数据地图</div>
                     <div className={this.state.msgIndex === 4?'msgIndex1 showIndex1':'msgIndex1'} onClick={this.changeMsgIndex.bind(this,4)}>证照/公示</div>
                 </div>
                 <div className='msgContent'>
                     <div style={{display:this.state.msgIndex === 0?'block':'none'}}><BasicMsg type={this.props.type}/></div>
                     <div style={{display:this.state.msgIndex === 1?'block':'none'}}><LicenseInfo type={this.props.type}/></div>
-                    <div style={{display:this.state.msgIndex === 2?'block':'none'}}><PersonInfo type={this.props.type}/></div>
+                    {this.props.type == 'create'?'':
+                        <div style={{display:this.state.msgIndex === 2?'block':'none'}}>
+                        <PersonInfo type={this.props.type} searchEmployee={this.props.searchEmployee}/>
+                        </div>
+                    }
                     <div style={{display:this.state.msgIndex === 3?'block':'none'}}><App type={this.props.type}/></div>
                     <div style={{display:this.state.msgIndex === 4?'block':'none'}}><PaperWork type={this.props.type}/></div>
                 </div>
