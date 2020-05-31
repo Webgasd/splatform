@@ -480,7 +480,7 @@ render() {
         },{
             type: 'INPUT',
             label: '许可证号',
-            field: 'licenseNumber'//此处可能有问题
+            field: 'licenseNumber'
         },{
             type: 'SELECT',
             label: '许可类型',
@@ -513,15 +513,14 @@ render() {
             field: 'operationMode',
             placeholder: '请选择主体分类',
             width: 150,
-            list: [{id: '个体经营户', name: '个体经营户'}, {id: '国有企业', name: '国有企业'}, {id: '有限责任公司', name: '有限责任公司'},
-                     {id: '合伙经营', name: '合伙经营'},{id: '事业单位', name: '事业单位'},{id: '其他', name: '其他'}]
+            list: [{id: '个体', name: '个体户'}, {id: '公司', name: '公司'},{id: '合作社', name: '合作社'},{id: '其他', name: '其他'}]
         },{
             type: 'SELECT',
             label: '经营状态',
             field: 'businessState',
             placeholder: '请选择经营状态',
             width: 150,
-            list: [{id: 0, name: '新增'}, {id: 1, name: '正常'}]
+            list: [{id: 1, name: '新增'}, {id: 2, name: '正常'}]
         },{
             type: 'INPUT',
             label: '法定代表人',
