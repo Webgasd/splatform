@@ -63,7 +63,25 @@ class BasicMsg extends Component{
         let input = {...this.props.input,[option]:value}
         this.props.changeEnterprise(input);
     }
-    
+    onCheckChange=()=>{
+        if(!this.props.input.businessTermFlag){
+            let input = {...this.props.input,businessTermFlag:0,businessTermEnd:''}
+            this.props.changeEnterprise(input);
+        }
+         if(this.props.input.businessTermFlag === 0){
+            let input = {...this.props.input,businessTermFlag:1}
+            this.props.changeEnterprise(input);
+        } 
+        if(this.props.input.businessTermFlag&&this.props.input.businessTermFlag === 1){
+            let input = {...this.props.input,businessTermFlag:0,businessTermEnd:''}
+            this.props.changeEnterprise(input);
+        }
+        
+    }
+    changeTermEnd=(value,option)=>{
+        let input = {...this.props.input,[option]:value,businessTermFlag:1}
+        this.props.changeEnterprise(input);
+    }
    
         
 
@@ -121,12 +139,12 @@ class BasicMsg extends Component{
                         <td>店招名称</td>
                         <td><Input  value={formData.shopName} onChange={(e)=>this.changeInput(e.target.value,"shopName")} placeholder={"请输入店招名称"} disabled={checkStatus}/></td>
                         <td>主体分类<span style={{color:'#FF3300'}}>*</span></td>
-                        <td><Select placeholder={"请选择企业规模"} value={formData.operationMode} style={{width:"100%"}}onChange={(value)=>this.changeInput(value,"operationMode")} disabled={checkStatus}>
-                            <Option value="个体经营户">个体经营户</Option>
-                            <Option value="国有企业">国有企业</Option>
-                            <Option value="有限责任公司">有限责任公司</Option>
-                            <Option value="合伙经营">合伙经营</Option>
-                            <Option value="事业单位">事业单位</Option>
+                        <td><Select placeholder={"请选择主体分类"} value={formData.operationMode} style={{width:"100%"}}onChange={(value)=>this.changeInput(value,"operationMode")} disabled={checkStatus}>
+                            <Option value="个体户">个体户</Option>
+                        
+                            <Option value="公司">公司</Option>
+                            
+                            <Option value="合作社">合作社</Option>
                             <Option value="其他">其他</Option>
 
 
@@ -159,9 +177,12 @@ class BasicMsg extends Component{
                         <td>营业期限自</td>
                         <td><Input value={formData.businessTermStart}  onChange={(e)=>this.changeInput(e.target.value,"businessTermStart")} placeholder={"开始日期(例:1900年01月01日)"} disabled={checkStatus}/></td>
                         <td>营业期限至</td>
-                        <td><Input value={formData.businessTermEnd}  onChange={(e)=>this.changeInput(e.target.value,"businessTermEnd")} placeholder={"请输入截至日期,不填则默认:长期"} style={{width:'74%'}} disabled={checkStatus}/>
+                        <td><Input value={formData.businessTermEnd}  onChange={(e)=>this.changeTermEnd(e.target.value,"businessTermEnd")} placeholder={"请输入截至日期或勾选默认:长期"} style={{width:'74%'}} disabled={checkStatus}/>
                         {/* 下面的radio还有问题 */}
-                            <Checkbox checked={formData.businessTermEnd?false:true} style={{marginLeft:2}} disabled={checkStatus}>默认:长期</Checkbox>
+                           
+                            <Checkbox onChange={()=>this.onCheckChange()} checked={formData.businessTermFlag===0?true:false} 
+                                style={{marginLeft:2}} disabled={checkStatus}>默认:长期</Checkbox>
+                            
                         </td>
                     </tr>
                     <tr>

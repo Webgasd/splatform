@@ -27,7 +27,7 @@ class MedicalDeviceBusiness extends Component{
         axios.ajax({
             url:'/supervision/enterprise/getCateAndLicence',
             data:{
-                params:{id:1}
+                params:{id:12}
             }
         }).then((res)=>{
             if(res.status == "success"){

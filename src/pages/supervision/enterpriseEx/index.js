@@ -239,8 +239,11 @@ import loadingPicture from './img/地图更新中.gif'
                 title:'创建企业信息',
                 isVisible:true,
                 type,
-                searchEmployee:''
+                searchEmployee:'',
+                
             })
+            let input = {...this.props.input,permissionFamily:""}
+            this.props.changeEnterprise(input);
         }else if(type=="edit" || type=='detail'){
             axios.ajax({
                 url:'/supervision/enterprise/getById',
@@ -302,26 +305,34 @@ import loadingPicture from './img/地图更新中.gif'
 
     }
     updateAndTransform=()=>{
+        
         Modal.confirm({
             content:'更新定位需要较长时间，确定执行吗？',
             onOk:()=>{
                 this.setState({
                     updateModalVisible:true
                 })
-
+                let _this = this
                 axios.ajax({
                     url:'/grid/points/transform'
                     }).then((res)=>{
-                        this.setState({
+                        _this.setState({
                             updateModalVisible:false
                         })
-                    if(res.status=='success') {
-                        if(res.data.update==true){
+                    if(res.status==='success') {
+                        if(res.data.update===true){
                             message.success("更新成功")
-                        }else if(res.data.update==false){
+                        }else if(res.data.update===false){
                             message.success("已经是最新状态")
                         }
-                    }})
+                        else {
+                            Modal.error({
+                                content: res.data.update,
+                              });
+
+                        }
+                    }
+                })
             }
         })
     }

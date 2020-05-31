@@ -27,7 +27,7 @@ class CosmeticsProduction extends Component{
         axios.ajax({
             url:'/supervision/enterprise/getCateAndLicence',
             data:{
-                params:{id:1}
+                params:{id:9}
             }
         }).then((res)=>{
             if(res.status == "success"){

@@ -25,17 +25,12 @@ import axios from "../../../axios";
 import {commonUrl} from "../../../axios/commonSrc";
 import connect from "react-redux/es/connect/connect";
 import {changeEnterprise, clearEnterprise} from "../../../redux/action";
+import  BaseForm  from '../../../components/BaseFormNew';
+import Utils from "../../../utils";
 import Add from '../enterpriseEx/Add'
 const AMap = window.AMap;
 
-// @connect(
-//     state=>({
-//         industryList:state.industryList,
-//     }),{
-//         clearEnterprise,
-//         changeEnterprise,
-//     }
-// )
+// 该组件已整合到Index.js,作废
 
  class Map extends Component {
     constructor(props){
@@ -73,6 +68,10 @@ const AMap = window.AMap;
         industryList:'',
         areaList:''
     }
+    handleFilterSubmit = (filterParams) => {
+        this.params = filterParams;
+        this.requestList();
+    };
 
     componentDidMount() {
         this.map = new AMap.Map("container", {
@@ -96,6 +95,9 @@ const AMap = window.AMap;
         //     city: "370500", //城市设为东营
         // });
 
+    this.requestList()
+    }
+    requestList=()=>{
         axios.PostAjax({
             url: "/grid/points/getSmilePoints",
             data: {
@@ -110,6 +112,7 @@ const AMap = window.AMap;
                 this.setData(res.data)
             }
         })
+
     }
 
     displayMakers=()=>{//先加再减，实现企业主体和状态二维操作
@@ -197,7 +200,7 @@ const AMap = window.AMap;
                         }); 
                         that.map.add(marker);
                     }
-                    message.success(`${res.data.length}个搜索结果以标记在地图上`)
+                    message.success(`${res.data.length}个搜索结果已标记在地图上`)
                         that.detailDispaly(JSON.stringify({}));
                 }
                 else{
@@ -265,7 +268,23 @@ const AMap = window.AMap;
             legalPerson:content.legalPerson,
             cantactWay:content.cantactWay,
             idNumber:content.idNumber,
-            registeredAddress:content.registeredAddress,
+            registeredAddress:content.registered_address,
+        })
+        }
+    }
+    markerDisplay =(e)=>{console.log(e)
+        let content = e.target.content
+        if(content){
+            this.setState({
+            detailDisplay:"inline",
+            enterpriseId:content.enterpriseId,
+            propagandaEnclosure:JSON.parse(content.propagandaEnclosure||JSON.stringify([])),
+            // propagandaEnclosure:content.propagandaEnclosure,
+            enterpriseName:content.enterpriseName,
+            legalPerson:content.legalPerson,
+            cantactWay:content.cantactWay,
+            idNumber:content.idNumber,
+            registeredAddress:content.registered_address,
         })
         }
     }
@@ -289,7 +308,7 @@ const AMap = window.AMap;
                             icon: icons[k],
                         });
                         marker.content = item;
-                        marker.on('click', this.setState({detailDisplay:"inline"}));
+                        marker.on('click', this.markerDisplay);
                         //marker.emit('click', {target: marker});
                         data[k].push(marker);
                     }
@@ -361,6 +380,18 @@ const AMap = window.AMap;
 
 
     render() {
+        const formList = [
+            
+            {
+                type: 'AREA_TREE',
+                label: '所属区域',
+                field: 'areaList',
+                placeholder: '请选择所属区域',
+                width: 150,
+                list: Utils.getDataSource(this.props.areaList||[])
+            },
+        ]
+        const SearchForm =<div > <BaseForm formList={formList} filterSubmit={this.handleFilterSubmit}/></div>
         const modal=(<Modal
             title="企业信息"
            visible={this.state.isVisible}

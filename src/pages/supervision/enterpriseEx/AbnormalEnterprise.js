@@ -20,7 +20,7 @@ import {baseUrl} from "../../../axios/commonSrc";
         industryList:state.industryList,
         areaList:state.areaList,
         userType:state.userType,
-        acl:state.acls['/enterpriseInformation']
+        acl:state.acls['/enterpriseAbnormal']
     }),{
         clearEnterprise,
         changeEnterprise
@@ -50,12 +50,17 @@ import {baseUrl} from "../../../axios/commonSrc";
     }
 
     requestStatistics=()=>{
-        axios.noLoadingAjax({
-            url:'/supervision/enterprise/getStatistics',
+        axios.PostAjax({
+            url:'/supervision/enterprise/getCountPC',
             data: {
-                params:{}
+                params:{
+                    ...this.params,
+                    areaList:[this.params.areaList],
+                    industryList:[this.params.industryList],
+                    indexNum:0
+                }
             }
-        }).then((res)=>{console.log(res)
+        }).then((res)=>{
             if(res.status == "success"){
                 this.setState({
                     statistics:res.data
@@ -86,7 +91,7 @@ import {baseUrl} from "../../../axios/commonSrc";
                 params:{...this.params,areaList:[this.params.areaList],industryList:[this.params.industryList]}
 
             }
-        }).then((res)=>{console.log(res)
+        }).then((res)=>{
             if(res.status == "success"){
                 let list  = res.data.data.map((item,i)=>{
                     item.key = i;
@@ -109,7 +114,7 @@ import {baseUrl} from "../../../axios/commonSrc";
             data:{
                 params:{}
             }
-        }).then((res)=>{console.log(res)
+        }).then((res)=>{
             if(res.status == "success"){
                 this.setState({
                     deptTree: res.data.deptTree
@@ -124,7 +129,7 @@ import {baseUrl} from "../../../axios/commonSrc";
             data:{
                 params:{}
             }
-        }).then((res)=>{console.log(res)
+        }).then((res)=>{
             if(res.status == "success"){
                 this.setState({
                     deptAllList: res.data
@@ -138,7 +143,7 @@ import {baseUrl} from "../../../axios/commonSrc";
             data:{
                 params:{}
             }
-        }).then((res)=>{console.log(res)
+        }).then((res)=>{
             if(res.status == "success"){
                 this.setState({
                     areaAllList: res.data
@@ -215,7 +220,7 @@ import {baseUrl} from "../../../axios/commonSrc";
                        id:item.id
                     }
                 }
-            }).then((res)=>{console.log(res)
+            }).then((res)=>{
                 if(res.status =='success'){
                     this.setState({
                         title:type=='edit'?'编辑':'查看详情',
@@ -271,6 +276,7 @@ import {baseUrl} from "../../../axios/commonSrc";
 
 render() {
     let _this =this;
+    const statistics = this.state.statistics ||{}
     const columns = [
         {
             title: '主体分类',
@@ -395,46 +401,116 @@ render() {
                     <BaseForm formList={formList} filterSubmit={this.handleFilterSubmit}/></div>
 
     //统计信息
-    const Information = <div className='topContent'>
-        <div span={3} className='topBox'>
-            <div style={{fontSize:16,color:"#000000",fontWeight:1000}}>
-                <Icon type="profile" style={{ fontSize: '25px', color: '#FF9900' ,marginLeft:5,margin:10}} />
-                总数
+    const Information = 
+    <Row>
+        <Col span={5}>
+         <div className='statisticsBigBox'>
+            <div style={{margin:6,fontSize:'large',fontWeight:"bold"}}>企业主体总计数量</div>
+            <div style={{height:1,width:'100%',background: '#E6E9EC'}}></div>
+            <div style={{fontSize:34,color:"RGB(38, 167, 220)",fontWeight:400}}>
+                <img src={require("./img/市场主体图标.png")} style={{height:50,margin:15}} alt=""/>
+                {statistics?(statistics.enterprise+statistics.cooperation+statistics.individual+statistics.others):''}
             </div>
-            <div style={{margin:10,marginLeft:5}}>数量: {this.state.total||''} 家</div>
+            <div style={{float:"right",margin:5}}>单位：家</div>
         </div>
-            {/* 以下为旧版的根据 行业类别 统计信息 */}
-        {/* {(this.props.industryList||[]).map((item)=>
-        {return (this.state.statistics||{})[item.id]?<div className='topBox'>
-            <div style={{fontSize:16,color:"#000000",fontWeight:1000}}>
-                <Icon type="profile" style={{ fontSize: '25px', color: '#FF9900' ,marginLeft:5,margin:10}} />
-                {item.name}
+        </Col>
+
+        <Col span={5} style={{marginLeft:36}}>
+            <Row>
+                <div className='statisticsLittleBox'>
+                <Row>
+                    <Col span={5}><img src={require("./img/公司类.png")} style={{height:40,marginTop:14,marginLeft:11}} alt=""/></Col>
+                    <Col span={1}offset={1}><div style={{height:69,width:1,background: '#E6E9EC'}}></div></Col>
+                    <Col span={6}><div style={{marginTop:20,fontSize:'large',fontWeight:"bold"}}>公司类</div> </Col>
+                    <Col span={6}offset={1}><div style={{fontSize:34,color:"RGB(38, 167, 220)",fontWeight:400,marginTop:4}}>{statistics?statistics.enterprise:''}</div></Col>
+                </Row>
+                    <div style={{float:"right",marginTop:-20}}>单位：家</div>
+                 </div>
+            </Row>
+            <Row style={{marginTop:10}}>
+                <div className='statisticsLittleBox'>
+                <Row>
+                    <Col span={5}><img src={require("./img/个体类.png")} style={{height:40,marginTop:14,marginLeft:11}} alt=""/></Col>
+                    <Col span={1}offset={1}><div style={{height:69,width:1,background: '#E6E9EC'}}></div></Col>
+                    <Col span={6}><div style={{marginTop:20,fontSize:'large',fontWeight:"bold"}}>个体类</div> </Col>
+                    <Col span={6}offset={1}><div style={{fontSize:34,color:"RGB(38, 167, 220)",fontWeight:400,marginTop:4}}>{statistics?statistics.individual:''}</div></Col>
+                </Row>
+                    <div style={{float:"right",marginTop:-20}}>单位：家</div>
+                </div>
+            </Row>
+        </Col>
+
+        <Col span={5} style={{marginLeft:-28}}>
+            <Row>
+                <div className='statisticsLittleBox'>
+                <Row>
+                    <Col span={5}><img src={require("./img/合作社.png")} style={{height:40,marginTop:14,marginLeft:11}} alt=""/></Col>
+                    <Col span={1}offset={1}><div style={{height:69,width:1,background: '#E6E9EC'}}></div></Col>
+                    <Col span={6}><div style={{marginTop:20,fontSize:'large',fontWeight:"bold"}}>合作社</div> </Col>
+                    <Col span={6}offset={1}><div style={{fontSize:34,color:"RGB(38, 167, 220)",fontWeight:400,marginTop:4}}>{statistics?statistics.cooperation:''}</div></Col>
+                </Row>
+                    <div style={{float:"right",marginTop:-20}}>单位：家</div>
+                 </div>
+            </Row>
+            <Row style={{marginTop:10}}>
+                <div className='statisticsLittleBox'>
+                <Row>
+                    <Col span={5}><img src={require("./img/其他类.png")} style={{height:40,marginTop:14,marginLeft:11}} alt=""/></Col>
+                    <Col span={1}offset={1}><div style={{height:69,width:1,background: '#E6E9EC'}}></div></Col>
+                    <Col span={6}><div style={{marginTop:20,fontSize:'large',fontWeight:"bold"}}>其他类</div> </Col>
+                    <Col span={6}offset={1}><div style={{fontSize:34,color:"RGB(38, 167, 220)",fontWeight:400,marginTop:4}}>{statistics?statistics.others:''}</div></Col>
+                </Row>
+                    <div style={{float:"right",marginTop:-20}}>单位：家</div>
+                </div>
+            </Row>
+        </Col>
+
+        <Col span={2} style={{marginLeft:-20}}>
+            <div className='statisticsJumpBox'>
+                <img src={require("./img/市场主体图标.png")} style={{height:52,marginTop:35,marginLeft:33}} alt=""/>
+                <div style={{color:"RGB(38, 167, 220)",marginTop:20,marginLeft:25}}>加载更多</div>
+                </div>
+        </Col>
+        <Col span={7} style={{marginLeft:10}}>
+            <div className='statisticsTipsBox'>
+                <div style={{color:"RGB(153, 204, 51)",marginTop:10,marginLeft:7,fontSize:'medium'}}>状态提示:</div>
+                <div style={{height:1,width:'100%',background: '#E6E9EC',marginTop:5}}></div>
+                <div>
+                    <div style={{width:30,height:15,background:'RGB(255, 118, 95)',borderRadius:5,float:"left",margin:20}}></div>
+                    <div style={{marginTop:16,float:"left"}}>许可证超期报警</div>
+                    <br/>
+                    <div style={{width:30,height:15,background:'RGB(253, 221, 110)',borderRadius:5,marginTop:33,marginLeft:20}}></div>
+                    <div style={{marginTop:-19,marginLeft:72,float:"left"}}>许可证超期预警（30天内）</div>
+                </div>
             </div>
-            <div style={{margin:10,marginLeft:5}}>数量: {(this.state.statistics||{})[item.id]} 家</div>
-        </div>:<div></div>}
-            )} */}
-        </div>
+        </Col>
+       
+    </Row>
 
     return (
         <div ref="enterprise">
             <Card style={{marginTop:10,marginLeft:30,marginRight:30}}>
-                <Row>
+            <Row>
                     <Col span={3}>
                         {this.props.userType==1?null:
-                        <div style={{marginLeft:'3em'}}>
+                        <div style={{marginLeft:'1.5em'}}>
                             <Row style={{marginBottom:5}}> 
-                                <span style={{marginLeft:'15%',fontSize:'x-large',color:'RGB(63, 127, 189)',fontWeight:"bold"}}>操作台</span>
+                                <span style={{marginLeft:'20%',fontSize:'x-large',color:'RGB(63, 127, 189)',fontWeight:"bold"}}>操作台</span>
                             </Row>
                             <Row>
-                                <Button icon="search" size='large' style={{marginBottom:5}} onClick={()=>this.setState({headStatus:false})}>数据查询</Button>     
+                                <div style={{marginBottom:5,width:135,height:45,cursor: "pointer"}} onClick={()=>this.setState({headStatus:false})}>
+                                    {this.state.headStatus == false?<img src={require("./img/数据查询【开】.png")} style={{height:'100%'}} alt=""/>:<img src={require("./img/数据查询【关】.png")} style={{height:'100%'}} alt=""/>}
+                                </div>     
                             </Row>
                             <Row> 
-                                <Button icon="desktop" size='large' style={{marginTop:5}} onClick={()=>this.setState({headStatus:true})}>数据统计</Button>
+                                <div  style={{marginTop:5,width:135,height:45,cursor: "pointer"}} onClick={()=>this.setState({headStatus:true})}>
+                                {this.state.headStatus?<img src={require("./img/数据统计【开】.png")} style={{height:'100%'}} alt=""/>:<img src={require("./img/数据统计【关】.png")} style={{height:'100%'}} alt=""/>}
+                                </div>
                             </Row>
                         </div>}
                     </Col>
                     <Col span={1}>
-                    <div style={{width:1,height:160,background: 'rgba(0, 0, 0, 0.15)'}}></div>
+                    <div style={{width:1,height:180,background: 'rgba(0, 0, 0, 0.15)'}}></div>
                     </Col>
                     <Col span={20}  style={{marginLeft:'-7em'}}>
                         {this.props.userType==1?null:
