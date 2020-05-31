@@ -263,7 +263,7 @@ class govHome extends Component {
             this.changeToPoints(item);
         })
     };
-    addGridPoints = (data) => {
+    addGridPoints = (data) => {console.log(data)
         let l = markers.length
         markers[l] = []
         let that = this;
@@ -331,7 +331,8 @@ class govHome extends Component {
             let point = item.point
             let point1 = point.split(",")
             let p = new AMap.Marker({
-                position: [JSON.parse(point1[0]), JSON.parse(point1[1])],
+                position:point1,
+                // position: [JSON.parse(point1[0]), JSON.parse(point1[1])],
                 icon: icon,
                 enterpriseId: item.enterpriseId
             })

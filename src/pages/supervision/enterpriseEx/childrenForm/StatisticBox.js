@@ -91,9 +91,18 @@ render() {
                 name: '详情',
                 type: 'pie',
                 radius: '60%',
-                data:(this.props.industryList || []).map((item) => {
-                    return {name: item.name, value: (statistics[item.id])}
-                }) || [],
+                data:[
+                    {value:statistics?statistics.foodBu:'', name:'食品经营'},
+                    {value:statistics?statistics.foodPro:'', name:'食品生产'},
+                    {value:statistics?statistics.drugsBu:'', name:'药品经营'},
+                    {value:statistics?statistics.cosmeticsUse:'', name:'化妆品生产'},
+                    {value:statistics?statistics.medicalPro:'', name:'医疗器械生产'},
+                    {value:statistics?statistics.medicalBu:'', name:'医疗器械经营'},
+                    {value:statistics?statistics.smallCater:'', name:'小餐饮服务'},
+                    {value:statistics?statistics.smallWorkshop:'', name:'小作坊'},
+                    {value:statistics?statistics.industrialProducts:'', name:'工业产品生产'},
+                    {value:statistics?statistics.drugsPro:'', name:'药品生产'},
+                ],
             }
         ]
     }
@@ -188,13 +197,67 @@ render() {
                 <div style={{width:'100%',height:35,background:'RGB(242, 242, 242)'}}>
                     <div style={{lineHeight:'35px',marginLeft:15,fontSize:15,color:"RGB(38, 167, 220)"}}>许可类型数量统计</div>
                 </div>
-                {(this.props.industryList||[]).map((item,index)=>(
-                    <div style={{float:'left',margin:10,width:'31%',height:47,borderRadius:5,border: '1px solid #E6E9EC'}}>
-                        <div style={{margin:10,color:'black',fontSize:16,float:'left'}}>{item.name}</div>
-                        <div style={{fontSize:20,color:"RGB(38, 167, 220)",marginTop:6,marginLeft:80,float:'left'}}>{statistics[item.id]?statistics[item.id]:''}</div>
-                        <div style={{fontSize:16,color:"black",marginTop:9,marginRight:40,float:'right'}}>家</div>
-                    </div>     
-                ))}
+                
+                    <div className="permissionStatisticsBox">
+                        <div className="permissionStatisticsTitle">食品经营</div>
+                        <div className="permissionStatisticsNumber">{statistics.foodBu?statistics.foodBu:0}</div>
+                        <div className="permissionStatisticsUnit">家</div>
+                    </div>
+
+                    <div className="permissionStatisticsBox">
+                        <div className="permissionStatisticsTitle">小餐饮服务</div>
+                        <div className="permissionStatisticsNumber">{statistics.smallCater?statistics.smallCater:0}</div>
+                        <div className="permissionStatisticsUnit">家</div>
+                    </div> 
+
+                    <div className="permissionStatisticsBox">
+                        <div className="permissionStatisticsTitle">小作坊</div>
+                        <div className="permissionStatisticsNumber">{statistics.smallWorkshop?statistics.smallWorkshop:0}</div>
+                        <div className="permissionStatisticsUnit">家</div>
+                    </div> 
+
+                    <div className="permissionStatisticsBox">
+                        <div className="permissionStatisticsTitle">食品生产</div>
+                        <div className="permissionStatisticsNumber">{statistics.foodPro?statistics.foodPro:0}</div>
+                        <div className="permissionStatisticsUnit">家</div>
+                    </div> 
+
+                    <div className="permissionStatisticsBox">
+                        <div className="permissionStatisticsTitle">药品经营</div>
+                        <div className="permissionStatisticsNumber">{statistics.drugsBu?statistics.drugsBu:0}</div>
+                        <div className="permissionStatisticsUnit">家</div>
+                    </div> 
+
+                    <div className="permissionStatisticsBox">
+                        <div className="permissionStatisticsTitle">药品生产</div>
+                        <div className="permissionStatisticsNumber">{statistics.drugsPro?statistics.drugsPro:0}</div>
+                        <div className="permissionStatisticsUnit">家</div>
+                    </div> 
+
+                    <div className="permissionStatisticsBox">
+                        <div className="permissionStatisticsTitle">化妆品生产</div>
+                        <div className="permissionStatisticsNumber">{statistics.cosmeticsUse?statistics.cosmeticsUse:0}</div>
+                        <div className="permissionStatisticsUnit">家</div>
+                    </div> 
+
+                    <div className="permissionStatisticsBox">
+                        <div className="permissionStatisticsTitle">医疗器械生产</div>
+                        <div className="permissionStatisticsNumber">{statistics.medicalPro?statistics.medicalPro:0}</div>
+                        <div className="permissionStatisticsUnit">家</div>
+                    </div> 
+
+                    <div className="permissionStatisticsBox">
+                        <div className="permissionStatisticsTitle">医疗器械经营</div>
+                        <div className="permissionStatisticsNumber">{statistics.medicalBu?statistics.medicalBu:0}</div>
+                        <div className="permissionStatisticsUnit">家</div>
+                    </div> 
+
+                    <div className="permissionStatisticsBox">
+                        <div className="permissionStatisticsTitle">工业产品生产</div>
+                        <div className="permissionStatisticsNumber">{statistics.industrialProducts?statistics.industrialProducts:0}</div>
+                        <div className="permissionStatisticsUnit">家</div>
+                    </div>  
+               
 
             </div>
         </div>

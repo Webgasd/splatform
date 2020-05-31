@@ -665,7 +665,7 @@ render() {
 
             <Card style={{marginTop:10,marginRight:30,marginLeft:30}}>
                 <div className='button-box-left'>
-                    <Button style={{color:'red'}} onClick={()=>this.handleDelete()} >批量删除</Button>
+                    <Button style={{color:'red'}} onClick={()=>this.handleDelete()} disabled={true} >批量删除</Button>
                 </div>
                 <div className='button-box'>
                     {this.props.acl.indexOf('/add')>-1?<Button type="primary" onClick={()=>this.handleOperator('create',null)}>新增</Button>:null}
