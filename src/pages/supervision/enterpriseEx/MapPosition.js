@@ -51,6 +51,7 @@ const AMap=window.AMap;
                
                 geocoder.getLocation(address, function(status, result) {
                     if (status === 'complete' && result.info === 'OK') {
+                        that.map.clearMap();
                         let lnglat=[]
                         lnglat = result.geocodes[0].location;
                         message.success("默认定位成功")
@@ -62,6 +63,7 @@ const AMap=window.AMap;
                         that.map.setFitView(marker)
                         that.changeInput('',"location")
                     }else {
+                        that.map.clearMap();
                          message.error("地址有误，请输入详细地址并点击默认定位按钮刷新地图")
                     }
 
@@ -72,6 +74,7 @@ const AMap=window.AMap;
         if(option === "manual"&& type != "detail"){
             that.changeInput(1,"gpsFlag")
                 if(that.props.input.location){
+                    that.map.clearMap();
                    let lnglat = that.props.input.location.split(',')
                     marker = new AMap.Marker({
                         position: lnglat,   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
@@ -94,6 +97,7 @@ const AMap=window.AMap;
                     });
                     geocoder.getLocation(address, function(status, result) {
                         if (status === 'complete' && result.info === 'OK') {
+                            that.map.clearMap();
                             let lnglat = result.geocodes[0].location;
                             that.changeInput((lnglat.lng+','+lnglat.lat),"location")
                             marker = new AMap.Marker({
@@ -109,6 +113,7 @@ const AMap=window.AMap;
                             // that.getAddress(point)///根据拖动得到的点获取地址
                             })
                         }else {
+                            that.map.clearMap();
                             let lnglat = [118.680936,37.440335]
                             that.changeInput(lnglat.join(','),"location")
                             marker = new AMap.Marker({
@@ -129,6 +134,7 @@ const AMap=window.AMap;
                 }
         }
         if(option === "input"&& type != "detail"){
+            that.map.clearMap();
             marker = new AMap.Marker({
                 position: address.split(','),   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
                 draggable:true
@@ -175,8 +181,9 @@ const AMap=window.AMap;
                
                 geocoder.getLocation(address, function(status, result) {
                     if (status === 'complete' && result.info === 'OK') {
+                        that.map.clearMap();
                         let lnglat = result.geocodes[0].location;
-                        message.success("定位成功")
+                        message.success("定位成功，可拖动定位点修改位置")
                         that.changeInput((lnglat.lng+','+lnglat.lat),"location")
                         marker = new AMap.Marker({
                             position: lnglat,   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
@@ -190,6 +197,7 @@ const AMap=window.AMap;
                         // that.getAddress(point)///根据拖动得到的点获取地址
                         })
                     }else {
+                        that.map.clearMap();
                         message.error("未搜索到结果")
                     }
 

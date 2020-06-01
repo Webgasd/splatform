@@ -49,7 +49,7 @@ import LiveVideo from "../../grid/gridSupervision/LiveVideo";
 const { Search } = Input;
 
 const AMap = window.AMap;
-
+let cluster= {};
 @connect(
     state=>({
         industryList:state.industryList,
@@ -136,13 +136,13 @@ class map extends React.Component{
                     industryList:[this.params.industryList],
                 }
             }
-        }).then((res)=>{
+        }).then((res)=>{console.log(res)
             if(res.status == "success"){
-                this.setState( (prevState) => ({
-                    datai1:[],datai2:[],datai3:[],datac1:[],datac2:[],
-                    datac3:[],datah1:[],datah2:[],datah3:[],dataq1:[],dataq2:[],dataq3:[]
-                    }), () => { this.setData(res.data)
-                    })
+                this.setState({
+                    datai1:[],datai2:[],datai3:[],datac1:[],datac2:[], datac3:[],
+                    datah1:[],datah2:[],datah3:[],dataq1:[],dataq2:[],dataq3:[]
+                })
+                this.setData(res.data)
             }
         })
 
@@ -261,6 +261,7 @@ class map extends React.Component{
                 }
             }).then((res)=>{
                 if(res.status == "success" && res.data.length == 1){
+                    that.map.clearMap()
                     let position1 = res.data[0].point.split(',')
                     let marker = new AMap.Marker({
                         position: position1,   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
@@ -299,6 +300,7 @@ class map extends React.Component{
             });
         geocoder.getLocation(address, (status, result)=> {
             if (status === 'complete' && result.geocodes.length) {
+                that.map.clearMap()
                 var lnglat = result.geocodes[0].location
                 message.success("定位成功")
                 marker = new AMap.Marker({
@@ -308,6 +310,7 @@ class map extends React.Component{
                 that.map.add(marker);
                 that.map.setFitView(marker);
             }else{
+                that.map.clearMap()
                 message.info('根据地址查询位置失败');
             }
         })
@@ -318,10 +321,15 @@ class map extends React.Component{
     //     this.Map = ref
     // }
     //以下为整合过来的函数
+    clearAll = () => {
+        this.map.clearMap();
+        this.map.remove(cluster);
+        
+    }
     displayMakers=()=>{//先加再减，实现企业主体和状态二维操作
         const {datai1,datai2,datai3,datac1,datac2,datac3,datah1,datah2,datah3,dataq1,dataq2,dataq3}=this.state;
 
-        this.map.clearMap();
+        this.clearAll();
         let dataplus=[];
 
         if(this.state.t1===0){
@@ -353,12 +361,10 @@ class map extends React.Component{
             if(this.state.t2===2)dataplus=dataq2;
             if(this.state.t2===3)dataplus=dataq3;
         }
-        // dataplus.map((data)=>{
-        //     this.map.add(data);
-        // })
-        let cluster=new AMap.MarkerClusterer(this.map, dataplus, {
+         cluster=new AMap.MarkerClusterer(this.map, dataplus, {
             gridSize: 80,
         });
+        console.log(cluster)
         cluster.on('click', this.markerClick);
     }
     markerClick = (e) => {
@@ -388,7 +394,6 @@ class map extends React.Component{
             detailDisplay:"inline",
             enterpriseId:content.enterpriseId,
             propagandaEnclosure:JSON.parse(content.propagandaEnclosure||JSON.stringify([])),
-            // propagandaEnclosure:content.propagandaEnclosure,
             enterpriseName:content.enterpriseName,
             legalPerson:content.legalPerson,
             cantactWay:content.cantactWay,
@@ -404,7 +409,6 @@ class map extends React.Component{
             detailDisplay:"inline",
             enterpriseId:content.enterpriseId,
             propagandaEnclosure:JSON.parse(content.propagandaEnclosure||JSON.stringify([])),
-            // propagandaEnclosure:content.propagandaEnclosure,
             enterpriseName:content.enterpriseName,
             legalPerson:content.legalPerson,
             cantactWay:content.cantactWay,
@@ -650,8 +654,8 @@ class map extends React.Component{
                         &nbsp;<span style={{fontSize:"10px",float:"right",color:"lightgray"}}>单位：家 &nbsp;</span>
                     </div>
                     <div className="grayBox omStat">
-                        <div className="rightGrayBox" style={{width: "45px", float: "left"}}><img src={c1}
-                                                                                                  width="30px"/></div>
+                        <div className="rightGrayBox" style={{width: "45px", float: "left"}}><img src={c1} width="30px"/></div>
+                                                                                                 
                         <div style={{marginTop: "5px",fontWeight:"bold"}} onClick={()=>this.onlyDisplay(2)}>企业类
                             &nbsp;<span style={{color:"#1890ff"}}>{cCount}</span></div>
                         &nbsp;<span style={{fontSize: "10px", float: "right",color:"lightgray"}}>单位：家 &nbsp;</span>

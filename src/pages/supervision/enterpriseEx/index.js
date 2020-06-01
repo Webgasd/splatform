@@ -13,8 +13,9 @@ import {changeEnterprise, clearEnterprise} from '../../../redux/action'
 import {commonUrl} from "../../../axios/commonSrc";
 import {baseUrl} from "../../../axios/commonSrc";
 import Abnormal from './childrenForm/Abnormal';
-import StatisticBox from './childrenForm/StatisticBox'
-import loadingPicture from './img/地图更新中.gif'
+import StatisticBox from './childrenForm/StatisticBox';
+import loadingPicture from './img/地图更新中.gif';
+import ImportData from './childrenForm/ImportData';
 
 @connect(
     state=>({
@@ -33,6 +34,14 @@ import loadingPicture from './img/地图更新中.gif'
         abnormalData:{},
         selectedRowKeys: [], // Check here to configure the default column
         headStatus:false,
+        updateNumbers:0,
+        insertNumbers:0,
+        errMsg:'',
+        errList:[],
+        importTitle:"",
+        importResult:0,
+        importRefresh:true
+        
     };
     params = {
         pageNo:1,
@@ -320,16 +329,16 @@ import loadingPicture from './img/地图更新中.gif'
                             updateModalVisible:false
                         })
                     if(res.status==='success') {
-                        if(res.data.update===true){
-                            message.success("更新成功")
-                        }else if(res.data.update===false){
-                            message.success("已经是最新状态")
+                        if(res.data.state==='success'){
+                            Modal.success({
+                                content:res.data.update
+                            })
                         }
-                        else {
+                        if(res.data.state==='failed') {
                             Modal.error({
+                                title:'存在错误信息',
                                 content: res.data.update,
                               });
-
                         }
                     }
                 })
@@ -385,7 +394,60 @@ import loadingPicture from './img/地图更新中.gif'
             statisticBoxVisible:true
         })
     }
-    
+    handleImportModal=()=>{
+        this.setState({
+            importModalVisible:false
+        })
+        if(this.state.importRefresh){
+            this.requestList();
+        }
+        
+    }
+    handleFile=(info)=>{console.log(info)
+        if (info.file.status === 'done') {
+            if(info.file.response.status=='success'){
+               this.setState({
+                   importTitle:" 企业导入成功报告",
+                   importModalVisible:true,
+                   updateNumbers:info.file.response.data.updateNumbers,
+                   insertNumbers:info.file.response.data.insertNumbers,
+                   importResult:1,
+                   importRefresh:true
+               })
+            }else {
+                this.setState({
+                    importTitle:" 企业导入错误汇报",
+                    importModalVisible:true,
+                    errMsg:info.file.response.data.errMsg,
+                    errList:info.file.response.data.errList,
+                    importResult:2,
+                    importRefresh:true
+                })
+            }
+        } 
+        else if (info.file.status === 'error') {
+            if(info.file.response.status=='success'){
+                this.setState({
+                    importTitle:" 企业导入成功报告",
+                    importModalVisible:true,
+                    updateNumbers:info.file.response.data.updateNumbers,
+                    insertNumbers:info.file.response.data.insertNumbers,
+                    importResult:1,
+                    importRefresh:false
+                })
+            }else {
+                this.setState({
+                    importTitle:" 企业导入错误汇报",
+                    importModalVisible:true,
+                    errMsg:info.file.response.data.errMsg,
+                    errList:info.file.response.data.errList,
+                    importResult:2,
+                    importRefresh:false
+                })
+            }
+        }
+
+    }
 
 render() {
     let _this =this;
@@ -670,30 +732,17 @@ render() {
                 <div className='button-box'>
                     {this.props.acl.indexOf('/add')>-1?<Button type="primary" onClick={()=>this.handleOperator('create',null)}>新增</Button>:null}
                     {this.props.acl.indexOf('/modify')>-1?<Button style={{backgroundColor:'RGB(153, 204, 51)',color:'white'}} onClick={()=>this.updateAndTransform()}>全局定位更新</Button>:null}
-                    {this.props.acl.indexOf('/import')>-1?<Upload action={commonUrl+"/supervision/enterprise/importExcel"}
+                    {this.props.acl.indexOf('/import')>-1?
+                        <Upload action={commonUrl+"/supervision/enterprise/importExcel"}
                             showUploadList={false}
-                            onChange={(info)=>{
-                                if (info.file.status === 'done') {
-                                    if(info.file.response.status=='success'){
-                                        alert(info.file.response.status);
-                                    }else {
-                                        alert(info.file.response.data.errMsg);
-                                    }
-                                    this.requestList();
-                                } else if (info.file.status === 'error') {
-                                    if(info.file.response.status=='success'){
-                                        alert(info.file.response.status);
-                                    }else {
-                                        alert(info.file.response.data.errMsg);
-                                    }
-                                }
-                            }}>
+                            onChange={(info)=>this.handleFile(info)}
+                            >
                         <Button style={{backgroundColor:'RGB(255, 153, 0)',color:'white'}}>数据导入</Button>
                     </Upload>:null}
+                        
                     {/* <Button style={{backgroundColor:'RGB(204, 153, 0)',color:'white'}}>数据导出</Button> */}
                     {/* <Button style={{backgroundColor:'RGB(102, 204, 255)',color:'white'}}>模板下载</Button> */}
                 </div>
-
                 <div style={{marginTop:30}} className="enterpriseTableContent">
                     {/*使用封装好的ETable组件实现角色列表的展示*/}
                     <ETable
@@ -731,22 +780,20 @@ render() {
                  searchEmployee={this.state.searchEmployee}
                 />
             </Modal>
-
-            {/* 原来的企业首页地图定位 */}
-            {/* <Modal
-                footer={null}
-                title={this.state.title}
-                visible={this.state.isMapVisible}
+            <Modal
+                title={this.state.importTitle}
+                visible={this.state.importModalVisible}
+                maskClosable={false}
+                closable={false}
                 destroyOnClose
-                width={800}
-                onCancel={()=>{
-                    this.setState({
-                        isMapVisible:false,
-                    })
-                }}
+                footer={[<Button style={{background:'RGB(22,155,213)'}} onClick={()=>this.handleImportModal()}>确定</Button>]}
+                width={500}
+                centered={true}
             >
-                <MapPosition AreaId={this.state.AreaId} enterpriseId={this.state.enterpriseId}/>
-            </Modal> */}
+                <ImportData updateNumbers={this.state.updateNumbers} insertNumbers={this.state.insertNumbers}
+                 errList={this.state.errList} errMsg={this.state.errMsg} importResult={this.state.importResult}
+                 />
+            </Modal>
             <Modal
                 footer={null}
                 title={"二维码"}
@@ -818,6 +865,8 @@ render() {
                 <div style={{color:'RGB(153, 204, 51)'}}>定位时间较久，请耐心等待</div>
             </div>
             </Modal>
+           
+            
         </div>
     );
 }

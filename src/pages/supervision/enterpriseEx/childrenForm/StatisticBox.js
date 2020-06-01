@@ -24,7 +24,9 @@ import echartTheme from '../../../home/echartTheme';
 )
 class StatisticBox extends Component{
 
-    state={};
+    state={
+        statistics:{}
+    };
     params = {
         pageNo:1,
         industryList:'',
@@ -59,7 +61,7 @@ class StatisticBox extends Component{
     }
     
 render() {
-    let statistics =this.state.statistics || {}
+    const statistics =this.state.statistics
 
     const option1 = {
         tooltip : {
@@ -73,10 +75,11 @@ render() {
                 type:'pie',
                 radius : '60%',//设置饼图大小
                 data:[
-                    {value:statistics?statistics.enterprise:'', name:'公司类'},
-                    {value:statistics?statistics.individual:'', name:'个体类'},
-                    {value:statistics?statistics.cooperation:'', name:'合作社'},
-                    {value:statistics?statistics.others:'', name:'其他类'},
+                    {value:statistics.enterprise||0, name:'公司类'},
+                    {value:statistics.individual||0, name:'个体类'},
+                    {value:statistics.cooperation||0, name:'合作社'},
+                    {value:statistics.others||0, name:'其他类'},
+                 
                 ],
             }
         ]
@@ -92,16 +95,16 @@ render() {
                 type: 'pie',
                 radius: '60%',
                 data:[
-                    {value:statistics?statistics.foodBu:'', name:'食品经营'},
-                    {value:statistics?statistics.foodPro:'', name:'食品生产'},
-                    {value:statistics?statistics.drugsBu:'', name:'药品经营'},
-                    {value:statistics?statistics.cosmeticsUse:'', name:'化妆品生产'},
-                    {value:statistics?statistics.medicalPro:'', name:'医疗器械生产'},
-                    {value:statistics?statistics.medicalBu:'', name:'医疗器械经营'},
-                    {value:statistics?statistics.smallCater:'', name:'小餐饮服务'},
-                    {value:statistics?statistics.smallWorkshop:'', name:'小作坊'},
-                    {value:statistics?statistics.industrialProducts:'', name:'工业产品生产'},
-                    {value:statistics?statistics.drugsPro:'', name:'药品生产'},
+                    {value:statistics.foodBu||0, name:'食品经营'},
+                    {value:statistics.foodPro||0, name:'食品生产'},
+                    {value:statistics.drugsBu||0, name:'药品经营'},
+                    {value:statistics.cosmeticsUse||0, name:'化妆品生产'},
+                    {value:statistics.medicalPro||0, name:'医疗器械生产'},
+                    {value:statistics.medicalBu||0, name:'医疗器械经营'},
+                    {value:statistics.smallCater||0, name:'小餐饮服务'},
+                    {value:statistics.smallWorkshop||0, name:'小作坊'},
+                    {value:statistics.industrialProducts||0, name:'工业产品生产'},
+                    {value:statistics.drugsPro||0, name:'药品生产'},
                 ],
             }
         ]
@@ -129,7 +132,7 @@ render() {
                         <Col span={5}><img src={require("../img/公司类.png")} style={{height:40,marginTop:14,marginLeft:11}} alt=""/></Col>
                         <Col span={1}offset={1}><div style={{height:69,width:1,background: '#E6E9EC'}}></div></Col>
                         <Col span={6}><div style={{marginTop:20,fontSize:'large',fontWeight:"bold"}}>公司类</div> </Col>
-                        <Col span={6}offset={1}><div style={{fontSize:24,color:"RGB(38, 167, 220)",marginTop:12}}>{statistics?statistics.enterprise:''}</div></Col>
+                        <Col span={6}offset={1}><div style={{fontSize:24,color:"RGB(38, 167, 220)",marginTop:12}}>{statistics.enterprise||0}</div></Col>
                     </Row>
                         <div style={{float:"right",marginTop:-20}}>单位：家</div>
                         </div>
@@ -140,7 +143,7 @@ render() {
                         <Col span={5}><img src={require("../img/个体类.png")} style={{height:40,marginTop:14,marginLeft:11}} alt=""/></Col>
                         <Col span={1}offset={1}><div style={{height:69,width:1,background: '#E6E9EC'}}></div></Col>
                         <Col span={6}><div style={{marginTop:20,fontSize:'large',fontWeight:"bold"}}>个体类</div> </Col>
-                        <Col span={6}offset={1}><div style={{fontSize:24,color:"RGB(38, 167, 220)",marginTop:12}}>{statistics?statistics.individual:''}</div></Col>
+                        <Col span={6}offset={1}><div style={{fontSize:24,color:"RGB(38, 167, 220)",marginTop:12}}>{statistics.individual||0}</div></Col>
                     </Row>
                         <div style={{float:"right",marginTop:-20}}>单位：家</div>
                     </div>
@@ -154,7 +157,7 @@ render() {
                         <Col span={5}><img src={require("../img/合作社.png")} style={{height:40,marginTop:14,marginLeft:11}} alt=""/></Col>
                         <Col span={1}offset={1}><div style={{height:69,width:1,background: '#E6E9EC'}}></div></Col>
                         <Col span={6}><div style={{marginTop:20,fontSize:'large',fontWeight:"bold"}}>合作社</div> </Col>
-                        <Col span={6}offset={1}><div style={{fontSize:24,color:"RGB(38, 167, 220)",marginTop:12}}>{statistics?statistics.cooperation:''}</div></Col>
+                        <Col span={6}offset={1}><div style={{fontSize:24,color:"RGB(38, 167, 220)",marginTop:12}}>{statistics.cooperation||0}</div></Col>
                     </Row>
                         <div style={{float:"right",marginTop:-20}}>单位：家</div>
                         </div>
@@ -165,7 +168,7 @@ render() {
                         <Col span={5}><img src={require("../img/其他类.png")} style={{height:40,marginTop:14,marginLeft:11}} alt=""/></Col>
                         <Col span={1}offset={1}><div style={{height:69,width:1,background: '#E6E9EC'}}></div></Col>
                         <Col span={6}><div style={{marginTop:20,fontSize:'large',fontWeight:"bold"}}>其他类</div> </Col>
-                        <Col span={6}offset={1}><div style={{fontSize:24,color:"RGB(38, 167, 220)",marginTop:12}}>{statistics?statistics.others:''}</div></Col>
+                        <Col span={6}offset={1}><div style={{fontSize:24,color:"RGB(38, 167, 220)",marginTop:12}}>{statistics.others||0}</div></Col>
                     </Row>
                         <div style={{float:"right",marginTop:-20}}>单位：家</div>
                     </div>
