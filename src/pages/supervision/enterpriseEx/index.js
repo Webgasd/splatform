@@ -600,130 +600,104 @@ render() {
         // },
     ]
 
-    //查询表单style={{display:'table-cell',verticalAlign:'middle'}}
-    const SearchForm =<div > <BaseForm formList={formList} filterSubmit={this.handleFilterSubmit}/></div>
+    const SearchForm =<div style={{marginLeft:'-2%'}} > <BaseForm formList={formList} filterSubmit={this.handleFilterSubmit}/></div>
                            
     //统计信息
     const Information = 
-    <Row>
-        <Col span={5}>
-         <div className='statisticsBigBox'>
+    <div>
+        
+        <div className='statisticsBigBox'>
             <div style={{margin:6,fontSize:'large',fontWeight:"bold"}}>企业主体总计数量</div>
             <div style={{height:1,width:'100%',background: '#E6E9EC'}}></div>
             <div style={{fontSize:34,color:"RGB(38, 167, 220)",fontWeight:400}}>
                 <img src={require("./img/市场主体图标.png")} style={{height:50,margin:15}} alt=""/>
                 {this.state.total||''}
             </div>
-            <div style={{float:"right",margin:5}}>单位：家</div>
+            <div style={{float:"right"}}>单位：家</div>
         </div>
-        </Col>
+        
+        <div style={{float:"left",marginLeft:'2%'}}>
 
-        <Col span={5} style={{marginLeft:36}}>
-            <Row>
-                <div className='statisticsLittleBox'>
-                <Row>
-                    <Col span={5}><img src={require("./img/公司类.png")} style={{height:40,marginTop:14,marginLeft:11}} alt=""/></Col>
-                    <Col span={1}offset={1}><div style={{height:69,width:1,background: '#E6E9EC'}}></div></Col>
-                    <Col span={6}><div style={{marginTop:20,fontSize:'large',fontWeight:"bold"}}>公司类</div> </Col>
-                    <Col span={6}offset={1}><div style={{fontSize:34,color:"RGB(38, 167, 220)",fontWeight:400,marginTop:4}}>{statistics?statistics.enterprise:''}</div></Col>
-                </Row>
-                    <div style={{float:"right",marginTop:-20}}>单位：家</div>
-                 </div>
-            </Row>
-            <Row style={{marginTop:10}}>
-                <div className='statisticsLittleBox'>
-                <Row>
-                    <Col span={5}><img src={require("./img/个体类.png")} style={{height:40,marginTop:14,marginLeft:11}} alt=""/></Col>
-                    <Col span={1}offset={1}><div style={{height:69,width:1,background: '#E6E9EC'}}></div></Col>
-                    <Col span={6}><div style={{marginTop:20,fontSize:'large',fontWeight:"bold"}}>个体类</div> </Col>
-                    <Col span={6}offset={1}><div style={{fontSize:34,color:"RGB(38, 167, 220)",fontWeight:400,marginTop:4}}>{statistics?statistics.individual:''}</div></Col>
-                </Row>
-                    <div style={{float:"right",marginTop:-20}}>单位：家</div>
-                </div>
-            </Row>
-        </Col>
-
-        <Col span={5} style={{marginLeft:-28}}>
-            <Row>
-                <div className='statisticsLittleBox'>
-                <Row>
-                    <Col span={5}><img src={require("./img/合作社.png")} style={{height:40,marginTop:14,marginLeft:11}} alt=""/></Col>
-                    <Col span={1}offset={1}><div style={{height:69,width:1,background: '#E6E9EC'}}></div></Col>
-                    <Col span={6}><div style={{marginTop:20,fontSize:'large',fontWeight:"bold"}}>合作社</div> </Col>
-                    <Col span={6}offset={1}><div style={{fontSize:34,color:"RGB(38, 167, 220)",fontWeight:400,marginTop:4}}>{statistics?statistics.cooperation:''}</div></Col>
-                </Row>
-                    <div style={{float:"right",marginTop:-20}}>单位：家</div>
-                 </div>
-            </Row>
-            <Row style={{marginTop:10}}>
-                <div className='statisticsLittleBox'>
-                <Row>
-                    <Col span={5}><img src={require("./img/其他类.png")} style={{height:40,marginTop:14,marginLeft:11}} alt=""/></Col>
-                    <Col span={1}offset={1}><div style={{height:69,width:1,background: '#E6E9EC'}}></div></Col>
-                    <Col span={6}><div style={{marginTop:20,fontSize:'large',fontWeight:"bold"}}>其他类</div> </Col>
-                    <Col span={6}offset={1}><div style={{fontSize:34,color:"RGB(38, 167, 220)",fontWeight:400,marginTop:4}}>{statistics?statistics.others:''}</div></Col>
-                </Row>
-                    <div style={{float:"right",marginTop:-20}}>单位：家</div>
-                </div>
-            </Row>
-        </Col>
-
-        <Col span={2} style={{marginLeft:-20}}>
-            <div className='statisticsJumpBox' onClick={()=>this.openStatisticBox()}>
-                <img src={require("./img/市场主体图标.png")} style={{height:52,marginTop:35,marginLeft:33}} alt=""/>
-                <div style={{color:"RGB(38, 167, 220)",marginTop:20,marginLeft:25}}>加载更多</div>
-                </div>
-        </Col>
-        <Col span={7} style={{marginLeft:10}}>
-            <div className='statisticsTipsBox'>
-                <div style={{color:"RGB(153, 204, 51)",marginTop:10,marginLeft:7,fontSize:'medium'}}>状态提示:</div>
-                <div style={{height:1,width:'100%',background: '#E6E9EC',marginTop:5}}></div>
-                <div>
-                    <div style={{width:30,height:15,background:'RGB(255, 118, 95)',borderRadius:5,float:"left",margin:20}}></div>
-                    <div style={{marginTop:16,float:"left"}}>许可证超期报警</div>
-                    <br/>
-                    <div style={{width:30,height:15,background:'RGB(253, 221, 110)',borderRadius:5,marginTop:33,marginLeft:20}}></div>
-                    <div style={{marginTop:-19,marginLeft:72,float:"left"}}>许可证超期预警（30天内）</div>
-                </div>
+            <div className='statisticsLittleBox'>
+                <img src={require("./img/公司类.png")} style={{height:40,marginTop:14,marginLeft:10,float:"left"}} alt=""/>
+                <div style={{height:69,width:1,background: '#E6E9EC',float:"left",marginLeft:10}}></div>
+                <div style={{lineHeight:'70px',fontSize:'large',fontWeight:"bold",float:"left",marginLeft:5}}>公司类</div> 
+                <div style={{lineHeight:'70px',fontSize:34,color:"RGB(38, 167, 220)",fontWeight:400,marginLeft:5,float:"left"}}>{statistics?statistics.enterprise:''}</div>
+                <div style={{float:"right",marginTop:"18%"}}>单位：家</div>
             </div>
-        </Col>
-       
-    </Row>
+
+            <div style={{marginTop:10}} className='statisticsLittleBox'>
+                <img src={require("./img/个体类.png")} style={{height:40,marginTop:14,marginLeft:10,float:"left"}} alt=""/>
+                <div style={{height:69,width:1,background: '#E6E9EC',float:"left",marginLeft:10}}></div>
+                <div style={{lineHeight:'70px',fontSize:'large',fontWeight:"bold",float:"left",marginLeft:5}}>个体类</div> 
+                <div style={{lineHeight:'70px',fontSize:34,color:"RGB(38, 167, 220)",fontWeight:400,marginLeft:5,float:"left"}}>{statistics?statistics.individual:''}</div>
+                <div style={{float:"right",marginTop:"18%"}}>单位：家</div>
+            </div>
+        </div>
+
+        <div style={{float:"left",marginLeft:'2%'}}>
+           
+            <div className='statisticsLittleBox'>
+                <img src={require("./img/合作社.png")} style={{height:40,marginTop:14,marginLeft:10,float:"left"}} alt=""/>
+                <div style={{height:69,width:1,background: '#E6E9EC',float:"left",marginLeft:10}}></div>
+                <div style={{lineHeight:'70px',fontSize:'large',fontWeight:"bold",float:"left",marginLeft:5}}>合作社</div>
+                <div style={{lineHeight:'70px',fontSize:34,color:"RGB(38, 167, 220)",fontWeight:400,marginLeft:5,float:"left"}}>{statistics?statistics.cooperation:''}</div>
+                <div style={{float:"right",marginTop:"18%"}}>单位：家</div>
+            </div>
+        
+            <div style={{marginTop:10}} className='statisticsLittleBox'>
+                <img src={require("./img/其他类.png")} style={{height:40,marginTop:14,marginLeft:10,float:"left"}} alt=""/>
+                <div style={{height:69,width:1,background: '#E6E9EC',float:"left",marginLeft:10}}></div>
+                <div style={{lineHeight:'70px',fontSize:'large',fontWeight:"bold",float:"left",marginLeft:5}}>其他类</div>
+                <div style={{lineHeight:'70px',fontSize:34,color:"RGB(38, 167, 220)",fontWeight:400,marginLeft:5,float:"left"}}>{statistics?statistics.others:''}</div>
+                <div style={{float:"right",marginTop:"18%"}}>单位：家</div>
+            </div>
+            
+        </div>
+
+        <div className='statisticsJumpBox' onClick={()=>this.openStatisticBox()}>
+            <img src={require("./img/市场主体图标.png")} style={{height:52,marginTop:35,marginLeft:33}} alt=""/>
+            <div style={{color:"RGB(38, 167, 220)",marginTop:20,marginLeft:25}}>加载更多</div>
+        </div>
+        
+        <div className='statisticsTipsBox'>
+            <div style={{color:"RGB(153, 204, 51)",marginTop:10,marginLeft:7,fontSize:'medium'}}>状态提示:</div>
+            <div style={{height:1,width:'100%',background: '#E6E9EC',marginTop:5}}></div>
+            <div style={{height:16,margin:20}}>
+                <div style={{width:30,height:15,background:'RGB(255, 118, 95)',borderRadius:5,float:"left"}}></div>
+                <div style={{float:"left",marginLeft:15}}>许可证超期报警</div>
+            </div>
+            <div style={{height:16,margin:20}}>
+                <div style={{width:30,height:15,background:'RGB(253, 221, 110)',borderRadius:5,float:"left"}}></div>
+                <div style={{float:"left",marginLeft:15}}>许可证超期预警（30天内）</div>
+            </div>
+        </div>
+      
+    </div>
 
         
     return (
         <div ref="enterprise">
-            <Card style={{marginTop:10,marginLeft:30,marginRight:30}}>
-                <Row>
-                    <Col span={3}>
-                        {this.props.userType==1?null:
-                        <div style={{marginLeft:'1.5em'}}>
-                            <Row style={{marginBottom:5}}> 
-                                <span style={{marginLeft:'20%',fontSize:'x-large',color:'RGB(63, 127, 189)',fontWeight:"bold"}}>操作台</span>
-                            </Row>
-                            <Row>
-                                <div style={{marginBottom:5,width:135,height:45,cursor: "pointer"}} onClick={()=>this.setState({headStatus:false})}>
-                                    {this.state.headStatus == false?<img src={require("./img/数据查询【开】.png")} style={{height:'100%'}} alt=""/>:<img src={require("./img/数据查询【关】.png")} style={{height:'100%'}} alt=""/>}
-                                </div>     
-                            </Row>
-                            <Row> 
-                                <div  style={{marginTop:5,width:135,height:45,cursor: "pointer"}} onClick={()=>this.setState({headStatus:true})}>
-                                {this.state.headStatus?<img src={require("./img/数据统计【开】.png")} style={{height:'100%'}} alt=""/>:<img src={require("./img/数据统计【关】.png")} style={{height:'100%'}} alt=""/>}
-                                </div>
-                            </Row>
-                        </div>}
-                    </Col>
-                    <Col span={1}>
-                    <div style={{width:1,height:180,background: 'rgba(0, 0, 0, 0.15)'}}></div>
-                    </Col>
-                    <Col span={20}  style={{marginLeft:'-7em'}}>
-                        {this.props.userType==1?null:
-                        <div>
-                        {this.state.headStatus?Information:SearchForm}
-                        </div>}
-                    </Col>
-                </Row>
-            </Card>
+           { this.props.userType==1?null:
+           <Card style={{marginTop:10,marginLeft:30,marginRight:30}} bodyStyle={this.state.headStatus?{}:{paddingBottom:0}}>
+                
+                <div style={{borderRight:'1px solid rgba(0, 0, 0, 0.15)',float:"left",width:'12%'}}> 
+                    <div style={{textAlign:"center",marginBottom:10,fontSize:'x-large',color:'RGB(63, 127, 189)',fontWeight:"bold"}}>操作台</div>
+
+                    <div style={{textAlign:"center",marginBottom:5,height:45,cursor: "pointer"}} onClick={()=>this.setState({headStatus:false})}>
+                        {this.state.headStatus == false?<img src={require("./img/数据查询【开】.png")} style={{maxHeight:'100%',maxWidth:'100%'}} alt=""/>:<img src={require("./img/数据查询【关】.png")} style={{maxHeight:'100%',maxWidth:'100%'}} alt=""/>}
+                    </div>     
+                
+                    <div style={{textAlign:"center",marginTop:5,height:45,cursor: "pointer"}} onClick={()=>this.setState({headStatus:true})}>
+                    {this.state.headStatus?<img src={require("./img/数据统计【开】.png")} style={{maxHeight:'100%',maxWidth:'100%'}} alt=""/>:<img src={require("./img/数据统计【关】.png")} style={{maxHeight:'100%',maxWidth:'100%'}} alt=""/>}
+                    </div>
+                </div>
+              
+                <div style={{width:'88%',float:"left"}}>
+                  {this.state.headStatus?Information:SearchForm}
+                </div>
+
+            </Card>}
 
             <Card style={{marginTop:10,marginRight:30,marginLeft:30}}>
                 <div className='button-box-left'>

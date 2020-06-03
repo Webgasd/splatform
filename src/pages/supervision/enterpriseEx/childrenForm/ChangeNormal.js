@@ -16,7 +16,7 @@ const { TextArea } = Input;
         changeEnterprise,
     }
 )
-class Abnormal extends Component{
+class ChangeNormal extends Component{
 
     state={}
     componentDidMount() {
@@ -76,18 +76,15 @@ class Abnormal extends Component{
                    
                     </tbody>
                 </table>
-                <div style={{height:'34px',backgroundColor:'RGB(242, 242, 242)',color:'red',textAlign:'center',lineHeight:'34px',marginTop:10,marginBottom:10,marginLeft:-20,marginRight:-20}}>————请选择经营异常情形————</div>
+                <div style={{height:'34px',backgroundColor:'RGB(242, 242, 242)',color:'#0066CC',textAlign:'center',lineHeight:'34px',marginTop:10,marginBottom:10,marginLeft:-20,marginRight:-20}}>————请选择企业恢复经营状态————</div>
                 <table className='abnormaltable'>
                     <tbody>
                     <tr>
-                        <td >异常情形<span style={{color:'#FF3300'}}>*</span></td>
-                        <td><Select placeholder="请选择异常情形" value={this.props.abnormalData.abnormalType} style={{width:"100%"}}onChange={(value)=>this.changeInput(value,"abnormalType")}>
-                            {list.map((item,index)=> ( <Option value={item.id}>{item.content}</Option>))}
+                        <td style={{width:'30%'}}>经营状态<span style={{color:'#FF3300'}}>*</span></td>
+                        <td><Select placeholder="请选择经营状态" value={this.props.abnormalData.businessState} style={{width:"100%"}} onChange={(value)=>this.changeInput(value,"businessState")}>
+                            <Option value={1}>新增</Option>
+                            <Option value={2}>正常</Option>
                         </Select></td>
-                    </tr>
-                    <tr>
-                        <td >备注</td>
-                        <td ><TextArea placeholder="请填写备注" value={this.props.abnormalData.abnormalContent} onChange={(e)=>this.changeInput(e.target.value,"abnormalContent")} rows={3}/></td>
                     </tr>
                     </tbody>
                 </table>     
@@ -95,4 +92,4 @@ class Abnormal extends Component{
         )
     }
 }
-export default Abnormal;
+export default ChangeNormal;
