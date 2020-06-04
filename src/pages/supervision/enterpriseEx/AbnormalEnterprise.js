@@ -474,13 +474,13 @@ render() {
                 <img className="forImg" src={require("./img/公司类.png")}  alt=""/>
                 <div className="title">公司类</div> 
                 <div className="number" style={{color:'red'}}>{''}</div>
-                <div style={{float:"right",marginTop:"14%"}}>单位：家</div>
+                <div style={{float:"right",marginTop:"16%"}}>单位：家</div>
             </div>
             <div style={{marginTop:10}} className='statisticsLittleBox'>
                 <img className="forImg"src={require("./img/个体类.png")} alt=""/>
                 <div className="title">个体类</div> 
                 <div className="number" style={{color:'red'}}>{''}</div>
-                <div style={{float:"right",marginTop:"14%"}}>单位：家</div>
+                <div style={{float:"right",marginTop:"16%"}}>单位：家</div>
             </div>
 
         </div>
@@ -491,21 +491,21 @@ render() {
                 <img className="forImg" src={require("./img/合作社.png")}  alt=""/>
                 <div className="title">合作社</div>
                 <div className="number" style={{color:'red'}}>{''}</div>
-                <div style={{float:"right",marginTop:"14%"}}>单位：家</div>
+                <div style={{float:"right",marginTop:"16%"}}>单位：家</div>
             </div>
         
             <div style={{marginTop:10}} className='statisticsLittleBox'>
                 <img className="forImg" src={require("./img/其他类.png")}  alt=""/>
                 <div className="title">其他类</div>
                 <div className="number" style={{color:'red'}}>{''}</div>
-                <div style={{float:"right",marginTop:"14%"}}>单位：家</div>
+                <div style={{float:"right",marginTop:"16%"}}>单位：家</div>
             </div>
             
         </div>
 
-        <div className='statisticsJumpBox' onClick={()=>this.openStatisticBox()}>
-            <img src={require("./img/市场主体图标.png")} style={{height:52,marginTop:35,marginLeft:25}} alt=""/>
-            <div style={{color:"RGB(38, 167, 220)",marginTop:20,marginLeft:18}}>加载更多</div>
+        <div className='statisticsJumpBox' >
+            <div style={{height:52,marginTop:35,textAlign:'center'}}><img src={require("./img/市场主体图标.png")} style={{maxHeight:'100%',maxWidth:'100%'}} alt=""/></div>
+            <div style={{color:"RGB(38, 167, 220)",marginTop:20,textAlign:'center'}}>加载更多</div>
         </div>
         
         <div className='statisticsTipsBox'>
