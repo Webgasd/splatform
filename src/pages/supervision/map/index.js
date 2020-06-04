@@ -572,7 +572,7 @@ class map extends React.Component{
             {
                 type: 'AREA_TREE',
                 field: 'areaList',
-                width: 250,
+                width: 200,
                 list: Utils.getDataSource(this.props.areaList||[])
             },
         ]

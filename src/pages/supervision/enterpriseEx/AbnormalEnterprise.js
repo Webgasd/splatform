@@ -436,79 +436,80 @@ render() {
             field: 'legalPerson'
         },
         {
+            type: 'INPUT',
+            label: '住所/经营场所',
+            field: 'registeredAddress'
+        }, 
+        {
             type: 'SELECT',
             label: '异常情形',
             field: 'abnormalId',
             placeholder: '请选择异常情形',
             list: (_this.state.abnormalList||[]).map((item)=>{return{id:item.id,name:item.content}})
+            //尚未实现
         },
     ]
 
     //查询表单style={{display:'table-cell',verticalAlign:'middle'}}
-    const SearchForm =<div style={{marginLeft:'-2%'}}><BaseForm formList={formList} filterSubmit={this.handleFilterSubmit}/></div>
+    const SearchForm =<div style={{marginRight:'2%'}}><BaseForm formList={formList} filterSubmit={this.handleFilterSubmit}/></div>
                     
 
     //统计信息
     const Information = 
-    <div>
+        
+        <div style={{float:"left",width:'100%'}}>
         
         <div className='statisticsBigBox'>
-            <div style={{margin:6,fontSize:'large',fontWeight:"bold"}}>异常企业总计数量</div>
-            <div style={{height:1,width:'100%',background: '#E6E9EC'}}></div>
-            <div style={{fontSize:34,color:"red",fontWeight:400}}>
+            <div style={{margin:6,fontSize:16,fontWeight:"bold",borderBottom:'1px solid #E6E9EC'}}>异常企业总计数量</div>
+            <div> 
                 <img src={require("./img/市场主体图标.png")} style={{height:50,margin:15}} alt=""/>
-                {this.state.total||''}
+                <span style={{fontSize:34,color:'red'}}>{this.state.total||''}</span> 
             </div>
             <div style={{float:"right"}}>单位：家</div>
         </div>
         
-        <div style={{float:"left",marginLeft:'2%'}}>
+        <div style={{float:"left",marginLeft:'2%',width:'18%'}}>
 
             <div className='statisticsLittleBox'>
-                <img src={require("./img/公司类.png")} style={{height:40,marginTop:14,marginLeft:10,float:"left"}} alt=""/>
-                <div style={{height:69,width:1,background: '#E6E9EC',float:"left",marginLeft:10}}></div>
-                <div style={{lineHeight:'70px',fontSize:'large',fontWeight:"bold",float:"left",marginLeft:5}}>公司类</div> 
-                <div style={{lineHeight:'70px',fontSize:34,color:"RGB(38, 167, 220)",fontWeight:400,marginLeft:5,float:"left"}}></div>
-                <div style={{float:"right",marginTop:"18%"}}>单位：家</div>
+                <img className="forImg" src={require("./img/公司类.png")}  alt=""/>
+                <div className="title">公司类</div> 
+                <div className="number" style={{color:'red'}}>{''}</div>
+                <div style={{float:"right",marginTop:"14%"}}>单位：家</div>
+            </div>
+            <div style={{marginTop:10}} className='statisticsLittleBox'>
+                <img className="forImg"src={require("./img/个体类.png")} alt=""/>
+                <div className="title">个体类</div> 
+                <div className="number" style={{color:'red'}}>{''}</div>
+                <div style={{float:"right",marginTop:"14%"}}>单位：家</div>
             </div>
 
-            <div style={{marginTop:10}} className='statisticsLittleBox'>
-                <img src={require("./img/个体类.png")} style={{height:40,marginTop:14,marginLeft:10,float:"left"}} alt=""/>
-                <div style={{height:69,width:1,background: '#E6E9EC',float:"left",marginLeft:10}}></div>
-                <div style={{lineHeight:'70px',fontSize:'large',fontWeight:"bold",float:"left",marginLeft:5}}>个体类</div> 
-                <div style={{lineHeight:'70px',fontSize:34,color:"RGB(38, 167, 220)",fontWeight:400,marginLeft:5,float:"left"}}></div>
-                <div style={{float:"right",marginTop:"18%"}}>单位：家</div>
-            </div>
         </div>
 
-        <div style={{float:"left",marginLeft:'2%'}}>
+        <div style={{float:"left",marginLeft:'2%',width:'18%'}}>
            
             <div className='statisticsLittleBox'>
-                <img src={require("./img/合作社.png")} style={{height:40,marginTop:14,marginLeft:10,float:"left"}} alt=""/>
-                <div style={{height:69,width:1,background: '#E6E9EC',float:"left",marginLeft:10}}></div>
-                <div style={{lineHeight:'70px',fontSize:'large',fontWeight:"bold",float:"left",marginLeft:5}}>合作社</div>
-                <div style={{lineHeight:'70px',fontSize:34,color:"RGB(38, 167, 220)",fontWeight:400,marginLeft:5,float:"left"}}></div>
-                <div style={{float:"right",marginTop:"18%"}}>单位：家</div>
+                <img className="forImg" src={require("./img/合作社.png")}  alt=""/>
+                <div className="title">合作社</div>
+                <div className="number" style={{color:'red'}}>{''}</div>
+                <div style={{float:"right",marginTop:"14%"}}>单位：家</div>
             </div>
         
             <div style={{marginTop:10}} className='statisticsLittleBox'>
-                <img src={require("./img/其他类.png")} style={{height:40,marginTop:14,marginLeft:10,float:"left"}} alt=""/>
-                <div style={{height:69,width:1,background: '#E6E9EC',float:"left",marginLeft:10}}></div>
-                <div style={{lineHeight:'70px',fontSize:'large',fontWeight:"bold",float:"left",marginLeft:5}}>其他类</div>
-                <div style={{lineHeight:'70px',fontSize:34,color:"RGB(38, 167, 220)",fontWeight:400,marginLeft:5,float:"left"}}></div>
-                <div style={{float:"right",marginTop:"18%"}}>单位：家</div>
+                <img className="forImg" src={require("./img/其他类.png")}  alt=""/>
+                <div className="title">其他类</div>
+                <div className="number" style={{color:'red'}}>{''}</div>
+                <div style={{float:"right",marginTop:"14%"}}>单位：家</div>
             </div>
             
         </div>
 
-        <div className='statisticsJumpBox'>
-            <img src={require("./img/市场主体图标.png")} style={{height:52,marginTop:35,marginLeft:33}} alt=""/>
-            <div style={{color:"RGB(38, 167, 220)",marginTop:20,marginLeft:25}}>加载更多</div>
+        <div className='statisticsJumpBox' onClick={()=>this.openStatisticBox()}>
+            <img src={require("./img/市场主体图标.png")} style={{height:52,marginTop:35,marginLeft:25}} alt=""/>
+            <div style={{color:"RGB(38, 167, 220)",marginTop:20,marginLeft:18}}>加载更多</div>
         </div>
         
         <div className='statisticsTipsBox'>
-            <div style={{color:"RGB(153, 204, 51)",marginTop:10,marginLeft:7,fontSize:'medium'}}>状态提示:</div>
-            <div style={{height:1,width:'100%',background: '#E6E9EC',marginTop:5}}></div>
+            <div style={{color:"#99CC33",marginTop:10,marginLeft:7,fontSize:16,borderBottom:'1px solid #E6E9EC'}}>状态提示:</div>
             <div style={{height:16,margin:20}}>
                 <div style={{width:30,height:15,background:'RGB(255, 118, 95)',borderRadius:5,float:"left"}}></div>
                 <div style={{float:"left",marginLeft:15}}>许可证超期报警</div>
