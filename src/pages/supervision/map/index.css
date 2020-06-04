@@ -10,23 +10,13 @@
 .locationTitle{
     color:yellow
 }
-#leftPanel{
-    float:left;
-    margin:10px;
-    width:74%;
-}
-#rightPanel{
-    width:24%;
-    height:710px;
-    float:right;
-    margin-top:10px;
-}
 #topPanel{
     width:100%;
     height:70px;
     border:1px solid #DCDCDC;
     margin:0 auto;
     margin-bottom:5px;
+    border-radius: 0.4rem;
 
 }
 .grayBox{
@@ -34,7 +24,6 @@
     border-radius: .25rem;
     width: 15rem;
     border-width: 0;
-    border-radius: 0.4rem;
     box-shadow:rgba(114, 124, 245, .5);
     border:1px solid  #DCDCDC;
 }
@@ -43,7 +32,7 @@
     margin:5px;
 }
 .rightSearchBox{
-    width:70px;
+    width:20%;
     height:25px;
     float:left;
     text-align:center;
@@ -51,10 +40,10 @@
 }
 .bottomGrayBox{
     border-bottom:1px solid #DCDCDC;
-    margin:5px;
+    margin:8px;
 }
 .omStat{
-    width:175px;
+    width:16%;
     height:60px;
     display:inline-block;
     margin:0 auto;
@@ -99,7 +88,7 @@
     border-radius: 0.4rem;
     box-shadow:rgba(114, 124, 245, .5);
     position: relative;
-    bottom: 38rem;
+    bottom: 44rem;
     -ms-flex: 1 1 auto;
     flex: 1 1 auto;
     color:#000;

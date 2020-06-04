@@ -19,7 +19,7 @@ import 'echarts/lib/component/tooltip'
 import 'echarts/lib/component/title'
 import 'echarts/lib/component/legend'
 import 'echarts/lib/component/markPoint'
-import { Input,Button,message ,Modal } from 'antd';
+import { Input,Button,message ,Modal ,Row,Col,Card} from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import ReactEcharts from 'echarts-for-react';
 // 以下为整合引入
@@ -140,7 +140,7 @@ class map extends React.Component{
             if(res.status == "success"){
                 this.setState({
                     datai1:[],datai2:[],datai3:[],datac1:[],datac2:[], datac3:[],
-                    datah1:[],datah2:[],datah3:[],dataq1:[],dataq2:[],dataq3:[]
+                    datah1:[],datah2:[],datah3:[],dataq1:[],dataq2:[],dataq3:[],t1:0
                 })
                 this.setData(res.data)
             }
@@ -280,7 +280,7 @@ class map extends React.Component{
                             draggable:false
                         }); 
                         that.map.add(marker);
-                    }
+                    } 
                     message.success(`${res.data.length}个搜索结果以标记在地图上`)
                         that.detaiDisplay(JSON.stringify({}));
                 }
@@ -572,7 +572,7 @@ class map extends React.Component{
             {
                 type: 'AREA_TREE',
                 field: 'areaList',
-                width: 130,
+                width: 250,
                 list: Utils.getDataSource(this.props.areaList||[])
             },
         ]
@@ -633,125 +633,130 @@ class map extends React.Component{
         />
     </Modal>)
         return (
-            <div style ={{width:"100%"}}>
-                {modal}{ledgerTable}{videoModal}
-                <div id="leftPanel" >
-                    <div id="topPanel" className="grayBox">
-                    <div className="rightGrayBox" style={{textAlign:"center",width:"100px",fontSize:"18px",color:"#1890ff",float:"left" }}>
-                        <div style={{fontWeight: "bold"}}>数据地图</div>
-                        <div style={{fontWeight: "bold"}}>控制台</div>
-                    </div>
-                    <div className="grayBox omStat" style={{width: "150px"}}>
-                        <div className="rightGrayBox" style={{width: "45px", float: "left"}}>
-                            <img src={a0}  width="30px"/></div>
-                        <div style={{marginTop: "5px", fontWeight: "bold"}}  onClick={()=>this.onlyDisplay(0)}>市场主体</div>
-                        &nbsp;<span style={{color:"#1890ff"}}>{iCount+cCount+qCount+hCount}&nbsp;</span>
-                    </div>
-                    <div className="grayBox omStat">
-                        <div className="rightGrayBox" style={{width:"45px",float:"left"}}><img src={i1} width="30px"/></div>
-                        <div style={{marginTop: "5px",fontWeight:"bold"}} onClick={()=>this.onlyDisplay(1)}>个体类
-                            &nbsp;<span style={{color:"#1890ff"}}>{iCount}</span></div>
-                        &nbsp;<span style={{fontSize:"10px",float:"right",color:"lightgray"}}>单位：家 &nbsp;</span>
-                    </div>
-                    <div className="grayBox omStat">
-                        <div className="rightGrayBox" style={{width: "45px", float: "left"}}><img src={c1} width="30px"/></div>
-                                                                                                 
-                        <div style={{marginTop: "5px",fontWeight:"bold"}} onClick={()=>this.onlyDisplay(2)}>企业类
-                            &nbsp;<span style={{color:"#1890ff"}}>{cCount}</span></div>
-                        &nbsp;<span style={{fontSize: "10px", float: "right",color:"lightgray"}}>单位：家 &nbsp;</span>
-                    </div>
-                    <div className="grayBox omStat">
-                        <div className="rightGrayBox" style={{width: "45px", float: "left"}}><img src={h1}
-                                                                                                  width="30px"/></div>
-                        <div style={{marginTop: "5px",fontWeight:"bold"}} onClick={()=>this.onlyDisplay(3)}>合作社
-                            &nbsp;<span style={{color:"#1890ff"}}>{hCount}</span></div>
-                        &nbsp;<span style={{fontSize: "10px", float: "right",color:"lightgray"}}>单位：家 &nbsp;</span>
-                    </div>
-                    <div className="grayBox omStat">
-                        <div className="rightGrayBox" style={{width: "45px", float: "left"}}><img src={q1}
-                                                                                                  width="30px"/></div>
-                        <div style={{marginTop: "5px",fontWeight:"bold"}} onClick={()=>this.onlyDisplay(4)}>其他
-                            &nbsp;<span style={{color:"#1890ff"}}>{qCount}</span></div>
-                        &nbsp;<span style={{fontSize: "10px", float: "right",color:"lightgray"}}>单位：家 &nbsp;</span>
-                    </div>
-                </div>
+            <div>
+                        {modal}{ledgerTable}{videoModal}
+                <Row gutter={16}>
+                    <Col span={18}>
+                        <div id="topPanel" className="grayBox">
+                            <div className="rightGrayBox" style={{textAlign:"center",width:"10%",fontSize:"18px",color:"#1890ff",float:"left" }}>
+                                <div style={{fontWeight: "bold"}}>数据地图</div>
+                                <div style={{fontWeight: "bold"}}>控制台</div>
+                            </div>
 
-                {/* 以下为地图，坐标提示，数据信息 */}
-                    <div style ={{width:"100%",height:"630px",border:"5px solid #DCDCDC"}} className="grayBox">
-                        <div id="container" style={{width: "100%", height: "620px"}}></div>
-                        {/* <Map ref={this.onRef} transferValue={value=>this.setStateFromMap(value)} /> */}
-                        <div id="input-card">
-                            <div style={{height:"25px",background: "#000", color: "#99FFFF",padding:"2px"}}>
-                                &nbsp;&nbsp;企业定位坐标</div>
-                            <div className="input-item">
-                                <span className="locationTitle">&nbsp;&nbsp;个&nbsp;&nbsp;&nbsp;&nbsp;体</span>：
-                                新增&nbsp;<img className="smallImg" alt="" src={i1}/>&nbsp;&nbsp;
-                                正常&nbsp;<img className="smallImg" alt="" src={i2}/>&nbsp;&nbsp;
-                                异常&nbsp;<img className="smallImg" alt="" src={i3}/>
+                            <div className="grayBox omStat" onClick={()=>this.onlyDisplay(0)} style={this.state.t1===0?{background:'#e8e6e1'}:{}}>
+                                <div className="rightGrayBox" style={{width: "45px", float: "left"}}>
+                                    <img src={a0}  width="30px"/></div>
+                                <div style={{marginTop: "5px", fontWeight: "bold"}}>市场主体</div>
+                                &nbsp;<span style={{color:"#1890ff",fontWeight:"bold"}}>{iCount+cCount+qCount+hCount}&nbsp;</span>
                             </div>
-                            <div className="input-item">
-                                <span className="locationTitle">&nbsp;&nbsp;公&nbsp;&nbsp;&nbsp;&nbsp;司</span>：
-                                新增&nbsp;<img className="smallImg" alt="" src={c1}/>&nbsp;&nbsp;
-                                正常&nbsp;<img className="smallImg" alt="" src={c2}/>&nbsp;&nbsp;
-                                异常&nbsp;<img className="smallImg" alt="" src={c3}/>
+
+                            <div className="grayBox omStat" onClick={()=>this.onlyDisplay(1)} style={this.state.t1===1?{background:'#e8e6e1'}:{}}>
+                                <div className="rightGrayBox" style={{width:"45px",float:"left"}}><img src={i1} width="30px"/></div>
+                                <div style={{marginTop: "5px",fontWeight:"bold"}} >个体类
+                                    &nbsp;<span style={{color:"#1890ff"}}>{iCount}</span></div>
+                                &nbsp;<span style={{fontSize:"10px",float:"right",color:"lightgray"}}>单位：家 &nbsp;</span>
                             </div>
-                            <div className="input-item">
-                                <span className="locationTitle">&nbsp;&nbsp;合作社</span>：
-                                新增&nbsp;<img className="smallImg" alt="" src={h1}/>&nbsp;&nbsp;
-                                正常&nbsp;<img className="smallImg" alt="" src={h2}/>&nbsp;&nbsp;
-                                异常&nbsp;<img className="smallImg" alt="" src={h3}/>
+                            
+                            <div className="grayBox omStat" onClick={()=>this.onlyDisplay(2)} style={this.state.t1===2?{background:'#e8e6e1'}:{}}>
+                                <div className="rightGrayBox" style={{width: "45px", float: "left"}}><img src={c1} width="30px"/></div>                                                                      
+                                <div style={{marginTop: "5px",fontWeight:"bold"}} >企业类
+                                    &nbsp;<span style={{color:"#1890ff"}}>{cCount}</span></div>
+                                &nbsp;<span style={{fontSize: "10px", float: "right",color:"lightgray"}}>单位：家 &nbsp;</span>
                             </div>
-                            <div className="input-item">
-                                <span className="locationTitle">&nbsp;&nbsp;其&nbsp;&nbsp;&nbsp;&nbsp;他</span>：
-                                新增&nbsp;<img className="smallImg" alt="" src={q1}/>&nbsp;&nbsp;
-                                正常&nbsp;<img className="smallImg" alt="" src={q2}/>&nbsp;&nbsp;
-                                异常&nbsp;<img className="smallImg" alt="" src={q3}/>
+
+                            <div className="grayBox omStat" onClick={()=>this.onlyDisplay(3)} style={this.state.t1===3?{background:'#e8e6e1'}:{}}>
+                                <div className="rightGrayBox" style={{width: "45px", float: "left"}}><img src={h1}width="30px"/></div>
+                                <div style={{marginTop: "5px",fontWeight:"bold"}} >合作社
+                                    &nbsp;<span style={{color:"#1890ff"}}>{hCount}</span></div>
+                                &nbsp;<span style={{fontSize: "10px", float: "right",color:"lightgray"}}>单位：家 &nbsp;</span>
+                            </div>
+                            <div className="grayBox omStat" onClick={()=>this.onlyDisplay(4)} style={this.state.t1===4?{background:'#e8e6e1'}:{}}>
+                                <div className="rightGrayBox" style={{width: "45px", float: "left"}}><img src={q1} width="30px"/></div>                                                                              
+                                <div style={{marginTop: "5px",fontWeight:"bold"}}>其他
+                                    &nbsp;<span style={{color:"#1890ff"}}>{qCount}</span></div>
+                                &nbsp;<span style={{fontSize: "10px", float: "right",color:"lightgray"}}>单位：家 &nbsp;</span>
                             </div>
                         </div>
-                        <div id="companyInfo" >
-                            <div className={"bottomGrayBox"}>&nbsp;&nbsp;<img src={detailPic} alt=''/>数据信息</div>
-                            <div style={{display:this.state.detailDisplay}}>
-                                {this.state.propagandaEnclosure.length>=1?
-                                    <img src={commonUrl+"/upload/picture/"+this.state.propagandaEnclosure[0].response.data} width={"300px"} height={"150px"}/>:
-                                    <img src=""  width={"300px"} height={"150px"}/>
-                                }
-                                <div className={"bottomGrayBox"} style={{fontSize: "18px",fontWeight:"bold"}}>&nbsp;&nbsp;{this.state.enterpriseName}</div>
-                                <div className={"bottomGrayBox"} >
-                                    法&nbsp;定&nbsp;代&nbsp;表&nbsp;人：{this.state.legalPerson}<br/>
-                                    联&nbsp;&nbsp;系&nbsp;&nbsp;&nbsp;电&nbsp;&nbsp;话：{this.state.cantactWay}<br/>
-                                    统一信用代码：{this.state.idNumber}<br/>
-                                    <div style={{float: "left"}}>企&nbsp;&nbsp;业&nbsp;&nbsp;&nbsp;地&nbsp;&nbsp;址：</div>
-                                        <div style={{paddingLeft:"100px",width: "290px"}}>{this.state.registeredAddress}</div>
-                                    <div style={{height:"10px"}}></div>
-                                    <div style={{textAlign: "right"}}>
-                                        <img src={nav1} onClick={()=>this.baseInfo()} width='30px' height='30px' alt=''/>&nbsp;&nbsp;
-                                        <img src={nav2} onClick={()=>this.showVideo()}  width='30px' height='30px' alt=''/>&nbsp;&nbsp;
-                                        <img src={nav3} onClick={()=>this.showLedgerTable()}  width='30px' height='30px' alt=''/>&nbsp;&nbsp;
-                                        <img src={nav4} onClick={this.toGaodeLocation}  width='30px' height='30px' alt=''/>&nbsp;&nbsp;
+
+                    {/* 以下为地图，坐标提示，数据信息 */}
+                        <div style ={{width:"100%",height:"720px",border:"5px solid #DCDCDC",marginTop:10}} className="grayBox">
+                            <div id="container" style={{width: "100%", height: "710px"}}></div>
+                            <div id="input-card">
+                                <div style={{height:"25px",background: "#000", color: "#99FFFF",padding:"2px"}}>
+                                    &nbsp;&nbsp;企业定位坐标</div>
+                                <div className="input-item">
+                                    <span className="locationTitle">&nbsp;&nbsp;个&nbsp;&nbsp;&nbsp;&nbsp;体</span>：
+                                    新增&nbsp;<img className="smallImg" alt="" src={i1}/>&nbsp;&nbsp;
+                                    正常&nbsp;<img className="smallImg" alt="" src={i2}/>&nbsp;&nbsp;
+                                    异常&nbsp;<img className="smallImg" alt="" src={i3}/>
+                                </div>
+                                <div className="input-item">
+                                    <span className="locationTitle">&nbsp;&nbsp;公&nbsp;&nbsp;&nbsp;&nbsp;司</span>：
+                                    新增&nbsp;<img className="smallImg" alt="" src={c1}/>&nbsp;&nbsp;
+                                    正常&nbsp;<img className="smallImg" alt="" src={c2}/>&nbsp;&nbsp;
+                                    异常&nbsp;<img className="smallImg" alt="" src={c3}/>
+                                </div>
+                                <div className="input-item">
+                                    <span className="locationTitle">&nbsp;&nbsp;合作社</span>：
+                                    新增&nbsp;<img className="smallImg" alt="" src={h1}/>&nbsp;&nbsp;
+                                    正常&nbsp;<img className="smallImg" alt="" src={h2}/>&nbsp;&nbsp;
+                                    异常&nbsp;<img className="smallImg" alt="" src={h3}/>
+                                </div>
+                                <div className="input-item">
+                                    <span className="locationTitle">&nbsp;&nbsp;其&nbsp;&nbsp;&nbsp;&nbsp;他</span>：
+                                    新增&nbsp;<img className="smallImg" alt="" src={q1}/>&nbsp;&nbsp;
+                                    正常&nbsp;<img className="smallImg" alt="" src={q2}/>&nbsp;&nbsp;
+                                    异常&nbsp;<img className="smallImg" alt="" src={q3}/>
+                                </div>
+                            </div>
+                            <div id="companyInfo" >
+                                <div className={"bottomGrayBox"}>&nbsp;&nbsp;<img src={detailPic} alt=''/>数据信息</div>
+                                <div style={{display:this.state.detailDisplay}}>
+                                    {this.state.propagandaEnclosure.length>=1?
+                                        <img src={commonUrl+"/upload/picture/"+this.state.propagandaEnclosure[0].response.data} width={"300px"} height={"150px"}/>:
+                                        <img src=""  width={"300px"} height={"150px"}/>
+                                    }
+                                    <div className={"bottomGrayBox"} style={{fontSize: "18px",fontWeight:"bold"}}>&nbsp;&nbsp;{this.state.enterpriseName}</div>
+                                    <div className={"bottomGrayBox"} >
+                                        法&nbsp;定&nbsp;代&nbsp;表&nbsp;人：{this.state.legalPerson}<br/>
+                                        联&nbsp;&nbsp;系&nbsp;&nbsp;&nbsp;电&nbsp;&nbsp;话：{this.state.cantactWay}<br/>
+                                        统一信用代码：{this.state.idNumber}<br/>
+                                        <div style={{float: "left"}}>企&nbsp;&nbsp;业&nbsp;&nbsp;&nbsp;地&nbsp;&nbsp;址：</div>
+                                            <div style={{paddingLeft:"100px",width: "290px"}}>{this.state.registeredAddress}</div>
+                                        <div style={{height:"10px"}}></div>
+                                        <div style={{textAlign: "right"}}>
+                                            <img src={nav1} onClick={()=>this.baseInfo()} width='30px' height='30px' alt=''/>&nbsp;&nbsp;
+                                            <img src={nav2} onClick={()=>this.showVideo()}  width='30px' height='30px' alt=''/>&nbsp;&nbsp;
+                                            <img src={nav3} onClick={()=>this.showLedgerTable()}  width='30px' height='30px' alt=''/>&nbsp;&nbsp;
+                                            <img src={nav4} onClick={this.toGaodeLocation}  width='30px' height='30px' alt=''/>&nbsp;&nbsp;
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    {/* 以上为地图，坐标提示，数据信息 */}
-                </div>
-                <div id="rightPanel" >
-                    <div className="grayBox" style ={{width:"300px",height:"100px",marginBottom:"5px"}}>
-                        <div className={"bottomGrayBox"} style={{fontSize: "17px",fontWeight:"bold" }}>
-                            <img src={totalPic}/>市场主体总计（单位：家）</div>
+                        {/* 以上为地图，坐标提示，数据信息 */}
+                   
+                    </Col>
+               
+                    <Col span={6}>
+        
+                    <div className="grayBox" style ={{width:"100%",height:"120px",marginBottom:"15px"}}>
+                        <div className={"bottomGrayBox"} style={{fontSize: "17px",fontWeight:"bold" }}><img src={totalPic}/>市场主体总计（单位：家）</div>
                         <span style={{fontSize: "40px", color:"red",float: "right",letterSpacing:"8px",fontWeight:"bold"}}>
                             {iCount+cCount+qCount+hCount}&nbsp;&nbsp;</span>
                     </div>
-                    <div className="grayBox" style ={{width:"300px",height:"230px",marginBottom:"5px"}}>
-                        <div className={"bottomGrayBox"}style={{fontWeight:"bold" }}><img src={searchPic} />数据搜索</div>
-                        <div className={"grayBox"} style ={{width:"280px",height:"40px",border:"#cccc00 solid 1px",margin:"10px"}}>
+                   
+                    
+                    <div className="grayBox" style ={{width:"100%",height:"230px",marginBottom:"15px"}}>
+                        <div className={"bottomGrayBox"}style={{fontWeight:"bold" ,fontSize: "17px"}}><img src={searchPic} />数据搜索</div>
+                        <div className={"grayBox"} style ={{width:"96%",height:"40px",border:"#cccc00 solid 1px",margin:"10px"}}>
                             <div  className={"rightSearchBox"}style ={{borderRight:"#cccc00 solid 1px"}}>区域筛选</div>
                             <div >{SearchForm}</div>
-                            
                         </div>
-                        <div className={"grayBox"} style ={{width:"280px",height:"120px",border:"#cc6600 solid 1px",margin:"10px"}}>
+
+                        <div className={"grayBox"} style ={{width:"96%",height:"120px",border:"#cc6600 solid 1px",margin:"10px"}}>
                             <div className={"rightSearchBox"}style ={{borderRight:"#cc6600 solid 1px"}}>搜索聚焦</div>
-                            <div style ={{width:"270px",marginTop:"5px"}}>
+                            <div style ={{marginTop:"5px"}}>
                                 <input type="radio"  name="s1" value="1"  onClick={this.changeSearchType}/>市场主体名称&nbsp;&nbsp;
                                 <input type="radio"  name="s1" value="2" onClick={this.changeSearchType}/>位置聚焦
                             </div>
@@ -759,23 +764,26 @@ class map extends React.Component{
                                 placeholder=""
                                 onSearch={value => this.cp(value)}
                                 onChange={value=>this.changeValue(value)}
-                                style={{ width: "260px",marginLeft:"5px"}}
+                                style={{ width: "96%",marginLeft:"5px"}}
                             />
                             <div style={{ float: "right",margin:"10px"}}>
                                 <Button icon={<SearchOutlined />} type="primary" shape="round" onClick={()=>this.cp()}>搜索</Button></div>
                         </div>
                     </div>
-                    <div className="grayBox" style ={{width:"300px",height:"365px"}}>
-                        <div className={"bottomGrayBox"} style={{fontWeight:"bold" }}><img src={analysisPic}/>企业状态分析</div>
-                        <div className={"bottomGrayBox"}>
-                            <img src={allPic} width="68px" onClick={()=>this.onlyDisplay1(0)}/>&nbsp;
-                            <img src={newPic} width="68px" onClick={()=>this.onlyDisplay1(1)}/>&nbsp;
-                            <img src={nomalPic} width="68px" onClick={()=>this.onlyDisplay1(2)}/>&nbsp;
-                            <img src={abnomalPic} width="68px" onClick={()=>this.onlyDisplay1(3)}/>
+                  
+                    <div className="grayBox" style ={{width:"100%",height:"400px"}}>
+                        <div className={"bottomGrayBox"} style={{fontWeight:"bold",fontSize: "17px" }}><img src={analysisPic}/>企业状态分析</div>
+                        <div style={{margin:8}}>
+                            <img src={allPic} width="68px" style={{cursor:'pointer'}} alt='' onClick={()=>this.onlyDisplay1(0)}/>&nbsp;
+                            <img src={newPic} width="68px" style={{cursor:'pointer'}}alt='' onClick={()=>this.onlyDisplay1(1)}/>&nbsp;
+                            <img src={nomalPic} width="68px" style={{cursor:'pointer'}}alt='' onClick={()=>this.onlyDisplay1(2)}/>&nbsp;
+                            <img src={abnomalPic} width="68px" style={{cursor:'pointer'}}alt='' onClick={()=>this.onlyDisplay1(3)}/>
                         </div>
+                        <div style={{width:'96%',height:5,background:'#DCDCDC'}}></div>
                             <ReactEcharts  option={this.getOption()}/>
                     </div>
-                </div>
+                </Col>
+                </Row>
             </div>
         )
     }

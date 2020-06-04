@@ -113,67 +113,54 @@ render() {
     return (
         <div>
             <Row>
-            <Col span={8} style={{marginLeft:20}}>
-                <div className='statisticsBigBox1'>
-                <div style={{margin:6,fontSize:'large',fontWeight:"bold"}}>企业主体总计数量</div>
-                <div style={{height:1,width:'100%',background: '#E6E9EC'}}></div>
-                <div style={{fontSize:34,color:"RGB(38, 167, 220)"}}>
-                    <img src={require("../img/市场主体图标.png")} style={{height:50,margin:15}} alt=""/>
-                    {this.props.total||''}
+                <div className='statisticsBigBox'style={{width:280}}>
+                    <div style={{margin:6,fontSize:'large',fontWeight:"bold"}}>企业主体总计数量</div>
+                    <div style={{height:1,width:'100%',background: '#E6E9EC'}}></div>
+                    <div style={{fontSize:34,color:"RGB(38, 167, 220)",fontWeight:400}}>
+                        <img src={require("../img/市场主体图标.png")} style={{height:50,margin:15}} alt=""/>
+                        {this.props.total||''}
+                    </div>
+                    <div style={{float:"right"}}>单位：家</div>
                 </div>
-                <div style={{float:"right",margin:5}}>单位：家</div>
-            </div>
-            </Col>
+        
+                <div style={{float:"left",marginLeft:'3%'}}>
 
-            <Col span={8} style={{marginLeft:-51}}>
-                <Row>
-                    <div className='statisticsLittleBox1'>
-                    <Row>
-                        <Col span={5}><img src={require("../img/公司类.png")} style={{height:40,marginTop:14,marginLeft:11}} alt=""/></Col>
-                        <Col span={1}offset={1}><div style={{height:69,width:1,background: '#E6E9EC'}}></div></Col>
-                        <Col span={6}><div style={{marginTop:20,fontSize:'large',fontWeight:"bold"}}>公司类</div> </Col>
-                        <Col span={6}offset={1}><div style={{fontSize:24,color:"RGB(38, 167, 220)",marginTop:12}}>{statistics.enterprise||0}</div></Col>
-                    </Row>
-                        <div style={{float:"right",marginTop:-20}}>单位：家</div>
-                        </div>
-                </Row>
-                <Row style={{marginTop:10}}>
-                    <div className='statisticsLittleBox1'>
-                    <Row>
-                        <Col span={5}><img src={require("../img/个体类.png")} style={{height:40,marginTop:14,marginLeft:11}} alt=""/></Col>
-                        <Col span={1}offset={1}><div style={{height:69,width:1,background: '#E6E9EC'}}></div></Col>
-                        <Col span={6}><div style={{marginTop:20,fontSize:'large',fontWeight:"bold"}}>个体类</div> </Col>
-                        <Col span={6}offset={1}><div style={{fontSize:24,color:"RGB(38, 167, 220)",marginTop:12}}>{statistics.individual||0}</div></Col>
-                    </Row>
-                        <div style={{float:"right",marginTop:-20}}>单位：家</div>
+                    <div className='statisticsLittleBox'>
+                        <img src={require("../img/公司类.png")} style={{height:40,marginTop:14,marginLeft:10,float:"left"}} alt=""/>
+                        <div style={{height:69,width:1,background: '#E6E9EC',float:"left",marginLeft:10}}></div>
+                        <div style={{lineHeight:'70px',fontSize:'large',fontWeight:"bold",float:"left",marginLeft:5}}>公司类</div> 
+                        <div style={{lineHeight:'70px',fontSize:34,color:"RGB(38, 167, 220)",fontWeight:400,marginLeft:5,float:"left"}}>{statistics.enterprise||0}</div>
+                        <div style={{float:"right",marginTop:"18%"}}>单位：家</div>
                     </div>
-                </Row>
-            </Col>
 
-            <Col span={8} style={{marginLeft:12}}>
-                <Row>
-                    <div className='statisticsLittleBox1'>
-                    <Row>
-                        <Col span={5}><img src={require("../img/合作社.png")} style={{height:40,marginTop:14,marginLeft:11}} alt=""/></Col>
-                        <Col span={1}offset={1}><div style={{height:69,width:1,background: '#E6E9EC'}}></div></Col>
-                        <Col span={6}><div style={{marginTop:20,fontSize:'large',fontWeight:"bold"}}>合作社</div> </Col>
-                        <Col span={6}offset={1}><div style={{fontSize:24,color:"RGB(38, 167, 220)",marginTop:12}}>{statistics.cooperation||0}</div></Col>
-                    </Row>
-                        <div style={{float:"right",marginTop:-20}}>单位：家</div>
-                        </div>
-                </Row>
-                <Row style={{marginTop:10}}>
-                    <div className='statisticsLittleBox1'>
-                    <Row>
-                        <Col span={5}><img src={require("../img/其他类.png")} style={{height:40,marginTop:14,marginLeft:11}} alt=""/></Col>
-                        <Col span={1}offset={1}><div style={{height:69,width:1,background: '#E6E9EC'}}></div></Col>
-                        <Col span={6}><div style={{marginTop:20,fontSize:'large',fontWeight:"bold"}}>其他类</div> </Col>
-                        <Col span={6}offset={1}><div style={{fontSize:24,color:"RGB(38, 167, 220)",marginTop:12}}>{statistics.others||0}</div></Col>
-                    </Row>
-                        <div style={{float:"right",marginTop:-20}}>单位：家</div>
+                    <div style={{marginTop:10}} className='statisticsLittleBox'>
+                        <img src={require("../img/个体类.png")} style={{height:40,marginTop:14,marginLeft:10,float:"left"}} alt=""/>
+                        <div style={{height:69,width:1,background: '#E6E9EC',float:"left",marginLeft:10}}></div>
+                        <div style={{lineHeight:'70px',fontSize:'large',fontWeight:"bold",float:"left",marginLeft:5}}>个体类</div> 
+                        <div style={{lineHeight:'70px',fontSize:34,color:"RGB(38, 167, 220)",fontWeight:400,marginLeft:5,float:"left"}}>{statistics.individual||0}</div>
+                        <div style={{float:"right",marginTop:"18%"}}>单位：家</div>
                     </div>
-                </Row>
-            </Col>
+                </div>
+
+                <div style={{float:"left",marginLeft:'3%'}}>
+                
+                    <div className='statisticsLittleBox'>
+                        <img src={require("../img/合作社.png")} style={{height:40,marginTop:14,marginLeft:10,float:"left"}} alt=""/>
+                        <div style={{height:69,width:1,background: '#E6E9EC',float:"left",marginLeft:10}}></div>
+                        <div style={{lineHeight:'70px',fontSize:'large',fontWeight:"bold",float:"left",marginLeft:5}}>合作社</div>
+                        <div style={{lineHeight:'70px',fontSize:34,color:"RGB(38, 167, 220)",fontWeight:400,marginLeft:5,float:"left"}}>{statistics.cooperation||0}</div>
+                        <div style={{float:"right",marginTop:"18%"}}>单位：家</div>
+                    </div>
+                
+                    <div style={{marginTop:10}} className='statisticsLittleBox'>
+                        <img src={require("../img/其他类.png")} style={{height:40,marginTop:14,marginLeft:10,float:"left"}} alt=""/>
+                        <div style={{height:69,width:1,background: '#E6E9EC',float:"left",marginLeft:10}}></div>
+                        <div style={{lineHeight:'70px',fontSize:'large',fontWeight:"bold",float:"left",marginLeft:5}}>其他类</div>
+                        <div style={{lineHeight:'70px',fontSize:34,color:"RGB(38, 167, 220)",fontWeight:400,marginLeft:5,float:"left"}}>{statistics.others||0}</div>
+                        <div style={{float:"right",marginTop:"18%"}}>单位：家</div>
+                    </div>
+                    
+                </div>
             </Row>
 
             <div style={{marginTop:10,width:'100%',height:260}}>
