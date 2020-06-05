@@ -1,11 +1,20 @@
 import * as React from "react";
 // import Map from "./Mapd";
 import "./index.css";
+//图片
 import a0 from "./images/0.png";
 import i1 from "./images/11.png";
+import i2 from "./images/12.png";
+import i3 from "./images/13.png";
 import c1 from "./images/21.png";
+import c2 from "./images/22.png";
+import c3 from "./images/23.png";
 import h1 from "./images/31.png";
+import h2 from "./images/32.png";
+import h3 from "./images/33.png";
 import q1 from "./images/41.png";
+import q2 from "./images/42.png";
+import q3 from "./images/43.png";
 import allPic from "./images/all.png";
 import newPic from "./images/new.png";
 import nomalPic from "./images/nomal.png";
@@ -13,6 +22,11 @@ import abnomalPic from "./images/abnomal.png";
 import totalPic from "./images/total.png";
 import searchPic from "./images/search.png";
 import analysisPic from "./images/analysis.png";
+import nav1 from "./images/nav1.png";
+import nav2 from "./images/nav2.png";
+import nav3 from "./images/nav3.png";
+import nav4 from "./images/nav4.png";
+import detailPic from "./images/detail.png";
 //导入饼图
 import 'echarts/lib/chart/pie'
 import 'echarts/lib/component/tooltip'
@@ -22,21 +36,6 @@ import 'echarts/lib/component/markPoint'
 import { Input,Button,message ,Modal ,Row,Col,Card} from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import ReactEcharts from 'echarts-for-react';
-// 以下为整合引入
-import nav1 from "./images/nav1.png";
-import nav2 from "./images/nav2.png";
-import nav3 from "./images/nav3.png";
-import nav4 from "./images/nav4.png";
-import i2 from "./images/12.png";
-import i3 from "./images/13.gif";
-import c2 from "./images/22.png";
-import c3 from "./images/23.gif";
-import h2 from "./images/32.png";
-import h3 from "./images/33.gif";
-import q2 from "./images/42.png";
-import q3 from "./images/43.gif";
-import detailPic from "./images/detail.png";
-import cp from "./images/companyPic.jpg";
 import axios from "../../../axios";
 import {commonUrl} from "../../../axios/commonSrc";
 import connect from "react-redux/es/connect/connect";
@@ -364,7 +363,6 @@ class map extends React.Component{
          cluster=new AMap.MarkerClusterer(this.map, dataplus, {
             gridSize: 80,
         });
-        console.log(cluster)
         cluster.on('click', this.markerClick);
     }
     markerClick = (e) => {
@@ -650,28 +648,28 @@ class map extends React.Component{
                                 &nbsp;<span style={{color:"#1890ff",fontWeight:"bold"}}>{iCount+cCount+qCount+hCount}&nbsp;</span>
                             </div>
 
+                            <div className="grayBox omStat" onClick={()=>this.onlyDisplay(2)} style={this.state.t1===2?{background:'#e8e6e1'}:{}}>
+                                <div className="rightGrayBox" style={{width: "45px", float: "left"}}><img src={require("./images/公司正常.png")} width="30px"/></div>                                                                      
+                                <div style={{marginTop: "5px",fontWeight:"bold"}} >公司类
+                                    &nbsp;<span style={{color:"#1890ff"}}>{cCount}</span></div>
+                                &nbsp;<span style={{fontSize: "10px", float: "right",color:"lightgray"}}>单位：家 &nbsp;</span>
+                            </div>
+
                             <div className="grayBox omStat" onClick={()=>this.onlyDisplay(1)} style={this.state.t1===1?{background:'#e8e6e1'}:{}}>
-                                <div className="rightGrayBox" style={{width:"45px",float:"left"}}><img src={i1} width="30px"/></div>
+                                <div className="rightGrayBox" style={{width:"45px",float:"left"}}><img src={require("./images/个体正常.png")} width="30px"/></div>
                                 <div style={{marginTop: "5px",fontWeight:"bold"}} >个体类
                                     &nbsp;<span style={{color:"#1890ff"}}>{iCount}</span></div>
                                 &nbsp;<span style={{fontSize:"10px",float:"right",color:"lightgray"}}>单位：家 &nbsp;</span>
                             </div>
                             
-                            <div className="grayBox omStat" onClick={()=>this.onlyDisplay(2)} style={this.state.t1===2?{background:'#e8e6e1'}:{}}>
-                                <div className="rightGrayBox" style={{width: "45px", float: "left"}}><img src={c1} width="30px"/></div>                                                                      
-                                <div style={{marginTop: "5px",fontWeight:"bold"}} >企业类
-                                    &nbsp;<span style={{color:"#1890ff"}}>{cCount}</span></div>
-                                &nbsp;<span style={{fontSize: "10px", float: "right",color:"lightgray"}}>单位：家 &nbsp;</span>
-                            </div>
-
                             <div className="grayBox omStat" onClick={()=>this.onlyDisplay(3)} style={this.state.t1===3?{background:'#e8e6e1'}:{}}>
-                                <div className="rightGrayBox" style={{width: "45px", float: "left"}}><img src={h1}width="30px"/></div>
+                                <div className="rightGrayBox" style={{width: "45px", float: "left"}}><img src={require("./images/合作社正常.png")}width="30px"/></div>
                                 <div style={{marginTop: "5px",fontWeight:"bold"}} >合作社
                                     &nbsp;<span style={{color:"#1890ff"}}>{hCount}</span></div>
                                 &nbsp;<span style={{fontSize: "10px", float: "right",color:"lightgray"}}>单位：家 &nbsp;</span>
                             </div>
                             <div className="grayBox omStat" onClick={()=>this.onlyDisplay(4)} style={this.state.t1===4?{background:'#e8e6e1'}:{}}>
-                                <div className="rightGrayBox" style={{width: "45px", float: "left"}}><img src={q1} width="30px"/></div>                                                                              
+                                <div className="rightGrayBox" style={{width: "45px", float: "left"}}><img src={require("./images/其他正常.png")} width="30px"/></div>                                                                              
                                 <div style={{marginTop: "5px",fontWeight:"bold"}}>其他
                                     &nbsp;<span style={{color:"#1890ff"}}>{qCount}</span></div>
                                 &nbsp;<span style={{fontSize: "10px", float: "right",color:"lightgray"}}>单位：家 &nbsp;</span>
@@ -686,27 +684,27 @@ class map extends React.Component{
                                     &nbsp;&nbsp;企业定位坐标</div>
                                 <div className="input-item">
                                     <span className="locationTitle">&nbsp;&nbsp;个&nbsp;&nbsp;&nbsp;&nbsp;体</span>：
-                                    新增&nbsp;<img className="smallImg" alt="" src={i1}/>&nbsp;&nbsp;
-                                    正常&nbsp;<img className="smallImg" alt="" src={i2}/>&nbsp;&nbsp;
-                                    异常&nbsp;<img className="smallImg" alt="" src={i3}/>
+                                    新增&nbsp;<img className="smallImg" alt="" src={require("./images/个体新增.png")}/>&nbsp;&nbsp;
+                                    正常&nbsp;<img className="smallImg" alt="" src={require("./images/个体正常.png")}/>&nbsp;&nbsp;
+                                    异常&nbsp;<img className="smallImg" alt="" src={require("./images/个体异常.png")}/>
                                 </div>
                                 <div className="input-item">
                                     <span className="locationTitle">&nbsp;&nbsp;公&nbsp;&nbsp;&nbsp;&nbsp;司</span>：
-                                    新增&nbsp;<img className="smallImg" alt="" src={c1}/>&nbsp;&nbsp;
-                                    正常&nbsp;<img className="smallImg" alt="" src={c2}/>&nbsp;&nbsp;
-                                    异常&nbsp;<img className="smallImg" alt="" src={c3}/>
+                                    新增&nbsp;<img className="smallImg" alt="" src={require("./images/公司新增.png")}/>&nbsp;&nbsp;
+                                    正常&nbsp;<img className="smallImg" alt="" src={require("./images/公司正常.png")}/>&nbsp;&nbsp;
+                                    异常&nbsp;<img className="smallImg" alt="" src={require("./images/公司异常.png")}/>
                                 </div>
                                 <div className="input-item">
                                     <span className="locationTitle">&nbsp;&nbsp;合作社</span>：
-                                    新增&nbsp;<img className="smallImg" alt="" src={h1}/>&nbsp;&nbsp;
-                                    正常&nbsp;<img className="smallImg" alt="" src={h2}/>&nbsp;&nbsp;
-                                    异常&nbsp;<img className="smallImg" alt="" src={h3}/>
+                                    新增&nbsp;<img className="smallImg" alt="" src={require("./images/合作社新增.png")}/>&nbsp;&nbsp;
+                                    正常&nbsp;<img className="smallImg" alt="" src={require("./images/合作社正常.png")}/>&nbsp;&nbsp;
+                                    异常&nbsp;<img className="smallImg" alt="" src={require("./images/合作社异常.png")}/>
                                 </div>
                                 <div className="input-item">
                                     <span className="locationTitle">&nbsp;&nbsp;其&nbsp;&nbsp;&nbsp;&nbsp;他</span>：
-                                    新增&nbsp;<img className="smallImg" alt="" src={q1}/>&nbsp;&nbsp;
-                                    正常&nbsp;<img className="smallImg" alt="" src={q2}/>&nbsp;&nbsp;
-                                    异常&nbsp;<img className="smallImg" alt="" src={q3}/>
+                                    新增&nbsp;<img className="smallImg" alt="" src={require("./images/其他新增.png")}/>&nbsp;&nbsp;
+                                    正常&nbsp;<img className="smallImg" alt="" src={require("./images/其他正常.png")}/>&nbsp;&nbsp;
+                                    异常&nbsp;<img className="smallImg" alt="" src={require("./images/其他异常.png")}/>
                                 </div>
                             </div>
                             <div id="companyInfo" >
