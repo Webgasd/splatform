@@ -14,7 +14,7 @@ import liXiaApkPicture from './image/lixia.png';
 import linQingApkPicture from './image/linqing.png'
 import taiAnApkPicture from './image/taian.png'
 import pingYuanApkPicture from './image/pingyuan.png'
-import dongYingApkPicture from './image/dongying.png'
+import dongYingApkPicture from './image/dongying1.png'
 import zhongduan from './image/zhongduan.png';
 import {changeEnterprise, clearEnterprise} from "../../redux/action";
 //引入地图的不同标识
