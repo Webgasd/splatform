@@ -5,7 +5,41 @@ const FormItem = Form.Item;
 const Option = Select.Option;
 const CheckboxGroup = Checkbox.Group;
 const { TreeNode } = TreeSelect;
+function range(start, end) {
+    const result = [];
+    for (let i = start; i < end; i++) {
+        result.push(i);
+    }
+    return result;
+}
 
+function disabledDate(current) {
+    // Can not select days before today and today
+    return current && current < moment().endOf('day');
+}
+
+function disabledDateTime() {
+    return {
+        disabledHours: () => range(0, 24).splice(4, 20),
+        disabledMinutes: () => range(30, 60),
+        disabledSeconds: () => [55, 56],
+    };
+}
+
+function disabledRangeTime(_, type) {
+    if (type === 'start') {
+        return {
+            disabledHours: () => range(0, 60).splice(4, 20),
+            disabledMinutes: () => range(30, 60),
+            disabledSeconds: () => [55, 56],
+        };
+    }
+    return {
+        disabledHours: () => range(0, 60).splice(20, 4),
+        disabledMinutes: () => range(0, 31),
+        disabledSeconds: () => [55, 56],
+    };
+}
 class FilterForm extends Component{
 
     handleFilterSubmit = ()=>{
@@ -99,16 +133,24 @@ class FilterForm extends Component{
                     const begin_time = <FormItem label={label} key={'start'+field} style={{marginLeft:10}}>
                         {
                             getFieldDecorator('start'+field)(
-                                <DatePicker showTime={true} placeholder={placeholder} format="YYYY-MM-DD"/>
-                            )
+                                <DatePicker
+                                    format="YYYY-MM-DD"
+                                    //disabledDate={disabledDate}
+                                    //disabledTime={disabledDateTime}
+                                    showTime={{ defaultValue: moment('00:00:00', 'HH:mm:ss') }}
+                                />                             )
                         }
                     </FormItem>;
                     formItemList.push(begin_time)
                     const end_time = <FormItem label="~" colon={false} key={'end'+field}>
                         {
                             getFieldDecorator('end'+field)(
-                                <DatePicker showTime={true} placeholder={placeholder} format="YYYY-MM-DD" />
-
+                                <DatePicker
+                                    format="YYYY-MM-DD"
+                                    //disabledDate={disabledDate}
+                                    //disabledTime={disabledDateTime}
+                                    showTime={{ defaultValue: moment('23:59:59', 'HH:mm:ss') }}
+                                />
                             )
                         }
                     </FormItem>;
@@ -120,8 +162,12 @@ class FilterForm extends Component{
                             getFieldDecorator(field,{
                                 initialValue: initialValue
                             })(
-                                <DatePicker  placeholder={placeholder} format="YYYY-MM-DD" />
-                            )
+                                <DatePicker
+                                    format="YYYY-MM-DD"
+                                    //disabledDate={disabledDate}
+                                    //disabledTime={disabledDateTime}
+                                    showTime={{ defaultValue: moment('00:00:00', 'HH:mm:ss') }}
+                                />                             )
                         }
                     </FormItem></Col>;
                     formItemList.push(DATE)

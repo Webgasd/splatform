@@ -1,6 +1,6 @@
 import React,{Component} from 'react';
 import {Button, Modal, Table} from "antd";
-import {commonUrl} from "../../../axios/commonSrc";
+import {commonUrl,bookName} from "../../../axios/commonSrc";
 import CheckBookForm from "./CheckBookForm";
 import BookConfigForm from '../restaurantscheck/bookConfig';
 import axios from "../../../axios";
@@ -157,10 +157,10 @@ class BookForm extends Component {
                            bookData.businessAddress=inspectData.checkAddress;
                            bookData.supervisorId=inspectData.supervisorId;
                            if(item.bookUrl=='/orderRectification'){
-                               bookData.fileNumber='济历市监责改〔'+moment().format('YYYY')+'〕 号'
+                               bookData.fileNumber=bookName+'市监责改〔'+moment().format('YYYY')+'〕 号'
                            }
                            if(item.bookUrl=='/assistSeizure'){
-                               bookData.assistNumber='济历市监协扣〔'+moment().format('YYYY')+'〕 号'
+                               bookData.assistNumber=bookName+'市监协扣〔'+moment().format('YYYY')+'〕 号'
                            }
                            _this.setState({
                                bookType:item.bookUrl,
@@ -186,7 +186,7 @@ class BookForm extends Component {
                                    bookData.idNumber= res.data.ipIdNumber;
                                    bookData.phoneNumber= res.data.cantactWay;
                                    bookData.ortherContact= res.data.ipMobilePhone;
-                                   bookData.forceNumber='济历市监强制措施〔'+moment().format('YYYY')+'〕 号'
+                                   bookData.forceNumber=bookName+'市监强制措施〔'+moment().format('YYYY')+'〕 号'
                                    _this.setState({
                                        bookType:item.bookUrl,
                                        bookData,

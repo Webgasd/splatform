@@ -160,19 +160,19 @@ class DetailForm extends Component{
                             </div>
                             <div className='msgChange'>
                                 <div className='commonEnterpriseBox' style={{display:this.state.msgIndex === 0?'block':'none'}}>
-                                    <ListForm listType={list1} type={type}/>
+                                    <ListForm listType={list4} type={type}/>
                                 </div>
                                 <div className='commonEnterpriseBox' style={{display:this.state.msgIndex === 1?'block':'none'}}>
-                                    <ListForm listType={list2} type={type}/>
+                                    <ListForm listType={list1} type={type}/>
                                 </div>
                                 <div className='commonEnterpriseBox' style={{display:this.state.msgIndex === 2?'block':'none'}}>
                                     <ListForm listType={list3} type={type}/>
                                 </div>
                                 <div className='commonEnterpriseBox' style={{display:this.state.msgIndex === 3?'block':'none'}}>
-                                    <ListForm listType={list4} type={type}/>
+                                    <ListForm listType={list5} type={type}/>
                                 </div>
                                 <div className='commonEnterpriseBox' style={{display:this.state.msgIndex === 4?'block':'none'}}>
-                                    <ListForm listType={list5} type={type}/>
+                                    <ListForm listType={list2} type={type}/>
                                 </div>
                             </div>
                         </Form>

@@ -142,6 +142,7 @@ function getBase64(img, callback) {
                                     className="avatar-uploader"
                                     showUploadList={false}
                                     accept='image/png,image/jpeg'
+                                    // action={commonUrl+"/upload/uploadFile"}
                                     action={commonUrl+"/upload/uploadPicture"}
                                     fileList={propagandaEnclosure}
                                     onChange={this.handleChange}
@@ -150,7 +151,8 @@ function getBase64(img, callback) {
                                         (
                                             propagandaEnclosure.length>=1&&!this.state.loading?
                                             <img style={{height:'10%'}} src={commonUrl+"/upload/picture/"+propagandaEnclosure[0].response.data}  alt="avatar"/>
-                                            :uploadButton
+                                            //<img style={{height:'10%'}} src={commonUrl+"/upload/"+propagandaEnclosure[0].response.data}  alt="avatar"/>
+                                        :uploadButton
                                         )
                                     }
                                 </Upload>

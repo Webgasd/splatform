@@ -31,14 +31,9 @@ const formList = [
         label: '检查人员',
         field: 'person'
     },{
-        type: 'DATE',
-        label: '起始日期',
-        field: 'start1'
-    },
-    {
-        type: 'DATE',
-        label: '结束日期',
-        field: 'end1'
+        type: 'TIME',
+        label: '检测时间',
+        field: '1',
     },{
         type: 'INPUT',
         label: '所属所队',
