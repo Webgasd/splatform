@@ -28,18 +28,18 @@ export default class Exam extends Component {
             }
         })
     }
-    handleExam = (examId, subjectId, remark) => {
+    handleExam = (id,examCaId,remark) => {
         if (remark == '点击进入考试') {
             this.setState({
-                examId: examId,
-                subjectId: subjectId,
+                examCaId: examCaId,
+                subjectId: id,
                 pageStatus: 1
             })
         }
         if (remark == '已完成考试') {
             this.setState({
-                examId: examId,
-                subjectId: subjectId,
+                examCaId: examCaId,
+                subjectId: id,
                 pageStatus: 2
             })
         }
@@ -87,7 +87,7 @@ export default class Exam extends Component {
                                                 } : {background: "#404040"}}>
                                                     考试名称：{item.name}
                                                     <input type="submit" value={item.remark} className="btn r"
-                                                           onClick={() => this.handleExam(item.id, item.subjectId, item.remark)}/>
+                                                           onClick={() => this.handleExam(item.id,item.examCaId, item.remark)}/>
                                                 </h2>
                                                 <table>
                                                     <tbody>
@@ -200,9 +200,9 @@ export default class Exam extends Component {
                             {/*</div>*/}
                         </div>
                     </div> : pageStatus === 1 ?
-                        <OnlineExam examId={this.state.examId} changeStatus={() => this.setState({pageStatus: 2})}
-                                    subjectId={this.state.subjectId}/> :
-                        <MyExam examId={this.state.examId} subjectId={this.state.subjectId}/>}
+                        <OnlineExam examCaId={this.state.examCaId} changeStatus={() => this.setState({pageStatus: 2})}
+                                    subjectId={this.state.subjectId} /> :
+                        <MyExam examCaId={this.state.examCaId} subjectId={this.state.subjectId}/>}
             </div>
         );
     }

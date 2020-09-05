@@ -78,7 +78,7 @@ class AddForm extends Component{
                     </Col>
                 </Row>
                 <Row>
-                    <Col span={8}>
+                    {/* <Col span={8}>
                         <FormItem label="考试类型" {...formItemLayout}>
                             {
                                 getFieldDecorator('examType',{
@@ -91,8 +91,8 @@ class AddForm extends Component{
                                 )
                             }
                         </FormItem>
-                    </Col>
-                    <Col span={13}>
+                    </Col> */}
+                    <Col span={8}>
                         <div style={{marginBottom:15}}>
                             <Row>
                                 <Col span={12} style={{color:'#262626',textAlign:'right',paddingRight:10}}>选择考题:</Col>
@@ -101,7 +101,7 @@ class AddForm extends Component{
                         </div>
                     </Col>
                 </Row>
-                <FormItem label="对应培训" labelCol={{span:4}} wrapperCol={{span:18}}>
+                {/* <FormItem label="对应培训" labelCol={{span:4}} wrapperCol={{span:18}}>
                     {
                         getFieldDecorator('trainCourseName',{
                             initialValue:examInfo.trainCourseName
@@ -109,7 +109,7 @@ class AddForm extends Component{
                             <Input onClick={()=>this.setState({isTrainVisible:true})} placeholder="请选择对应培训" suffix={<Icon type="search"/>} disabled={checkStatus}/>
                         )
                     }
-                </FormItem>
+                </FormItem> */}
                 <Row>
                     <Col span={8}>
                         <FormItem label="开始日期" {...formItemLayout}>

@@ -8,30 +8,12 @@ import AddForm from './AddForm';
 const Panel = Collapse.Panel;
 const ButtonGroup = Button.Group;
 const confirm = Modal.confirm;
-const formList = [
-    {
-        type: 'INPUT',
-        label: '行业类别',
-        field: 'industryCategory',
-    },{
-        type: 'INPUT',
-        label: '工作种类',
-        field: 'workType',
-    }, {
-        type: 'INPUT',
-        label: '状态',
-        field: 'status',
-    },
-    {
-        type: 'INPUT',
-        label: '考题/问题',
-        field: 'name',
-    },
-]
+
 
 export default class ExamTopic extends Component{
     state = {
         selectedRowKeys: [], // Check here to configure the default column
+        subjectInfo:{}
 
     };
     params = {
@@ -41,6 +23,7 @@ export default class ExamTopic extends Component{
     //调用封装好的axios.requestList()获取角色数据
     componentDidMount(){
         this.requestList();
+        this.requestInfo();
     }
     requestList = ()=>{
         let _this = this;
@@ -65,6 +48,18 @@ export default class ExamTopic extends Component{
             }
         })
     }
+    requestInfo=()=>{
+        axios.ajax({
+            url:'/exam/subject/getIndustryAndWorkType'
+        }).then((res)=>{
+            if(res.status == 'success'){
+                this.setState({
+                    industryList:res.data.allIndustry,
+                    workTypeList:res.data.allWorkType
+                })
+            }
+        })
+    }
 
 
     // 查询表单
@@ -73,22 +68,33 @@ export default class ExamTopic extends Component{
         this.requestList();
     };
 
-    handleAdd = ()=>{
-        this.setState({
-            isVisible:true
-        })
-    }
+    // handleAdd = ()=>{
+    //     this.setState({
+    //         isVisible:true
+    //     })
+    // }
 
     handleSubmit = ()=>{
         let type = this.state.type;
+
         let data = this.addForm.props.form.getFieldsValue();//获取表单的值
-        data.topicIds = this.state.targetKeys.join(',');
-        console.log(data);
+
+        // data.topicIds = this.state.targetKeys.join(',');
+        const { subjectInfo } = this.state;
+
+        let totalScore =parseInt(subjectInfo.judgementNumber||0)*parseInt(subjectInfo.judgementScore||0)
+        +parseInt(subjectInfo.singleNumber||0)*parseInt(subjectInfo.singleScore||0)
+        +parseInt(subjectInfo.multipleNumber||0)*parseInt(subjectInfo.multipleScore||0)
+
+        let startTime = Utils.formatDate(subjectInfo.startTime)
+        let endTime = Utils.formatDate(subjectInfo.endTime)
+        let operateTime= Utils.formatDate(subjectInfo.startTime)
+
         axios.ajax({
             url:type=='create'?'/exam/subject/insert':'/exam/subject/update',
             data:{
                 params:{
-                    ...data
+                    ...data,...subjectInfo,totalScore,startTime,endTime,operateTime
                 }
             }
         }).then((res)=>{
@@ -145,7 +151,7 @@ export default class ExamTopic extends Component{
 
         if(type =='create'){
             this.setState({
-                title:'创建员工',
+                title:'添加试题信息',
                 isVisible:true,
                 type
             })
@@ -158,15 +164,14 @@ export default class ExamTopic extends Component{
             }).then((res)=>{
                 if(res.status == 'success'){
                     this.setState({
-                        title:type=='edit'?'编辑用户':'查看详情',
+                        title:type=='edit'?'修改试题信息':'查看试题信息',
                         isVisible:true,
                         targetKeys:res.data,
-                        subjectInfo:item,
+                        subjectInfo:JSON.parse(JSON.stringify(item)),
                         type
                     })
                 }
             })
-            //console.log(item);
         }else if(type=="delete"){
             confirm({
                 title: '确定删除?',
@@ -193,7 +198,31 @@ export default class ExamTopic extends Component{
 
 
     render() {
+        let _this = this;
+
+        const formList = [
+            {
+                type: 'SELECT',
+                label: '行业类别',
+                field: 'industryCategory',
+                placeholder: '请选择行业类别',
+                width: 150,
+                list:(_this.state.industryList||[]).map((item)=>{return{id:item.id,name:item.name}})
+            },{
+                type: 'SELECT',
+                label: '工作种类',
+                field: 'workTypeId',
+                placeholder: '请选择工作种类',
+                width: 170,
+                list:(_this.state.workTypeList||[]).map((item)=>{return{id:item.id,name:item.name}})
+            },
+        ]
+        
         const columns = [
+            {
+                title: '名称',
+                dataIndex: 'name',
+            },
             {
                 title: '行业类别',
                 dataIndex: 'industryName',
@@ -271,8 +300,8 @@ export default class ExamTopic extends Component{
                     </div>
                 </Card>
                 <Modal
-                    width='1000px'
-                    title="添加试题信息"
+                    width={1100}
+                    title={this.state.title}
                     okText="确定"
                     cancelText="取消"
                     destroyOnClose
@@ -292,6 +321,7 @@ export default class ExamTopic extends Component{
                 >
                     <AddForm targetKeys={this.state.targetKeys||[]}
                              subjectInfo={this.state.subjectInfo||{}}
+                             dispatchInfo={(value)=>{this.setState({subjectInfo:value})}}
                              wrappedComponentRef={(inst) => this.addForm = inst }
                              dispatchKeys={(keys)=>this.setState({targetKeys:keys})}
                              type={this.state.type}/>

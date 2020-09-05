@@ -36,7 +36,12 @@ export default class Exam extends Component{
         })
     }
     render() {
-        const {pageStatus} = this.state;
+        const {pageStatus,trainList} = this.state;
+        var scoreSum = 0.0;
+
+        for(let i of trainList){
+            scoreSum= scoreSum+i.caScore;
+        }
         return(
             <div>
             {pageStatus===0?
@@ -45,8 +50,10 @@ export default class Exam extends Component{
                 <aside className="menu l">
                     <ul>
                         <li>
-                            <h2>本年度<br/>当前您已学习课时：</h2>
-                            <p className="progress">00</p>
+                            <h2>本年度<br/>您已学总课时：</h2>
+                            <p className="progress">
+                               {scoreSum || "00"}
+                            </p>
                             <span className="time">课时</span>
                         </li>
                         <li>
@@ -59,10 +66,14 @@ export default class Exam extends Component{
                 </aside>
                 <main className="main">
                     <ul>
-                        {(this.state.trainList||[]).map((item)=>
+                        {(this.state.trainList||[]).map((item)=>{
+                            return(
                             <li>
                                 <div className="imgz l">
-                                    {item.picture?<img src={commonUrl+'/upload/picture/'+((JSON.parse(item.picture||JSON.stringify([]))[0])||{}.response||{}).data} alt=""/>:<span>暂无封图</span>}
+                                    {item.picture?<img style={{width:'100%',height:'100%'}} 
+                                        src={commonUrl+'/upload/picture/'+
+                                        (JSON.parse(item.picture||JSON.stringify([]))[0].response||{}).data} alt="" />
+                                        :<span>暂无封图</span>}
                                 </div>
                                 <div className="center l">
                                     <h2 className="classname">
@@ -91,8 +102,8 @@ export default class Exam extends Component{
                                     <span className="rl" style={item.caScore>0?(item.caScore==(item.bookCourseScore+item.videoCourseScore)?{background:"#9ACC98"}:{background:"#32CDFF"}):null}>本课程<br/>已学课时</span>
                                     <span className="rr" style={item.caScore>0?(item.caScore==(item.bookCourseScore+item.videoCourseScore)?{background:"#BFDFBF"}:{background:"#8BDFFF"}):null}>{item.caScore}</span>
                                 </div>
-                            </li>
-                        )}
+                            </li>)
+                        })}
                     </ul>
                 </main>
 

@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import {Card, Button, Modal,Row, Col, Icon} from 'antd';
+import {Card, Button, Modal,Row, Col, Icon,Progress } from 'antd';
 import ETable from '../../../components/ETable';
 import  BaseForm  from '../../../components/BaseForm';
 import Utils from "../../../utils";
@@ -22,6 +22,11 @@ const formList = [
         placeholder: '请选择培训情况',
         width: 150,
         list: [{id: 1, name: '完成'}, {id: 2, name: '未完成'}]
+    },
+    {
+        type: 'INPUT',
+        label: '身份证号',
+        field: 'idNumber',
     },
 ]
 
@@ -172,11 +177,27 @@ export default class TrainPerson extends Component{
         let _this = this;
         const columns = [
             {
-                title: '企业名称',
+                title: '姓名',
+                dataIndex: 'name'
+            },
+            {
+                title: '培训进度',
+                dataIndex: 'completionRate',
+                render(completionRate){
+                    return <Progress showInfo={false} percent={completionRate*100} />
+
+                }
+            },
+            {
+                title: '性别',
+                dataIndex: 'sexy',
+                render(sexy){
+                    return {1:'女',0:'男'}[sexy]
+                }
+            },
+            {
+                title: '所属企业',
                 dataIndex: 'companyName'
-            },{
-                title: '培训名称',
-                dataIndex: 'trainName'
             }, {
                 title: '行业类别',
                 dataIndex: 'industry',
@@ -192,25 +213,20 @@ export default class TrainPerson extends Component{
                     return data.name;
                 }
             },{
-                title: '姓名',
-                dataIndex: 'name'
-            },
-            {
-                title: '性别',
-                dataIndex: 'sexy',
-                render(sexy){
-                    return {1:'女',0:'男'}[sexy]
-                }
-            },{
                 title: '身份证号',
                 dataIndex: 'idNumber'
             },
             {
                 title: '联系电话',
                 dataIndex: 'telephone',
-            },{
-                title: '完成度',
-                dataIndex: 'completionRate'
+            },
+            {
+                title: '总完成度',
+                dataIndex: 'completionRate',
+                render(completionRate){
+                    var percent = Math.round(completionRate * 10000) / 100 + "%";
+                    return percent;
+                }
             },
             {
                 title: '操作',
@@ -225,66 +241,70 @@ export default class TrainPerson extends Component{
                 }}
 
         ];
-        const SearchForm =<div style={{display:'table-cell',verticalAlign:'middle',paddingLeft:30}}><BaseForm formList={formList} filterSubmit={this.handleFilterSubmit}/></div>
-        const Information = <Row style={{height:120}}>
-            <Col span={3} style={{margin:5,marginRight:30,background:"#99CC66",height:"95px",marginLeft:" 70px"}}>
-                <div style={{fontSize:16,color:"white",fontWeight:1000}}>
-                    <Icon type="profile" style={{ fontSize: '35px', color: '#FFFFFF' ,marginLeft:5,margin:10}} />
-                    企业基本档案
-                </div>
-                <div style={{margin:10,marginLeft:5}}>数量: {this.state.comAmount} 家</div>
-            </Col>
+        const SearchForm =<div style={{paddingLeft:30}}><BaseForm formList={formList} filterSubmit={this.handleFilterSubmit}/></div>
+        // 2020.06.26修改，取消信息框 --wjb
+        // const Information = <Row style={{height:120}}>
+        //     <Col span={3} style={{margin:5,marginRight:30,background:"#99CC66",height:"95px",marginLeft:" 70px"}}>
+        //         <div style={{fontSize:16,color:"white",fontWeight:1000}}>
+        //             <Icon type="profile" style={{ fontSize: '35px', color: '#FFFFFF' ,marginLeft:5,margin:10}} />
+        //             企业基本档案
+        //         </div>
+        //         <div style={{margin:10,marginLeft:5}}>数量: {this.state.comAmount} 家</div>
+        //     </Col>
 
-            <Col span={3} style={{margin:5,marginRight:30,background:"#33CCCC",height:"95px"}}>
-                <div style={{fontSize:16,color:"white",fontWeight:1000}}>
-                    <Icon type="solution" style={{fontSize: '35px', color: '#FFFFFF' ,marginLeft:5,margin:10}}/>
-                    人员基本档案
-                </div>
-                <div style={{margin:10,marginLeft:5}}>数量: {this.state.perAmount} 人</div>
-            </Col>
+        //     <Col span={3} style={{margin:5,marginRight:30,background:"#33CCCC",height:"95px"}}>
+        //         <div style={{fontSize:16,color:"white",fontWeight:1000}}>
+        //             <Icon type="solution" style={{fontSize: '35px', color: '#FFFFFF' ,marginLeft:5,margin:10}}/>
+        //             人员基本档案
+        //         </div>
+        //         <div style={{margin:10,marginLeft:5}}>数量: {this.state.perAmount} 人</div>
+        //     </Col>
 
-            <Col span={3} style={{margin:5,marginRight:30,background:"#FF9900",height:"95px"}}>
-                <div style={{fontSize:16,color:"white",fontWeight:1000}}>
-                    <Icon type="schedule" style={{ fontSize: '35px', color: '#FFFFFF' ,marginLeft:5,margin:10}} />
-                    省局许可系统
-                </div>
-                <div style={{margin:10,marginLeft:5}}>门户超链接</div>
-            </Col>
+        //     <Col span={3} style={{margin:5,marginRight:30,background:"#FF9900",height:"95px"}}>
+        //         <div style={{fontSize:16,color:"white",fontWeight:1000}}>
+        //             <Icon type="schedule" style={{ fontSize: '35px', color: '#FFFFFF' ,marginLeft:5,margin:10}} />
+        //             省局许可系统
+        //         </div>
+        //         <div style={{margin:10,marginLeft:5}}>门户超链接</div>
+        //     </Col>
 
-            <Col span={3} style={{margin:5,marginRight:30,background:"#99CC00",height:"95px"}}>
-                <div style={{fontSize:16,color:"white",fontWeight:1000}}>
-                    <Icon type="file-search" style={{ fontSize: '35px', color: '#FFFFFF' ,marginLeft:5,margin:10}} />
-                    信用体系系统
-                </div>
-                <div style={{margin:10,marginLeft:5}}>门户超链接</div>
-            </Col>
+        //     <Col span={3} style={{margin:5,marginRight:30,background:"#99CC00",height:"95px"}}>
+        //         <div style={{fontSize:16,color:"white",fontWeight:1000}}>
+        //             <Icon type="file-search" style={{ fontSize: '35px', color: '#FFFFFF' ,marginLeft:5,margin:10}} />
+        //             信用体系系统
+        //         </div>
+        //         <div style={{margin:10,marginLeft:5}}>门户超链接</div>
+        //     </Col>
 
-            <Col span={3} style={{margin:5,marginRight:30,background:"#0066CC",height:"95px"}}>
-                <div style={{fontSize:16,color:"white",fontWeight:1000}}>
-                    <Icon type="smile" style={{ fontSize: '35px', color: '#FFFFFF' ,marginLeft:5,margin:10}} />
-                    企业基本档案
-                </div>
-                <div style={{margin:10,marginLeft:5}}>门户超链接</div>
-            </Col>
+        //     <Col span={3} style={{margin:5,marginRight:30,background:"#0066CC",height:"95px"}}>
+        //         <div style={{fontSize:16,color:"white",fontWeight:1000}}>
+        //             <Icon type="smile" style={{ fontSize: '35px', color: '#FFFFFF' ,marginLeft:5,margin:10}} />
+        //             企业基本档案
+        //         </div>
+        //         <div style={{margin:10,marginLeft:5}}>门户超链接</div>
+        //     </Col>
 
-            <Col span={3} style={{margin:5,marginRight:30,background:"#3399CC",height:"95px"}}>
-                <div style={{fontSize:16,color:"white",fontWeight:1000}}>
-                    <Icon type="smile" style={{ fontSize: '35px', color: '#FFFFFF' ,marginLeft:5,margin:10}} />
-                    企业基本档案
-                </div>
-                <div style={{margin:10,marginLeft:5}}>门户超链接</div>
-            </Col>
-        </Row>
+        //     <Col span={3} style={{margin:5,marginRight:30,background:"#3399CC",height:"95px"}}>
+        //         <div style={{fontSize:16,color:"white",fontWeight:1000}}>
+        //             <Icon type="smile" style={{ fontSize: '35px', color: '#FFFFFF' ,marginLeft:5,margin:10}} />
+        //             企业基本档案
+        //         </div>
+        //         <div style={{margin:10,marginLeft:5}}>门户超链接</div>
+        //     </Col>
+        // </Row>
         return (
             <div ref='trainPerson'>
-                <div style={{height:120,display:'table',width:'100%'}}>
+                {/* <div style={{height:120,display:'table',width:'100%'}}>
                     {this.state.headStatus?SearchForm:Information}
-                </div>
+                </div> */}
                 <Card>
+                    {SearchForm}
+                </Card>
+                {/* <Card>
                     <div className='button-box-left'>
                         <Button type="primary" onClick={()=>this.setState({headStatus:this.state.headStatus?false:true})}>查询</Button>
                     </div>
-                </Card>
+                </Card> */}
                 <Card style={{marginTop:10}}>
                     {/*<div className='button-box'>*/}
                         {/*<Button type="primary" onClick={()=> {this.handleOperator('create',null)}}>添加</Button>*/}

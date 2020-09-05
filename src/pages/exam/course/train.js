@@ -133,6 +133,7 @@ class course extends Component{
                        title="视频教程"
                        visible={this.state.isVideoTutorial}
                        destroyOnClose
+                       maskClosable={false}
                        onCancel={()=>{
                            this.setState({
                                isVideoTutorial:false
@@ -146,6 +147,7 @@ class course extends Component{
                        width='800px'
                        title="文本教程"
                        visible={this.state.isPdfView}
+                       maskClosable={false}
                        destroyOnClose
                        onCancel={()=>{
                            this.setState({

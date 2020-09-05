@@ -16,7 +16,7 @@ class onlineExam extends Component {
     };
 
     componentDidMount() {
-        this.requestList();
+        this.requestList('mount');
         this.interval = setInterval(
             () => {
                 this.setState({times: this.state.times + 1})
@@ -29,18 +29,24 @@ class onlineExam extends Component {
         this.interval && clearInterval(this.interval);
     }
 
-    requestList = () => {
+    requestList = (rType) => {
         let _this = this;
         axios.ajax({
             url: '/exam/examType/getCaTopicList',
             data: {
                 params: {
-                    examId: _this.props.examId,
+                    examCaId: _this.props.examCaId,
                     subjectId: _this.props.subjectId
                 }
             }
         }).then((res) => {
-            if (res.status == "success") {
+            if (res.status == "success" && rType==='mount') {
+                _this.setState({
+                    topicList: res.data.list,
+                    subjectInfo: res.data.subject
+                },()=>this.timer())
+            }
+            if (res.status == "success" && rType==='refresh') {
                 _this.setState({
                     topicList: res.data.list,
                     subjectInfo: res.data.subject
@@ -62,22 +68,51 @@ class onlineExam extends Component {
             topicList: newList
         })
     };
+    timer=()=>{
+        let count = parseInt(this.state.subjectInfo.examTime||0)*60*1000
+        if(count){
+            setTimeout(()=>this.submitAnswer("immediately"),count)
+        }
+    }
 
-    submitAnswer = () => {
-        if (this.state.topicList.filter((item) => item.check === null).length > 0) {
-            alert("题目未完成");
-        } else {
+    submitAnswer = (submitType) => {
+        // if (this.state.topicList.filter((item) => item.check === null).length > 0) 
+        const {subjectId} = this.props;
+        const {subjectInfo,topicList} = this.state;
+        let _this = this;
+        if(submitType === 'confirm')   {
+            Modal.confirm({
+                title: '确认提交?',
+                onOk() {
+                    axios.PostAjax({
+                        url: '/exam/examType/submitCaTopic',
+                        data: {
+                            params: {
+                                examId: subjectId,
+                                subjectInfo:subjectInfo,
+                                list:topicList
+                            }
+                        }
+                    }).then((res) => {
+                            _this.requestList();
+                            _this.props.changeStatus();
+                        }
+                    )
+                  },
+            })
+        }
+         else {
             axios.PostAjax({
                 url: '/exam/examType/submitCaTopic',
                 data: {
                     params: {
-                        examId: this.props.examId,
-                        subjectInfo: this.state.subjectInfo,
-                        list: this.state.topicList
+                        examId: subjectId,
+                        subjectInfo:subjectInfo,
+                        list:topicList
                     }
                 }
             }).then((res) => {
-                    this.requestList();
+                    this.requestList('refresh');
                     this.props.changeStatus();
                 }
             )
@@ -91,7 +126,7 @@ class onlineExam extends Component {
         return (
             <div className='onlineExam'>
                 <Execution times={this.state.times} judgeList={judgeList || []} singleList={singleList || []}
-                           multipleList={multipleList || []} submitAnswer={() => this.submitAnswer()}/>
+                           multipleList={multipleList || []} submitAnswer={(submitType) => this.submitAnswer(submitType)}/>
                 <div className='rightBody'>
                     <div className='examHeader'>
                         <div className='header1'>2019年度餐饮食品安全类在线考试</div>

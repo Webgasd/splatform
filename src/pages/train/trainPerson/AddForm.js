@@ -1,7 +1,8 @@
 import React,{Component} from 'react';
-import {Card,Table} from "antd";
+import {Card,Table,Button,Modal} from "antd";
 import axios from "../../../axios";
 import {commonUrl} from "../../../axios/commonSrc";
+import MaterialProgress from './MaterialProgress.js'
 
 export default class MyExam extends Component {
     state = {
@@ -14,17 +15,17 @@ export default class MyExam extends Component {
     requestList=()=>{
         let _this = this;
         axios.ajax({
-            url:'/exam/enquiry/getCaTrainResult',
+            url:'/exam/enquiry/getCaTrainCourseResult',
             data:{
                 params:{
-                    courseId:_this.props.caInfo.trainId,
+                    // courseId:_this.props.caInfo.trainId,
                     caId:_this.props.caInfo.id
                 }
             }
         }).then((res)=>{
             if(res.status == "success"){
                 _this.setState({
-                    materialList:res.data.list
+                    courseList:res.data.list
                 })
             }
         })
@@ -41,24 +42,40 @@ export default class MyExam extends Component {
             }
         })
     }
+    handleOperator = (type,item)=>{
+        this.setState({
+            isVisible:true,
+            courseId:item.id
+        })
+    }
     render() {
         const columns = [
             {
-                title: '教材名称',
+                title: '课程名称',
                 dataIndex: 'name',
 
-            }, {
-                title: '教材种类',
-                dataIndex: 'contentType',
-                render(contentType){
-                    return {1:'视频类教材',2:'文本类教材'}[contentType]
-                }
-            }, {
-                title: '分值',
-                dataIndex: 'score',
+            }, 
+            // {
+            //     title: '教材种类',
+            //     dataIndex: 'contentType',
+            //     render(contentType){
+            //         return {1:'视频类教材',2:'文本类教材'}[contentType]
+            //     }
+            // }, 
+            {
+                title: '总课时',
+                dataIndex: 'courseScore',
         },{
-                title: '完成度',
-                dataIndex: 'completionRate',
+                title: '已学课时',
+                dataIndex: 'caScore',
+            },
+            {
+                title:'详情',
+                dataIndex: 'operation',
+                render:(text, record)=>{
+                    return <Button type='primary' onClick={() => { this.handleOperator('detail',record)}}>查看</Button>
+                    
+                }
             }
         ];
         const caInfo = this.props.caInfo;
@@ -76,7 +93,7 @@ export default class MyExam extends Component {
                                 <td style={{background:'#F2F2F2',width:'10%'}}>身份证号：</td>
                                 <td style={{width:'15%'}}>{caInfo.idNumber}</td>
                                 <td style={{background:'#F2F2F2',width:'10%'}}>性别：</td>
-                                <td style={{width:'15%'}}>{caInfo.sexy}</td>
+                                <td style={{width:'15%'}}>{caInfo.sexy===0?'男':'女'}</td>
                                 <td rowSpan={6}>
                                     <img src={commonUrl+'/upload/picture/'+photoUrl.response.data} style={{height:'230px'}} style={{height:'230px'}} alt="avatar" />
                                 </td>
@@ -91,7 +108,7 @@ export default class MyExam extends Component {
                             </tr>
                             <tr>
                                 <td style={{background:'#F2F2F2'}}>课时分值：</td>
-                                <td></td>
+                                <td>{caInfo.allScore}</td>
                                 <td style={{background:'#F2F2F2'}}>考试合格线：</td>
                                 <td></td>
                                 <td style={{background:'#F2F2F2'}}>考试情况：</td>
@@ -99,32 +116,45 @@ export default class MyExam extends Component {
                             </tr>
                             <tr>
                                 <td style={{background:'#F2F2F2'}}>考试名称:</td>
-                                <td colSpan={5}>214124124</td>
+                                <td colSpan={5}></td>
                             </tr>
                             <tr>
                                 <td style={{background:'#F2F2F2'}}>企业名称：</td>
-                                <td></td>
+                                <td>{caInfo.companyName}</td>
                                 <td style={{background:'#F2F2F2'}}>社会信用代码：</td>
-                                <td></td>
-                                <td style={{background:'#F2F2F2'}}>许可类型：</td>
-                                <td></td>
+                                <td colSpan={3}>{caInfo.creditNumber}</td>
                             </tr>
                             <tr>
                                 <td style={{background:'#F2F2F2'}}>企业地址：</td>
-                                <td colSpan={3}></td>
-                                <td style={{background:'#F2F2F2'}}>许可证号：</td>
-                                <td></td>
+                                <td colSpan={5}>{caInfo.businessAddress}</td>
                             </tr>
                             </tbody>
                         </table>
                     </div>
                 </Card>
-                <Card title='培训进度' style={{marginRight:15,marginLeft:15,marginTop:15}}>
+                <Card title='培训课程' style={{marginRight:15,marginLeft:15,marginTop:15}}>
                     <Table
                         columns={columns}
-                        dataSource={this.state.materialList}>
+                        dataSource={this.state.courseList}>
                     </Table>
                 </Card>
+                <Modal
+                    width='1000px'
+                    title="培训进度"
+                    destroyOnClose
+                    maskClosable={false}
+                    // getContainer={()=>this.refs.trainPerson}
+                    footer={null}
+                    visible={this.state.isVisible}
+                    onCancel={()=>{
+                        //this.addForm.props.form.resetFields();//表单重置
+                        this.setState({
+                            isVisible:false
+                        })
+                    }}
+                >
+                   <MaterialProgress caId={caInfo.id||{}} courseId={this.state.courseId||{}}/>
+                </Modal>
             </div>
 
 

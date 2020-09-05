@@ -7,26 +7,7 @@ import axios from "../../../axios";
 import AddForm from './AddForm';
 const Panel = Collapse.Panel;
 const confirm = Modal.confirm;
-const formList = [
-    {
-        type: 'INPUT',
-        label: '教材名称',
-        field: 'name',
-    },
-    {
-        type: 'INPUT',
-        label: '行业类别',
-        field: 'industryCategory',
-    },{
-        type: 'INPUT',
-        label: '工作种类',
-        field: 'workType',
-    }, {
-        type: 'INPUT',
-        label: '上传人',
-        field: 'operator',
-    },
-]
+
 
 export default class TrainMaterial extends Component{
     state = {
@@ -41,6 +22,7 @@ export default class TrainMaterial extends Component{
     //调用封装好的axios.requestList()获取角色数据
     componentDidMount(){
         this.requestList();
+        this.requestInfo();
     }
     requestList = ()=>{
         let _this = this;
@@ -61,6 +43,18 @@ export default class TrainMaterial extends Component{
                         _this.params.pageNo = current;//	当前页数
                         _this.requestList(); //刷新列表数据
                     })
+                })
+            }
+        })
+    }
+    requestInfo=()=>{
+        axios.ajax({
+            url:'/exam/subject/getIndustryAndWorkType'
+        }).then((res)=>{
+            if(res.status == 'success'){
+                this.setState({
+                    industryList:res.data.allIndustry,
+                    workTypeList:res.data.allWorkType
                 })
             }
         })
@@ -180,6 +174,33 @@ export default class TrainMaterial extends Component{
 
 
     render() {
+        let _this = this;
+        const formList = [
+            {
+                type: 'INPUT',
+                label: '教材名称',
+                field: 'name',
+            },
+            {
+                type: 'SELECT',
+                label: '行业类别',
+                field: 'industryCategory',
+                placeholder: '请选择行业类别',
+                width: 150,
+                list:(_this.state.industryList||[]).map((item)=>{return{id:item.id,name:item.name}})
+            },{
+                type: 'SELECT',
+                label: '工作种类',
+                field: 'workType',
+                placeholder: '请选择工作种类',
+                width: 170,
+                list:(_this.state.workTypeList||[]).map((item)=>{return{id:item.id,name:item.name}})
+            }, {
+                type: 'INPUT',
+                label: '上传人',
+                field: 'operator',
+            },
+        ]
         const columns = [
             {
                 title: 'id',

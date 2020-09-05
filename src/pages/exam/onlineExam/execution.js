@@ -51,7 +51,7 @@ class execution extends Component {
                 <hr/>
                 <div className='tip1'>请仔细检查完成后，提交答案</div>
                 <div className='tip2'>试卷提交后不可返回</div>
-                <div className='submitAnswer' onClick={() => this.props.submitAnswer()}>提交答案</div>
+                <div className='submitAnswer' onClick={() => this.props.submitAnswer("confirm")}>提交答案</div>
             </div>
         )
     }

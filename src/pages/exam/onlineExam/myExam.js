@@ -16,7 +16,7 @@ export default class MyExam extends Component {
             url:'/exam/examType/getCaTopicList',
             data:{
                 params:{
-                    examId:_this.props.examId,
+                    examCaId:_this.props.examCaId,
                     subjectId:_this.props.subjectId
                 }
             }

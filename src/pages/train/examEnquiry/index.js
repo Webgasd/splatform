@@ -6,26 +6,7 @@ import Utils from "../../../utils";
 import axios from "../../../axios";
 import AddForm from './AddForm';
 const Panel = Collapse.Panel;
-const formList = [
-    {
-        type: 'INPUT',
-        label: '姓名',
-        field: 'caName',
-    },
-    {
-        type: 'INPUT',
-        label: '考试名称',
-        field: 'examName',
-    },
-    {
-        type: 'SELECT',
-        label: '考试情况',
-        field: 'examResult',
-        placeholder: '请选择考试情况',
-        width: 150,
-        list: [{id: 1, name: '合格'}, {id: 0, name: '不合格'}]
-    },
-]
+
 
 export default class TrainCourse extends Component{
     state = {
@@ -164,6 +145,49 @@ export default class TrainCourse extends Component{
 
     render() {
         let _this = this;
+        const formList = [
+            {
+                type: 'INPUT',
+                label: '姓名',
+                field: 'caName',
+            },{
+                type: 'INPUT',
+                label: '身份证号',
+                field: 'idNumber',
+            },
+            {
+                type: 'INPUT',
+                label: '企业名称',
+                field: 'companyName',
+            },
+            {
+                type: 'INPUT',
+                label: '考试名称',
+                field: 'examName',
+            },
+            {
+                type: 'SELECT',
+                label: '考试情况',
+                field: 'examResult',
+                placeholder: '请选择考试情况',
+                width: 150,
+                list: [{id: 1, name: '合格'}, {id: 0, name: '不合格'}]
+            },{
+                type: 'SELECT',
+                label: '行业类别',
+                field: 'industry',
+                placeholder: '请选择行业类别',
+                width: 150,
+                list:(_this.state.industryList||[]).map((item)=>{return{id:item.id,name:item.name}})
+            },{
+                type: 'SELECT',
+                label: '工作种类',
+                field: 'workType',
+                placeholder: '请选择工作种类',
+                width: 170,
+                list:(_this.state.workTypeList||[]).map((item)=>{return{id:item.id,name:item.name}})
+            },
+        ]
         const columns = [
             {
                 title: '姓名',

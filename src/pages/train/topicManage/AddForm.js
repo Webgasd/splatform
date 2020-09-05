@@ -1,8 +1,33 @@
 import React,{Component} from 'react';
 import {Input,Select,Radio,Checkbox,Row,Col} from 'antd';
+
+import axios from "../../../axios";
+
 const Option = Select.Option;
 
 export default class AddForm extends Component{
+    state = {
+        industryList:[],workTypeList:[]
+    }
+
+    componentDidMount() {
+        this.requestInfo();
+
+    }
+
+    requestInfo=()=>{
+        axios.ajax({
+            url:'/exam/subject/getIndustryAndWorkType'
+        }).then((res)=>{
+            if(res.status == 'success'){
+                this.setState({
+                    industryList:res.data.allIndustry,
+                    workTypeList:res.data.allWorkType
+                })
+            }
+        })
+    }
+
     handleTitle=(event)=>{
         let value = this.props.topicData;
         value.title = event.target.value;
@@ -53,8 +78,19 @@ export default class AddForm extends Component{
         value.answer = event.join(',');
         this.props.dispatchTopicData(value);
     }
+    handleIndustry=(event)=>{
+        let value = {...this.props.topicData};
+        value.industry = event;
+        this.props.dispatchTopicData(value);
+    }
+    handleWorkType=(event)=>{
+        let value = {...this.props.topicData};
+        value.workType = event;
+        this.props.dispatchTopicData(value);
+    }
     render(){
         const checkStatus = this.props.type=='detail'?true:false;
+        
         const judgement = <div className='commonEnterpriseBox'>
             <table>
                 <tbody>
@@ -139,7 +175,6 @@ export default class AddForm extends Component{
             </tr></tbody>
             </table>
             </div>
-
         return (
             <div>
                     <div className='commonEnterpriseBox'>
@@ -147,12 +182,14 @@ export default class AddForm extends Component{
                             <tbody>
                             <tr>
                                 <td>题型:</td>
-                                <td colSpan={3}>
+                                <td>
                                 <Select value={this.props.topicData.type||''} onChange={this.handleType} style={{ width: 200 }} disabled={checkStatus}>
                                     <Option value={1} key={1}>判断题</Option>
                                     <Option value={2} key={2}>单选题</Option>
                                     <Option value={3} key={3}>多选题</Option>
                                 </Select></td>
+
+                                {/* 2020.7.23改动：状态，分数改为行业类别、工作种类。（wjb)
                                 <td>状态:</td>
                                 <td>
                                  <Select  value={this.props.topicData.status||''} onChange={this.handleStatus} style={{ width: 200 }} disabled={checkStatus}>
@@ -160,7 +197,18 @@ export default class AddForm extends Component{
                                     <Option value={2} key={2}>关闭</Option>
                                 </Select></td>
                                 <td>分数：</td>
-                                <td><Input value={this.props.topicData.score||0} onChange={this.handleScore} disabled={checkStatus}/></td>
+                                <td><Input value={this.props.topicData.score||0} onChange={this.handleScore} disabled={checkStatus}/></td> */}
+
+                                <td >行业类别：</td>
+                                <td>
+                                    <Select value={this.props.topicData.industry||''} onChange={this.handleIndustry} style={{ width: 200 }} disabled={checkStatus} >
+                                        {(this.state.industryList||[]).map((item)=><Option value={item.id}>{item.name}</Option>)}
+                                    </Select>
+                                </td>
+                                <td>工作种类：</td>
+                                <td><Select value={this.props.topicData.workType||''} disabled={checkStatus?true:(this.props.topicData.industry?false:true)} onChange={this.handleWorkType} style={{ width: 200 }} >
+                                    {(this.state.workTypeList||[]).filter((item)=>item.industryId===this.props.topicData.industry).map((item)=><Option value={item.id}>{item.name}</Option>)}
+                                </Select></td>
                             </tr>
                             <tr>
                                 <td>问题/题目：</td>

@@ -8,20 +8,7 @@ import axios from "../../../axios";
 const Panel = Collapse.Panel;
 const ButtonGroup = Button.Group;
 const confirm = Modal.confirm;
-const formList = [
-    {
-        type: 'INPUT',
-        label: '考题/问题',
-        field: 'title',
-    },{
-        type: 'SELECT',
-        label: '题型',
-        field: 'type',
-        placeholder: '请选择题型',
-        width: 150,
-        list: [{id: 1, name: '判断'}, {id: 2, name: '单选'}, {id: 3, name: '多选'}]
-    },
-]
+
 
 export default class TopicManage extends Component{
     state = {
@@ -37,6 +24,7 @@ export default class TopicManage extends Component{
     //调用封装好的axios.requestList()获取角色数据
     componentDidMount(){
         this.requestList();
+        this.requestInfo();
     }
     requestList = ()=>{
         let _this = this;
@@ -57,6 +45,18 @@ export default class TopicManage extends Component{
                         _this.params.pageNo = current;//	当前页数
                         _this.requestList(); //刷新列表数据
                     })
+                })
+            }
+        })
+    }
+    requestInfo=()=>{
+        axios.ajax({
+            url:'/exam/subject/getIndustryAndWorkType'
+        }).then((res)=>{
+            if(res.status == 'success'){
+                this.setState({
+                    industryList:res.data.allIndustry,
+                    workTypeList:res.data.allWorkType
                 })
             }
         })
@@ -179,6 +179,36 @@ export default class TopicManage extends Component{
 
 
     render() {
+        let _this = this;
+        const formList = [
+            
+            {
+                type: 'INPUT',
+                label: '考题/问题',
+                field: 'title',
+            },{
+                type: 'SELECT',
+                label: '题型',
+                field: 'type',
+                placeholder: '请选择题型',
+                width: 150,
+                list: [{id: 1, name: '判断'}, {id: 2, name: '单选'}, {id: 3, name: '多选'}]
+            },{
+                type: 'SELECT',
+                label: '行业类别',
+                field: 'industryCategory',
+                placeholder: '请选择行业类别',
+                width: 150,
+                list:(_this.state.industryList||[]).map((item)=>{return{id:item.id,name:item.name}})
+            },{
+                type: 'SELECT',
+                label: '工作种类',
+                field: 'workType',
+                placeholder: '请选择工作种类',
+                width: 170,
+                list:(_this.state.workTypeList||[]).map((item)=>{return{id:item.id,name:item.name}})
+            },
+        ]
         const columns = [
             {
                 title: '考题/问题',
@@ -205,15 +235,32 @@ export default class TopicManage extends Component{
                     return answerList.join(",");
                 }
 
-            },  {
-                title: '状态',
-                dataIndex: 'status',
-                render(status){
-                    if (status == 1) {
-                        return "正常"
-                    } else {
-                        return "停用"
-                    }
+            }, 
+                // 2020.08.19改动:去掉状态，加类别、种类 --wjb
+            //  {
+            //     title: '状态',
+            //     dataIndex: 'status',
+            //     render(status){
+            //         if (status == 1) {
+            //             return "正常"
+            //         } else {
+            //             return "停用"
+            //         }
+            //     }
+            // },
+            {
+                title: '行业类别',
+                dataIndex: 'industry',
+                render(industry){
+                    let data = (_this.state.industryList||[]).find((item)=>item.id==industry)||{};
+                    return data.name;
+                }
+            },{
+                title: '工作种类',
+                dataIndex: 'workType',
+                render(workType){
+                    let data = (_this.state.workTypeList||[]).find((item)=>item.id==workType)||{};
+                    return data.name;
                 }
             },
             {

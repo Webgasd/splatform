@@ -1,7 +1,9 @@
 import React,{Component} from 'react';
-import {Card,Table} from "antd";
+import {Card,Table,Button,Modal} from "antd";
 import axios from "../../../axios";
 import {commonUrl} from "../../../axios/commonSrc";
+import Utils from "../../../utils";
+import TopicReview from './TopicReview'
 
 export default class MyExam extends Component {
     state = {
@@ -15,18 +17,18 @@ export default class MyExam extends Component {
     requestList=()=>{
         let _this = this;
         axios.ajax({
-            url:'/exam/enquiry/getCaTopicResult',
+            url:'/exam/enquiry/getCaExamResult',
             data:{
                 params:{
-                    examId:_this.props.caInfo.examId,
-                    subjectId:_this.props.caInfo.subjectId,
+                    // examId:_this.props.caInfo.examId,
+                    // subjectId:_this.props.caInfo.subjectId,
                     caId:_this.props.caInfo.id
                 }
             }
         }).then((res)=>{
             if(res.status == "success"){
                 _this.setState({
-                    topicList:res.data.list,
+                    topicList:res.data,
                     subjectInfo:res.data.subject
                 })
             }
@@ -44,43 +46,57 @@ export default class MyExam extends Component {
             }
         })
     }
+    handleOperator = (item)=>{
+        this.setState({
+            isVisible:true,
+            examCaId:item.id
+        })
+    }
     render() {
+        const caInfo = this.props.caInfo;
         const columns = [
             {
-                title: '题目名称',
-                dataIndex: 'title',
+                title: '考试名称',
+                dataIndex: 'examName',
+                render(){
+                    return caInfo.examName
+                }
+            },
+            {
+                title: '考试开始和结束时间',
+                dataIndex: 'examDate',
+                render(examDate){
+                    return (`${Utils.formatDateNoSeconds(examDate)}——${Utils.plusTime(examDate,caInfo.examTime)}`)
 
-            }, {
-                title: '题型',
-                type: 'type',
-                render(type){
-                    if (type == 1) {
-                        return "判断题"
-                    } else if (type == 2) {
-                        return "单选题"
-                    }else {
-                        return "多选题"
-                    }
                 }
-            },{
-                title: '正确答案',
-                dataIndex: 'answer',
-                render(answer,data){
-                    let answerList = answer.split(",");
-                    answerList = answerList.map((item)=>{if(data.type==1) {return {1:'正确',2:'错误'}[item]}else {return {1:'A',2:'B',3:'C',4:'D'}[item]}})
-                    return answerList.join(",");
+            },
+            {
+                title: '是否通过',
+                dataIndex: 'examResult',
+                render(examResult){
+                    return {0:'否',1:'是'}[examResult]
                 }
-            }, {
-                title: '选择答案',
-                dataIndex: 'check',
-                render(check,data){
-                    let answerList = check.split(",");
-                    answerList = answerList.map((item)=>{if(data.type==1) {return {1:'正确',2:'错误'}[item]}else {return {1:'A',2:'B',3:'C',4:'D'}[item]}})
-                    return answerList.join(",");
+            },
+            {
+                title: '总分数',
+                render(){
+                    return caInfo.totalScore
                 }
-            }
+            },
+            {
+                title: '考试得分',
+                dataIndex: 'examScore',
+            },
+            {
+                title: '详情',
+                dataIndex: 'operation',
+                render:(text, record)=>{
+                    return <Button type='primary' onClick={() => { this.handleOperator(record)}}>查看</Button>
+                    
+                }
+            },
         ];
-        const caInfo = this.props.caInfo;
+        
         const photo = this.props.caInfo.photo||JSON.stringify([]);
         const subjectInfo = this.state.subjectInfo||{};
         const photoUrl = JSON.parse(photo)[0]||{response:{}};
@@ -110,12 +126,12 @@ export default class MyExam extends Component {
                                 <td>{((this.state.workTypeList||[]).find((item)=>item.id==caInfo.workType)||{}).name}</td>
                             </tr>
                             <tr>
-                                <td style={{background:'#F2F2F2'}}>课时分值：</td>
+                                <td style={{background:'#F2F2F2'}}>考试总分：</td>
                                 <td>{subjectInfo.totalScore||0}</td>
                                 <td style={{background:'#F2F2F2'}}>考试合格线：</td>
                                 <td>{subjectInfo.qualifiedScore||0}</td>
                                 <td style={{background:'#F2F2F2'}}>考试情况：</td>
-                                <td>{{1:'已完成',0:'未完成'}[caInfo.examResult]}</td>
+                                <td>{{1:'已完成',0:'未完成',null:'未考试'}[caInfo.examResult]}</td>
                             </tr>
                             <tr>
                                 <td style={{background:'#F2F2F2'}}>考试名称:</td>
@@ -125,15 +141,13 @@ export default class MyExam extends Component {
                                 <td style={{background:'#F2F2F2'}}>企业名称：</td>
                                 <td>{caInfo.companyName}</td>
                                 <td style={{background:'#F2F2F2'}}>社会信用代码：</td>
-                                <td>12asfsa</td>
-                                <td style={{background:'#F2F2F2'}}>许可类型：</td>
-                                <td>21</td>
+                                <td colSpan={3}>{caInfo.creditNumber}</td>
+                                
                             </tr>
                             <tr>
                                 <td style={{background:'#F2F2F2'}}>企业地址：</td>
-                                <td colSpan={3}>asfsafsa</td>
-                                <td style={{background:'#F2F2F2'}}>许可证号：</td>
-                                <td>12asfsa</td>
+                                <td colSpan={5}>{caInfo.businessAddress}</td>
+                                
                             </tr>
                             </tbody>
                         </table>
@@ -145,6 +159,21 @@ export default class MyExam extends Component {
                         dataSource={this.state.topicList}>
                     </Table>
                 </Card>
+                <Modal
+                    width='1000px'
+                    title="考题回顾"
+                    destroyOnClose
+                    maskClosable={false}
+                    footer={null}
+                    visible={this.state.isVisible}
+                    onCancel={()=>{
+                        this.setState({
+                            isVisible:false
+                        })
+                    }}
+                >
+                   <TopicReview subjectId={caInfo.subjectId||{}} caId={caInfo.id||{}} examCaId={this.state.examCaId||{}}/>
+                </Modal>
             </div>
 
 

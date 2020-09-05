@@ -240,7 +240,7 @@ export default class AddForm extends Component{
                     </Table>
                 </Card>
                 <Modal
-                    width='1000px'
+                    width='1100px'
                     title="培训课程信息"
                     okText="确定"
                     cancelText="取消"

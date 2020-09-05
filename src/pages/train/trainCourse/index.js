@@ -5,27 +5,13 @@ import  BaseForm  from '../../../components/BaseForm';
 import Utils from "../../../utils";
 import axios from "../../../axios";
 import AddForm from './AddForm';
+
 const Panel = Collapse.Panel;
 const ButtonGroup = Button.Group;
 const confirm = Modal.confirm;
-const formList = [
-    {
-        type: 'INPUT',
-        label: '课程名称',
-        field: 'courseName',
-    },
-    {
-        type: 'INPUT',
-        label: '行业类别',
-        field: 'industryCategory',
-    },{
-        type: 'INPUT',
-        label: '工作种类',
-        field: 'workType',
-    },
-]
 
-export default class TrainCourse extends Component{
+
+ class TrainCourse extends Component{
     state = {
         selectedRowKeys: [], // Check here to configure the default column
 
@@ -39,6 +25,7 @@ export default class TrainCourse extends Component{
     //调用封装好的axios.requestList()获取角色数据
     componentDidMount(){
         this.requestList();
+        this.requestInfo();
     }
     requestList = ()=>{
         let _this = this;
@@ -59,6 +46,18 @@ export default class TrainCourse extends Component{
                         _this.params.page = current;//	当前页数
                         _this.requestList(); //刷新列表数据
                     })
+                })
+            }
+        })
+    }
+    requestInfo=()=>{
+        axios.ajax({
+            url:'/exam/subject/getIndustryAndWorkType'
+        }).then((res)=>{
+            if(res.status == 'success'){
+                this.setState({
+                    industryList:res.data.allIndustry,
+                    workTypeList:res.data.allWorkType
                 })
             }
         })
@@ -186,6 +185,7 @@ export default class TrainCourse extends Component{
 
 
     render() {
+        let _this = this;
         const columns = [
             {
                 title: '课程名称',
@@ -245,6 +245,39 @@ export default class TrainCourse extends Component{
                 }
             }
         ];
+        const formList = [
+            {
+                type: 'INPUT',
+                label: '课程名称',
+                field: 'courseName',
+            },
+            // {
+            //     type: 'INPUT',
+            //     label: '行业类别',
+            //     field: 'industryCategory',
+            // },
+            {
+                type: 'SELECT',
+                label: '行业类别',
+                field: 'industryCategory',
+                placeholder: '请选择行业类别',
+                width: 150,
+                list:(_this.state.industryList||[]).map((item)=>{return{id:item.id,name:item.name}})
+            },
+            // {
+            //     type: 'INPUT',
+            //     label: '工作种类',
+            //     field: 'workType',
+            // },
+            {
+                type: 'SELECT',
+                label: '工作种类',
+                field: 'workType',
+                placeholder: '请选择工作种类',
+                width: 170,
+                list:(_this.state.workTypeList||[]).map((item)=>{return{id:item.id,name:item.name}})
+            },
+        ]
 
         return (
             <div ref='trainCourse'>
@@ -306,3 +339,4 @@ export default class TrainCourse extends Component{
         );
     }
 }
+export default  TrainCourse;
