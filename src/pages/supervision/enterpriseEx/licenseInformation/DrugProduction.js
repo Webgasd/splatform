@@ -181,7 +181,7 @@ class DrugProduction extends Component{
                             <Option value="大型">大型</Option>
                             <Option value="中型">中型</Option>
                             <Option value="小型">小型</Option>
-                            <Option value="小型">微型</Option>
+                            <Option value="微型">微型</Option>
                            </Select>
                         </td>
                     </tr>

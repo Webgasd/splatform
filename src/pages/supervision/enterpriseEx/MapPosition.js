@@ -25,7 +25,7 @@ const AMap=window.AMap;
 
     componentDidMount () {
         this.map = new AMap.Map('mapContainer', {
-            center:[118.680936,37.440335],
+            center:[117.621274,35.523047],
             zoom:12,
             resizeEnable: true
         });
@@ -114,7 +114,7 @@ const AMap=window.AMap;
                             })
                         }else {
                             that.map.clearMap();
-                            let lnglat = [118.680936,37.440335]
+                            let lnglat = [117.621274,35.523047]
                             that.changeInput(lnglat.join(','),"location")
                             marker = new AMap.Marker({
                                 position: lnglat,   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]

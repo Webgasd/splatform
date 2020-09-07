@@ -4,11 +4,11 @@
 
 //本地使用勿删,前端连接后端时的ip请写在最后
 export const commonUrl = "http://localhost:8080";
-export const baseUrl = "http://123.234.130.3:8090"
-export const unitName = "东营区"
-export const bookName = "东营"
-export const footName = "青岛世纪亿联信息科技有限公司"
-export const unitNameEn = "DongYing"
+// export const baseUrl = "http://123.234.130.3:8090"
+// export const unitName = "东营区"
+// export const bookName = "东营"
+// export const footName = "青岛世纪亿联信息科技有限公司"
+// export const unitNameEn = "DongYing"
 
 
 // export const commonUrl = "http://123.234.130.3:8080";
@@ -19,8 +19,8 @@ export const unitNameEn = "DongYing"
 // export const unitNameEn = "DongYing"
 
 // export const commonUrl = "http://101.201.239.28:8080";
-// export const baseUrl = "http://101.201.239.28:8090"
-// export const unitName = "平邑县"
-// export const bookName = "平邑"
-// export const footName = "山东联合网络通信有限公司平邑分公司"
-// export const unitNameEn = "PingYi"
+export const baseUrl = "http://101.201.239.28:8090"
+export const unitName = "平邑县"
+export const bookName = "平邑"
+export const footName = "山东联合网络通信有限公司平邑分公司"
+export const unitNameEn = "PingYi"
