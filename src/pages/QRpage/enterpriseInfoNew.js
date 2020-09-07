@@ -286,8 +286,11 @@ export default class EnterpriseInfo extends Component {
                     let byteType = "MAIN";
                     if (list[0].byteType === "MAIN" || list[0].byteType === "SUB") byteType = list[0].byteType;
                     else if (list[0].byteType === "2") byteType = "SUB";
+                    let byteType2 = "MAIN";
+                    if (byteType === "MAIN") byteType2 = 1;
+                    else if (byteType === "SUB") byteType2 = 2;
                     let url = type == '海康' ? `http://${httpIp}:${httpPort}/pag/${vagIp}/${vagPort}/${list[0].number}/0/${byteType}/TCP/live.m3u8` :
-                        `http://${httpIp}:${httpPort}/live/cameraid/${list[0].number}%24${list[0].channelNumber}/substream/${byteType}.m3u8`;
+                        `http://${httpIp}:${httpPort}/live/cameraid/${list[0].number}%24${list[0].channelNumber}/substream/${byteType2}.m3u8`;
                     this.src(url);
                     this.load();
                     this.play();
@@ -360,8 +363,11 @@ export default class EnterpriseInfo extends Component {
         let byteType1 = "MAIN";
         if (byteType === "MAIN" || byteType === "SUB") byteType1 = byteType;
         else if (byteType === "2") byteType1 = "SUB";
+        let byteType2 = "MAIN";
+        if (byteType === "MAIN") byteType2 = 1;
+        else if (byteType === "SUB") byteType2 = 2;
         let url = type == '海康' ? `http://${httpIp}:${httpPort}/pag/${vagIp}/${vagPort}/${number}/0/${byteType1}/TCP/live.m3u8` :
-            `http://${httpIp}:${httpPort}/live/cameraid/${number}%24${channelNumber}/substream/1.m3u8`;
+            `http://${httpIp}:${httpPort}/live/cameraid/${number}%24${channelNumber}/substream/${byteType2}.m3u8`;
         console.log("url:" + url);
         this.player.pause();
         this.player.src(url);
