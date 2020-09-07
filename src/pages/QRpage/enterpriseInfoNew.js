@@ -93,9 +93,12 @@ export default class EnterpriseInfo extends Component {
                     transformationType: item.data.enterprise.transformationType
                 });
 
-                if (item.data.enterprise.propagandaEnclosure !== "" && item.data.enterprise.propagandaEnclosure !== "[]") {
-                    this.getEnclosure(JSON.parse(item.data.enterprise.propagandaEnclosure));
-                }
+                // if (item.data.enterprise.propagandaEnclosure !== "" && item.data.enterprise.propagandaEnclosure !== "[]") {
+                //     this.getEnclosure(JSON.parse(item.data.enterprise.propagandaEnclosure));
+                // }
+
+                this.getPhotoNew(item.data.enterprise);
+
                 this.handleDept(item.data.enterprise.regulators);
                 this.getRawMaterialNew(item.data.enterprise.id);
                 if (unitName == "平原县" || unitName == "临清市") {
@@ -128,6 +131,75 @@ export default class EnterpriseInfo extends Component {
         this.setState({
             enclosure: enclosure
         });
+    };
+
+    //获取所有相关证照
+    getPhotoNew = (data) => {
+        // if (item.data.enterprise.propagandaEnclosure !== "" && item.data.enterprise.propagandaEnclosure !== "[]") {
+        //     this.getEnclosure(JSON.parse(item.data.enterprise.propagandaEnclosure));
+        // }
+
+        // console.log('getPhotoNew', data);
+
+        let enclosure = [];
+        // console.log(this.setPhotoList(data.businessLicensePhoto));
+        // console.log(this.setPhotoList(data.foodBusinessPhotos));
+        // console.log(this.setPhotoList(data.smallCaterPhotos));
+        // console.log(this.setPhotoList(data.smallWorkshopPhotos));
+        // console.log(this.setPhotoList(data.foodProducePhotos));
+        // console.log(this.setPhotoList(data.drugsBusinessPhotos));
+        // console.log(this.setPhotoList(data.drugsProducePhotos));
+        // console.log(this.setPhotoList(data.cosmeticsUsePhotos));
+        // console.log(this.setPhotoList(data.medicalProducePhotos));
+        // console.log(this.setPhotoList(data.medicalBusinessPhotos));
+        // console.log(this.setPhotoList(data.industrialProductsPhotos));
+        //publicityPhotos
+        //certificatePhotos
+        //otherPhotos
+
+        enclosure.push(...this.setPhotoList(data.businessLicensePhoto));
+        enclosure.push(...this.setPhotoList(data.foodBusinessPhotos));
+        enclosure.push(...this.setPhotoList(data.smallCaterPhotos));
+        enclosure.push(...this.setPhotoList(data.smallWorkshopPhotos));
+        enclosure.push(...this.setPhotoList(data.foodProducePhotos));
+        enclosure.push(...this.setPhotoList(data.drugsBusinessPhotos));
+        enclosure.push(...this.setPhotoList(data.drugsProducePhotos));
+        enclosure.push(...this.setPhotoList(data.cosmeticsUsePhotos));
+        enclosure.push(...this.setPhotoList(data.medicalProducePhotos));
+        enclosure.push(...this.setPhotoList(data.medicalBusinessPhotos));
+        enclosure.push(...this.setPhotoList(data.industrialProductsPhotos));
+        enclosure.push(...this.setPhotoList(data.publicityPhotos));
+        enclosure.push(...this.setPhotoList(data.certificatePhotos));
+        enclosure.push(...this.setPhotoList(data.otherPhotos));
+
+        // console.log(enclosure);
+
+        this.setState({
+            enclosure
+        })
+    };
+
+    //图片信息判空
+    getPhoto = (data) => {
+        return data !== "" && data !== "[]";
+    };
+
+    //获取存在的图片
+    setPhoto = (data) => {
+        let enclosure = [];
+        for (let i of data) {
+            if (typeof i.response !== "undefined") enclosure.push(i.response.data);
+        }
+
+        return enclosure;
+    };
+
+    setPhotoList = (data) => {
+        if (this.getPhoto(data)) {
+            return this.setPhoto(JSON.parse(data))
+        }
+
+        return [];
     };
 
     login = () => {
@@ -534,7 +606,7 @@ export default class EnterpriseInfo extends Component {
                     </div>
                     <div>
                         <EnterpriseModularNew title="证照信息"
-                                              photo={this.state.enclosure.length >= 3 ? this.state.enclosure.slice(1, 3) : this.state.enclosure}
+                                              photo={this.state.enclosure}
                                               width={this.state.width}/>
                     </div>
                     <div>
