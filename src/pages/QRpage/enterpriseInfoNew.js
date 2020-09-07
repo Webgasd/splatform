@@ -361,7 +361,7 @@ export default class EnterpriseInfo extends Component {
         if (byteType === "MAIN" || byteType === "SUB") byteType1 = byteType;
         else if (byteType === "2") byteType1 = "SUB";
         let url = type == '海康' ? `http://${httpIp}:${httpPort}/pag/${vagIp}/${vagPort}/${number}/0/${byteType1}/TCP/live.m3u8` :
-            `http://${httpIp}:${httpPort}/live/cameraid/${number}%24${channelNumber}/substream/${byteType1}.m3u8`;
+            `http://${httpIp}:${httpPort}/live/cameraid/${number}%24${channelNumber}/substream/1.m3u8`;
         console.log("url:" + url);
         this.player.pause();
         this.player.src(url);
@@ -397,7 +397,7 @@ export default class EnterpriseInfo extends Component {
                       content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
                 <div className="EnterpriseInfo">
                     <div className="EnterpriseInfo-head"
-                         style={{display: this.state.transformationType === "视频" || this.state.transformationType === "车间量化" ? "block" : "none"}}>
+                         style={{display: this.state.transformationType === "视频" || this.state.transformationType === "明厨亮灶" || this.state.transformationType === "车间量化" ? "block" : "none"}}>
                         <video
                             id="myVideo"
                             className="video-js vjs-default-skin vjs-big-play-centered"
@@ -420,10 +420,10 @@ export default class EnterpriseInfo extends Component {
                     <img src={Image}
                          style={{
                              width: this.state.width,
-                             display: this.state.transformationType === "视频" || this.state.transformationType === "车间量化" ? "none" : "block"
+                             display: this.state.transformationType === "明厨亮灶" || this.state.transformationType === "视频" || this.state.transformationType === "车间量化" ? "none" : "block"
                          }}
                          alt=""/>
-                    {(list.length !== 0 && (this.state.transformationType === "视频" || this.state.transformationType === "车间量化")) ?
+                    {(list.length !== 0 && (this.state.transformationType === "明厨亮灶" || this.state.transformationType === "视频" || this.state.transformationType === "车间量化")) ?
                         <div style={{width: this.state.width, height: "30px", border: '1px solid #ddd'}}>
                             {list.map((item) => (
                                 <div key={item.id}
