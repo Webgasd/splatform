@@ -6,6 +6,8 @@ import './style.less'
 import axios from "../../axios";
 import connect from "react-redux/es/connect/connect";
 import {refreshUser} from "../../redux/action";
+import {login, header, words1, words2} from "../../axios/commonSrc";
+import picLogo from "../../components/Header/u100.png";
 
 const FormItem = Form.Item;
 
@@ -54,12 +56,13 @@ class Login extends React.Component {
             <div className="login-page">
                 <div className="login-header">
                     <div className="logo">
-                        智慧市场监管
+                        <img src={picLogo}/>
+                        {header}
                     </div>
                 </div>
                 <div className="login-content-wrap">
                     <div className="login-content">
-                        <div className="word">食品安全 <br/>智慧监管平台</div>
+                        <div className="word">{words1}<br/>{words2}</div>
                         <div className="login-box">
                             <div className="error-msg-wrap">
                                 <div
@@ -67,7 +70,7 @@ class Login extends React.Component {
                                     {this.state.errorMsg}
                                 </div>
                             </div>
-                            <div className="title">欢迎</div>
+                            <div className="title">{login}</div>
                             <LoginForm ref="login" loginSubmit={this.loginReq}/>
                         </div>
                     </div>
