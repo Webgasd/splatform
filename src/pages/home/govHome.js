@@ -989,7 +989,7 @@ class govHome extends Component {
                         {/*</Col>*/}
                     {/*</Row>*/}
                 {/*</Card>*/}
-                {/*{modal}*/}
+                {modal}
             </div>
         );
     }
