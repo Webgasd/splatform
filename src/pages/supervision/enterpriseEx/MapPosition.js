@@ -25,7 +25,7 @@ const AMap=window.AMap;
 
     componentDidMount () {
         this.map = new AMap.Map('mapContainer', {
-            center:[117.621274,35.523047],
+            center:[118.58215,37.44878],
             zoom:12,
             resizeEnable: true
         });
@@ -46,7 +46,7 @@ const AMap=window.AMap;
             AMap.plugin('AMap.Geocoder', function() {
                 geocoder = new AMap.Geocoder({
                     // city 指定进行编码查询的城市，支持传入城市名、adcode 和 citycode
-                    // city: '东营'
+                     city: '东营'
                 });
                
                 geocoder.getLocation(address, function(status, result) {
@@ -93,7 +93,7 @@ const AMap=window.AMap;
                     AMap.plugin('AMap.Geocoder', function() {
                     geocoder = new AMap.Geocoder({
                         // city 指定进行编码查询的城市，支持传入城市名、adcode 和 citycode
-                        // city: '东营'
+                         city: '东营'
                     });
                     geocoder.getLocation(address, function(status, result) {
                         if (status === 'complete' && result.info === 'OK') {
@@ -176,7 +176,7 @@ const AMap=window.AMap;
             AMap.plugin('AMap.Geocoder', function() {
                 geocoder = new AMap.Geocoder({
                     // city 指定进行编码查询的城市，支持传入城市名、adcode 和 citycode
-                    // city: '东营'
+                     city: '东营'
                 });
                
                 geocoder.getLocation(address, function(status, result) {

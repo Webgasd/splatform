@@ -26,7 +26,7 @@ class EquipmentTypeOne extends Component{
     }
     params = {
         pageNo:1,
-        pageSize:50,
+        pageSize:10,
         region:unitName
     }
 

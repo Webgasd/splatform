@@ -385,34 +385,63 @@ class map extends React.Component{
     }
 
     detaiDisplay =(item)=>{
+        alert(12);
         let content = JSON.parse(item)
-
         if(content){
-            this.setState({
-            detailDisplay:"inline",
-            enterpriseId:content.enterpriseId,
-            propagandaEnclosure:JSON.parse(content.propagandaEnclosure||JSON.stringify([])),
-            enterpriseName:content.enterpriseName,
-            legalPerson:content.legalPerson,
-            cantactWay:content.cantactWay,
-            idNumber:content.idNumber,
-            registeredAddress:content.registered_address,
-        })
+            /////
+            axios.ajax({
+                url: "/supervision/enterprise/getById",
+                data: {
+                    params:{
+                         id:content.enterpriseId
+                    }
+                }
+            }).then((res)=>{
+                if(res.status == "success" ){
+                    this.setState({
+                        detailDisplay:"inline",
+                        enterpriseId:res.data.enterpriseId,
+                        propagandaEnclosure:JSON.parse(res.data.propagandaEnclosure||JSON.stringify([])),
+                        enterpriseName:res.data.enterpriseName,
+                        legalPerson:res.data.legalPerson,
+                        cantactWay:res.data.cantactWay,
+                        idNumber:res.data.idNumber,
+                        registeredAddress:res.data.registered_address,
+                    })
+                }
+            })
+            /////
+
+
         }
     }
     markerDisplay =(e)=>{
         let content = e.target.content
         if(content){
-            this.setState({
-            detailDisplay:"inline",
-            enterpriseId:content.enterpriseId,
-            propagandaEnclosure:JSON.parse(content.propagandaEnclosure||JSON.stringify([])),
-            enterpriseName:content.enterpriseName,
-            legalPerson:content.legalPerson,
-            cantactWay:content.cantactWay,
-            idNumber:content.idNumber,
-            registeredAddress:content.registered_address,
-        })
+            /////
+            axios.ajax({
+                url: "/supervision/enterprise/getById",
+                data: {
+                    params:{
+                        id:content.enterpriseId
+                    }
+                }
+            }).then((res)=>{
+                if(res.status == "success" ){
+                    this.setState({
+                        detailDisplay:"inline",
+                        enterpriseId:res.data.enterpriseId,
+                        propagandaEnclosure:JSON.parse(res.data.propagandaEnclosure||JSON.stringify([])),
+                        enterpriseName:res.data.enterpriseName,
+                        legalPerson:res.data.legalPerson,
+                        cantactWay:res.data.cantactWay,
+                        idNumber:res.data.idNumber,
+                        registeredAddress:res.data.registered_address,
+                    })
+                }
+            })
+            /////
+
         }
     }
     onlyDisplay=(t1)=>{
