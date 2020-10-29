@@ -3,7 +3,7 @@ import {Col, message, Row,Radio,Button,Input} from "antd";
 import axios from "../../../axios";
 import connect from "react-redux/es/connect/connect";
 import {changeEnterprise} from "../../../redux/action";
-
+import {lng,lat} from "../../../axios/commonSrc";
 const AMap=window.AMap;
 
 
@@ -25,7 +25,7 @@ const AMap=window.AMap;
 
     componentDidMount () {
         this.map = new AMap.Map('mapContainer', {
-            center:[118.58215,37.44878],
+            center:[lng,lat],
             zoom:12,
             resizeEnable: true
         });
