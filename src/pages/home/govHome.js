@@ -1,7 +1,7 @@
-import React, {Component} from 'react';
-import {Card, Row, Col, List, Table, Modal, message} from 'antd';
+import React, { Component } from 'react';
+import { Card, Row, Col, List, Table, Modal, message } from 'antd';
 import ReactEcharts from 'echarts-for-react';
-import {commonUrl, unitName} from '../../axios/commonSrc'
+import { commonUrl, unitName } from '../../axios/commonSrc'
 import echartTheme from './echartTheme';
 import moment from 'moment';
 import Utils from "../../utils";
@@ -17,7 +17,7 @@ import pingYuanApkPicture from './image/pingyuan.png'
 import dongYingApkPicture from './image/dongying1.png'
 import pingYiApkPicture from './image/pingyi.png'
 import zhongduan from './image/zhongduan.png';
-import {changeEnterprise, clearEnterprise} from "../../redux/action";
+import { changeEnterprise, clearEnterprise } from "../../redux/action";
 //引入地图的不同标识
 import Eat from "./image/eat.png"
 //按需加载echarts
@@ -81,9 +81,9 @@ const columns = [
         industryList: state.industryList.slice(1),
         industryList7: state.industryList,
     }), {
-        clearEnterprise,
-        changeEnterprise,
-    }
+    clearEnterprise,
+    changeEnterprise,
+}
 )
 class govHome extends Component {
     constructor(props) {
@@ -242,7 +242,7 @@ class govHome extends Component {
             axios.PostAjax({
                 url: "/grid/points/getSmilePoints",
                 data: {
-                    params: {areaList: [''], industryList: ['']}
+                    params: { areaList: [''], industryList: [''] }
                 }
             }).then((res) => {
                 if (res.status == "success") {
@@ -264,7 +264,8 @@ class govHome extends Component {
             this.changeToPoints(item);
         })
     };
-    addGridPoints = (data) => {console.log(data)
+    addGridPoints = (data) => {
+        console.log(data)
         let l = markers.length
         markers[l] = []
         let that = this;
@@ -329,73 +330,76 @@ class govHome extends Component {
                     }
                 })
             }
-            let point = item.point
-            let point1 = point.split(",")
-            let p = new AMap.Marker({
-                position:point1,
-                // position: [JSON.parse(point1[0]), JSON.parse(point1[1])],
-                icon: icon,
-                enterpriseId: item.enterpriseId
-            })
-            AMap.event.addListener(p, 'click', function (e) {
-                let id = e.target.w.enterpriseId;
-                axios.ajax({
-                    url: '/supervision/enterprise/getById',
-                    data: {params: {id: id}}
-                }).then((res) => {
-                    if (res.status == 'success') {
-                        that.setState({
-                            BaseInfo: res.data,
-                            AddressForGaoDe: res.data.registeredAddress
-                        })
-                        let value = res.data
-                        let info = [];
-                        let imagelist = JSON.parse(value.propagandaEnclosure || JSON.stringify([]));
-                        let start, end
-                        for (var key in value) {
-                            that.props.industryList.map((item) => {
-                                if (item.remark == key && value[key] !== null) {
-                                    start = value[key].startTime
-                                    end = value[key].endTime
-                                }
-                            })
-                        }
-                        let startTime = moment(start).format("YYYY-MM-DD")
-                        let endTime = moment(end).format("YYYY-MM-DD")
-                        info.push("<div class='content-window-card'><div class='title'>信息</div>");
-                        info.push("<div class='pic-dom'>");
-                        if (imagelist && imagelist.length > 0) {
-                            info.push("<div class='pic'><img alt='example'style={{ width: '100%' }} src=" + commonUrl + "/upload/picture/" + imagelist[0].response.data + "/></div>")
-                        } else {
-                            info.push("<div class='pic'><text>企业营业许可证</text></div>")
-                        }
-                        if (imagelist && imagelist.length > 1) {
-                            info.push("<div class='pic'><img alt='example'style={{ width: '100%' }} src=" + commonUrl + "/upload/picture/" + imagelist[1].response.data + "/></div>")
-                        } else {
-                            info.push("<div class='pic'><text>企业营业许可证</text></div>")
-                        }
-                        info.push("</div>");
-                        info.push("<div class='middle'><img src='" + CorporateIcon + "' width='30px' height='30px'/><text>" + value.enterpriseName + "</text></div>");
-                        info.push("<div class='middle-info'><div class='middle-info-text'><text>企业地址:" + value.businessAddress + "</text></div></div>");
-                        info.push("<div class='middle-info'><div class='middle-info-text'><text>法人/负责人：" + value.legalPerson + "</text></div>" +
-                            "<div class='middle-info-text1'><text>联系电话：" + value.cantactWay + "</text></div></div>");
-                        info.push("<div class='middle-info'><div class='middle-info-text'><text>日常监督员：" + value.supervisor + "</text></div></div>");
-                        info.push("<div class='middle-info'><div class='middle-info-text'><text>证件有效期：" + startTime + "至" + endTime + "</text></div></div>");
-                        info.push("<div class='bottom-icon'><img src='" + ToGaoDeMap + "' onclick='ToGaodeLocation()' width='40px' height='40px'/></div>");
-                        info.push("<div class='bottom-icon'><img src='" + CommonCheck + "' width='40px' height='40px'/></div><Divider type=\"vertical\" />");
-                        info.push("<div class='bottom-icon'><img src='" + CheckView + "' width='40px' height='40px'/></div><Divider type=\"vertical\" />");
-                        info.push("<div class='bottom-icon'><img src='" + BaseInfo + "'id='BaseInfo' onclick='getBaseInfo()'  width='40px' height='40px'/></div><Divider type=\"vertical\" />");
-                        info.push("</div>");
-
-                        let infoWindow = new AMap.InfoWindow({
-                            content: info.join(""),  //使用默认信息窗体框样式，显示信息内容
-                            offset: new AMap.Pixel(13, -25),
-                        });
-                        infoWindow.open(that.map, p.getPosition())
-                    }
+            let point = item.point;
+            //point不为空再把它加到簇里
+            if (!!point) {
+                let point1 = point.split(",")
+                let p = new AMap.Marker({
+                    position: point1,
+                    // position: [JSON.parse(point1[0]), JSON.parse(point1[1])],
+                    icon: icon,
+                    enterpriseId: item.enterpriseId
                 })
-            });
-            markers[l].push(p)
+                AMap.event.addListener(p, 'click', function (e) {
+                    let id = e.target.w.enterpriseId;
+                    axios.ajax({
+                        url: '/supervision/enterprise/getById',
+                        data: { params: { id: id } }
+                    }).then((res) => {
+                        if (res.status == 'success') {
+                            that.setState({
+                                BaseInfo: res.data,
+                                AddressForGaoDe: res.data.registeredAddress
+                            })
+                            let value = res.data
+                            let info = [];
+                            let imagelist = JSON.parse(value.propagandaEnclosure || JSON.stringify([]));
+                            let start, end
+                            for (var key in value) {
+                                that.props.industryList.map((item) => {
+                                    if (item.remark == key && value[key] !== null) {
+                                        start = value[key].startTime
+                                        end = value[key].endTime
+                                    }
+                                })
+                            }
+                            let startTime = moment(start).format("YYYY-MM-DD")
+                            let endTime = moment(end).format("YYYY-MM-DD")
+                            info.push("<div class='content-window-card'><div class='title'>信息</div>");
+                            info.push("<div class='pic-dom'>");
+                            if (imagelist && imagelist.length > 0) {
+                                info.push("<div class='pic'><img alt='example'style={{ width: '100%' }} src=" + commonUrl + "/upload/picture/" + imagelist[0].response.data + "/></div>")
+                            } else {
+                                info.push("<div class='pic'><text>企业营业许可证</text></div>")
+                            }
+                            if (imagelist && imagelist.length > 1) {
+                                info.push("<div class='pic'><img alt='example'style={{ width: '100%' }} src=" + commonUrl + "/upload/picture/" + imagelist[1].response.data + "/></div>")
+                            } else {
+                                info.push("<div class='pic'><text>企业营业许可证</text></div>")
+                            }
+                            info.push("</div>");
+                            info.push("<div class='middle'><img src='" + CorporateIcon + "' width='30px' height='30px'/><text>" + value.enterpriseName + "</text></div>");
+                            info.push("<div class='middle-info'><div class='middle-info-text'><text>企业地址:" + value.businessAddress + "</text></div></div>");
+                            info.push("<div class='middle-info'><div class='middle-info-text'><text>法人/负责人：" + value.legalPerson + "</text></div>" +
+                                "<div class='middle-info-text1'><text>联系电话：" + value.cantactWay + "</text></div></div>");
+                            info.push("<div class='middle-info'><div class='middle-info-text'><text>日常监督员：" + value.supervisor + "</text></div></div>");
+                            info.push("<div class='middle-info'><div class='middle-info-text'><text>证件有效期：" + startTime + "至" + endTime + "</text></div></div>");
+                            info.push("<div class='bottom-icon'><img src='" + ToGaoDeMap + "' onclick='ToGaodeLocation()' width='40px' height='40px'/></div>");
+                            info.push("<div class='bottom-icon'><img src='" + CommonCheck + "' width='40px' height='40px'/></div><Divider type=\"vertical\" />");
+                            info.push("<div class='bottom-icon'><img src='" + CheckView + "' width='40px' height='40px'/></div><Divider type=\"vertical\" />");
+                            info.push("<div class='bottom-icon'><img src='" + BaseInfo + "'id='BaseInfo' onclick='getBaseInfo()'  width='40px' height='40px'/></div><Divider type=\"vertical\" />");
+                            info.push("</div>");
+
+                            let infoWindow = new AMap.InfoWindow({
+                                content: info.join(""),  //使用默认信息窗体框样式，显示信息内容
+                                offset: new AMap.Pixel(13, -25),
+                            });
+                            infoWindow.open(that.map, p.getPosition())
+                        }
+                    })
+                });
+                markers[l].push(p)
+            }
         });
         cluster[l] = []
         this.map.plugin(["AMap.MarkerClusterer"], function () {
@@ -538,7 +542,7 @@ class govHome extends Component {
             axios.noLoadingAjax({
                 url: '/supervision/ga/getGaForMap',
                 data: {
-                    params: {id: id, level: level}
+                    params: { id: id, level: level }
                 }
             }).then((res) => {
                 if (res.status == 'success') {
@@ -566,9 +570,9 @@ class govHome extends Component {
                     }
                 }
             })
-            chlid.push({name: item.name, num: num})
+            chlid.push({ name: item.name, num: num })
         })
-        let value = {total: list.length, child: chlid}
+        let value = { total: list.length, child: chlid }
         return value
     }
     getIn = (e) => {
@@ -598,7 +602,7 @@ class govHome extends Component {
         axios.ajax({
             url: "/grid/grid/getByParentId",
             data: {
-                params: {id: id}
+                params: { id: id }
             }
         }).then((res) => {
             if (res.status == "success") {
@@ -828,7 +832,7 @@ class govHome extends Component {
                         '50%', '60%'
                     ],
                     data: (this.props.industryList || []).map((item) => {
-                        return {name: item.name, value: (this.state.enterpriseStatistics)[item.id]}
+                        return { name: item.name, value: (this.state.enterpriseStatistics)[item.id] }
                     }) || [],
                     itemStyle: {
                         emphasis: {
@@ -856,7 +860,7 @@ class govHome extends Component {
             }}
             footer={false}
         >
-            <Add type={"detail"}/>
+            <Add type={"detail"} />
             {/*<InfoWindow  />*/}
         </Modal>)
         const option4 = {
@@ -901,7 +905,7 @@ class govHome extends Component {
                         <Card title='网格地图'>
                             <div className="map-wrap">
                                 <div ref='mapHomeCard' id="mapHomeContainer"
-                                     style={{height: '800px', width: '100%'}}></div>
+                                    style={{ height: '800px', width: '100%' }}></div>
                             </div>
                         </Card>
                     </Col>
@@ -912,18 +916,18 @@ class govHome extends Component {
                                 theme="UPC"
                                 notMerge={true}
                                 lazyUpdate={true}
-                                style={{height: 230}}/>
+                                style={{ height: 230 }} />
                         </Card>
                         <Card title='移动执法终端下载' className='overTimeCard' type='inner' extra={<a>More</a>}
-                              style={{marginTop: 10}}>
+                            style={{ marginTop: 10 }}>
                             <Row>
                                 <Col span={12}>
-                                    <img src={zhongduan} style={{height: 120, marginLeft: 20, marginTop: 10}}/>
-                                    <div style={{marginLeft: 20}}>移动执法终端下载</div>
+                                    <img src={zhongduan} style={{ height: 120, marginLeft: 20, marginTop: 10 }} />
+                                    <div style={{ marginLeft: 20 }}>移动执法终端下载</div>
                                 </Col>
                                 <Col span={12}>
                                     <img src={this.setApkPicture()}
-                                         style={{height: 150, marginLeft: 20, marginTop: 10, marginBottom: 10}}/>
+                                        style={{ height: 150, marginLeft: 20, marginTop: 10, marginBottom: 10 }} />
                                 </Col>
                             </Row>
                         </Card>
@@ -940,21 +944,21 @@ class govHome extends Component {
                         {/*)}*/}
                         {/*/>*/}
                         {/*</Card>*/}
-                        <Card title='过期企业数' className='overTimeCard' type='inner' style={{marginTop: 10}}>
+                        <Card title='过期企业数' className='overTimeCard' type='inner' style={{ marginTop: 10 }}>
                             <Table size={'small'} bordered={false} dataSource={this.state.enterpriseList || []}
-                                   columns={columns} pagination={false}/>
+                                columns={columns} pagination={false} />
                         </Card>
                     </Col>
                 </Row>
                 <Card title={"各执法单位管辖情况"}
                     // type={'inner'}
-                      style={{marginTop: 20}}>
+                    style={{ marginTop: 20 }}>
                     <ReactEcharts
                         option={option4}
                         theme="UPC"
                         notMerge={true}
                         lazyUpdate={true}
-                        style={{height: 500}}
+                        style={{ height: 500 }}
                     />
                 </Card>
                 {/*<Card title='各业态企业数量' style={{marginTop:20}}>*/}
@@ -966,28 +970,28 @@ class govHome extends Component {
                 {/*style={{ height: 500 }} />*/}
                 {/*</Card>*/}
                 {/*<Card title='食品检查问题出现频率Top5' style={{marginTop: 20}}>*/}
-                    {/*<Row>*/}
-                        {/*<Col span={10}>*/}
-                            {/*<Card style={{marginTop: 50, marginLeft: 50}}>*/}
-                                {/*<List*/}
-                                    {/*style={{height: 350}}*/}
-                                    {/*itemLayout="horizontal"*/}
-                                    {/*dataSource={this.state.enterpriseList || []}*/}
-                                    {/*renderItem={item => (*/}
-                                        {/*<List.Item>*/}
-                                            {/*<List.Item.Meta*/}
-                                                {/*title={<a>{item.enterpriseName}</a>}*/}
-                                            {/*/>*/}
-                                        {/*</List.Item>*/}
-                                    {/*)}*/}
-                                {/*/>*/}
-                            {/*</Card>*/}
-                        {/*</Col>*/}
-                        {/*<Col span={14}>*/}
-                            {/*<ReactEcharts option={option} theme="UPC" notMerge={true} lazyUpdate={true}*/}
-                                          {/*style={{height: 500}}/>*/}
-                        {/*</Col>*/}
-                    {/*</Row>*/}
+                {/*<Row>*/}
+                {/*<Col span={10}>*/}
+                {/*<Card style={{marginTop: 50, marginLeft: 50}}>*/}
+                {/*<List*/}
+                {/*style={{height: 350}}*/}
+                {/*itemLayout="horizontal"*/}
+                {/*dataSource={this.state.enterpriseList || []}*/}
+                {/*renderItem={item => (*/}
+                {/*<List.Item>*/}
+                {/*<List.Item.Meta*/}
+                {/*title={<a>{item.enterpriseName}</a>}*/}
+                {/*/>*/}
+                {/*</List.Item>*/}
+                {/*)}*/}
+                {/*/>*/}
+                {/*</Card>*/}
+                {/*</Col>*/}
+                {/*<Col span={14}>*/}
+                {/*<ReactEcharts option={option} theme="UPC" notMerge={true} lazyUpdate={true}*/}
+                {/*style={{height: 500}}/>*/}
+                {/*</Col>*/}
+                {/*</Row>*/}
                 {/*</Card>*/}
                 {modal}
             </div>
