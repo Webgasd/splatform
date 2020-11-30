@@ -7,7 +7,7 @@ import moment from 'moment';
 import Utils from "../../utils";
 import connect from "react-redux/es/connect/connect";
 import axios from "../../axios";
-import Add from "../supervision/enterprise/Add";
+import Add from "../supervision/enterpriseEx/Add";
 import tubiao from "./image/pic1.png";
 import InfoWindow from './InfoWindow'
 import liXiaApkPicture from './image/lixia.png';
@@ -101,6 +101,7 @@ class govHome extends Component {
             TopArea: [],
             areaCount: [],
             area: [],
+            searchEmployee: ''
         }
         window.getBaseInfo = () => this.getBaseInfo();
         window.ToGaodeLocation = () => this.ToGaodeLocation();
@@ -348,7 +349,7 @@ class govHome extends Component {
                     }).then((res) => {
                         if (res.status == 'success') {
                             that.setState({
-                                BaseInfo: res.data,
+                                BaseInfo: { ...res.data, enterpriseId: id },
                                 AddressForGaoDe: res.data.registeredAddress
                             })
                             let value = res.data
@@ -410,15 +411,50 @@ class govHome extends Component {
         });
     };
     getBaseInfo = () => {
-        console.log(this.state.BaseInfo)
-        this.setState({
-            visible: true,
+        // console.log(this.state.BaseInfo)
+        // this.setState({
+        //     visible: true,
+        // })
+        // let data = this.state.BaseInfo;
+        // this.props.changeEnterprise({
+        //     ...data,
+        //     propagandaEnclosure: JSON.parse(data.propagandaEnclosure || JSON.stringify([]))
+        // });
+        axios.ajax({
+            url: '/supervision/enterprise/getById',
+            data: {
+                params: {
+                    id: this.state.BaseInfo.enterpriseId
+                }
+            }
+        }).then((res) => {
+            if (res.status == 'success') {
+                this.setState({
+                    visible: true,
+                    searchEmployee: this.state.BaseInfo.enterpriseId
+                })
+                let data = res.data;
+                this.props.changeEnterprise({
+                    ...data,
+                    propagandaEnclosure: JSON.parse(data.propagandaEnclosure || JSON.stringify([])),
+                    businessLicensePhoto: JSON.parse(data.businessLicensePhoto || JSON.stringify([])),
+                    foodBusinessPhotos: JSON.parse(data.foodBusinessPhotos || JSON.stringify([])),
+                    smallCaterPhotos: JSON.parse(data.smallCaterPhotos || JSON.stringify([])),
+                    smallWorkshopPhotos: JSON.parse(data.smallWorkshopPhotos || JSON.stringify([])),
+                    foodProducePhotos: JSON.parse(data.foodProducePhotos || JSON.stringify([])),
+                    drugsBusinessPhotos: JSON.parse(data.drugsBusinessPhotos || JSON.stringify([])),
+                    drugsProducePhotos: JSON.parse(data.drugsProducePhotos || JSON.stringify([])),
+                    cosmeticsUsePhotos: JSON.parse(data.cosmeticsUsePhotos || JSON.stringify([])),
+                    medicalProducePhotos: JSON.parse(data.medicalProducePhotos || JSON.stringify([])),
+                    medicalBusinessPhotos: JSON.parse(data.medicalBusinessPhotos || JSON.stringify([])),
+                    industrialProductsPhotos: JSON.parse(data.industrialProductsPhotos || JSON.stringify([])),
+                    publicityPhotos: JSON.parse(data.publicityPhotos || JSON.stringify([])),
+                    certificatePhotos: JSON.parse(data.certificatePhotos || JSON.stringify([])),
+                    otherPhotos: JSON.parse(data.otherPhotos || JSON.stringify([]))
+                });
+            }
         })
-        let data = this.state.BaseInfo;
-        this.props.changeEnterprise({
-            ...data,
-            propagandaEnclosure: JSON.parse(data.propagandaEnclosure || JSON.stringify([]))
-        });
+
     }
     ToGaodeLocation = () => {
         const w = window.open('about:blank');
@@ -860,7 +896,7 @@ class govHome extends Component {
             }}
             footer={false}
         >
-            <Add type={"detail"} />
+            <Add type={"detail"} searchEmployee={this.state.searchEmployee} />
             {/*<InfoWindow  />*/}
         </Modal>)
         const option4 = {
