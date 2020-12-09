@@ -37,7 +37,7 @@ import { Input, Button, message, Modal, Row, Col, Card } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import ReactEcharts from 'echarts-for-react';
 import axios from "../../../axios";
-import { commonUrl } from "../../../axios/commonSrc";
+import { commonUrl ,unitName} from "../../../axios/commonSrc";
 import connect from "react-redux/es/connect/connect";
 import { changeEnterprise, clearEnterprise } from "../../../redux/action";
 import BaseForm from '../../../components/BaseFormForMap';
@@ -106,7 +106,7 @@ class map extends React.Component {
         areaList: ''
     }
     componentDidMount() {
-        this.map = new AMap.Map("container", {
+        this.map = new AMap.Map("container1", {
             center: [118.674413, 37.433808],//东营市政府
             zoom: 15,
             resizeEnable: true,
@@ -122,9 +122,126 @@ class map extends React.Component {
                 // city: '东营'
             });
         })
-        this.requestList()
+        this.requestList();
+        this.drawBounds();
+        this.drawDisrict();
     }
 
+    drawBounds() {
+        let district=unitName;
+        let that = this;
+        AMap.service('AMap.DistrictSearch', function () {//回调函数
+            var opts = {
+                subdistrict: 1,   //返回下一级行政区
+                showbiz: false,  //查询行政级别为 市
+                extensions: 'all',  //返回行政区边界坐标组等具体信息
+                level: "district"  //查询行政级别为 市
+            };
+            //实例化DistrictSearch
+            let districtSearch = new AMap.DistrictSearch(opts);
+            districtSearch.search(district, function (status, result) {
+                let bounds = result.districtList[0].boundaries;//生成行政区划polygon
+                var polygon = []
+                for (var i = 0; i < bounds.length; i += 1) {
+                    var polygon1 = new AMap.Polygon({
+                        strokeWeight: 1,
+                        path: bounds[i],
+                        fillOpacity:  0.3,///0.3
+                        fillColor: '#4fb8f5',
+                        strokeColor: '#0091ea',
+                        zIndex: 0
+                    });
+                    polygon.push(polygon1)
+                }
+                that.map.add(polygon1);
+                that.map.setFitView(polygon1);//视口自适应
+                that.map.setZoom(13)
+                // that.map.setZoom(11.5)
+                that.map.setZoom(11.5)
+            })
+        })
+    }
+    drawDisrict=()=>{
+        axios.ajax({
+            url: "/grid/grid/getTop",
+            data: {
+                params: {}
+            }
+        }).then((res) => {
+            if (res.status == "success") {
+                // console.log(res.data)
+                this.drawGrid(res);
+            }
+        })
+    }
+    drawGrid = (data1) => {
+        data1.data.map((item, index) => {
+            this.changeToPoints(item);
+        })
+    };
+    changeToPoints = (data) => {
+        let parentId = data.parentId
+        let point = data.center.split(",")
+        let name = data.name;
+        let color = data.color;
+        let level = data.level.split(".")
+        let areaid = data.areaId
+        let point1 = [JSON.parse(point[1]), JSON.parse(point[0])]
+        let remark1 = data.polygon.split(",");
+        let path = [];
+        for (let i = 0, l = remark1.length; i < l / 2; i++) {
+            let p = [JSON.parse(remark1[2 * i + 1]), JSON.parse(remark1[2 * i])]
+            path.push(p)
+        }
+        let polygon = new AMap.Polygon({
+            path: path,
+            strokeColor: '#0091ea',  //线颜色
+            strokeOpacity: 1,  //线透明度
+            strokeWeight: 1,  //线粗细度
+            fillColor: color,  //填充颜色
+            fillOpacity: 0.3, //填充透明度
+            bubble: true,
+            lineJoin: '2px',
+            mapName: name,
+            areaId: areaid,
+            level: level.length
+        });
+        this.map.add(polygon);
+        polygon.on("click", this.getIn)
+        this.addGridLabel(color, name, point1, areaid, parentId, level.length);
+    };
+    addGridLabel = (color, gridname, points, areaid, parentId, level) => {
+        let text = new AMap.Text({
+            text: gridname,
+            verticalAlign: 'bottom',
+            position: points,
+            offset: new AMap.Pixel(0, 15),
+            style: {
+                'background-color': 'rgba(204,204,204,0.9)',
+                'text-align': 'center',
+                'border-radius': '.25rem',
+                'border-width': 1,
+                'width': '100px',
+                'padding': '5px 2px 5px',
+                'border-color': 'white',
+                'box-shadow': '0 2px 6px 0 rgba(114, 124, 245, .5)',
+                'color': "black",
+                'font-size': '14px',
+                'lineJoin': '4px'
+            }
+        });
+        this.map.add(text)
+        let that = this;
+        this.map.on("zoomend", function () {
+            let nowzoom = that.map.getZoom();
+            if (nowzoom <= 11) {
+                text.hide();
+            } else {
+                text.show()
+            }
+        });
+
+    };
 
     requestList = () => {
         axios.PostAjax({
@@ -181,6 +298,8 @@ class map extends React.Component {
             }
 
         })
+        this.drawBounds();//画当地的轮廓
+        this.drawDisrict();
         this.displayMakers();
         let iCount = this.state.datai1.length + this.state.datai2.length + this.state.datai3.length;
         let cCount = this.state.datac1.length + this.state.datac2.length + this.state.datac3.length;
@@ -712,7 +831,7 @@ class map extends React.Component {
 
                         {/* 以下为地图，坐标提示，数据信息 */}
                         <div style={{ width: "100%", height: "720px", border: "5px solid #DCDCDC", marginTop: 10 }} className="grayBox">
-                            <div id="container" style={{ width: "100%", height: "710px" }}></div>
+                            <div id="container1" style={{ width: "100%", height: "710px" }}></div>
                             <div id="input-card">
                                 <div style={{ height: "25px", background: "#000", color: "#99FFFF", padding: "2px" }}>
                                     &nbsp;&nbsp;企业定位坐标</div>
