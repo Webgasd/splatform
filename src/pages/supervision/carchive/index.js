@@ -58,17 +58,19 @@ const formList = [
 class carchive extends Component{
     state={}
     params = {
-        pageNo:1
+        pageFlag:1,//传该标志位表示需要分页
+        pageNo:1,
+        pageSize:5,
     }
     componentDidMount(){
         this.requestList();
     }
     requestList = ()=>{
         let _this = this;
-        axios.ajax({
-            url:'/supervision/credit/getPage',
+        axios.PostAjax({
+            url:'/supervision/enterpriseCredit/getCreditPage',
             data:{
-                params:this.params
+                params: {..._this.params},
             }
         }).then((res)=>{
             if(res.status == "success"){
@@ -155,33 +157,37 @@ class carchive extends Component{
     render() {
         const columns = [
             {
-                title: '企业行业类型',
-                dataIndex: 'industry'
-            }, {
-                title: '企业名称',
+                title:"主体类型",
+                dataIndex: 'operationMode'
+            },
+            {
+                title: '市场主体名称',
                 dataIndex: 'enterpriseName'
-            },
-            {
-                title: '企业类型',
-                dataIndex: 'type'
-            },
-            {
+            }, {
                 title: '社会信用代码',
-                dataIndex: 'creditCode'
-            },  {
-                title: '注册地址',
-                dataIndex: 'address',
+                dataIndex: 'idNumber'
+            },
+            {
+                title: '法定代表人',
+                dataIndex: 'legalPerson'
+            },
+            {
+                title: '联系电话',
+                dataIndex: 'contactWay'
+            },
+            {
+                title: '经营地址',
+                dataIndex: 'businessAddress'
             },
             {
                 title: '操作',
                 dataIndex:'operation',
                 render:(text, item)=>{
-                    return <ButtonGroup >
-                        <Button type="primary" size="small"  onClick={()=> {this.handleOperator('edit',item)}}>修改</Button>
-                        <Button type="primary" size="small" onClick={() => { this.handleOperator('detail',item)}}>查看</Button>
-                        <Button type="primary" size="small" onClick={() => { this.handleOperator('delete',item)}}>删除</Button>
-                        <Button type="primary" size="small" onClick={() => { this.handleOperator('detail',item)}}>日志</Button>
-                    </ButtonGroup>
+                    return <div className='textButtonBox'>
+                        {/*<div className="textButton" onClick={()=> {this.handleOperator('edit',item)}}>修改</div>*/}
+                        <div className="textButton" onClick={() => { this.handleOperator('detail',item)}}>查看</div>
+                        {/*<div className="textButton" onClick={() => { this.handleOperator('delete',item)}}>删除</div>*/}
+                    </div>
                 }}
 
         ];
@@ -194,9 +200,9 @@ class carchive extends Component{
                     </Panel>
                 </Collapse>
                 <Card style={{marginTop:10}}>
-                    <div className='button-box'>
-                        <Button type="primary" onClick={()=> {this.handleOperator('create',null)}}>添加</Button>
-                    </div>
+                    {/*<div className='button-box'>*/}
+                    {/*    <Button  onClick={()=> {this.handleOperator('create',null)}}>添加</Button>*/}
+                    {/*</div>*/}
                     <div style={{marginTop:30}}>
                         <ETable
                             updateSelectedItem={Utils.updateSelectedItem.bind(this)}
@@ -212,7 +218,7 @@ class carchive extends Component{
                 </Card>
                 <Modal
                     width='1000px'
-                    title="添加信用信息"
+                    title= {this.state.title}
                     visible={this.state.isVisible}
                     destroyOnClose
                     onOk={this.handleSubmit}
@@ -222,7 +228,7 @@ class carchive extends Component{
                             isVisible:false
                         })
                     }}>
-                    <AddForm/>
+                    <AddForm type={this.state.type}/>
                 </Modal>
             </div>
         );

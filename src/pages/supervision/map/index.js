@@ -37,7 +37,7 @@ import { Input,Button,message ,Modal ,Row,Col,Card} from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import ReactEcharts from 'echarts-for-react';
 import axios from "../../../axios";
-import {commonUrl} from "../../../axios/commonSrc";
+import {commonUrl, unitName} from "../../../axios/commonSrc";
 import connect from "react-redux/es/connect/connect";
 import {changeEnterprise, clearEnterprise} from "../../../redux/action";
 import  BaseForm  from '../../../components/BaseFormForMap';
@@ -245,6 +245,7 @@ class map extends React.Component{
         this.setState({position:event.target.value})
     }
     changePosition =(searchType,address)=>{
+        console.log(searchType)
         let that = this;
         if(searchType=="1"){
             
@@ -306,6 +307,8 @@ class map extends React.Component{
                     position: lnglat,   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
                     draggable:false
                 });
+                var polygons = []
+                // that.drawBounds(address,polygons)
                 that.map.add(marker);
                 that.map.setFitView(marker);
             }else{
@@ -315,6 +318,41 @@ class map extends React.Component{
         })
     })
         }
+    }
+
+    drawBounds = (district, polygons) => {
+        console.log(district)
+        let that = this;
+        AMap.service('AMap.DistrictSearch', function () {//回调函数
+            var opts = {
+                subdistrict: 3,   //返回下一级行政区
+                showbiz: true,  //查询行政级别为 市
+                extensions: 'all',  //返回行政区边界坐标组等具体信息
+                level: "street"  //查询行政级别为 市
+            };
+            //实例化DistrictSearch
+            let districtSearch = new AMap.DistrictSearch(opts);
+            districtSearch.search(district, function (status, result) {
+                let bounds = result.districtList[0].boundaries;//生成行政区划polygon
+                var polygon = []
+                for (var i = 0; i < bounds.length; i += 1) {
+                    var polygon1 = new AMap.Polygon({
+                        strokeWeight: 1,
+                        path: bounds[i],
+                        fillOpacity: unitName == '历下区' ? 0 : 0.3,///0.3
+                        fillColor: '#4fb8f5',
+                        strokeColor: '#0091ea',
+                        zIndex: 0
+                    });
+                    polygon.push(polygon1)
+                }
+                that.map.add(polygon1);
+                that.map.setFitView(polygon1);//视口自适应
+                that.map.setZoom(13)
+                // that.map.setZoom(11.5)
+                that.map.setZoom(unitName == "历下区" ? 13 : 11.5)
+            })
+        })
     }
     // onRef = (ref) => {
     //     this.Map = ref

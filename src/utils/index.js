@@ -36,11 +36,8 @@ export default {
            showTotal:()=>{
                return `共${res.data.total}条`
             },
-
             showQuickJumper:true
         }
-
-        
     },
     // 格式化金额,单位:分(eg:430分=4.30元)
     formatFee(fee, suffix = '') {

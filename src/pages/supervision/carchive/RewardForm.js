@@ -1,10 +1,34 @@
 import React,{Component} from 'react';
 import {Form, Input,Select} from 'antd';
+import axios from '../../../axios'
 const FormItem = Form.Item;
 const Option = Select.Option;
 
 class RecordForm extends Component{
-    state={}
+    state={
+        list:[]
+    }
+    params = {
+        pageNo:1
+    }
+    componentDidMount() {
+        this.getIllegality()
+    }
+    getIllegality = () =>{
+        let _this = this
+        axios.PostAjax({
+            url:"/inspect/lllegality/getPage",
+            data:{
+                params:this.params
+            }
+        }).then((res) => {
+            if(res.status == "success"){
+                _this.setState({
+                    list:res.data.data
+                })
+            }
+        })
+    }
     render(){
         const { getFieldDecorator } = this.props.form;
         const recordInfo = this.props.recordInfo || {};
@@ -14,14 +38,17 @@ class RecordForm extends Component{
         };
         return (
             <Form layout="horizontal">
-                <FormItem label="顺序" {...formItemLayout}>
+                <FormItem label="违法类型" {...formItemLayout}>
                     {
                         getFieldDecorator('name',{
                             initialValue:recordInfo.name
                         })(
                             <Select style={{ width: 200 }}>
-                                <Option value={"1"}>行政处罚</Option>
-                                <Option value={"2"}>别的处罚</Option>
+                                {this.state.list.map( (item,index) => {
+                                    return(
+                                        <Option key={index} value={item.id}>{item.name}</Option>
+                                    )
+                                })}
                             </Select>
                         )
                     }

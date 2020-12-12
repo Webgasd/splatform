@@ -6,11 +6,13 @@ const Footer = loadable(()=>import('../Footer'));
 const EnterpriseInformation = loadable(()=>import('../../pages/supervision/enterprise'));
 const EnterpriseInformationEx = loadable(()=>import('../../pages/supervision/enterpriseEx'));
 const AbnormalEnterprise = loadable(()=>import('../../pages/supervision/enterpriseEx/AbnormalEnterprise'));
+const ZombieEnterprise = loadable(()=>import('../../pages/supervision/enterpriseEx/zombieEnterprise'));
 const Abnormal = loadable(()=>import('../../pages/supervision/abnormal'));
 const ShowPoint = loadable(()=>import('../../pages/grid/showPoint'));
 const DrawGrid = loadable(()=>import('../../pages/grid/drawGrid'));
 const ShowGrid = loadable(()=>import('../../pages/grid/showGrid'));
 const SmileMap = loadable(()=>import('../../pages/grid/smileMap'));
+const SearchMap = loadable(()=>import('../../pages/grid/searchMap'));
 const DataMap = loadable(()=>import('../../pages/supervision/map'));
 const RoleManager = loadable(()=>import('../../pages/permission/roleManager'));
 const PermManager = loadable(()=>import('../../pages/permission/permManger'));
@@ -176,6 +178,8 @@ export default class Content extends Component{
                 return <EnterpriseInformationEx/>
             case   '/enterpriseAbnormal':
                 return <AbnormalEnterprise/>
+            case    '/zombieEnterprise':
+                return <ZombieEnterprise/>
           
             case   '/abnormal':
                 return <Abnormal/>
@@ -187,6 +191,8 @@ export default class Content extends Component{
                 return <ShowGrid/>
             case '/grid/smileMap':
                 return <SmileMap/>
+            case '/grid/searchMap':
+                return <SearchMap/>
             case '/dataMap':
                 return <DataMap/>
             case '/person/employee':

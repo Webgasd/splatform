@@ -37,7 +37,8 @@ import FormForAbnormal from './childrenForm/FormForAbnormal'
     params = {
         pageNo:1,
         industryList:'',
-        areaList:''
+        areaList:'',
+        judgeType:1
     }
 
 
@@ -91,7 +92,7 @@ import FormForAbnormal from './childrenForm/FormForAbnormal'
         axios.PostAjax({
             url:'/supervision/enterprise/getPageState',
             data:{
-                params:{...this.params,areaList:[this.params.areaList],industryList:[this.params.industryList]}
+                params:{...this.params,areaList:[this.params.areaList],industryList:[this.params.industryList],}
 
             }
         }).then((res)=>{
@@ -320,6 +321,7 @@ import FormForAbnormal from './childrenForm/FormForAbnormal'
     
 
 render() {
+        console.log(this.props)
     let _this =this;
     const statistics = this.state.statistics ||{}
     const columns = [
@@ -376,7 +378,7 @@ render() {
 
                     {this.props.acl.indexOf('/delete')>-1? <div className='textButton'  onClick={()=> {this.handleOperator('delete',record)}}>删除</div>:null}
 
-                    <div className='textButton' style={{color:'#CC0000'}}  onClick={() => { this.handleChangeNormal(record) }}>恢复正常</div>
+                    <div className='textButton' style={{color:'#CC0000'}}  onClick={() => { this.handleChangeNormal(record) }}>异常处理</div>
 
                     <div className='textButton'  onClick={() => { this.handleQr(record) }}>二维码</div>
 

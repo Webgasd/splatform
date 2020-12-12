@@ -86,7 +86,6 @@ import ImportData from './childrenForm/ImportData';
             url:'/supervision/enterprise/getPage',
             data:{
                 params:{...this.params,areaList:[this.params.areaList],industryList:[this.params.industryList]}
-
             }
         }).then((res)=>{console.log(res)
             if(res.status == "success"){

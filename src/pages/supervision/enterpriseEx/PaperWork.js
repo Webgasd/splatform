@@ -44,6 +44,7 @@ function getBase64(img, callback) {
     handleCancel = () => this.setState({ previewVisible: false });
 
     handlePreview = file => {
+        console.log(file)
         this.setState({
             previewImage: (file.response||{}).data,
             previewVisible: true,

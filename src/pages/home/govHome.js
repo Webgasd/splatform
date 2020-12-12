@@ -266,6 +266,7 @@ class govHome extends Component {
     };
     addGridPoints = (data) => {console.log(data)
         let l = markers.length
+
         markers[l] = []
         let that = this;
         data.map((item, index) => {
@@ -645,7 +646,7 @@ class govHome extends Component {
                 return linQingApkPicture;
             case "泰山区":
                 return taiAnApkPicture;
-            case "东营区":
+            case "s":
                 return dongYingApkPicture;
             case "平邑县":
                 return pingYiApkPicture;
@@ -847,7 +848,8 @@ class govHome extends Component {
             getContainer={() => this.refs.mapHomeCard}
             centered={true}
             mask={false}
-            width={1000}
+            width={"90%"}
+            height={"100%"}
             onCancel={() => {
                 this.props.clearEnterprise();
                 this.setState({
@@ -895,12 +897,12 @@ class govHome extends Component {
             series: this.state.areaCount || []
         };
         return (
-            <div>
+            <div ref='mapHomeCard'>
                 <Row gutter={16}>
                     <Col span={16}>
                         <Card title='网格地图'>
                             <div className="map-wrap">
-                                <div ref='mapHomeCard' id="mapHomeContainer"
+                                <div id="mapHomeContainer"
                                      style={{height: '800px', width: '100%'}}></div>
                             </div>
                         </Card>
@@ -912,7 +914,7 @@ class govHome extends Component {
                                 theme="UPC"
                                 notMerge={true}
                                 lazyUpdate={true}
-                                style={{height: 230}}/>
+                                style={{height: 240}}/>
                         </Card>
                         <Card title='移动执法终端下载' className='overTimeCard' type='inner' extra={<a>More</a>}
                               style={{marginTop: 10}}>

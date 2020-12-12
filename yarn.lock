@@ -6479,6 +6479,11 @@ lodash.uniq@^4.5.0:
   resolved "https://registry.yarnpkg.com/lodash.uniq/-/lodash.uniq-4.5.0.tgz#d0225373aeb652adc1bc82e4945339a842754773"
   integrity sha1-0CJTc662Uq3BvILklFM5qEJ1R3M=
 
+lodash.uniqueid@^4.0.1:
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/lodash.uniqueid/-/lodash.uniqueid-4.0.1.tgz#3268f26a7c88e4f4b1758d679271814e31fa5b26"
+  integrity sha1-MmjyanyI5PSxdY1nknGBTjH6WyY=
+
 "lodash@>=3.5 <5", lodash@^4.13.1, lodash@^4.16.5, lodash@^4.17.10, lodash@^4.17.11, lodash@^4.17.4, lodash@^4.17.5:
   version "4.17.11"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.11.tgz#b39ea6229ef607ecd89e2c8df12536891cac9b8d"
@@ -9235,6 +9240,16 @@ react-dev-utils@^8.0.0:
     strip-ansi "5.0.0"
     text-table "0.2.0"
 
+react-dom@^16.12.0:
+  version "16.14.0"
+  resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-16.14.0.tgz#7ad838ec29a777fb3c75c3a190f661cf92ab8b89"
+  integrity sha512-1gCeQXDLoIqMgqD3IO2Ah9bnf0w9kzhwN5q4FGnHZ67hBm9yePzB5JJAIQCc8x3pFnNlwFq4RidZggNAAkzWWw==
+  dependencies:
+    loose-envify "^1.1.0"
+    object-assign "^4.1.1"
+    prop-types "^15.6.2"
+    scheduler "^0.19.1"
+
 react-dom@^16.8.4:
   version "16.8.4"
   resolved "http://registry.npm.taobao.org/react-dom/download/react-dom-16.8.4.tgz#1061a8e01a2b3b0c8160037441c3bf00a0e3bc48"
@@ -9303,6 +9318,14 @@ react-pdf-js@^5.1.0:
   dependencies:
     "@bundled-es-modules/pdfjs-dist" "2.1.266-rc"
 
+react-photo-view@^0.5.2:
+  version "0.5.2"
+  resolved "https://registry.yarnpkg.com/react-photo-view/-/react-photo-view-0.5.2.tgz#4f3ee8fa82b5a53ee6a7e9b1f9dadd5b0f8a9f39"
+  integrity sha512-yhErS6+EHDHSKionIAWi51MJDEbc++pnFGxHKplM/kLYq4oZGKh7GOwqSs/nkG6L7AFMpK+r941YkD1E8IMJkg==
+  dependencies:
+    lodash.debounce "^4.0.8"
+    lodash.uniqueid "^4.0.1"
+
 react-redux@^6.0.1:
   version "6.0.1"
   resolved "http://registry.npm.taobao.org/react-redux/download/react-redux-6.0.1.tgz#0d423e2c1cb10ada87293d47e7de7c329623ba4d"
@@ -9358,6 +9381,26 @@ react-tween-state@^0.1.5:
   dependencies:
     raf "^3.1.0"
     tween-functions "^1.0.1"
+
+react-zmage@^0.8.5-beta.36:
+  version "0.8.5-beta.36"
+  resolved "https://registry.yarnpkg.com/react-zmage/-/react-zmage-0.8.5-beta.36.tgz#3dee3cf74c6b92901f40b7d6d4b047fefcf5cc03"
+  integrity sha512-iF0LxAXczbU7tTFOZwGe5eMBbGznLdNEmvyuTu51v7ub6K82RE2YiDGhlYO6SRS5ioFm3kWYC/SQYBRk2h6QSQ==
+  dependencies:
+    classnames "^2.2.6"
+    lodash.memoize "^4.1.2"
+    prop-types "^15.6.2"
+    react "^16.12.0"
+    react-dom "^16.12.0"
+
+react@^16.12.0:
+  version "16.14.0"
+  resolved "https://registry.yarnpkg.com/react/-/react-16.14.0.tgz#94d776ddd0aaa37da3eda8fc5b6b18a4c9a3114d"
+  integrity sha512-0X2CImDkJGApiAlcf0ODKIneSwBPhqJawOa5wCtKbu7ZECrmS26NvtSILynQ66cgkT/RJ4LidJOc3bUESwmU8g==
+  dependencies:
+    loose-envify "^1.1.0"
+    object-assign "^4.1.1"
+    prop-types "^15.6.2"
 
 react@^16.8.4:
   version "16.8.4"
@@ -10023,6 +10066,14 @@ scheduler@^0.13.4:
   version "0.13.4"
   resolved "http://registry.npm.taobao.org/scheduler/download/scheduler-0.13.4.tgz#8fef05e7a3580c76c0364d2df5e550e4c9140298"
   integrity sha1-j+8F56NYDHbANk0t9eVQ5MkUApg=
+  dependencies:
+    loose-envify "^1.1.0"
+    object-assign "^4.1.1"
+
+scheduler@^0.19.1:
+  version "0.19.1"
+  resolved "https://registry.yarnpkg.com/scheduler/-/scheduler-0.19.1.tgz#4f3e2ed2c1a7d65681f4c854fa8c5a1ccb40f196"
+  integrity sha512-n/zwRWRYSUj0/3g/otKDRPMh6qv2SYMWNq85IEa8iZyAv8od9zDYpGSnpBEjNgcMNq6Scbu5KfIPxNF72R/2EA==
   dependencies:
     loose-envify "^1.1.0"
     object-assign "^4.1.1"
