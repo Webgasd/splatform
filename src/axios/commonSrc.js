@@ -1,9 +1,18 @@
+<<<<<<< HEAD
  // export const commonUrl = "http://172.26.103.203:8080";
 export const commonUrl = "http://172.26.96.146:8088";
 
 //本地使用勿删,前端连接后端时的ip请写在最后
 // export const commonUrl = "http://localhost:8088";
 export const baseUrl = "http://localhost:3000"
+=======
+//本地使用勿删,前端连接后端时的ip请写在最后
+// export const commonUrl = "http://localhost:9300";
+// export const baseUrl = "http://localhost:3000"
+
+export const commonUrl = "http://27.223.88.149:8092";
+export const baseUrl = "http://27.223.88.149:8090"
+>>>>>>> 07944c5dd63f1d2e071a8bf7f3d1235136ebc638
 export const unitName = "东营区"
 export const bookName = "东营"
 export const footName = "青岛世纪亿联信息科技有限公司"
@@ -22,6 +31,7 @@ export const words2 = "智慧监管平台"
 export const login = "欢迎"
 export const lng=118.58215
 export const lat=37.44878
+
 // export const commonUrl = "http://101.201.239.28:8080";
 // export const baseUrl = "http://101.201.239.28:8090"
 // export const unitName = "平邑县"
