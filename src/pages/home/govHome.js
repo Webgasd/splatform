@@ -942,13 +942,8 @@ class govHome extends Component {
                     <Col span={16}>
                         <Card title='网格地图'>
                             <div className="map-wrap">
-<<<<<<< HEAD
-                                <div id="mapHomeContainer"
-                                     style={{height: '800px', width: '100%'}}></div>
-=======
                                 <div ref='mapHomeCard' id="mapHomeContainer"
                                     style={{ height: '800px', width: '100%' }}></div>
->>>>>>> 07944c5dd63f1d2e071a8bf7f3d1235136ebc638
                             </div>
                         </Card>
                     </Col>
@@ -959,11 +954,7 @@ class govHome extends Component {
                                 theme="UPC"
                                 notMerge={true}
                                 lazyUpdate={true}
-<<<<<<< HEAD
-                                style={{height: 240}}/>
-=======
                                 style={{ height: 230 }} />
->>>>>>> 07944c5dd63f1d2e071a8bf7f3d1235136ebc638
                         </Card>
                         <Card title='移动执法终端下载' className='overTimeCard' type='inner' extra={<a>More</a>}
                             style={{ marginTop: 10 }}>

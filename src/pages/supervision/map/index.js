@@ -37,11 +37,7 @@ import { Input, Button, message, Modal, Row, Col, Card } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import ReactEcharts from 'echarts-for-react';
 import axios from "../../../axios";
-<<<<<<< HEAD
 import {commonUrl, unitName} from "../../../axios/commonSrc";
-=======
-import { commonUrl ,unitName} from "../../../axios/commonSrc";
->>>>>>> 07944c5dd63f1d2e071a8bf7f3d1235136ebc638
 import connect from "react-redux/es/connect/connect";
 import { changeEnterprise, clearEnterprise } from "../../../redux/action";
 import BaseForm from '../../../components/BaseFormForMap';
@@ -367,15 +363,10 @@ class map extends React.Component {
     cp = () => {
         this.changePosition(this.state.searchType, this.state.position);
     }
-<<<<<<< HEAD
-    changePosition =(searchType,address)=>{
-        console.log(searchType)
-=======
     changeValue = (event) => {
         this.setState({ position: event.target.value })
     }
     changePosition = (searchType, address) => {
->>>>>>> 07944c5dd63f1d2e071a8bf7f3d1235136ebc638
         let that = this;
         if (searchType == "1") {
 
@@ -428,18 +419,17 @@ class map extends React.Component {
                     // city 指定进行编码查询的城市，支持传入城市名、adcode 和 citycode
                     // city: '东营'
                 });
-<<<<<<< HEAD
                 var polygons = []
                 // that.drawBounds(address,polygons)
                 that.map.add(marker);
                 that.map.setFitView(marker);
-            }else{
-                that.map.clearMap()
-                message.info('根据地址查询位置失败');
-            }
-        })
-    })
-=======
+            })
+        // else{
+        //         that.map.clearMap()
+        //         message.info('根据地址查询位置失败');
+        //     }
+        
+
                 geocoder.getLocation(address, (status, result) => {
                     if (status === 'complete' && result.geocodes.length) {
                         that.map.clearMap()
@@ -456,11 +446,8 @@ class map extends React.Component {
                         message.info('根据地址查询位置失败');
                     }
                 })
-            })
->>>>>>> 07944c5dd63f1d2e071a8bf7f3d1235136ebc638
-        }
+            }
     }
-
     drawBounds = (district, polygons) => {
         console.log(district)
         let that = this;
