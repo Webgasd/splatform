@@ -42,6 +42,11 @@ import eatlocation from "../grid/showGrid/image/餐饮定位(小).png";
 import transform from "../grid/showGrid/image/流通定位(小).png";
 import produce from "../grid/showGrid/image/食品生产定位(小).png";
 import school from "../grid/showGrid/image/学校定位(小).png";
+import detailPic from "../supervision/map/images/detail.png";
+import nav1 from "../supervision/map/images/nav1.png";
+import nav2 from "../supervision/map/images/nav2.png";
+import nav3 from "../supervision/map/images/nav3.png";
+import nav4 from "../supervision/map/images/nav4.png";
 
 const AMap = window.AMap;
 let markers = []
@@ -78,8 +83,8 @@ const columns = [
 
 @connect(
     state => ({
-        industryList: state.industryList.slice(1),
-        industryList7: state.industryList,
+        industryList: state.industryList.slice(1),//不含食品经营
+        industryList7: state.industryList,//全部类型
     }), {
     clearEnterprise,
     changeEnterprise,
@@ -101,7 +106,8 @@ class govHome extends Component {
             TopArea: [],
             areaCount: [],
             area: [],
-            searchEmployee: ''
+            searchEmployee: '',
+            mapBackButton:'none'
         }
         window.getBaseInfo = () => this.getBaseInfo();
         window.ToGaodeLocation = () => this.ToGaodeLocation();
@@ -127,20 +133,25 @@ class govHome extends Component {
         this.govGet();
         this.getTree();
         // this.getAreaEnterprise()
-        this.map.on("zoomend", function () {
-            let nowzoom = this_.map.getZoom();
-            zoom.push(nowzoom);
-            let l = zoom.length;
-            let lastzoom = zoom[l - 2];
-            console.log(nowzoom, lastzoom)
-            if (nowzoom <= 14 && lastzoom >= 14) {
-                this_.clearAll();
-                this_.drawBounds(district, polygons)
-                this_.getdata();
-            }
-        });
+        // this.map.on("zoomend", function () {
+        //     let nowzoom = this_.map.getZoom();
+        //     zoom.push(nowzoom);
+        //     let l = zoom.length;
+        //     let lastzoom = zoom[l - 2];
+        //     if (nowzoom <= 14 && lastzoom >= 14) {
+        //         this_.clearAll();
+        //         this_.drawBounds(district, polygons)
+        //         this_.getdata();
+        //     }
+        // });
     }
-
+    initMap =()=>{
+       this.clearAll();
+        var polygons = [];
+        this.drawBounds(unitName, polygons)
+        this.getdata();
+        this.setState({mapBackButton:'none'})
+    }
     govGet = () => {
         axios.noLoadingAjax({
             url: '/sys/user/govGet',
@@ -613,6 +624,7 @@ class govHome extends Component {
         return value
     }
     getIn = (e) => {
+        this.setState({mapBackButton:'inline'})
         let name = e.target.w.mapName
         let id = e.target.w.areaId
         let level = e.target.w.level
@@ -944,6 +956,9 @@ class govHome extends Component {
                             <div className="map-wrap">
                                 <div ref='mapHomeCard' id="mapHomeContainer"
                                     style={{ height: '800px', width: '100%' }}></div>
+                                <div id="companyInfo" style={{ display: this.state.mapBackButton }}>
+                                    <div onClick={this.initMap}>《返回</div>
+                                </div>
                             </div>
                         </Card>
                     </Col>
