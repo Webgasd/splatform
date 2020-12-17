@@ -624,7 +624,6 @@ class govHome extends Component {
         return value
     }
     getIn = (e) => {
-        this.setState({mapBackButton:'inline'})
         let name = e.target.w.mapName
         let id = e.target.w.areaId
         let level = e.target.w.level
@@ -636,6 +635,7 @@ class govHome extends Component {
             fillColor: '#051040',
             strokeColor: '#ea5299'
         });
+        this.setState({mapBackButton:'inline'});
         this.clearAll()
         this.map.setFitView(polygon);//视口自适应
         // this.map.setZoom(14);
@@ -957,7 +957,7 @@ class govHome extends Component {
                                 <div ref='mapHomeCard' id="mapHomeContainer"
                                     style={{ height: '800px', width: '100%' }}></div>
                                 <div id="companyInfo" style={{ display: this.state.mapBackButton }}>
-                                    <div onClick={this.initMap}>《返回</div>
+                                    <button onClick={this.initMap}>《返回</button>
                                 </div>
                             </div>
                         </Card>

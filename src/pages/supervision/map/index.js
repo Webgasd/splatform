@@ -27,6 +27,7 @@ import nav2 from "./images/nav2.png";
 import nav3 from "./images/nav3.png";
 import nav4 from "./images/nav4.png";
 import detailPic from "./images/detail.png";
+import nopic from "./images/nopic.png";
 //导入饼图
 import 'echarts/lib/chart/pie'
 import 'echarts/lib/component/tooltip'
@@ -564,6 +565,7 @@ class map extends React.Component {
             if (this.state.t2 === 2) dataplus = dataq2;
             if (this.state.t2 === 3) dataplus = dataq3;
         }
+
         cluster = new AMap.MarkerClusterer(this.map, dataplus, {
             gridSize: 80,
         });
@@ -610,7 +612,7 @@ class map extends React.Component {
                         legalPerson: res.data.legalPerson,
                         cantactWay: res.data.cantactWay,
                         idNumber: res.data.idNumber,
-                        registeredAddress: res.data.registered_address,
+                        registeredAddress: res.data.registeredAddress,
                     })
                 }
             })
@@ -640,7 +642,7 @@ class map extends React.Component {
                         legalPerson: res.data.legalPerson,
                         cantactWay: res.data.cantactWay,
                         idNumber: res.data.idNumber,
-                        registeredAddress: res.data.registered_address,
+                        registeredAddress: res.data.registeredAddress,
                     })
                 }
             })
@@ -945,9 +947,10 @@ class map extends React.Component {
                             <div id="companyInfo" >
                                 <div className={"bottomGrayBox"}>&nbsp;&nbsp;<img src={detailPic} alt='' />数据信息</div>
                                 <div style={{ display: this.state.detailDisplay }}>
-                                    {this.state.propagandaEnclosure.length >= 1 ?
+                                    {
+                                        this.state.propagandaEnclosure.length >= 1 ?
                                         <img src={commonUrl + "/upload/picture/" + this.state.propagandaEnclosure[0].response.data} width={"300px"} height={"150px"} /> :
-                                        <img src="" width={"300px"} height={"150px"} />
+                                        <img src={require("./images/nopic.png")} width={"300px"} height={"150px"} />
                                     }
                                     <div className={"bottomGrayBox"} style={{ fontSize: "18px", fontWeight: "bold" }}>&nbsp;&nbsp;{this.state.enterpriseName}</div>
                                     <div className={"bottomGrayBox"} >

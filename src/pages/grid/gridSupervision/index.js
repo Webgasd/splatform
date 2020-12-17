@@ -819,6 +819,7 @@ class GridSupervision extends React.Component{
         } else {
             value = this.state.gridData.find((item)=>(item.areaId==keys))
         }
+        console.log(value)
         if (value!==undefined&&value.areaId>1){
             this.drawGrid(value,false);
             let l=overlay.length
@@ -835,7 +836,7 @@ class GridSupervision extends React.Component{
         }else {
             console.log("无信息")
         }
-        /////////       //////根据子节点的child长度,找出要显示的点
+        // /////////       //////根据子节点的child长度,找出要显示的点
         let points=[]
         if(child.length==0){
             points=this.state.PointsList.filter((item)=>(item.grid==keys))
