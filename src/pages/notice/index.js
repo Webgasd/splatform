@@ -186,7 +186,7 @@ export default class Notice extends Component{
                     })
                 }
             })
-        }else if("check"){
+        }else if(type == "check"){
             confirm({
                 title: '确定发布?',
                 okText: '是',

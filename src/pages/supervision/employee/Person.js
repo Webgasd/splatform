@@ -82,11 +82,11 @@ class Person extends Component{
                                         className="avatar-uploader"
                                         showUploadList={false}
                                         accept='image/png,image/jpeg'
-                                        action={commonUrl+"/upload/uploadPicture"}
+                                        action={commonUrl+"/upload/miniUploadPicture"}
                                         fileList={photo}
                                         onChange={this.handleChange}
                                     >
-                                        {imageUrl ? <img src={imageUrl} style={{height:'130px'}} alt="avatar" />:(photo.length>=1&&!this.state.loading?<img src={commonUrl+"/upload/picture/" +photo[0].response.data} style={{height:'130px'}} alt="avatar" />:uploadButton)}
+                                        {imageUrl ? <img src={imageUrl} style={{height:'130px'}} alt="avatar" />:(photo.length>=1&&!this.state.loading?<img src={commonUrl+"/upload/" +photo[0].response.data} style={{height:'130px'}} alt="avatar" />:uploadButton)}
                                     </Upload>
                                 </td>
                             </tr>

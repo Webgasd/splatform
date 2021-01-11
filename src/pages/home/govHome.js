@@ -11,6 +11,7 @@ import Add from "../supervision/enterpriseEx/Add";
 import tubiao from "./image/pic1.png";
 import InfoWindow from './InfoWindow'
 import liXiaApkPicture from './image/lixia.png';
+import dongYingApkPictureApp from './image/dingyingapp.png';
 import linQingApkPicture from './image/linqing.png'
 import taiAnApkPicture from './image/taian.png'
 import pingYuanApkPicture from './image/pingyuan.png'
@@ -690,6 +691,8 @@ class govHome extends Component {
                 return dongYingApkPicture;
             case "平邑县":
                 return pingYiApkPicture;
+            case "东营区":
+                return dongYingApkPictureApp;
             default:
                 return liXiaApkPicture;
         }
