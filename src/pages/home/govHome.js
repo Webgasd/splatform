@@ -686,10 +686,10 @@ class govHome extends Component {
                 return linQingApkPicture;
             case "泰山区":
                 return taiAnApkPicture;
-            case "s":
-                return dongYingApkPicture;
             case "平邑县":
                 return pingYiApkPicture;
+            case "东营区":
+                return dongYingApkPicture;
             default:
                 return liXiaApkPicture;
         }
