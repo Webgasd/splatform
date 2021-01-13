@@ -674,7 +674,6 @@ class govHome extends Component {
         // })
 
     }
-
     //设置Apk二维码图片
     setApkPicture = () => {
         switch (unitName) {

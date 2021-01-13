@@ -97,7 +97,7 @@ render(){
     const columns = [
         {
             title: '文件名',
-            dataIndex: 'uid'
+            dataIndex: 'name'
         }, {
             title: '日期',
             dataIndex: 'lastModifiedDate',
