@@ -282,9 +282,11 @@ class DrawTest extends React.Component{
         return(
             <Row>
                 <Col span={5}>
+                    <div style={{overflowY: "scroll",height:"800px" }}>
                     <DirectoryTree onSelect={this.onSelect}>
                         {this.renderTreeNodes(this.props.areaList||[])}
                     </DirectoryTree>
+                    </div>
                 </Col>
                 <Col span={19}>
                     <div style={{position:'relative'}}>

@@ -14,7 +14,7 @@ import liXiaApkPicture from './image/lixia.png';
 import linQingApkPicture from './image/linqing.png'
 import taiAnApkPicture from './image/taian.png'
 import pingYuanApkPicture from './image/pingyuan.png'
-import dongYingApkPicture from './image/dongying1.png'
+import dongYingApkPicture from './image/dongying.png'
 import pingYiApkPicture from './image/pingyi.png'
 import zhongduan from './image/zhongduan.png';
 import { changeEnterprise, clearEnterprise } from "../../redux/action";
@@ -78,8 +78,8 @@ const columns = [
 
 @connect(
     state => ({
-        industryList: state.industryList.slice(1),
-        industryList7: state.industryList,
+       // industryList: state.industryList.slice(1),//不含食品经营
+        industryList: state.industryList,//全部类型
     }), {
     clearEnterprise,
     changeEnterprise,
@@ -126,7 +126,7 @@ class govHome extends Component {
         this.getdata();
         this.govGet();
         this.getTree();
-        // this.getAreaEnterprise()
+        this.getAreaEnterprise()
         this.map.on("zoomend", function () {
             let nowzoom = this_.map.getZoom();
             zoom.push(nowzoom);
@@ -156,48 +156,49 @@ class govHome extends Component {
             }
         })
     }
-    // getAreaEnterprise = () => {
-    //     let that = this
-    //     axios.noLoadingAjax({
-    //         url: '/grid/points/getAreaEnterprise',
-    //         data: {
-    //             params: {}
-    //         }
-    //     }).then((res) => {
-    //         if (res.status == 'success') {
-    //             let list = res.data.areaList;
-    //             let value = res.data.areaCount
-    //             let areaCount = []
-    //             let area = []
-    //             for (var key in list) {
-    //                 let child = list[key]
-    //                 area.push(child.name)
-    //             }
-    //             this.props.industryList.map((item) => {//循环业态
-    //                 let litsvalue = []
-    //                 let name = ''
-    //                 for (var key0 in list) {//循环地区
-    //                     let id = list[key0].id
-    //                     for (var key1 in value) {//循环取出地数据
-    //                         if (id == key1) {
-    //                             let child = value[key1]
-    //                             for (var key2 in child) {//对每个数据取出，加进数组
-    //                                 if (key2 == item.remark) {
-    //                                     litsvalue.push(child[key2]) /////取出对应的业态的数
-    //                                 }
-    //                             }
-    //                         }
-    //                     }
-    //                 }
-    //                 areaCount.push({name: item.name, type: 'bar', stack: "叠加", data: litsvalue})
-    //             })
-    //             this.setState({
-    //                 areaCount,
-    //                 area,
-    //             })
-    //         }
-    //     })
-    // }
+    getAreaEnterprise = () => {
+        let that = this
+        axios.noLoadingAjax({
+            url: '/grid/points/getAreaEnterprise',
+            data: {
+                params: {}
+            }
+        }).then((res) => {
+            console.log(res)
+            if (res.status == 'success') {
+                let list = res.data.areaList;
+                let value = res.data.areaCount
+                let areaCount = []
+                let area = []
+                for (var key in list) {
+                    let child = list[key]
+                    area.push(child.name)
+                }
+                this.props.industryList.map((item) => {//循环业态
+                    let litsvalue = []
+                    let name = ''
+                    for (var key0 in list) {//循环地区
+                        let id = list[key0].id
+                        for (var key1 in value) {//循环取出地数据
+                            if (id == key1) {
+                                let child = value[key1]
+                                for (var key2 in child) {//对每个数据取出，加进数组
+                                    if (key2 == item.remark) {
+                                        litsvalue.push(child[key2]) /////取出对应的业态的数
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    areaCount.push({name: item.name, type: 'bar', stack: "叠加", data: litsvalue})
+                })
+                this.setState({
+                    areaCount,
+                    area,
+                })
+            }
+        })
+    }
     getTree = () => {
         axios.noLoadingAjax({
             url: '/sys/area/tree',
@@ -274,7 +275,7 @@ class govHome extends Component {
         data.map((item, index) => {
             let icon
             for (var key in item) {
-                that.props.industryList7.map((item1) => {
+                that.props.industryList.map((item1) => {
                     if (item1.remark == key && item[key] !== null) {
                         switch (key) {
                             case "foodBusiness": {
@@ -685,10 +686,10 @@ class govHome extends Component {
                 return linQingApkPicture;
             case "泰山区":
                 return taiAnApkPicture;
-            case "平邑县":
-                return pingYiApkPicture;
             case "东营区":
                 return dongYingApkPicture;
+            case "平邑县":
+                return pingYiApkPicture;
             default:
                 return liXiaApkPicture;
         }

@@ -27,6 +27,7 @@ import nav2 from "./images/nav2.png";
 import nav3 from "./images/nav3.png";
 import nav4 from "./images/nav4.png";
 import detailPic from "./images/detail.png";
+import nopic from "./images/nopic.png";
 //导入饼图
 import 'echarts/lib/chart/pie'
 import 'echarts/lib/component/tooltip'
@@ -96,7 +97,9 @@ class map extends React.Component {
             data: [],
             position: "",
             searchType: "1",
-            searchEmployee: ''
+            searchEmployee: '',
+            areaList:[],
+            currentArea:"",
         }
         window.detaiDisplay = (value) => this.detaiDisplay(value);
     }
@@ -124,7 +127,7 @@ class map extends React.Component {
         })
         this.requestList();
         this.drawBounds();
-        this.drawDisrict();
+        //this.drawDisrict();
     }
 
     drawBounds() {
@@ -153,26 +156,28 @@ class map extends React.Component {
                     });
                     polygon.push(polygon1)
                 }
-                that.map.add(polygon1);
-                that.map.setFitView(polygon1);//视口自适应
-                that.map.setZoom(13)
-                // that.map.setZoom(11.5)
+                that.map.add(polygon);
+                that.map.setFitView(polygon);//视口自适应
                 that.map.setZoom(11.5)
             })
         })
     }
     drawDisrict=()=>{
-        axios.ajax({
-            url: "/grid/grid/getTop",
-            data: {
-                params: {}
-            }
-        }).then((res) => {
-            if (res.status == "success") {
-                // console.log(res.data)
-                this.drawGrid(res);
-            }
-        })
+        if(this.state.currentArea==="" ||this.state.currentArea.areaId===1 ){
+            axios.ajax({
+                url: "/grid/grid/getTop",
+                data: {
+                    params: {}
+                }
+            }).then((res) => {
+                if (res.status == "success") {
+                    this.setState({areaList: res.data})
+                    this.drawGrid(res);
+                }
+            })
+        }else {
+            this.changeToPoints(this.state.currentArea);
+        }
     }
     drawGrid = (data1) => {
         data1.data.map((item, index) => {
@@ -207,6 +212,7 @@ class map extends React.Component {
             level: level.length
         });
         this.map.add(polygon);
+        if(this.state.currentArea!="" && this.state.currentArea.areaId>1)this.map.setFitView(polygon);
         polygon.on("click", this.getIn)
         this.addGridLabel(color, name, point1, areaid, parentId, level.length);
     };
@@ -242,7 +248,68 @@ class map extends React.Component {
         });
 
     };
+    getIn = (e) => {
+        let name = e.target.w.mapName
+        let id = e.target.w.areaId
+        let level = e.target.w.level
+        let path = e.target.getPath()
+        let polygon = new AMap.Polygon({
+            strokeWeight: 1,
+            path: path,
+            fillOpacity: 0.1,
+            fillColor: '#051040',
+            strokeColor: '#ea5299'
+        });
+        this.clearAll()
+        this.map.setFitView(polygon);//视口自适应
+        // this.map.setZoom(14);
+        if (level == 2) {
+            this.getdata1(id)
+        } else {
+            this.map.add(polygon);
+            this.getdata1(id)
+            this.getdata2(id)
+        }
+    }
+    getdata1 = (id) => {
+        axios.ajax({
+            url: "/grid/grid/getByParentId",
+            data: {
+                params: { id: id }
+            }
+        }).then((res) => {
+            if (res.status == "success") {
+                if (res.data.length > 0) {
+                    res.data.map((item, index) => {
+                        this.changeToPoints(item);
+                        let id = item.areaId;
+                        // this.getdata2(id);
+                    })
+                }
+            }
+        })
+    }
+    getdata2 = (id) => {
+        // let list = []
+        // list = this.state.PointsList.filter((item) => (item.grid == id))
+        // this.addGridPoints(list);
+        // axios.ajax({
+        //     url:"/grid/points/getByAreaId",
+        //     data: {
+        //         params:{id:id}
+        //     }
+        // }).then((res)=>{
+        //     if(res.status == "success"){
+        //         if(res.data.length>0){
+        //             if(res.data.length>0){
+        //                 console.log("123")
+        //                 this.addGridPoints(res.data);
+        //             }
+        //         }
+        //     }
+        // })
 
+    }
     requestList = () => {
         axios.PostAjax({
             url: "/grid/points/getSmilePoints",
@@ -266,8 +333,13 @@ class map extends React.Component {
 
     }
     handleFilterSubmit = (filterParams) => {
+        this.state.currentArea=this.state.areaList.filter(item=>item.areaId=filterParams.areaList)[0];
         this.params = filterParams;
         this.requestList();
+        //当前选择的区域 ljh
+
+
+
     };
     //赋予表格数据
     setData = (list) => {
@@ -298,7 +370,7 @@ class map extends React.Component {
             }
 
         })
-        this.drawBounds();//画当地的轮廓
+        //this.drawBounds();//画当地的轮廓
         this.drawDisrict();
         this.displayMakers();
         let iCount = this.state.datai1.length + this.state.datai2.length + this.state.datai3.length;
@@ -448,40 +520,7 @@ class map extends React.Component {
                 })
             }
     }
-    drawBounds = (district, polygons) => {
-        console.log(district)
-        let that = this;
-        AMap.service('AMap.DistrictSearch', function () {//回调函数
-            var opts = {
-                subdistrict: 3,   //返回下一级行政区
-                showbiz: true,  //查询行政级别为 市
-                extensions: 'all',  //返回行政区边界坐标组等具体信息
-                level: "street"  //查询行政级别为 市
-            };
-            //实例化DistrictSearch
-            let districtSearch = new AMap.DistrictSearch(opts);
-            districtSearch.search(district, function (status, result) {
-                let bounds = result.districtList[0].boundaries;//生成行政区划polygon
-                var polygon = []
-                for (var i = 0; i < bounds.length; i += 1) {
-                    var polygon1 = new AMap.Polygon({
-                        strokeWeight: 1,
-                        path: bounds[i],
-                        fillOpacity: unitName == '历下区' ? 0 : 0.3,///0.3
-                        fillColor: '#4fb8f5',
-                        strokeColor: '#0091ea',
-                        zIndex: 0
-                    });
-                    polygon.push(polygon1)
-                }
-                that.map.add(polygon1);
-                that.map.setFitView(polygon1);//视口自适应
-                that.map.setZoom(13)
-                // that.map.setZoom(11.5)
-                that.map.setZoom(unitName == "历下区" ? 13 : 11.5)
-            })
-        })
-    }
+
     // onRef = (ref) => {
     //     this.Map = ref
     // }
@@ -494,7 +533,7 @@ class map extends React.Component {
     displayMakers = () => {//先加再减，实现企业主体和状态二维操作
         const { datai1, datai2, datai3, datac1, datac2, datac3, datah1, datah2, datah3, dataq1, dataq2, dataq3 } = this.state;
 
-        this.clearAll();
+        this.map.remove(cluster);
         let dataplus = [];
 
         if (this.state.t1 === 0) {
@@ -526,6 +565,7 @@ class map extends React.Component {
             if (this.state.t2 === 2) dataplus = dataq2;
             if (this.state.t2 === 3) dataplus = dataq3;
         }
+
         cluster = new AMap.MarkerClusterer(this.map, dataplus, {
             gridSize: 80,
         });
@@ -572,7 +612,7 @@ class map extends React.Component {
                         legalPerson: res.data.legalPerson,
                         cantactWay: res.data.cantactWay,
                         idNumber: res.data.idNumber,
-                        registeredAddress: res.data.registered_address,
+                        registeredAddress: res.data.registeredAddress,
                     })
                 }
             })
@@ -602,7 +642,7 @@ class map extends React.Component {
                         legalPerson: res.data.legalPerson,
                         cantactWay: res.data.cantactWay,
                         idNumber: res.data.idNumber,
-                        registeredAddress: res.data.registered_address,
+                        registeredAddress: res.data.registeredAddress,
                     })
                 }
             })
@@ -907,9 +947,10 @@ class map extends React.Component {
                             <div id="companyInfo" >
                                 <div className={"bottomGrayBox"}>&nbsp;&nbsp;<img src={detailPic} alt='' />数据信息</div>
                                 <div style={{ display: this.state.detailDisplay }}>
-                                    {this.state.propagandaEnclosure.length >= 1 ?
+                                    {
+                                        this.state.propagandaEnclosure.length >= 1 ?
                                         <img src={commonUrl + "/upload/picture/" + this.state.propagandaEnclosure[0].response.data} width={"300px"} height={"150px"} /> :
-                                        <img src="" width={"300px"} height={"150px"} />
+                                        <img src={require("./images/nopic.png")} width={"300px"} height={"150px"} />
                                     }
                                     <div className={"bottomGrayBox"} style={{ fontSize: "18px", fontWeight: "bold" }}>&nbsp;&nbsp;{this.state.enterpriseName}</div>
                                     <div className={"bottomGrayBox"} >
