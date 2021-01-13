@@ -97,7 +97,7 @@ render(){
     const columns = [
         {
             title: '文件名',
-            dataIndex: 'name'
+            dataIndex: 'uid'
         }, {
             title: '日期',
             dataIndex: 'lastModifiedDate',
@@ -182,7 +182,7 @@ render(){
                             </div>
                         </div>
                     </Form>
-                    <table>
+                    {/* <table>
                         <body>
                         <tr>
                             <td style={{width:112}}>附件信息</td>
@@ -198,7 +198,7 @@ render(){
                             </Upload></td>
                         </tr>
                         </body>
-                    </table>
+                    </table> */}
                     <Table
                         style={{marginTop:10}}
                         columns={columns}
