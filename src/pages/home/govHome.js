@@ -126,7 +126,7 @@ class govHome extends Component {
         this.getdata();
         this.govGet();
         this.getTree();
-        // this.getAreaEnterprise()
+        this.getAreaEnterprise()
         this.map.on("zoomend", function () {
             let nowzoom = this_.map.getZoom();
             zoom.push(nowzoom);
