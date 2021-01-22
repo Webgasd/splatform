@@ -45,7 +45,7 @@ class ListForm extends Component{
                 <table>
                     <tbody>
                     <tr>
-                        <th>序号</th>
+                        {/* <th>序号</th> */}
                         <th>菜名</th>
                         <th>原料</th>
                         <th>留样状态</th>
@@ -53,7 +53,7 @@ class ListForm extends Component{
                     </tr>
                     {list.map((item,index)=>(
                         <tr key={index}>
-                            <td><Input value={item.seq} onChange={(e)=>this.changeList(e.target.value,"seq",index)} disabled={type=='detail'?true:false}/></td>
+                            {/* <td><Input value={item.seq} onChange={(e)=>this.changeList(e.target.value,"seq",index)} disabled={type=='detail'?true:false}/></td> */}
                             <td><Input value={item.name} onChange={(e)=>this.changeList(e.target.value,"name",index)} disabled={type=='detail'?true:false}/></td>
                             <td><Input value={item.material1} onClick={()=>this.setState({isVisible:true,materialName:'material1',Index:index})} disabled={type=='detail'?true:false} suffix={<Icon type="search" />}/></td>
                             <td>
