@@ -78,6 +78,7 @@ export default class ETable extends React.Component {
             columns={this.props.columns}
             pagination={this.props.pagination}
             rowSelection={rowSelection}
+                expandable = { {expandedRowRender: record => <p>{record.description}</p> }}
             onRow={(record,index) => ({
                 onClick: ()=>{
                     if(!row_selection){
