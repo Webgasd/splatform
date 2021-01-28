@@ -92,7 +92,8 @@ class LoginForm extends React.Component {
         this.props.form.validateFieldsAndScroll((err, values) => {
             if (!err) {
                 var formValue = _this.props.form.getFieldsValue();
-                _this.props.loginSubmit({
+                _this.props.loginS
+                ubmit({
                     loginName: formValue.loginName,
                     password: formValue.password
                 });
