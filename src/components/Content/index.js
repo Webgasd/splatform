@@ -25,6 +25,11 @@ const Licence = loadable(()=>import('../../pages/supervision/licence'));
 const Bigclass = loadable(()=>import('../../pages/supervision/bigclass'));
 const Foodconduct = loadable(()=>import('../../pages/supervision/foodconduct'));
 const Notice = loadable(()=>import('./../../pages/notice'));
+const LegalPolicy = loadable(()=>import('./../../pages/legalPolicy'));
+const Laws = loadable(()=>import('./../../pages/legalPolicy/laws'));
+const Headquarters = loadable(()=>import('./../../pages/legalPolicy/headquarters'));
+const Endemicity = loadable(()=>import('./../../pages/legalPolicy/endemicity'));
+const EnterpriseInform = loadable(()=>import('./../../pages/officeManagement/enterpriseInform'));
 const Interacion = loadable(()=>import('./../../pages/interaction'));
 const InteracionEx = loadable(()=>import('./../../pages/interactionEx'));
 const V = loadable(()=>import('./../../pages/video'));
@@ -231,6 +236,16 @@ export default class Content extends Component{
                 return <EnterpriseVideoISC/>
             case '/notice':
                 return <Notice/>
+            case '/legalPolicy':
+                return <LegalPolicy/>
+            case '/laws':
+                return <Laws/>
+            case '/headquarters':
+                return <Headquarters/>
+            case '/endemicity':
+                return <Endemicity/>
+            case '/enterpriseInform':
+                return <EnterpriseInform/>
             case '/interaction':
                 return <Interacion/>
             case '/roleManager':
