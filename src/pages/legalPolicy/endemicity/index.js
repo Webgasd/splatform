@@ -284,7 +284,7 @@ class Endemicity extends Component {
                     }}
                 >
                     <AddForm
-                        endemicityData ={this.state.endemicityData}
+                        sourceData ={this.state.endemicityData}
                         dispatchEndemicityData = {(value)=>this.setState({endemicityData:value})}
                         dispatchFileList = {(fileList)=>this.setState({fileList:fileList})}
                         fileList = {this.state.fileList||[]}
@@ -304,7 +304,7 @@ class Endemicity extends Component {
                     }
                 >
                     <DetailForm
-                        endemicityData = {this.state.endemicityData||{}}
+                        sourceData = {this.state.endemicityData||{}}
                     />
                 </Modal>
             </div>

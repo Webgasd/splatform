@@ -284,7 +284,7 @@ class Headquarters extends Component {
                     }}
                 >
                     <AddForm
-                        headData ={this.state.headData}
+                        sourceData ={this.state.headData}
                         dispatchHeadData = {(value)=>this.setState({headData:value})}
                         dispatchFileList = {(fileList)=>this.setState({fileList:fileList})}
                         fileList = {this.state.fileList||[]}
@@ -304,7 +304,7 @@ class Headquarters extends Component {
                     }
                 >
                     <DetailForm
-                        headData = {this.state.headData||{}}
+                        sourceData = {this.state.headData||{}}
                     />
                 </Modal>
             </div>

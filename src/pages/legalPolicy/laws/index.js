@@ -125,7 +125,7 @@ class Laws extends Component {
             //     url:'',
             //     data:{
             //         params:{
-                        
+                            
             //         }
             //     }
             // }).then((res)=>{
@@ -151,7 +151,6 @@ class Laws extends Component {
             //     }
             // })
         }
-        
         else if(type == 'delete'){
            confirm({
                title:'确定删除?',
@@ -284,7 +283,7 @@ class Laws extends Component {
                     }}
                 >
                     <AddForm
-                        lewsData ={this.state.lewsData}
+                        sourceData ={this.state.lewsData}
                         dispatchLewsData = {(value)=>this.setState({lewsData:value})}
                         dispatchFileList = {(fileList)=>this.setState({fileList:fileList})}
                         fileList = {this.state.fileList||[]}
@@ -304,7 +303,7 @@ class Laws extends Component {
                     }
                 >
                     <DetailForm
-                        lewsData = {this.state.lewsData||{}}
+                        sourceData = {this.state.lewsData||{}}
                     />
                 </Modal>
             </div>

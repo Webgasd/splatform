@@ -13,9 +13,9 @@ export default class AddForm extends Component{
 
     }
     changeInput = (data,option) => {
-        let value = this.props.lewsData
+        let value = this.props.sourceData
         value[option] = data
-        this.props.dispatchLewsData(value)
+        this.props.dispatchSourceData(value)
     }   
     handleChange = (info) => {
         const fileList = info.fileList;
@@ -63,19 +63,18 @@ export default class AddForm extends Component{
             'media', 'separator',
             'clear'
         ]
-        let lewsData = this.props.lewsData||{};
-        console.log('lewsData', lewsData)
+        let sourceData = this.props.sourceData||{};
         const status = this.props.type == 'create'?'none':'block'
         const dateFormat = 'YYYY/MM/DD';
         return (
             <div>
                 <Row style={{marginTop:10}}>
                     <Col span={3} style={{textAlign:'right',fontSize:15}}>标题：</Col>
-                    <Col span={15}><Input placeholder='请输入标题' value={lewsData.title} onChange={(e)=>this.changeInput(e.target.value,'title')} /></Col>
+                    <Col span={15}><Input placeholder='请输入标题' value={sourceData.title} onChange={(e)=>this.changeInput(e.target.value,'title')} /></Col>
                     <Col span={3} style={{display:status,marginLeft:30}}>
                         <Select
                             style={{width:'100%'}}
-                            value={lewsData.effect||undefined}
+                            value={sourceData.effect||undefined}
                             onChange={(value)=>{this.changeInput(value,'effect')}}
                         >
                             <Option value='有效'>有效</Option>
@@ -85,41 +84,41 @@ export default class AddForm extends Component{
                 </Row>
                 <Row style={{marginTop:30}}>
                     <Col span={3} style={{textAlign:'right',fontSize:15}}>文号：</Col>
-                    <Col span={5}><Input placeholder='请输入文号' value={lewsData.articleNumber||''} onChange={(e)=>this.changeInput(e.target.value,'articleNumber')} /></Col>
+                    <Col span={5}><Input placeholder='请输入文号' value={sourceData.articleNumber||''} onChange={(e)=>this.changeInput(e.target.value,'articleNumber')} /></Col>
                     <Col span={3} style={{textAlign:'right',fontSize:15}}>成文日期：</Col>
-                    <Col span={5}><DatePicker  value={lewsData.issueDate==undefined?null:moment(lewsData.issueDate, dateFormat)} format={dateFormat} onChange={(dataString)=>this.changeInput(dataString,'issueDate')} /></Col>
+                    <Col span={5}><DatePicker  value={sourceData.issueDate==undefined?null:moment(sourceData.issueDate, dateFormat)} format={dateFormat} onChange={(dataString)=>this.changeInput(dataString,'issueDate')} /></Col>
                     <Col span={3} style={{textAlign:'right',fontSize:15}}>发布日期：</Col>
-                    <Col span={5}><DatePicker  value={lewsData.writtenDate==undefined?null:moment(lewsData.writtenDate, dateFormat)} format={dateFormat} onChange={(dataString)=>this.changeInput(dataString,'writtenDate')} /></Col>
+                    <Col span={5}><DatePicker  value={sourceData.writtenDate==undefined?null:moment(sourceData.writtenDate, dateFormat)} format={dateFormat} onChange={(dataString)=>this.changeInput(dataString,'writtenDate')} /></Col>
                 </Row>
                 <Row style={{marginTop:30}}>
                     <Col span={3} style={{textAlign:'right',fontSize:15}}>主题分类：</Col>
                     <Col span={5}>
-                        <Select placeholder='请选择主题分类' style={{width:'100%'}} value={lewsData.subjectClassification||undefined} onChange={(value)=>this.changeInput(value,'subjectClassification')}> 
+                        <Select placeholder='请选择主题分类' style={{width:'100%'}} value={sourceData.subjectClassification||undefined} onChange={(value)=>this.changeInput(value,'subjectClassification')}> 
 
                         </Select>
                     </Col>
                     <Col span={3} style={{textAlign:'right',fontSize:15}}>所属机构：</Col>
                     <Col span={5}>
-                        <Select placeholder='请选择所属机构' style={{width:'100%'}} value={lewsData.affiliatedInstitutions||undefined} onChange={(value)=>this.changeInput(value,'affiliatedInstitutions')}> 
+                        <Select placeholder='请选择所属机构' style={{width:'100%'}} value={sourceData.affiliatedInstitutions||undefined} onChange={(value)=>this.changeInput(value,'affiliatedInstitutions')}> 
 
                         </Select>
                     </Col>
                     <Col span={3} style={{textAlign:'right',fontSize:15}}>业务分类：</Col>
                     <Col span={5}>
-                        <Select placeholder='请选择业务分类' style={{width:'100%'}} value={lewsData.businessClassification||undefined} onChange={(value)=>this.changeInput(value,'businessClassification')}> 
+                        <Select placeholder='请选择业务分类' style={{width:'100%'}} value={sourceData.businessClassification||undefined} onChange={(value)=>this.changeInput(value,'businessClassification')}> 
 
                         </Select>
                     </Col>
                 </Row>
                 <Row style={{marginTop:30}}>
                     <Col span={3} style={{textAlign:'right',fontSize:15}}>题注：</Col>
-                    <Col span={18}><Input placeholder='请输入题注' defaultValue={lewsData.caption} onChange={(value)=>this.changeInput(value,'caption')} /></Col>
+                    <Col span={18}><Input placeholder='请输入题注' defaultValue={sourceData.caption} onChange={(value)=>this.changeInput(value,'caption')} /></Col>
                 </Row>
                 <div className="editAreaBody">
                  <BraftEditor
                      controls={controls}
                      contentStyle={{height:500}}
-                     value={lewsData.content}
+                     value={sourceData.content}
                      onChange={(data)=>this.changeInput(data,'content')}
                  />
                 </div>
