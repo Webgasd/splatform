@@ -45,7 +45,8 @@ class FilterForm extends Component{
     handleFilterSubmit = ()=>{
      
         let fieldsValue = this.props.form.getFieldsValue();
-     //   console.log(fieldsValue)
+        console.log('baseForm的this.props',this.props)
+        console.log('handleFilterSubmit',fieldsValue)
         this.props.filterSubmit(fieldsValue);
     }
     renderTreeNodes = (data) => {
