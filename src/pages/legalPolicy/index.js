@@ -4,6 +4,8 @@ import  BaseForm  from '../../components/BaseForm';
 import Utils from "../../utils";
 import axios from "../../axios";
 import DetailForm from './DetailForm';
+import {commonUrl} from '../../axios/commonSrc';
+import { T } from 'antd/lib/upload/utils';
 const Panel = Collapse.Panel;
 const ButtonGroup = Button.Group
 
@@ -54,20 +56,7 @@ export default class LegalPolicy extends Component {
         //查看拟态框的状态
         isVisible:false,
         title:'',
-        list:[
-            {
-                key:1,
-                type:'1',
-                title:'1',
-                description: 'My name is John Brown, I am 32 years old, living in New York No. 1 Lake Park.'
-            },
-            {
-                key:2,
-                type:'1',
-                title:'1',
-                description: 'My name is John Brown, I am 32 years old, living in New York No. 1 Lake Park.'
-            }
-        ]
+        list:[]
     }
     //查询条件
     params = {
@@ -75,19 +64,25 @@ export default class LegalPolicy extends Component {
     }
 
     componentDidMount(){
-        // this.requestList();
+        this.requestList();
     }
     //查询列表 刷新数据
     requestList = (params) => {
         let _this = this
-        axios.ajax({
-            url:'',
+        axios.PostAjax({
+            url:'/lawAndDocument/getFullDatabaseSearch',
             data:{
                 params:{...this.params}
             }
         }).then((res) => {
             if(res.status == 'success'){
-                console.log('接口调用成功')
+                _this.setState({
+                    list:res.data.data,
+                    pagination:Utils.pagination(res,(current)=>{
+                        _this.params.pageNo = current;//	当前页数
+                        _this.requestList(); //刷新列表数据
+                    })
+                })
             }
         })
     }
@@ -144,7 +139,18 @@ export default class LegalPolicy extends Component {
             {
                 title: '文库分类',
                 dataIndex: 'type',
-                key:'type'
+                key:'type',
+                render:(type) => {
+                    if(type == 1) {
+                        return '法律法规'
+                    }
+                    else if(type == 2) {
+                        return '总局文件'
+                    }
+                    else{
+                        return '地方性文件'
+                    }
+                }
             },
             {
                 title: '主题分类',
@@ -153,19 +159,22 @@ export default class LegalPolicy extends Component {
             {
                 title: '标题',
                 dataIndex: 'title',
-                key:"title"
+                key: 'title'
             },
             {
                 title: '业务分类',
-                dataIndex: ''
+                dataIndex: 'businessClassification',
+                key: 'businessClassification'
             },
             {
                 title: '文号',
-                dataIndex: ''
+                dataIndex: 'articleNumber',
+                key: 'articleNumber'
             },
             {
                 title: '发布日期',
-                dataIndex: ''
+                dataIndex: 'issueDate',
+                key: 'issueDate'
             },
             {
                 title: '检索情况',
@@ -199,7 +208,7 @@ export default class LegalPolicy extends Component {
                         bordered
                         dataSource={this.state.list}
                         defaultExpandAllRows={true}
-                        // pagination={this.state.pagination}
+                        pagination={this.state.pagination}
                         columns={columns}
                         expandedRowRender={ record => {
                         return(<p style={{margin:0,textAlign: "left"}}>题注：{record.description}</p>)}}

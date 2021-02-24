@@ -10,6 +10,7 @@ export default class DetailForm extends Component {
         list:[]
     }
     render() {
+        const detailData = this.props.detailData||{}
         const columns = [
             {
                 title:'资料名称',
@@ -42,7 +43,7 @@ export default class DetailForm extends Component {
                 <Card>
                     <Row>
                         <Col span={3}>标题</Col>
-                        <Col span={21}></Col>
+                        <Col span={21}>{detailData.title}</Col>
                     </Row>
                     <Row style={{marginTop:10}}>
                         <Col span={3}>文号</Col>

@@ -5,6 +5,7 @@ import ETable from '../../../components/ETable'
 import Utils from "../../../utils";
 import axios from "../../../axios";
 import {connect} from "react-redux";
+import AddForm from './AddForm'
 const Panel = Collapse.Panel;
 const ButtonGroup = Button.Group;
 const confirm = Modal.confirm
@@ -100,7 +101,7 @@ class EnterpriseInform extends Component {
         let _this = this
         if(type == 'create'){
             this.setState({
-                title:'法律法规',
+                title:'通知公告',
                 isVisible:true,
                 type
             })
@@ -284,7 +285,7 @@ class EnterpriseInform extends Component {
                 </Card>
                 <Modal
                     width='1000px'
-                    title='法律法规'
+                    title='通知公告'
                     visible={this.state.isVisible}
                     onOK={this.handleSubmit}
                     destroyOnClose={true}
@@ -295,12 +296,9 @@ class EnterpriseInform extends Component {
                         })
                     }}
                 >
-                    {/* <AddForm
+                    <AddForm
                         informData ={this.state.informData}
-                        dispatchInformData = {(value)=>this.setState({informData:value})}
-                        dispatchFileList = {(fileList)=>this.setState({fileList:fileList})}
-                        fileList = {this.state.fileList||[]}
-                     /> */}
+                     />
                 </Modal>
                 {/* <Modal
                     width='1000px'
