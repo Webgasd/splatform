@@ -96,6 +96,7 @@ export default class Notice extends Component{
         })
     }
 
+    //这个作用是什么
     start = () => {
 
         // ajax request after empty completing
@@ -141,6 +142,7 @@ export default class Notice extends Component{
     }
 
     handleOperator = (type,item)=>{
+        //console.log('李跃洪',item) 拿到的是每一条数据对象
         if(type =='create'){
             this.setState({
                 title:'创建通知',
@@ -257,7 +259,7 @@ export default class Notice extends Component{
                 title: '操作',
                 dataIndex:'operation',
                 render:(text, record)=>{
-
+                    // console.log(record)会将所有的数据打印 record表示所有数据
                     return <ButtonGroup>
                         <Button type="primary"  onClick={() => { this.handleOperator('detail',record)}}>查看</Button>
                         <Button type="primary"  onClick={()=> {this.handleOperator('edit',record)}}>修改</Button>
@@ -300,7 +302,7 @@ export default class Notice extends Component{
                 </Card>
                 <Modal
                     width='1000px'
-                    title="通知信息"
+                    title={this.state.title}
                     visible={this.state.isVisible}
                     onOk={this.handleSubmit}
                     destroyOnClose={true}
@@ -323,7 +325,7 @@ export default class Notice extends Component{
 
                 <Modal
                     width='1000px'
-                    title="通知信息"
+                    title={this.state.title}
                     visible={this.state.isDetailVisible}
                     footer={null}
                     destroyOnClose={true}
