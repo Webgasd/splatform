@@ -73,9 +73,9 @@ export default class Notice extends Component{
 
     handleSubmit = ()=>{
         let type = this.state.type;
-        let data=this.state.noticeData;
-        data.content=data.content.toHTML();
-        data.enclosure=this.state.picture;
+        let data=this.state.noticeData
+        data.content=data.content.toHTML()
+        data.enclosure=this.state.picture
         axios.PostAjax({
             url:type=='create'?'/sys/notice/insert':'/sys/notice/update',
             data:{

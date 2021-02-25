@@ -198,8 +198,12 @@ class Laws extends Component {
     //提交新增 更改
     handleSubmit = () => {
         let data = this.state.lewsData
+        console.log('aaa')
         data.fileList = this.state.fileList
         data.content=data.content.toHTML();
+        this.setState({
+            isVisible:false
+        })
     }
     
     render() {
@@ -273,7 +277,7 @@ class Laws extends Component {
                     width='1000px'
                     title='法律法规'
                     visible={this.state.isVisible}
-                    onOK={this.handleSubmit}
+                    onOk={this.handleSubmit}
                     destroyOnClose={true}
                     onCancel={()=>{
                         this.setState({

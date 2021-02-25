@@ -47,28 +47,28 @@ export default class DetailForm extends Component {
                     </Row>
                     <Row style={{marginTop:10}}>
                         <Col span={3}>文号</Col>
-                        <Col span={5}></Col>
+                        <Col span={5}>{detailData.articleNumber}</Col>
                         <Col span={3}>成文日期</Col>
-                        <Col span={5}></Col>
+                        <Col span={5}>{detailData.writtenDate}</Col>
                         <Col span={3}>发布日期</Col>
-                        <Col span={5}></Col>
+                        <Col span={5}>{detailData.issueDate}</Col>
                     </Row>
                     <Row style={{marginTop:10}}>
                         <Col span={3}>效力</Col>
-                        <Col span={5}></Col>
+                        <Col span={5}>{detailData.effect}</Col>
                         <Col span={3}>所属机构</Col>
-                        <Col span={5}></Col>
+                        <Col span={5}>{detailData.affiliatedInstitutions}</Col>
                         <Col span={3}>主题分类</Col>
-                        <Col span={5}></Col>
+                        <Col span={5}>{detailData.subjectClassification}</Col>
                     </Row>
                     <Row style={{marginTop:10}}>
                         <Col span={3}>题注</Col>
-                        <Col span={21}></Col>
+                        <Col span={21}>{detailData.caption}</Col>
                     </Row>
                 </Card>
                 <Card style={{marginTop:20}}>
                     <div>
-                        {}
+                        {detailData.content}
                     </div>
                 </Card>
                 <Card style={{marginTop:20}}> 

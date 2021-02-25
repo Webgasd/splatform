@@ -15,7 +15,7 @@ export default class AddForm extends Component{
     changeInput = (data,option) => {
         let value = this.props.sourceData
         value[option] = data
-        this.props.dispatchSourceData(value)
+        this.props.dispatchLewsData(value)
     }   
     handleChange = (info) => {
         const fileList = info.fileList;
