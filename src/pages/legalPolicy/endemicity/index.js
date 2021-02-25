@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import {Button,Card,Collapse,Table,Modal} from 'antd'
+import {Button,Card,Collapse,Modal} from 'antd'
 import  BaseForm  from '../../../components/BaseForm';
 import ETable from '../../../components/ETable'
 import Utils from "../../../utils";
@@ -8,6 +8,7 @@ import {connect} from "react-redux";
 import BraftEditor from 'braft-editor';
 import AddForm from '../AddForm';
 import DetailForm from '../DetailForm'
+import { number } from 'echarts/lib/export';
 const Panel = Collapse.Panel;
 const ButtonGroup = Button.Group;
 const confirm = Modal.confirm
@@ -18,7 +19,7 @@ const formList = [
         type: 'SELECT',
         label: '主题分类',
         placeholder: '请选择文库种类',
-        field: 'workType',
+        field: 'subjectClassification',
         width: 150,
         list: [{id: 0, name: '0'}, {id: 1, name: '1'}]
     },
@@ -26,16 +27,14 @@ const formList = [
         type: 'INPUT',
         label: '标题',
         placeholder: '请输入查询关键词',
-        field: 'workType',
+        field: 'title',
         width: 150,
     },
     {
         type: 'INPUT',
         label: '文号',
         placeholder: '请输入查询关键词',
-        field: 'workType',
-        width: 150,
-        list: [{id: 0, name: '0'}, {id: 1, name: '1'}]
+        field: 'articleNumber',
     },
     {
         type: 'TIME',
@@ -51,9 +50,9 @@ const formList = [
     }),{
     }
 )
-class Endemicity extends Component {
+class Laws extends Component {
     state = {
-        endemicityData:{},
+        lewsData:{},
         selectedRowKeys: [], //表格选择的条目记录
         list:[     //获取的数据列表
             {
@@ -66,31 +65,85 @@ class Endemicity extends Component {
     params = {
         pageNo:1
     }
-    //查询
-    handleFilterSubmit = (params) => {
-        this.params = params
+    componentDidMount(){
+        this.requestList();
     }
-    //获取表格数据
-    requestList = ()=>{
+    
+    //查询
+    handleFilterSubmit = (filterParams) => {
+        this.params = filterParams
+        this.params.startDate = this.params.starttime
+        this.params.endDate = this.params.endtime
+        this.requestListByCondition();
+    }
+    //按条件获取数据
+    requestListByCondition = ()=>{
         let _this = this;
-        axios.ajax({
-            url:'',
+        axios.PostAjax({
+            url:'/lawAndDocument/getConditionalSearch',
             data:{
                 params:{..._this.params}
             }
         }).then((res)=>{
             if(res.status == "success"){
-                let list  = res.data.data.map((item,i)=>{
-                    item.key = i;
-                    return item;
-                })
-                _this.setState({
-                    list:list,
-                    pagination:Utils.pagination(res,(current)=>{
-                        _this.params.pageNo = current;//	当前页数
-                        _this.requestList(); //刷新列表数据
+                if(res.data!==null){
+                    let list  = res.data.data.map((item,i)=>{
+                        item.key = i;
+                        return item;
                     })
-                })
+                    _this.setState({
+                        list:list,
+                        pagination:Utils.pagination(res,(current)=>{
+                            _this.params.pageNo = current;//	当前页数
+                            _this.requestListByCondition(); //刷新列表数据
+                        })
+                    })
+                }else{
+                    res.data = {"total":0,"data":[],"pageNo": 1,"pageSize": 10}
+                    _this.setState({
+                        list:[],
+                        pagination:Utils.pagination(res,(current)=>{
+                            _this.params.pageNo = current;//	当前页数
+                            _this.requestListByCondition(); //刷新列表数据
+                        })
+                    })
+                }
+                
+            }
+        })
+    }
+    //获取表格数据
+    requestList = ()=>{
+        let _this = this;
+        axios.PostAjax({
+            url:'/lawAndDocument/getFullDatabaseSearch',
+            data:{
+                params:{..._this.params,type:3}
+            }
+        }).then((res)=>{
+            if(res.status == "success"){
+                if(res.data!==null){
+                    let list  = res.data.data.map((item,i)=>{
+                        item.key = i;
+                        return item;
+                    })
+                    _this.setState({
+                        list:list,
+                        pagination:Utils.pagination(res,(current)=>{
+                            _this.params.pageNo = current;//	当前页数
+                            _this.requestList(); //刷新列表数据
+                        })
+                    })
+                }else{
+                    res.data = {"total":0,"data":[],"pageNo": 1,"pageSize": 10}
+                    _this.setState({
+                        list:[],
+                        pagination:Utils.pagination(res,(current)=>{
+                            _this.params.pageNo = current;//	当前页数
+                            _this.requestList(); //刷新列表数据
+                        })
+                    })
+                }
             }
         })
     }
@@ -106,18 +159,34 @@ class Endemicity extends Component {
         }
         else if(type == 'modify'||type == 'detail'){
             if(type == 'modify'){
+                let lawsData = item;
+                lawsData.checkPerson=lawsData.name;
+                lawsData.content = BraftEditor.createEditorState(lawsData.content)
                 _this.setState({
                     title:item.title,
                     isVisible:true,
-                    // endemicityData,
+                    lewsData:lawsData,
                     type
                 })
+                //console.log(lawsData)
+                // this.setState({
+                //     title:type=='edit'?'编辑信息':'查看详情',
+                //     isVisible:true,
+                //     lawsData,
+                //     picture:JSON.parse(lawsData.enclosure||JSON.stringify([])),
+                //     type
+                // })                 
             }
             else if(type == 'detail'){
+                let lewsData = item
+                lewsData.content = BraftEditor.createEditorState(lewsData.content)
+                //  let content = BraftEditor.createEditorState(item.content)
+                //  console.log("content",content)
+                //  item.content = content
                 _this.setState({
                     title:item.title,
                     isDetailVisible:true,
-                    // endemicityData,
+                    lewsData:lewsData,
                     type
                 })
             }
@@ -125,18 +194,18 @@ class Endemicity extends Component {
             //     url:'',
             //     data:{
             //         params:{
-                        
+                            
             //         }
             //     }
             // }).then((res)=>{
             //     if(res.status == 'success'){
-            //         let endemicityData = res.data;
-            //         endemicityData.content = BraftEditor.createEditorState(endemicityData.content)
+            //         let lewsData = res.data;
+            //         lewsData.content = BraftEditor.createEditorState(lewsData.content)
             //         if(type == 'modify'){
             //             _this.setState({
             //                 title:item.title,
             //                 isVisible:true,
-            //                 endemicityData,
+            //                 lewsData,
             //                 type
             //             })
             //         }
@@ -144,14 +213,13 @@ class Endemicity extends Component {
             //             _this.setState({
             //                 title:item.title,
             //                 isDetailVisible:true,
-            //                 endemicityData,
+            //                 lewsData,
             //                 type
             //             })
             //         }
             //     }
             // })
         }
-        
         else if(type == 'delete'){
            confirm({
                title:'确定删除?',
@@ -160,10 +228,10 @@ class Endemicity extends Component {
                cancelText:'否',
                onOk:() => {
                    axios.ajax({
-                       url:'',
+                       url:'/lawAndDocument/delete',
                        data:{
                            params:{
-                               
+                            id: item.id
                            }
                        }
                    }).then((res)=>{
@@ -174,37 +242,36 @@ class Endemicity extends Component {
                }
            })
         }
-        // else if(type == 'detail'){
-        //     axios.ajax({
-        //         url:'',
-        //         data:{
-        //             params:{
-                        
-        //             }
-        //         }
-        //     }).then((res)=>{
-        //         if(res.status == 'success'){
-        //             let endemicityData = res.data;
-        //             endemicityData.content = BraftEditor.createEditorState(endemicityData.content)
-        //             _this.setState({
-        //                 title:item.title,
-        //                 isVisible:true,
-        //                 endemicityData,
-        //                 type
-        //             })
-        //         }
-        //     })
-        // }
     }
     //提交新增 更改
-    handleSubmit = () => {
-        let data = this.state.endemicityData
-        data.fileList = this.state.fileList
-        data.content=data.content.toHTML();
+    handleSubmit = ()=>{
+        let type =this.state.type;
+        let data = this.state.lewsData
+        //console.log("新增数据data",data)
+        data.appendix = this.state.fileList
+        data.type = 1 //法律法规
+        data.content=data.content.toHTML()
+        axios.PostAjax({
+            url:type=='create'?'/lawAndDocument/insert':'/lawAndDocument/update',
+            data:{
+                params:{
+                    ...data,
+                }
+            }
+        }).then((res)=>{
+            if(res){
+                this.setState({
+                    isVisible:false,
+                    lewsData:{}
+                })
+                this.requestList();
+            }
+        })
     }
     
     render() {
         console.log(this.props.userInfo)
+        console.log(this.state.lewsData)
         const columns = [
             {
                 title:'主题分类',
@@ -274,18 +341,18 @@ class Endemicity extends Component {
                     width='1000px'
                     title='法律法规'
                     visible={this.state.isVisible}
-                    onOK={this.handleSubmit}
+                    onOk={this.handleSubmit}
                     destroyOnClose={true}
                     onCancel={()=>{
                         this.setState({
                             isVisible:false,
-                            endemicityData:{},
+                            lewsData:{}
                         })
                     }}
                 >
                     <AddForm
-                        sourceData ={this.state.endemicityData}
-                        dispatchEndemicityData = {(value)=>this.setState({endemicityData:value})}
+                        sourceData ={this.state.lewsData}
+                        dispatchLewsData = {(value)=>this.setState({lewsData:value})}
                         dispatchFileList = {(fileList)=>this.setState({fileList:fileList})}
                         fileList = {this.state.fileList||[]}
                      />
@@ -299,16 +366,17 @@ class Endemicity extends Component {
                     onCancel={()=>
                         this.setState({
                             isDetailVisible:false,
-                            endemicityData:{}
+                            lewsData:{}
                         })
                     }
                 >
                     <DetailForm
-                        sourceData = {this.state.endemicityData||{}}
+                        detailData = {this.state.lewsData||{}}
                     />
+                    
                 </Modal>
             </div>
         )
     }
 } 
-export default Endemicity;
+export default Laws;

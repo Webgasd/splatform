@@ -3,6 +3,7 @@ import React, { Component } from 'react'
 import {Row,Col,Input,Select,DatePicker, Upload,Table,Button, Card} from 'antd'
 import BraftEditor from 'braft-editor';
 import 'braft-editor/dist/index.css'
+import axios from "../../axios";
 import moment from 'moment';
 import './style.less'
 const {Option} = Select
@@ -10,12 +11,14 @@ const ButtonGroup = Button.Group;
 
 export default class AddForm extends Component{
     state = {
-
+        subjectClassification:[],
+        businessClassification:[],
+        affiliatedInstitutions:[]
     }
     changeInput = (data,option) => {
         let value = this.props.sourceData
         value[option] = data
-        this.props.dispatchSourceData(value)
+        this.props.dispatchLewsData(value)
     }   
     handleChange = (info) => {
         const fileList = info.fileList;
@@ -24,8 +27,74 @@ export default class AddForm extends Component{
             this.props.dispatchFileList([file])
         }
     }
-    
+    componentDidMount(){
+        this.requestGetBC();
+        this.requestGetAI();
+        this.requestGetSC();
+    }
+    //获取业务分类
+    requestGetBC = ()=>{
+        let level = 2
+        axios.ajax({
+            url:'/lawAndDocument/getBusinessType',
+            data:{
+                params:{
+                    level,
+                }
+            }
+        }).then((res)=>{
+            if(res){
+                this.setState({
+                    isVisible:false,
+                    lewsData:{},
+                    businessClassification:res.data
+                })
+            }
+        })
+    }
+    //获取所属机构
+    requestGetAI = ()=>{
+        let level = 1
+        axios.ajax({
+            url:'/lawAndDocument/getBusinessType',
+            data:{
+                params:{
+                    level,
+                }
+            }
+        }).then((res)=>{
+            if(res){
+                this.setState({
+                    isVisible:false,
+                    lewsData:{},
+                    affiliatedInstitutions:res.data
+                })
+            }
+        })
+    }
+    //获取主题分类
+    requestGetSC = ()=>{
+        let level = 0
+        axios.ajax({
+            url:'/lawAndDocument/getBusinessType',
+            data:{
+                params:{
+                    level,
+                }
+            }
+        }).then((res)=>{
+            if(res){
+                this.setState({
+                    isVisible:false,
+                    lewsData:{},
+                    subjectClassification:res.data
+                })
+            }
+        })
+    }
+
     render() {
+        console.log("格式",this.state.affiliatedInstitutions)
         const columns = [
             {
                 title:'资料名称',
@@ -94,25 +163,37 @@ export default class AddForm extends Component{
                     <Col span={3} style={{textAlign:'right',fontSize:15}}>主题分类：</Col>
                     <Col span={5}>
                         <Select placeholder='请选择主题分类' style={{width:'100%'}} value={sourceData.subjectClassification||undefined} onChange={(value)=>this.changeInput(value,'subjectClassification')}> 
-
+                            {
+                                this.state.subjectClassification.map((v)=>(
+                                    <Option value={v.className} key={v.className}>{v.className}</Option>
+                                ))
+                            }
                         </Select>
                     </Col>
                     <Col span={3} style={{textAlign:'right',fontSize:15}}>所属机构：</Col>
                     <Col span={5}>
                         <Select placeholder='请选择所属机构' style={{width:'100%'}} value={sourceData.affiliatedInstitutions||undefined} onChange={(value)=>this.changeInput(value,'affiliatedInstitutions')}> 
-
+                        {
+                            this.state.affiliatedInstitutions.map((v)=>(
+                                <Option value={v.className} key={v.className}>{v.className}</Option>
+                            ))
+                        }
                         </Select>
                     </Col>
                     <Col span={3} style={{textAlign:'right',fontSize:15}}>业务分类：</Col>
                     <Col span={5}>
                         <Select placeholder='请选择业务分类' style={{width:'100%'}} value={sourceData.businessClassification||undefined} onChange={(value)=>this.changeInput(value,'businessClassification')}> 
-
+                        {
+                            this.state.businessClassification.map((v)=>(
+                                <Option value={v.className} key={v.className}>{v.className}</Option>
+                            ))
+                        }
                         </Select>
                     </Col>
                 </Row>
                 <Row style={{marginTop:30}}>
                     <Col span={3} style={{textAlign:'right',fontSize:15}}>题注：</Col>
-                    <Col span={18}><Input placeholder='请输入题注' defaultValue={sourceData.caption} onChange={(value)=>this.changeInput(value,'caption')} /></Col>
+                    <Col span={18}><Input placeholder='请输入题注' defaultValue={sourceData.caption} onChange={(e)=>this.changeInput(e.target.value,'caption')} /></Col>
                 </Row>
                 <div className="editAreaBody">
                  <BraftEditor
@@ -127,7 +208,7 @@ export default class AddForm extends Component{
                     <Upload
                         name='file'
                         showUploadList={false}
-                        // action={}
+                        //action={}
                         fileList={this.props.fileList}
                         onChange={(info) => this.handleChange(info)}
                     >
