@@ -6,6 +6,8 @@ import Utils from "../../../utils";
 import axios from "../../../axios";
 import {connect} from "react-redux";
 import AddForm from './AddForm'
+import BraftEditor from 'braft-editor';
+import 'braft-editor/dist/index.css'
 const Panel = Collapse.Panel;
 const ButtonGroup = Button.Group;
 const confirm = Modal.confirm
@@ -70,7 +72,6 @@ class EnterpriseInform extends Component {
     }
     componentDidMount(){
         this.requestList()
-        this.getMessage()
     }
     //发布人和发布日期信息
     getMessage = () => {
@@ -125,18 +126,22 @@ class EnterpriseInform extends Component {
         }
         else if(type == 'modify'||type == 'detail'){
             if(type == 'modify'){
+                let content = item.content
+                item.content = BraftEditor.createEditorState(content)
                 _this.setState({
                     title:item.title,
                     isVisible:true,
-                    // informData,
+                    informData:item,
                     type
                 })
             }
             else if(type == 'detail'){
+                let content = item.content
+                item.content = BraftEditor.createEditorState(content)
                 _this.setState({
                     title:item.title,
-                    isDetailVisible:true,
-                    // informData,
+                    isVisible:true,
+                    informData:item,
                     type
                 })
             }
@@ -189,9 +194,10 @@ class EnterpriseInform extends Component {
     //提交新增 更改
     handleSubmit = (key) => {
         let data = this.state.informData
+        let content = data.content||BraftEditor.createEditorState(null)
         data.fileList = this.state.fileList
-        data.content=data.content.toHTML()
-        if(key == 'toPublic'){
+        data.content=content.toHTML()
+        if(key == 1){
             data.reviewResult = 1
             this.setState({
                 informData:data
@@ -208,8 +214,8 @@ class EnterpriseInform extends Component {
     }
     handleOk = () =>{
         let _this = this
-        axios.ajax({
-                    url:'/enterpriseNotice/insert',
+        axios.PostAjax({
+                    url:this.state.type=='create'?'/enterpriseNotice/insert':'/enterpriseNotice/update',
                     data:{
                         params:this.state.informData
                     }
@@ -219,6 +225,7 @@ class EnterpriseInform extends Component {
                             isVisible:false,
                             informData:{},
                         })
+                        this.requestList()
                     }
                 })
     }
@@ -305,8 +312,8 @@ class EnterpriseInform extends Component {
                     title='通知公告'
                     visible={this.state.isVisible}
                     footer = {[
-                        <Button type='primary' key='toPublic' onClick={(key)=>this.handleSubmit(key)}>保存直接发布</Button>,
-                        <Button type='primary' key='toPerson' onClick={(key)=>this.handleSubmit(key)}>转发给核验人</Button>
+                        <Button type='primary' key='toPublic' onClick={e=>this.handleSubmit(1)}>保存直接发布</Button>,
+                        <Button type='primary' key='toPerson' onClick={e=>this.handleSubmit(2)}>转发给核验人</Button>
                     ]}
                     destroyOnClose={true}
                     onCancel={()=>{
@@ -319,6 +326,7 @@ class EnterpriseInform extends Component {
                     <AddForm
                         informData ={this.state.informData}
                         dispatchInformData = {(value) => this.setState({informData:value})}
+                        status = {this.state.type}
                      />
                 </Modal>
                 {/* <Modal
