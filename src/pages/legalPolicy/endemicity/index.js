@@ -14,34 +14,6 @@ const ButtonGroup = Button.Group;
 const confirm = Modal.confirm
 
 
-const formList = [
-    {
-        type: 'SELECT',
-        label: '主题分类',
-        placeholder: '请选择文库种类',
-        field: 'subjectClassification',
-        width: 150,
-        list: [{id: 0, name: '0'}, {id: 1, name: '1'}]
-    },
-    {
-        type: 'INPUT',
-        label: '标题',
-        placeholder: '请输入查询关键词',
-        field: 'title',
-        width: 150,
-    },
-    {
-        type: 'INPUT',
-        label: '文号',
-        placeholder: '请输入查询关键词',
-        field: 'articleNumber',
-    },
-    {
-        type: 'TIME',
-        label: '发布日期',
-        field: 'time',
-    }
-];
 
 @connect(
     state=>({
@@ -60,13 +32,14 @@ class Laws extends Component {
                 key:1
             }
         ],
-        title:''  //拟态框标题
+        title:'地方性文件'  //拟态框标题
     }
     params = {
         pageNo:1
     }
     componentDidMount(){
         this.requestList();
+        this.requestGetSC();
     }
     
     //查询
@@ -82,7 +55,7 @@ class Laws extends Component {
         axios.PostAjax({
             url:'/lawAndDocument/getConditionalSearch',
             data:{
-                params:{..._this.params}
+                params:{..._this.params,type:3}
             }
         }).then((res)=>{
             if(res.status == "success"){
@@ -147,12 +120,36 @@ class Laws extends Component {
             }
         })
     }
+    //获取主题分类
+    requestGetSC = ()=>{
+        let level = 0
+        axios.ajax({
+            url:'/lawAndDocument/getBusinessType',
+            data:{
+                params:{
+                    level,
+                }
+            }
+        }).then((res)=>{
+            if(res){
+                let businessType = res.data||[]
+                let list = businessType.map((item,key)=>{
+                    item.id = item.className
+                    item.name = item.className
+                    return item
+                })
+                this.setState({
+                    businessType:list
+                })
+            }
+        })
+    }
     //查看 修改 删除数据   拟态框
     handleOperator = (type,item) => {
         let _this = this
         if(type == 'create'){
             this.setState({
-                title:'法律法规',
+                title:'地方性文件',
                 isVisible:true,
                 type
             })
@@ -163,7 +160,7 @@ class Laws extends Component {
                 lawsData.checkPerson=lawsData.name;
                 lawsData.content = BraftEditor.createEditorState(lawsData.content)
                 _this.setState({
-                    title:item.title,
+                    // title:item.title,
                     isVisible:true,
                     lewsData:lawsData,
                     type
@@ -184,7 +181,6 @@ class Laws extends Component {
                 //  console.log("content",content)
                 //  item.content = content
                 _this.setState({
-                    title:item.title,
                     isDetailVisible:true,
                     lewsData:lewsData,
                     type
@@ -249,7 +245,7 @@ class Laws extends Component {
         let data = this.state.lewsData
         //console.log("新增数据data",data)
         data.appendix = this.state.fileList
-        data.type = 1 //法律法规
+        data.type = 3 //地方
         data.content=data.content.toHTML()
         axios.PostAjax({
             url:type=='create'?'/lawAndDocument/insert':'/lawAndDocument/update',
@@ -310,6 +306,35 @@ class Laws extends Component {
                 }
             },
         ]
+        //查询框
+        const formList = [
+            {
+                type: 'SELECT',
+                label: '主题分类',
+                placeholder: '请选择文库种类',
+                field: 'subjectClassification',
+                width: 150,
+                list: this.state.businessType||[]
+            },
+            {
+                type: 'INPUT',
+                label: '标题',
+                placeholder: '请输入查询关键词',
+                field: 'title',
+                width: 150,
+            },
+            {
+                type: 'INPUT',
+                label: '文号',
+                placeholder: '请输入查询关键词',
+                field: 'articleNumber',
+            },
+            {
+                type: 'TIME',
+                label: '发布日期',
+                field: 'time',
+            }
+        ]
         return (
             <div>
                 <Card>
@@ -339,7 +364,7 @@ class Laws extends Component {
                 </Card>
                 <Modal
                     width='1000px'
-                    title='法律法规'
+                    title={this.state.title}
                     visible={this.state.isVisible}
                     onOk={this.handleSubmit}
                     destroyOnClose={true}
@@ -359,7 +384,7 @@ class Laws extends Component {
                 </Modal>
                 <Modal
                     width='1000px'
-                    title='法律法规'
+                    title={this.state.title}
                     visible={this.state.isDetailVisible}
                     onOk={()=>this.setState({isDetailVisible:false})}
                     destroyOnClose={true}

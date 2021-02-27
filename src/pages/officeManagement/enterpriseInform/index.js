@@ -68,15 +68,31 @@ class EnterpriseInform extends Component {
     params = {
         pageNo:1
     }
+    componentDidMount(){
+        this.requestList()
+        this.getMessage()
+    }
+    //发布人和发布日期信息
+    getMessage = () => {
+        let today = new Date()
+        let date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+        let informData = this.state.informData
+        informData.date = date
+        console.log(informData)
+        this.setState({
+            informData:informData
+        })
+    }
     //查询
     handleFilterSubmit = (params) => {
         this.params = params
+        this.params.startData = this.params.startTime
     }
     //获取表格数据
     requestList = ()=>{
         let _this = this;
-        axios.ajax({
-            url:'',
+        axios.PostAjax({
+            url:'/enterpriseNotice/getIssusedOrMy',
             data:{
                 params:{..._this.params}
             }
@@ -100,6 +116,7 @@ class EnterpriseInform extends Component {
     handleOperator = (type,item) => {
         let _this = this
         if(type == 'create'){
+            this.getMessage()
             this.setState({
                 title:'通知公告',
                 isVisible:true,
@@ -123,35 +140,6 @@ class EnterpriseInform extends Component {
                     type
                 })
             }
-            // axios.ajax({
-            //     url:'',
-            //     data:{
-            //         params:{
-                        
-            //         }
-            //     }
-            // }).then((res)=>{
-            //     if(res.status == 'success'){
-            //         let informData = res.data;
-            //         informData.content = BraftEditor.createEditorState(informData.content)
-            //         if(type == 'modify'){
-            //             _this.setState({
-            //                 title:item.title,
-            //                 isVisible:true,
-            //                 informData,
-            //                 type
-            //             })
-            //         }
-            //         else if(type == 'detail'){
-            //             _this.setState({
-            //                 title:item.title,
-            //                 isDetailVisible:true,
-            //                 informData,
-            //                 type
-            //             })
-            //         }
-            //     }
-            // })
         }
         
         else if(type == 'delete'){
@@ -202,7 +190,7 @@ class EnterpriseInform extends Component {
     handleSubmit = () => {
         let data = this.state.informData
         data.fileList = this.state.fileList
-        data.content=data.content.toHTML();
+        data.content=data.content.toHTML()
     }
     
     render() {
@@ -250,7 +238,7 @@ class EnterpriseInform extends Component {
                     return <ButtonGroup>
                         <Button type='primary'  onClick={()=> {this.handleOperator('detail',record)}} >查看</Button>
                         {this.props.acl.indexOf('/modify')>-1? <Button type='primary' onClick={()=> {this.handleOperator('modify',record)}}>修改</Button>:null}
-                        <Button type='primary' onClick={()=>{this.handleOperator('issue',record)}}>发布</Button>
+                        {/* <Button type='primary' onClick={()=>{this.handleOperator('issue',record)}}>发布</Button> */}
                         {this.props.acl.indexOf('/delete')>-1? <Button type='primary' onClick={()=> {this.handleOperator('delete',record)}}>删除</Button>:null}
                     </ButtonGroup>
                 }
@@ -287,7 +275,10 @@ class EnterpriseInform extends Component {
                     width='1000px'
                     title='通知公告'
                     visible={this.state.isVisible}
-                    onOK={this.handleSubmit}
+                    footer = {[
+                        <Button type='primary' key='toPublic'>保存直接发布</Button>,
+                        <Button type='primary' key='toPerson'>转发给核验人</Button>
+                    ]}
                     destroyOnClose={true}
                     onCancel={()=>{
                         this.setState({
@@ -298,6 +289,7 @@ class EnterpriseInform extends Component {
                 >
                     <AddForm
                         informData ={this.state.informData}
+                        dispatchInformData = {(value) => this.setState({informData:value})}
                      />
                 </Modal>
                 {/* <Modal

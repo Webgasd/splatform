@@ -9,46 +9,7 @@ import { T } from 'antd/lib/upload/utils';
 const Panel = Collapse.Panel;
 const ButtonGroup = Button.Group
 
-const formList = [
-    {
-        type: 'SELECT',
-        label: '文库分类',
-        placeholder: '请选择文库种类',
-        field: 'workType',
-        width: 150,
-        list: [{id: 0, name: '0'}, {id: 1, name: '1'}]
-    },
-    {
-        type: 'SELECT',
-        label: '主题分类',
-        placeholder: '请选择主题种类',
-        field: 'workType',
-        width: 150,
-        list: [{id: 0, name: '0'}, {id: 1, name: '1'}]
-    },
-    {
-        type: 'SELECT',
-        label: '业务分类',
-        placeholder: '请选择业务种类',
-        field: 'workType',
-        width: 150,
-        list: [{id: 0, name: '0'}, {id: 1, name: '1'}]
-    },
-    {
-        type: 'INPUT',
-        label: '请输入关键词',
-        field: 'workType',
-        width: 150,
-    },
-    {
-        type: 'SELECT',
-        label: '检索类型',
-        placeholder: '请选择检索类型',
-        field: 'workType',
-        width: 150,
-        list: [{id: 0, name: '标题'}, {id: 1, name: '内容'}, {id: 2, name: '附件'}]
-    },
-]
+
 
 export default class LegalPolicy extends Component {
     
@@ -56,7 +17,8 @@ export default class LegalPolicy extends Component {
         //查看拟态框的状态
         isVisible:false,
         title:'',
-        list:[]
+        list:[],
+        record:''
     }
     //查询条件
     params = {
@@ -65,6 +27,7 @@ export default class LegalPolicy extends Component {
 
     componentDidMount(){
         this.requestList();
+        this.getBusinessType();
     }
     //查询列表 刷新数据
     requestList = (params) => {
@@ -87,19 +50,19 @@ export default class LegalPolicy extends Component {
         })
     }
     //获取全库分类
-    getPoolType = (params) => {
-        let _this = this
-        axios.ajax({
-            url:'',
-            data:{
-                params:{}
-            }
-        }).then((res) => {
-            if(res.status == 'success'){
-                console.log('接口调用成功')
-            }
-        })
-    }
+    // getPoolType = (params) => {
+    //     let _this = this
+    //     axios.ajax({
+    //         url:'',
+    //         data:{
+    //             params:{}
+    //         }
+    //     }).then((res) => {
+    //         if(res.status == 'success'){
+    //             console.log('接口调用成功')
+    //         }
+    //     })
+    // }
     //获取法律分类
     getLowType = (params) => {
         let _this = this
@@ -118,13 +81,22 @@ export default class LegalPolicy extends Component {
     getBusinessType = (params) => {
         let _this = this
         axios.ajax({
-            url:'',
+            url:'/lawAndDocument/getBusinessType',
             data:{
                 params:{}
             }
         }).then((res) => {
             if(res.status == 'success'){
-                console.log('接口调用成功')
+                let businessType = res.data||[]
+                console.log(businessType)
+                let list = businessType.map((item,key)=>{
+                    item.id = item.className
+                    item.name = item.className
+                    return item
+                })
+                _this.setState({
+                    businessType:list
+                })
             }
         })
     }
@@ -154,7 +126,8 @@ export default class LegalPolicy extends Component {
             },
             {
                 title: '主题分类',
-                dataIndex: ''
+                dataIndex: 'subjectClassification',
+                key:'subjectClassification'
             },
             {
                 title: '标题',
@@ -180,7 +153,7 @@ export default class LegalPolicy extends Component {
                 title: '检索情况',
                 dataIndex: '',
                 render:(text,record) => {
-                    return <p style={{margin:0}}>命中{}条</p>
+                    return <p style={{margin:0}}>命中{record.target}条</p>
                 }
             },
             {
@@ -188,9 +161,49 @@ export default class LegalPolicy extends Component {
                 dataIndex:'operation',
                 render:(text,record) => {
                     return <ButtonGroup>
-                        <Button type='primary' onClick={() => {this.setState({isVisible:true,title:record.title})}}>查看</Button>
+                        <Button type='primary' onClick={() => {this.setState({isVisible:true,title:record.title,record:record})}}>查看</Button>
                     </ButtonGroup>
                 }
+            },
+        ]
+        const formList = [
+            {
+                type: 'SELECT',
+                label: '文库分类',
+                placeholder: '请选择文库种类',
+                field: 'workType',
+                width: 150,
+                list: [{id: 1, name: '法律法规'}, {id: 2, name: '总局文件'}, {id: 3, name: '地方性文件'}]
+            },
+            {
+                type: 'SELECT',
+                label: '主题分类',
+                placeholder: '请选择主题种类',
+                field: 'subjectClassification',
+                width: 150,
+                list: [{id: 0, name: '0'}, {id: 1, name: '1'}]
+            },
+            {
+                type: 'SELECT',
+                label: '业务分类',
+                placeholder: '请选择业务种类',
+                field: 'businessClassification',
+                width: 150,
+                list: this.state.businessType||[]
+            },
+            {
+                type: 'INPUT',
+                label: '请输入关键词',
+                field: 'workType',
+                width: 150,
+            },
+            {
+                type: 'SELECT',
+                label: '检索类型',
+                placeholder: '请选择检索类型',
+                field: 'workType',
+                width: 150,
+                list: [{id: 0, name: '标题'}, {id: 1, name: '内容'}, {id: 2, name: '附件'}]
             },
         ]
         return (
@@ -231,7 +244,7 @@ export default class LegalPolicy extends Component {
                     })
                 }}
                 >
-                    <DetailForm/>
+                    <DetailForm detailData={this.state.record}/>
                 </Modal>
             </div>
         )
