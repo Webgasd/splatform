@@ -65,7 +65,7 @@ class AddForm extends Component {
                         </Row>
                         <Row style={{marginTop:10}}>
                             <Col span={12} style={{textAlign:'right',fontSize:15}}>发布日期：</Col>
-                            <Col span={12}></Col>
+                            <Col span={12}>{informData.issueDate}</Col>
                         </Row>
                         <Row style={{marginTop:10}}>
                             <Col span={12} style={{textAlign:'right',fontSize:15}}>类型：</Col>
@@ -85,7 +85,7 @@ class AddForm extends Component {
                     </Card>
                 </div>
                 <div className='rightContent'>
-                    <Card title="通知类型" style={{ width: 700}}>
+                    <Card title="企业公告正文" style={{ width: 700}}>
                         <BraftEditor
                         controls={controls}
                         contentStyle={{height:500}}

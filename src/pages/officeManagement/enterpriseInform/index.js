@@ -77,7 +77,7 @@ class EnterpriseInform extends Component {
         let today = new Date()
         let date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
         let informData = this.state.informData
-        informData.date = date
+        informData.issueDate = date
         console.log(informData)
         this.setState({
             informData:informData
@@ -150,10 +150,10 @@ class EnterpriseInform extends Component {
                cancelText:'否',
                onOk:() => {
                    axios.ajax({
-                       url:'',
+                       url:'/enterpriseNotice/delete',
                        data:{
                            params:{
-                               
+                               id:item.id
                            }
                        }
                    }).then((res)=>{
@@ -187,12 +187,41 @@ class EnterpriseInform extends Component {
         // }
     }
     //提交新增 更改
-    handleSubmit = () => {
+    handleSubmit = (key) => {
         let data = this.state.informData
         data.fileList = this.state.fileList
         data.content=data.content.toHTML()
+        if(key == 'toPublic'){
+            data.reviewResult = 1
+            this.setState({
+                informData:data
+            })
+            this.handleOk()
+        }
+        else {
+            data.reviewResult = 2
+            this.setState({
+                informData:data
+            })
+            this.handleOk()
+        }
     }
-    
+    handleOk = () =>{
+        let _this = this
+        axios.ajax({
+                    url:'/enterpriseNotice/insert',
+                    data:{
+                        params:this.state.informData
+                    }
+                }).then((res)=>{
+                    if(res.status == 'success'){
+                        _this.setState({
+                            isVisible:false,
+                            informData:{},
+                        })
+                    }
+                })
+    }
     render() {
         console.log(this.props.userInfo)
         const columns = [
@@ -276,8 +305,8 @@ class EnterpriseInform extends Component {
                     title='通知公告'
                     visible={this.state.isVisible}
                     footer = {[
-                        <Button type='primary' key='toPublic'>保存直接发布</Button>,
-                        <Button type='primary' key='toPerson'>转发给核验人</Button>
+                        <Button type='primary' key='toPublic' onClick={(key)=>this.handleSubmit(key)}>保存直接发布</Button>,
+                        <Button type='primary' key='toPerson' onClick={(key)=>this.handleSubmit(key)}>转发给核验人</Button>
                     ]}
                     destroyOnClose={true}
                     onCancel={()=>{
