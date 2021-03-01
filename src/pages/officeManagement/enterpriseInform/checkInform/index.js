@@ -370,10 +370,10 @@ class CheckInform extends Component {
                     </Collapse>
                 </Card>
                 <Card style={{ marginTop: 10 }}>
-                    <div className='button-box'>
+                    {/* <div className='button-box'>
                         <Button type="primary" onClick={() => this.handleOperator('create', null)}>数据新增</Button>
                         <Button type="primary" onClick={() => this.handleDelete}>批量删除</Button>
-                    </div>
+                    </div> */}
                     <div style={{ marginTop: 30 }}>
                         <ETable
                             updateSelectedItem={Utils.updateSelectedItem.bind(this)}
