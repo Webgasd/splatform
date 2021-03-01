@@ -1,20 +1,19 @@
 
 import React, { Component } from 'react'
 import {Button, Card,Col,Row, Table} from 'antd'
-import BraftEditor from 'braft-editor';
-import 'braft-editor/dist/index.css'
 import './style.less'
 import { render } from 'less'
 import ButtonGroup from 'antd/lib/button/button-group'
 
 export default class DetailForm extends Component {
     state = {
-        list:[]
+        list:[],
     }
+   
 
     render() {
-        const detailData = this.props.detailData||{}
-        console.log("法律法规详细信息",detailData)
+        const {annoData} = this.props
+        console.log('detail form',annoData)
         const columns = [
             {
                 title:'资料名称',
@@ -42,45 +41,47 @@ export default class DetailForm extends Component {
                 }
             }
         ]
-        const controls =[]
         return (
             <div>
                 <Card>
                     <Row>
-                        <Col span={3}>标题：</Col>
-                        <Col span={14}>{detailData.title}</Col>
-                        <Col span={2}>效力：</Col>
-                        <Col span={3}>{detailData.effect}</Col>
+                        <Col span={3}>标题</Col>
+                        <Col span={21}>{annoData.noticeTitle}</Col>
                     </Row>
                     <Row style={{marginTop:10}}>
-                        <Col span={3}>文号：</Col>
-                        <Col span={5}>{detailData.articleNumber}</Col>
-                        <Col span={3}>成文日期：</Col>
-                        <Col span={5}>{detailData.issueDate}</Col>
-                        <Col span={3}>发布日期：</Col>
-                        <Col span={5}>{detailData.writtenDate}</Col>
+                        <Col span={3}>发布人</Col>
+                        <Col span={5}>{annoData.address}</Col>
+                        <Col span={3}>发布日期</Col>
+                        <Col span={5}>{annoData.address}</Col>
+                        <Col span={3}>通知类型</Col>
+                        <Col span={5}>{annoData.address}</Col>
+                    </Row>
+                </Card>
+                <Card style={{marginTop:10}}>
+                    <Row>
+                        <Col span={3}>审核人</Col>
+                        <Col span={5}></Col>
                     </Row>
                     <Row style={{marginTop:10}}>
-                        <Col span={3}>主题分类：</Col>
-                        <Col span={5}>{detailData.subjectClassification}</Col>
-                        <Col span={3}>所属机构：</Col>
-                        <Col span={5}>{detailData.affiliatedInstitutions}</Col>
-                        <Col span={3}>业务分类：</Col>
-                        <Col span={5}>{detailData.businessClassification}</Col>
+                        <Col span={3}>传阅人</Col>
+                        <Col span={20}></Col>
                     </Row>
                     <Row style={{marginTop:10}}>
-                        <Col span={3}>题注：</Col>
-                        <Col span={21}>{detailData.caption}</Col>
+                        <Col span={3}>发送给</Col>
+                        <Col span={20}></Col>
+                    </Row>
+                </Card>
+                <Card style={{marginTop:10}}>
+                    <Row>
+                        <Col span={3}>审核时间</Col>
+                        <Col span={10}></Col>
+                        <Col span={3}>审核结果</Col>
+                        <Col span={10}></Col>
                     </Row>
                 </Card>
                 <Card style={{marginTop:20}}>
                     <div>
-                    <BraftEditor 
-                        readOnly={true}
-                        controls={controls}
-                        contentStyle={{height:500}}
-                        value={detailData.content}
-                    />
+                        {}
                     </div>
                 </Card>
                 <Card style={{marginTop:20}}> 

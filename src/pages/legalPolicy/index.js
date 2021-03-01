@@ -94,7 +94,6 @@ export default class LegalPolicy extends Component {
                     item.name = item.className
                     return item
                 })
-                console.log(list)
                 _this.setState({
                     businessType:list
                 })

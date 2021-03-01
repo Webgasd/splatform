@@ -44,10 +44,11 @@ export default class ETable extends React.Component {
                 selectedIds.push(item.id);
             });
           this.props.updateSelectedItem(selectedRowKeys,selectedRows[0] || {},selectedIds);
-           //console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
+          //console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
     };
 
     onSelectAll = (selected, selectedRows) => {
+        // console.log(selected)若全选 打印ture 
         let selectedIds = [];
         let selectKey = [];
         selectedRows.forEach((item,i)=> {
@@ -67,7 +68,7 @@ export default class ETable extends React.Component {
         };
         let row_selection = this.props.row_selection;
         if(row_selection == 'checkbox'){
-             //设置类型未复选框
+             //设置类型为复选框
              rowSelection.type = 'checkbox';
          }
         return <Table

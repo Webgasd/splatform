@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import {Button,Card,Collapse,Table,Modal} from 'antd'
+import {Button,Card,Collapse,Modal} from 'antd'
 import  BaseForm  from '../../../components/BaseForm';
 import ETable from '../../../components/ETable'
 import Utils from "../../../utils";
@@ -8,41 +8,12 @@ import {connect} from "react-redux";
 import BraftEditor from 'braft-editor';
 import AddForm from '../AddForm';
 import DetailForm from '../DetailForm'
+import { number } from 'echarts/lib/export';
 const Panel = Collapse.Panel;
 const ButtonGroup = Button.Group;
 const confirm = Modal.confirm
 
 
-const formList = [
-    {
-        type: 'SELECT',
-        label: '主题分类',
-        placeholder: '请选择文库种类',
-        field: 'workType',
-        width: 150,
-        list: [{id: 0, name: '0'}, {id: 1, name: '1'}]
-    },
-    {
-        type: 'INPUT',
-        label: '标题',
-        placeholder: '请输入查询关键词',
-        field: 'workType',
-        width: 150,
-    },
-    {
-        type: 'INPUT',
-        label: '文号',
-        placeholder: '请输入查询关键词',
-        field: 'workType',
-        width: 150,
-        list: [{id: 0, name: '0'}, {id: 1, name: '1'}]
-    },
-    {
-        type: 'TIME',
-        label: '发布日期',
-        field: 'time',
-    }
-];
 
 @connect(
     state=>({
@@ -51,9 +22,9 @@ const formList = [
     }),{
     }
 )
-class Headquarters extends Component {
+class Laws extends Component {
     state = {
-        headData:{},
+        lewsData:{},
         selectedRowKeys: [], //表格选择的条目记录
         list:[     //获取的数据列表
             {
@@ -61,35 +32,114 @@ class Headquarters extends Component {
                 key:1
             }
         ],
-        title:''  //拟态框标题
+        title:'总局文件'  //拟态框标题
     }
     params = {
         pageNo:1
     }
+    componentDidMount(){
+        this.requestList();
+        this.requestGetSC();
+    }
+    
     //查询
-    handleFilterSubmit = (params) => {
-        this.params = params
+    handleFilterSubmit = (filterParams) => {
+        this.params = filterParams
+        this.params.startDate = this.params.starttime
+        this.params.endDate = this.params.endtime
+        this.requestListByCondition();
+    }
+    //按条件获取数据
+    requestListByCondition = ()=>{
+        let _this = this;
+        axios.PostAjax({
+            url:'/lawAndDocument/getConditionalSearch',
+            data:{
+                params:{..._this.params,type:2}
+            }
+        }).then((res)=>{
+            if(res.status == "success"){
+                if(res.data!==null){
+                    let list  = res.data.data.map((item,i)=>{
+                        item.key = i;
+                        return item;
+                    })
+                    _this.setState({
+                        list:list,
+                        pagination:Utils.pagination(res,(current)=>{
+                            _this.params.pageNo = current;//	当前页数
+                            _this.requestListByCondition(); //刷新列表数据
+                        })
+                    })
+                }else{
+                    res.data = {"total":0,"data":[],"pageNo": 1,"pageSize": 10}
+                    _this.setState({
+                        list:[],
+                        pagination:Utils.pagination(res,(current)=>{
+                            _this.params.pageNo = current;//	当前页数
+                            _this.requestListByCondition(); //刷新列表数据
+                        })
+                    })
+                }
+                
+            }
+        })
     }
     //获取表格数据
     requestList = ()=>{
         let _this = this;
-        axios.ajax({
-            url:'',
+        axios.PostAjax({
+            url:'/lawAndDocument/getFullDatabaseSearch',
             data:{
-                params:{..._this.params}
+                params:{..._this.params,type:2}
             }
         }).then((res)=>{
             if(res.status == "success"){
-                let list  = res.data.data.map((item,i)=>{
-                    item.key = i;
-                    return item;
-                })
-                _this.setState({
-                    list:list,
-                    pagination:Utils.pagination(res,(current)=>{
-                        _this.params.pageNo = current;//	当前页数
-                        _this.requestList(); //刷新列表数据
+                if(res.data!==null){
+                    let list  = res.data.data.map((item,i)=>{
+                        item.key = i;
+                        return item;
                     })
+                    _this.setState({
+                        list:list,
+                        pagination:Utils.pagination(res,(current)=>{
+                            _this.params.pageNo = current;//	当前页数
+                            _this.requestList(); //刷新列表数据
+                        })
+                    })
+                }else{
+                    res.data = {"total":0,"data":[],"pageNo": 1,"pageSize": 10}
+                    _this.setState({
+                        list:[],
+                        pagination:Utils.pagination(res,(current)=>{
+                            _this.params.pageNo = current;//	当前页数
+                            _this.requestList(); //刷新列表数据
+                        })
+                    })
+                }
+            }
+        })
+    }
+    //获取主题分类
+    requestGetSC = ()=>{
+        let level = 0
+        axios.ajax({
+            url:'/lawAndDocument/getBusinessType',
+            data:{
+                params:{
+                    level,
+                }
+            }
+        }).then((res)=>{
+            if(res){
+                let businessType = res.data||[]
+                let list = businessType.map((item,key)=>{
+                    item.id = item.className
+                    item.name = item.className
+                    return item
+                })
+                this.setState({
+                    businessType:list
                 })
             }
         })
@@ -99,25 +149,41 @@ class Headquarters extends Component {
         let _this = this
         if(type == 'create'){
             this.setState({
-                title:'法律法规',
+                title:'总局文件',
                 isVisible:true,
                 type
             })
         }
         else if(type == 'modify'||type == 'detail'){
             if(type == 'modify'){
+                let lawsData = item;
+                lawsData.checkPerson=lawsData.name;
+                lawsData.content = BraftEditor.createEditorState(lawsData.content)
                 _this.setState({
-                    title:item.title,
+                    // title:item.title,
                     isVisible:true,
-                    // headData,
+                    lewsData:lawsData,
                     type
                 })
+                //console.log(lawsData)
+                // this.setState({
+                //     title:type=='edit'?'编辑信息':'查看详情',
+                //     isVisible:true,
+                //     lawsData,
+                //     picture:JSON.parse(lawsData.enclosure||JSON.stringify([])),
+                //     type
+                // })                 
             }
             else if(type == 'detail'){
+                let lewsData = item
+                lewsData.content = BraftEditor.createEditorState(lewsData.content)
+                //  let content = BraftEditor.createEditorState(item.content)
+                //  console.log("content",content)
+                //  item.content = content
                 _this.setState({
-                    title:item.title,
+                    // title:item.title,
                     isDetailVisible:true,
-                    // headData,
+                    lewsData:lewsData,
                     type
                 })
             }
@@ -125,18 +191,18 @@ class Headquarters extends Component {
             //     url:'',
             //     data:{
             //         params:{
-                        
+                            
             //         }
             //     }
             // }).then((res)=>{
             //     if(res.status == 'success'){
-            //         let headData = res.data;
-            //         headData.content = BraftEditor.createEditorState(headData.content)
+            //         let lewsData = res.data;
+            //         lewsData.content = BraftEditor.createEditorState(lewsData.content)
             //         if(type == 'modify'){
             //             _this.setState({
             //                 title:item.title,
             //                 isVisible:true,
-            //                 headData,
+            //                 lewsData,
             //                 type
             //             })
             //         }
@@ -144,14 +210,13 @@ class Headquarters extends Component {
             //             _this.setState({
             //                 title:item.title,
             //                 isDetailVisible:true,
-            //                 headData,
+            //                 lewsData,
             //                 type
             //             })
             //         }
             //     }
             // })
         }
-        
         else if(type == 'delete'){
            confirm({
                title:'确定删除?',
@@ -160,10 +225,10 @@ class Headquarters extends Component {
                cancelText:'否',
                onOk:() => {
                    axios.ajax({
-                       url:'',
+                       url:'/lawAndDocument/delete',
                        data:{
                            params:{
-                               
+                            id: item.id
                            }
                        }
                    }).then((res)=>{
@@ -174,37 +239,55 @@ class Headquarters extends Component {
                }
            })
         }
-        // else if(type == 'detail'){
-        //     axios.ajax({
-        //         url:'',
-        //         data:{
-        //             params:{
-                        
-        //             }
-        //         }
-        //     }).then((res)=>{
-        //         if(res.status == 'success'){
-        //             let headData = res.data;
-        //             headData.content = BraftEditor.createEditorState(headData.content)
-        //             _this.setState({
-        //                 title:item.title,
-        //                 isVisible:true,
-        //                 headData,
-        //                 type
-        //             })
-        //         }
-        //     })
-        // }
     }
     //提交新增 更改
-    handleSubmit = () => {
-        let data = this.state.headData
-        data.fileList = this.state.fileList
-        data.content=data.content.toHTML();
+    handleSubmit = ()=>{
+        let type =this.state.type;
+        let data = this.state.lewsData
+        //console.log("新增数据data",data)
+        data.appendix = this.state.fileList
+        data.type = 2 //总局文件
+        data.content=data.content.toHTML()
+        axios.PostAjax({
+            url:type=='create'?'/lawAndDocument/insert':'/lawAndDocument/update',
+            data:{
+                params:{
+                    ...data,
+                }
+            }
+        }).then((res)=>{
+            if(res){
+                if(res.data===1){
+                    //标题重复
+                    confirm({
+                        title:'标题重复，请重新输入标题！',
+                        okText:'确定',
+                        okType:'danger',
+                        onOk:() => {
+                            // this.setState({
+                            //     isVisible:false,
+                            //     lewsData:{}
+                            // })
+                            // this.requestList();
+                        }
+                    })
+                }else if(res.data===2){
+                    //文号重复
+                }else{
+                    //成功
+                    this.setState({
+                        isVisible:false,
+                        lewsData:{}
+                    })
+                    this.requestList();
+                }
+            }
+        })
     }
     
     render() {
         console.log(this.props.userInfo)
+        console.log(this.state.lewsData)
         const columns = [
             {
                 title:'主题分类',
@@ -243,6 +326,35 @@ class Headquarters extends Component {
                 }
             },
         ]
+        //查询框
+        const formList = [
+            {
+                type: 'SELECT',
+                label: '主题分类',
+                placeholder: '请选择文库种类',
+                field: 'subjectClassification',
+                width: 150,
+                list: this.state.businessType||[]
+            },
+            {
+                type: 'INPUT',
+                label: '标题',
+                placeholder: '请输入查询关键词',
+                field: 'title',
+                width: 150,
+            },
+            {
+                type: 'INPUT',
+                label: '文号',
+                placeholder: '请输入查询关键词',
+                field: 'articleNumber',
+            },
+            {
+                type: 'TIME',
+                label: '发布日期',
+                field: 'time',
+            }
+        ]
         return (
             <div>
                 <Card>
@@ -272,43 +384,44 @@ class Headquarters extends Component {
                 </Card>
                 <Modal
                     width='1000px'
-                    title='法律法规'
+                    title={this.state.title}
                     visible={this.state.isVisible}
-                    onOK={this.handleSubmit}
+                    onOk={this.handleSubmit}
                     destroyOnClose={true}
                     onCancel={()=>{
                         this.setState({
                             isVisible:false,
-                            headData:{},
+                            lewsData:{}
                         })
                     }}
                 >
                     <AddForm
-                        sourceData ={this.state.headData}
-                        dispatchHeadData = {(value)=>this.setState({headData:value})}
+                        sourceData ={this.state.lewsData}
+                        dispatchLewsData = {(value)=>this.setState({lewsData:value})}
                         dispatchFileList = {(fileList)=>this.setState({fileList:fileList})}
                         fileList = {this.state.fileList||[]}
                      />
                 </Modal>
                 <Modal
                     width='1000px'
-                    title='法律法规'
+                    title={this.state.title}
                     visible={this.state.isDetailVisible}
                     onOk={()=>this.setState({isDetailVisible:false})}
                     destroyOnClose={true}
                     onCancel={()=>
                         this.setState({
                             isDetailVisible:false,
-                            headData:{}
+                            lewsData:{}
                         })
                     }
                 >
                     <DetailForm
-                        sourceData = {this.state.headData||{}}
+                        detailData = {this.state.lewsData||{}}
                     />
+                    
                 </Modal>
             </div>
         )
     }
 } 
-export default Headquarters;
+export default Laws;
