@@ -14,34 +14,7 @@ const ButtonGroup = Button.Group;
 const confirm = Modal.confirm
 
 
-const formList = [
-    {
-        type: 'SELECT',
-        label: '主题分类',
-        placeholder: '请选择文库种类',
-        field: 'subjectClassification',
-        width: 150,
-        list: [{id: 0, name: '0'}, {id: 1, name: '1'}]
-    },
-    {
-        type: 'INPUT',
-        label: '标题',
-        placeholder: '请输入查询关键词',
-        field: 'title',
-        width: 150,
-    },
-    {
-        type: 'INPUT',
-        label: '文号',
-        placeholder: '请输入查询关键词',
-        field: 'articleNumber',
-    },
-    {
-        type: 'TIME',
-        label: '发布日期',
-        field: 'time',
-    }
-];
+
 
 @connect(
     state=>({
@@ -67,6 +40,7 @@ class Laws extends Component {
     }
     componentDidMount(){
         this.requestList();
+        this.requestGetSC();
     }
     
     //查询
@@ -144,6 +118,30 @@ class Laws extends Component {
                         })
                     })
                 }
+            }
+        })
+    }
+    //获取主题分类
+    requestGetSC = ()=>{
+        let level = 0
+        axios.ajax({
+            url:'/lawAndDocument/getBusinessType',
+            data:{
+                params:{
+                    level,
+                }
+            }
+        }).then((res)=>{
+            if(res){
+                let businessType = res.data||[]
+                let list = businessType.map((item,key)=>{
+                    item.id = item.className
+                    item.name = item.className
+                    return item
+                })
+                this.setState({
+                    businessType:list
+                })
             }
         })
     }
@@ -310,6 +308,34 @@ class Laws extends Component {
                 }
             },
         ]
+        const formList = [
+            {
+                type: 'SELECT',
+                label: '主题分类',
+                placeholder: '请选择文库种类',
+                field: 'subjectClassification',
+                width: 150,
+                list: this.state.businessType||[]
+            },
+            {
+                type: 'INPUT',
+                label: '标题',
+                placeholder: '请输入查询关键词',
+                field: 'title',
+                width: 150,
+            },
+            {
+                type: 'INPUT',
+                label: '文号',
+                placeholder: '请输入查询关键词',
+                field: 'articleNumber',
+            },
+            {
+                type: 'TIME',
+                label: '发布日期',
+                field: 'time',
+            }
+        ];
         return (
             <div>
                 <Card>
@@ -322,7 +348,7 @@ class Laws extends Component {
                 <Card style={{marginTop:10}}>
                     <div className='button-box'>
                         <Button type="primary" onClick={()=> this.handleOperator('create',null)}>数据新增</Button>
-                        <Button type="primary" onClick={()=>this.handleDelete}>批量删除</Button>
+                        <Button type="danger" onClick={()=>this.handleDelete}>批量删除</Button>
                     </div>
                     <div style={{marginTop:30}}>
                         <ETable
