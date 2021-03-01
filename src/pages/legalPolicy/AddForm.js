@@ -99,7 +99,7 @@ export default class AddForm extends Component{
                     </Col>
                     <Col span={3} style={{textAlign:'right',fontSize:15}}>所属机构：</Col>
                     <Col span={5}>
-                        <Select placeholder='请选择所属机构' style={{width:'100%'}} value={sourceData.affiliatedInstitutions||undefined} onChange={(value)=>this.changeInput(value,'affiliatedInstitutions')}> 
+                        <Select placeholder='请选择所属机构' style={{width:'100%'}} value={sourceData.affiliatedInstitutions||undefined} onChange={(e)=>this.changeInput(e.target.value,'affiliatedInstitutions')}> 
 
                         </Select>
                     </Col>

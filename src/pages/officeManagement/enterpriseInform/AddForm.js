@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Button, Card, Row, Col, Table, Input } from 'antd'
+import { Button, Card, Row, Col, Table, Input, Select } from 'antd'
 import './style.less'
 import axios from "../../../axios";
 import BraftEditor from 'braft-editor';
@@ -7,6 +7,7 @@ import 'braft-editor/dist/index.css'
 import ButtonGroup from 'antd/lib/button/button-group'
 import Axios from 'axios';
 const { TextArea } = Input;
+const { Option } = Select;
 
 
 class AddForm extends Component {
@@ -24,7 +25,7 @@ class AddForm extends Component {
         }).then((res) => {
             if (res.status == 'success') {
                 _this.setState({
-                    class: res.data.data
+                    class: res.data
                 })
             }
         })
@@ -34,10 +35,12 @@ class AddForm extends Component {
         value[option] = data
         this.props.dispatchInformData(value)
     }
-    componentDidMount(){
+    componentDidMount() {
         this.getClass()
     }
     render() {
+        const allClass = this.state.class || []
+        const status = this.props.status == 'detail'||this.props.status == 'check' ? true : false
         const { informData } = this.props
         const controls = [
             'undo', 'redo', 'separator',
@@ -86,11 +89,17 @@ class AddForm extends Component {
                         </Row>
                         <Row style={{ marginTop: 10 }}>
                             <Col span={12} style={{ textAlign: 'right', fontSize: 15 }}>发布日期：</Col>
-                            <Col span={12}>{informData.issueDate}</Col>
+                            <Col span={12}>{informData.date}</Col>
                         </Row>
                         <Row style={{ marginTop: 10 }}>
                             <Col span={12} style={{ textAlign: 'right', fontSize: 15 }}>类型：</Col>
-                            <Col span={12}></Col>
+                            <Col span={12}>
+                                <Select value={informData.type} style={{ width: 120 }} onChange={(value) => this.changeInput(value, 'type')} disabled={status}>
+                                    {allClass.map((item) => {
+                                        return <Option key={item.id} value={item.type}>{item.type}</Option>
+                                    })}
+                                </Select>
+                            </Col>
                         </Row>
                     </Card>
                     <Card title="企业公告标题" style={{ width: 250, marginTop: 10 }}>
@@ -99,6 +108,7 @@ class AddForm extends Component {
                             onChange={(e) => { this.changeInput(e.target.value, 'title') }}
                             placeholder="请输入企业公告标题"
                             autoSize={{ minRows: 5, maxRows: 5 }}
+                            disabled={status}
                         />
                     </Card>
                     <Card title="标题图" style={{ width: 250, marginTop: 10 }}>
@@ -112,6 +122,7 @@ class AddForm extends Component {
                             contentStyle={{ height: 500 }}
                             value={informData.content}
                             onChange={(data) => this.changeInput(data, 'content')}
+                            readOnly={status}
                         />
                     </Card>
                     <Card style={{ width: 700 }}>

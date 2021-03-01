@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import {Button,Card,Collapse,Modal} from 'antd'
+import {Button,Card,Collapse,Modal,Tag} from 'antd'
 import  BaseForm  from '../../../components/BaseForm';
 import ETable from '../../../components/ETable'
 import Utils from "../../../utils";
@@ -8,6 +8,7 @@ import {connect} from "react-redux";
 import AddForm from './AddForm'
 import BraftEditor from 'braft-editor';
 import 'braft-editor/dist/index.css'
+import { green } from 'chalk';
 const Panel = Collapse.Panel;
 const ButtonGroup = Button.Group;
 const confirm = Modal.confirm
@@ -78,8 +79,7 @@ class EnterpriseInform extends Component {
         let today = new Date()
         let date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
         let informData = this.state.informData
-        informData.issueDate = date
-        console.log(informData)
+        informData.date = date
         this.setState({
             informData:informData
         })
@@ -265,16 +265,39 @@ class EnterpriseInform extends Component {
             {
                 title:'发布状态',
                 dataIndex:'reviewResult',
-                key:'reviewResult'
+                key:'reviewResult',
+                render:(reviewResult)=>{
+                    if(reviewResult == 1){
+                        let review = '已发布'
+                        return <Tag color='green' key={reviewResult}>
+                            {review.toUpperCase()}
+                        </Tag>
+                    }
+                    else if(reviewResult == 2){
+                        let review = '待处理'
+                        return <Tag color='blue' key={reviewResult}>
+                            {review.toUpperCase()}
+                        </Tag>
+                    }
+                    else if(reviewResult == 3){
+                        let review = '退回'
+                        return <Tag color='red' key={reviewResult}>
+                            {review.toUpperCase()}
+                        </Tag>
+                    }
+                }
             },
             {
                 title:'操作',
                 dataIndex:'operation',
-                render:(text,record) => {
+                width:'500px',
+                render:(text,record) => {                  
+                        const reviewStatus = record.reviewResult == 1?'none':''
+                        const obReviewStatus = record.reviewResult == 1?'':'none'
                     return <ButtonGroup>
                         <Button type='primary'  onClick={()=> {this.handleOperator('detail',record)}} >查看</Button>
-                        {this.props.acl.indexOf('/modify')>-1? <Button type='primary' onClick={()=> {this.handleOperator('modify',record)}}>修改</Button>:null}
-                        {/* <Button type='primary' onClick={()=>{this.handleOperator('issue',record)}}>发布</Button> */}
+                        {this.props.acl.indexOf('/modify')>-1? <Button type='primary' style={{display:reviewStatus}} onClick={()=> {this.handleOperator('modify',record)}}>修改</Button>:null}
+                        {/* <Button type='primary' style={{display:obReviewStatus}} onClick={()=>{this.handleOperator('issueCancel',record)}}>取消发布</Button> */}
                         {this.props.acl.indexOf('/delete')>-1? <Button type='primary' onClick={()=> {this.handleOperator('delete',record)}}>删除</Button>:null}
                     </ButtonGroup>
                 }
