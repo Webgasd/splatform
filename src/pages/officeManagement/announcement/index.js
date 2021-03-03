@@ -51,7 +51,7 @@ const formList = [
 ];
 @connect(
     state=>({
-        acl:state.acls['/laws'],
+        acl:state.acls['/announcement'],
         userInfo:state
     }),{
     }
@@ -93,9 +93,9 @@ class Announcement extends Component {
     requestList = ()=>{
         let _this = this;
         axios.PostAjax({
-            url:'/enterpriseNotice/getIssusedOrMy',
+            url:'/documentCirculate/getPage',
             data:{
-                params:{..._this.params}
+                params:{..._this.params,situation:0,module:0}
             }
         }).then((res)=>{
             if(res.status == "success"){

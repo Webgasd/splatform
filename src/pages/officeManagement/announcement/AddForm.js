@@ -1,18 +1,26 @@
 import React, { Component } from 'react'
-import { Button, Card, Row, Col, Table, Input, Select } from 'antd'
+import { Button, Card, Row, Col, Table, Input, Select, Transfer, Modal } from 'antd'
 import './style.less'
+import Utils from "../../../utils";
 import axios from "../../../axios";
 import BraftEditor from 'braft-editor';
 import 'braft-editor/dist/index.css'
 import ButtonGroup from 'antd/lib/button/button-group'
 import Axios from 'axios';
+import difference from 'lodash/difference';
 const { TextArea } = Input;
 const { Option } = Select;
 
 
 class AddForm extends Component {
     state = {
-        class: ''
+        class: '',
+        mockData: [],
+        targetKeys: '',
+        isModalVisible: false
+    }
+    params = {
+        pageNo:1
     }
     //获取通知类型
     getClass = () => {
@@ -30,17 +38,51 @@ class AddForm extends Component {
             }
         })
     }
+    //获取政府人员信息
+    getGovernment = () => {
+        let _this = this
+        axios.PostAjax({
+            url: '/supervision/ga/getList',
+            data: {
+                params: {...this.params}
+            }
+        }).then((res) => {
+            if (res.status == 'success') {
+                const originTargetKeys = res.data.data.map((item, index) => {
+                    return {
+                        key: item.id.toString(),
+                        name: item.name,
+                        deptName: item.deptName,
+                        jobName: item.jobName
+                    }
+                })
+                _this.setState({
+                    mockData: originTargetKeys,
+                    pagination: Utils.pagination(res, (current) => {
+                        _this.params.pageNo = current;//	当前页数
+                        _this.getGovernment(); //刷新列表数据
+                    })
+                })
+            }
+        })
+    }
     changeInput = (data, option) => {
         let value = this.props.informData
         value[option] = data
         this.props.dispatchInformData(value)
     }
+    //选择审核人
+    //穿梭框改变选择
+    onChange = nextTargetKeys => {
+        this.setState({ targetKeys: nextTargetKeys });
+    };
     componentDidMount() {
         this.getClass()
+        this.getGovernment()
     }
     render() {
         const allClass = this.state.class || []
-        const status = this.props.status == 'detail'||this.props.status == 'check' ? true : false
+        const status = this.props.status == 'detail' || this.props.status == 'check' ? true : false
         const { informData } = this.props
         const controls = [
             'undo', 'redo', 'separator',
@@ -79,6 +121,75 @@ class AddForm extends Component {
                 }
             }
         ]
+        const TableTransfer = ({ leftColumns, rightColumns, ...restProps }) => (
+            <Transfer {...restProps} showSelectAll={false} >
+                {({
+                    direction,
+                    filteredItems,
+                    onItemSelectAll,
+                    onItemSelect,
+                    selectedKeys: listSelectedKeys,
+                    disabled: listDisabled,
+                }) => {
+                    const columns = direction === 'left' ? leftColumns : rightColumns;
+
+                    const rowSelection = {
+                        getCheckboxProps: item => ({ disabled: listDisabled || item.disabled }),
+                        onSelectAll(selected, selectedRows) {
+                            const treeSelectedKeys = selectedRows
+                                .filter(item => !item.disabled)
+                                .map(({ key }) => key);
+                            const diffKeys = selected
+                                ? difference(treeSelectedKeys, listSelectedKeys)
+                                : difference(listSelectedKeys, treeSelectedKeys);
+                            onItemSelectAll(diffKeys, selected);
+                        },
+                        onSelect({ key }, selected) {
+                            onItemSelect(key, selected);
+                        },
+                        selectedRowKeys: listSelectedKeys,
+                    };
+
+                    return (
+                        <Table
+                            rowSelection={rowSelection}
+                            columns={columns}
+                            dataSource={filteredItems}
+                            size="small"
+                            pagination={this.state.pagination}
+                            style={{ pointerEvents: listDisabled ? 'none' : null }}
+                            onRow={({ key, disabled: itemDisabled }) => ({
+                                onClick: () => {
+                                    if (itemDisabled || listDisabled) return;
+                                    onItemSelect(key, !listSelectedKeys.includes(key));
+                                },
+                            })}
+                        />
+                    );
+                }}
+            </Transfer>
+        );
+
+        const leftTableColumns = [
+            {
+                dataIndex: 'name',
+                title: '姓名',
+            },
+            {
+                dataIndex: 'deptName',
+                title: '所属部门',
+            },
+            {
+                dataIndex: 'jobName',
+                title: '职务',
+            },
+        ];
+        const rightTableColumns = [
+            {
+                dataIndex: 'name',
+                title: '姓名',
+            },
+        ];
         return (
             <div className='addContent'>
                 <div className='leftContent'>
@@ -102,17 +213,17 @@ class AddForm extends Component {
                             </Col>
                         </Row>
                     </Card>
-                    <Card title="企业公告标题" style={{ width: 250, marginTop: 10 }}>
-                        <TextArea
-                            value={informData.title}
-                            onChange={(e) => { this.changeInput(e.target.value, 'title') }}
-                            placeholder="请输入企业公告标题"
-                            autoSize={{ minRows: 5, maxRows: 5 }}
-                            disabled={status}
-                        />
+                    <Card title="审核人" style={{ width: 250, marginTop: 10 }} extra={[<Button type='primary' onClick={() => this.setState({ isModalVisible: true })}>审核人</Button>, <Button>WERR</Button>]}>
+                        <Row style={{ marginTop: 10 }}>
+                            <Col span={12} style={{ textAlign: 'right', fontSize: 15 }}>审核人：</Col>
+                            <Col span={12}>{informData.date}</Col>
+                        </Row>
+                        <Row style={{ marginTop: 10 }}>
+                            <Col span={12} style={{ textAlign: 'right', fontSize: 15 }}>传阅人：</Col>
+                            <Col span={12}>{informData.date}</Col>
+                        </Row>
                     </Card>
-                    <Card title="标题图" style={{ width: 250, marginTop: 10 }}>
-
+                    <Card title="发送给" style={{ width: 250, marginTop: 10 }}>
                     </Card>
                 </div>
                 <div className='rightContent'>
@@ -130,6 +241,26 @@ class AddForm extends Component {
                         <Table columns={columns} bordered />
                     </Card>
                 </div>
+                <Modal
+                    width='800px'
+                    title='人员列表'
+                    visible={this.state.isModalVisible}
+                    onOk={() => { this.setState({ isModalVisible: false }) }}
+                    onCancel={() => { this.setState({ isModalVisible: false }) }}
+                >
+                    <TableTransfer
+                        dataSource={this.state.mockData}
+                        targetKeys={this.state.targetKeys}
+                        disabled={false}
+                        showSearch={true}
+                        onChange={this.onChange}
+                        filterOption={(inputValue, item) =>
+                            item.name.indexOf(inputValue) !== -1 || item.deptName.indexOf(inputValue) !== -1
+                        }
+                        leftColumns={leftTableColumns}
+                        rightColumns={rightTableColumns}
+                    />
+                </Modal>
             </div>
         )
     }
