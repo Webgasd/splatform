@@ -58,10 +58,19 @@ class AddForm extends Component {
                 })
                 _this.setState({
                     mockData: originTargetKeys,
-                    pagination: Utils.pagination(res, (current) => {
-                        _this.params.pageNo = current;//	当前页数
-                        _this.getGovernment(); //刷新列表数据
-                    })
+                    // pagination: Utils.paginationCommon(res, (current) => {
+                    //     _this.params.pageNo = current;//	当前页数
+                    //     _this.getGovernment(); //刷新列表数据
+                    // })   
+                    pagination:{
+                        onChange:(current)=>{
+                            _this.params.pageNo = current;//	当前页数
+                            _this.getGovernment(); //刷新列表数据
+                        },
+                        current:res.data.pageNo,
+                        pageSize:10,
+                        total: res.data.total,
+                    }
                 })
             }
         })
@@ -132,7 +141,7 @@ class AddForm extends Component {
                     disabled: listDisabled,
                 }) => {
                     const columns = direction === 'left' ? leftColumns : rightColumns;
-
+                    const pagination = direction === 'left' ? this.state.pagination:true;
                     const rowSelection = {
                         getCheckboxProps: item => ({ disabled: listDisabled || item.disabled }),
                         onSelectAll(selected, selectedRows) {
@@ -156,7 +165,7 @@ class AddForm extends Component {
                             columns={columns}
                             dataSource={filteredItems}
                             size="small"
-                            pagination={this.state.pagination}
+                            pagination={pagination}
                             style={{ pointerEvents: listDisabled ? 'none' : null }}
                             onRow={({ key, disabled: itemDisabled }) => ({
                                 onClick: () => {
