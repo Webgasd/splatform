@@ -6,6 +6,7 @@ import Utils from "../../../utils";
 import axios from "../../../axios";
 import {connect} from "react-redux";
 import AddForm from './AddForm'
+import RecordsFRorm from './RecordsFRorm'
 import BraftEditor from 'braft-editor';
 import 'braft-editor/dist/index.css'
 import { green } from 'chalk';
@@ -13,42 +14,7 @@ const Panel = Collapse.Panel;
 const ButtonGroup = Button.Group;
 const confirm = Modal.confirm
 
-const formList = [
-    {
-        type: 'SELECT',
-        label: '企业通知类型',
-        placeholder: '请选择通知类型',
-        field: 'type',
-        width: 150,
-        list: [{id: 0, name: '0'}, {id: 1, name: '1'}]
-    },
-    {
-        type: 'INPUT',
-        label: '通知公告标题',
-        placeholder: '请输入查询关键词',
-        field: 'title',
-        width: 150,
-    },
-    {
-        type: 'INPUT',
-        label: '发布人',
-        placeholder: '请输入查询关键词',
-        field: 'author',
-        width: 150,
-    },
-    {
-        type: 'INPUT',
-        label: '核验人',
-        placeholder: '请输入查询关键词',
-        field: 'reviewer',
-        width: 150,
-    },
-    {
-        type: 'TIME',
-        label: '发布日期',
-        field: 'issueDate',
-    }
-];
+
 @connect(
     state=>({
         acl:state.acls['/laws'],
@@ -56,7 +22,7 @@ const formList = [
     }),{
     }
 )
-class EnterpriseInform extends Component {
+class DocumentRouting extends Component {
     state = {
         informData:{},
         selectedRowKeys: [], //表格选择的条目记录
@@ -73,6 +39,7 @@ class EnterpriseInform extends Component {
     }
     componentDidMount(){
         this.requestList()
+        this.requestUnit()
     }
     //发布人和发布日期信息
     getMessage = () => {
@@ -93,9 +60,9 @@ class EnterpriseInform extends Component {
     requestList = ()=>{
         let _this = this;
         axios.PostAjax({
-            url:'/enterpriseNotice/getIssusedOrMy',
+            url:'/documentCirculate/getPage',
             data:{
-                params:{..._this.params}
+                params:{..._this.params,"situation":3,"module":0,}
             }
         }).then((res)=>{
             if(res.status == "success"){
@@ -109,6 +76,33 @@ class EnterpriseInform extends Component {
                         _this.params.pageNo = current;//	当前页数
                         _this.requestList(); //刷新列表数据
                     })
+                })
+            }
+        })
+    }
+    //获取重要性列表
+    requestImportants = ()=>{
+        
+    }
+    //获取来文单位
+    requestUnit = ()=>{
+        let _this = this;
+        axios.PostAjax({
+            url:'/documentSourceunit/getPage',
+            data:{
+                params:{..._this.params,"isPage":1}
+            }
+        }).then((res)=>{
+            if(res.status == "success"){
+                let units = res.data.data||[]
+                console.log("来文单位",units)
+                let list = units.map((item,key)=>{
+                    item.id = item.name
+                    item.name = item.name
+                    return item
+                })
+                _this.setState({
+                    units:list
                 })
             }
         })
@@ -230,61 +224,78 @@ class EnterpriseInform extends Component {
                 })
     }
     render() {
-        console.log(this.props.userInfo)
+        //表格列名
         const columns = [
             {
-                title:'企业通知类型',
-                dataIndex:'type',
-                key:'type'
+                title:'公文流转号',
+                dataIndex:'docNumber',
+                key:'docNumber'
             },
             {
-                title:'通知公告标题',
+                title:'重要性',
+                dataIndex:'type',
+                key:'type', //修改
+                render:(type)=>{
+                    let color = 'blue'
+                    let content = '一般'
+                    if(type === '紧急'){
+                        color = 'red'
+                        content = '紧急'
+                    }else if(type === '重要'){
+                        color = 'purple'
+                        content = '重要'
+                    }
+                    return <Tag color={color} key={type}>
+                        {content.toUpperCase()}
+                    </Tag>
+                }
+            },
+            {
+                title:'公文流转标题',
                 dataIndex:'title',
                 key:'title'
             },
             {
-                title:'发布人',
+                title:'来文单位',
+                dataIndex:'sourcedocCompany',
+                key:'sourcedocCompany'
+            },
+            {
+                title:'收文人',
                 dataIndex:'author',
                 key:'author'
             },
-            {
-                title:'发布日期',
+             {
+                title:'收文日期',
                 dataIndex:'issueDate',
                 key:'issueDate'
             },
             {
-                title:'核验人',
+                title:'拟办人',
                 dataIndex:'reviewer',
                 key:'reviewer'
             },
-             {
-                title:'核验日期',
-                dataIndex:'reviewTime',
-                key:'reviewTime'
-            },
             {
-                title:'发布状态',
+                title:'拟办状态',
                 dataIndex:'reviewResult',
                 key:'reviewResult',
                 render:(reviewResult)=>{
-                    if(reviewResult == 1){
-                        let review = '已发布'
-                        return <Tag color='green' key={reviewResult}>
-                            {review.toUpperCase()}
-                        </Tag>
+                    let review = '待审核'
+                    let color ='blue'
+                    if(reviewResult == 0){
+                        review = '待审核'
+                    }
+                    else if(reviewResult == 1){
+                        review = '通过/已发布'
+                        color ='green'
                     }
                     else if(reviewResult == 2){
-                        let review = '待处理'
-                        return <Tag color='blue' key={reviewResult}>
-                            {review.toUpperCase()}
-                        </Tag>
+                        review = '不通过/退回'
+                        color ='red'
                     }
-                    else if(reviewResult == 3){
-                        let review = '退回'
-                        return <Tag color='red' key={reviewResult}>
-                            {review.toUpperCase()}
-                        </Tag>
-                    }
+                    return <Tag color={color} key={reviewResult}>
+                     {review.toUpperCase()}
+                    </Tag>
                 }
             },
             {
@@ -303,6 +314,52 @@ class EnterpriseInform extends Component {
                 }
             },
         ]
+        //查询条件
+        const formList = [
+            {
+                type: 'SELECT',
+                label: '重要性',
+                placeholder: '请选择重要性',
+                field: 'type',
+                width: 150,
+                list: [{id: 0, name: '一般'}, {id: 1, name: '重要'},{id: 2, name: '紧急'}]
+            },
+            {
+                type: 'SELECT',
+                label: '来文单位',
+                placeholder: '请选择来文单位',
+                field: 'sourcedocCompany',
+                width: 150,
+                list: this.state.units
+            },
+            {
+                type: 'INPUT',
+                label: '公文流转标题',
+                placeholder: '请输入公文流转标题',
+                field: 'title',
+                width: 150,
+            },
+            {
+                type: 'DATE',
+                label: '收文日期',
+                field: 'issueDate',
+            },
+            {
+                type: 'INPUT',
+                label: '来文文号',
+                placeholder: '请输入来文文号',
+                field: 'sourcedocNumber',
+                width: 150,
+            },
+            {
+                type: 'INPUT',
+                label: '公文流转号',
+                placeholder: '请输入公文流转号',
+                field: 'docNumber',
+                width: 150,
+            }
+            
+        ];
         return (
             <div>
                 <Card>
@@ -336,7 +393,7 @@ class EnterpriseInform extends Component {
                     visible={this.state.isVisible}
                     footer = {[
                         <Button type='primary' key='toPublic' onClick={e=>this.handleSubmit(1)}>保存直接发布</Button>,
-                        <Button type='primary' key='toPerson' onClick={e=>this.handleSubmit(2)}>转发给核验人</Button>
+                        <Button type='primary' key='toPerson' onClick={e=>this.handleSubmit(2)}>转发给拟办人</Button>
                     ]}
                     destroyOnClose={true}
                     onCancel={()=>{
@@ -351,6 +408,21 @@ class EnterpriseInform extends Component {
                         dispatchInformData = {(value) => this.setState({informData:value})}
                         status = {this.state.type}
                      />
+                </Modal>
+                <Modal
+                    width='1000px'
+                    title='查阅记录'
+                    visible={this.state.isListVisible}
+                    onOk={()=>this.setState({isList1Visible:false})}
+                    destroyOnClose={true}
+                    onCancel={()=>
+                        this.setState({
+                            isList1Visible:false,
+                            informData:{}
+                        })
+                    }
+                >
+                   <RecordsFRorm/>
                 </Modal>
                 {/* <Modal
                     width='1000px'
@@ -373,4 +445,4 @@ class EnterpriseInform extends Component {
         )
     }
 } 
-export default EnterpriseInform;
+export default DocumentRouting;

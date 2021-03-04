@@ -25,7 +25,7 @@ const confirm = Modal.confirm
 )
 class Laws extends Component {
     state = {
-        lewsData:{},
+        lewsData:{content:''},
         selectedRowKeys: [], //表格选择的条目记录
         list:[     //获取的数据列表
             {
@@ -33,7 +33,7 @@ class Laws extends Component {
                 key:1
             }
         ],
-        title:''  //拟态框标题
+        title:'法律法规'  //拟态框标题
     }
     params = {
         pageNo:1
@@ -56,7 +56,7 @@ class Laws extends Component {
         axios.PostAjax({
             url:'/lawAndDocument/getConditionalSearch',
             data:{
-                params:{..._this.params}
+                params:{..._this.params,type:1}
             }
         }).then((res)=>{
             if(res.status == "success"){
@@ -161,7 +161,7 @@ class Laws extends Component {
                 lawsData.checkPerson=lawsData.name;
                 lawsData.content = BraftEditor.createEditorState(lawsData.content)
                 _this.setState({
-                    title:item.title,
+                    // title:item.title,
                     isVisible:true,
                     lewsData:lawsData,
                     type
@@ -182,7 +182,7 @@ class Laws extends Component {
                 //  console.log("content",content)
                 //  item.content = content
                 _this.setState({
-                    title:item.title,
+                    // title:item.title,
                     isDetailVisible:true,
                     lewsData:lewsData,
                     type
@@ -245,10 +245,11 @@ class Laws extends Component {
     handleSubmit = ()=>{
         let type =this.state.type;
         let data = this.state.lewsData
-        //console.log("新增数据data",data)
+        let content = data.content||BraftEditor.createEditorState(null)
+        
         data.appendix = this.state.fileList
         data.type = 1 //法律法规
-        data.content=data.content.toHTML()
+        data.content=content.toHTML()
         axios.PostAjax({
             url:type=='create'?'/lawAndDocument/insert':'/lawAndDocument/update',
             data:{
@@ -268,8 +269,6 @@ class Laws extends Component {
     }
     
     render() {
-        console.log(this.props.userInfo)
-        console.log(this.state.lewsData)
         const columns = [
             {
                 title:'主题分类',
@@ -308,6 +307,7 @@ class Laws extends Component {
                 }
             },
         ]
+        //查询框
         const formList = [
             {
                 type: 'SELECT',
@@ -365,7 +365,7 @@ class Laws extends Component {
                 </Card>
                 <Modal
                     width='1000px'
-                    title='法律法规'
+                    title={this.state.title}
                     visible={this.state.isVisible}
                     onOk={this.handleSubmit}
                     destroyOnClose={true}
@@ -385,7 +385,7 @@ class Laws extends Component {
                 </Modal>
                 <Modal
                     width='1000px'
-                    title='法律法规'
+                    title={this.state.title}
                     visible={this.state.isDetailVisible}
                     onOk={()=>this.setState({isDetailVisible:false})}
                     destroyOnClose={true}
@@ -398,8 +398,7 @@ class Laws extends Component {
                 >
                     <DetailForm
                         detailData = {this.state.lewsData||{}}
-                    />
-                    
+                    />                   
                 </Modal>
             </div>
         )

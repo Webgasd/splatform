@@ -30,7 +30,9 @@ const Laws = loadable(()=>import('./../../pages/legalPolicy/laws'));
 const Headquarters = loadable(()=>import('./../../pages/legalPolicy/headquarters'));
 const Endemicity = loadable(()=>import('./../../pages/legalPolicy/endemicity'));
 const EnterpriseInform = loadable(()=>import('./../../pages/officeManagement/enterpriseInform'));
+const CheckInform = loadable(()=>import('./../../pages/officeManagement/enterpriseInform/checkInform'));
 const Announcement = loadable(()=>import('./../../pages/officeManagement/announcement'));
+const DocumentRouting = loadable(()=>import('../../pages/officeManagement/documentRouting'));
 const Interacion = loadable(()=>import('./../../pages/interaction'));
 const InteracionEx = loadable(()=>import('./../../pages/interactionEx'));
 const V = loadable(()=>import('./../../pages/video'));
@@ -247,8 +249,12 @@ export default class Content extends Component{
                 return <Endemicity/>
             case '/enterpriseInform':
                 return <EnterpriseInform/>
+            case '/checkInform':
+                return <CheckInform/>
             case '/announcement':
                 return <Announcement/>
+            case '/documentRouting':
+                return <DocumentRouting/>
             case '/interaction':
                 return <Interacion/>
             case '/roleManager':

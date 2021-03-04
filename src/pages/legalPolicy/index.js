@@ -80,7 +80,7 @@ export default class LegalPolicy extends Component {
     //获取业务分类
     getBusinessType = (params) => {
         let _this = this
-        axios.ajax({
+        axios.PostAjax({
             url:'/lawAndDocument/getBusinessType',
             data:{
                 params:{}
@@ -94,7 +94,6 @@ export default class LegalPolicy extends Component {
                     item.name = item.className
                     return item
                 })
-                console.log(list)
                 _this.setState({
                     businessType:list
                 })
