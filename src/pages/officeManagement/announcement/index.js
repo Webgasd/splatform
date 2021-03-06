@@ -6,8 +6,6 @@ import Utils from "../../../utils";
 import axios from "../../../axios";
 import {connect} from "react-redux";
 import AddForm from './AddForm'
-import BraftEditor from 'braft-editor';
-import 'braft-editor/dist/index.css'
 import { green } from 'chalk';
 const Panel = Collapse.Panel;
 const ButtonGroup = Button.Group;
@@ -73,6 +71,7 @@ class Announcement extends Component {
     }
     componentDidMount(){
         this.requestList()
+        this.getClass()
     }
     //发布人和发布日期信息
     getMessage = () => {
@@ -125,26 +124,22 @@ class Announcement extends Component {
             })
         }
         else if(type == 'modify'||type == 'detail'){
-            if(type == 'modify'){
-                let content = item.content
-                item.content = BraftEditor.createEditorState(content)
-                _this.setState({
-                    title:item.title,
-                    isVisible:true,
-                    informData:item,
-                    type
-                })
-            }
-            else if(type == 'detail'){
-                let content = item.content
-                item.content = BraftEditor.createEditorState(content)
-                _this.setState({
-                    title:item.title,
-                    isVisible:true,
-                    informData:item,
-                    type
-                })
-            }
+            let _this = this;
+            axios.PostAjax({
+                url:'/documentCirculate/getById',
+                data:{
+                    params:{docId:item.id,module:0}
+                }
+            }).then((res)=>{
+                let informData = res.data||{}
+                if(res.status == "success"){
+                    _this.setState({
+                        isVisible:true,
+                        type,
+                        informData:informData
+                    })
+                }
+            })
         }
         
         else if(type == 'delete'){
@@ -155,10 +150,10 @@ class Announcement extends Component {
                cancelText:'否',
                onOk:() => {
                    axios.ajax({
-                       url:'/enterpriseNotice/delete',
+                       url:'/documentCirculate/delete',
                        data:{
                            params:{
-                               id:item.id
+                            idList:[item.id]
                            }
                        }
                    }).then((res)=>{
@@ -169,34 +164,11 @@ class Announcement extends Component {
                }
            })
         }
-        // else if(type == 'detail'){
-        //     axios.ajax({
-        //         url:'',
-        //         data:{
-        //             params:{
-                        
-        //             }
-        //         }
-        //     }).then((res)=>{
-        //         if(res.status == 'success'){
-        //             let informData = res.data;
-        //             informData.content = BraftEditor.createEditorState(informData.content)
-        //             _this.setState({
-        //                 title:item.title,
-        //                 isVisible:true,
-        //                 informData,
-        //                 type
-        //             })
-        //         }
-        //     })
-        // }
     }
     //提交新增 更改
     handleSubmit = (key) => {
         let data = this.state.informData
-        let content = data.content||BraftEditor.createEditorState(null)
         data.fileList = this.state.fileList
-        data.content=content.toHTML()
         if(key == 1){
             data.reviewResult = 1
             this.setState({
@@ -215,7 +187,7 @@ class Announcement extends Component {
     handleOk = () =>{
         let _this = this
         axios.PostAjax({
-                    url:this.state.type=='create'?'/enterpriseNotice/insert':'/enterpriseNotice/update',
+                    url:this.state.type=='create'?'/documentCirculate/insert':'/documentCirculate/update',
                     data:{
                         params:this.state.informData
                     }
@@ -229,8 +201,25 @@ class Announcement extends Component {
                     }
                 })
     }
+    //获取通知类型
+    getClass = () => {
+        let _this = this
+        axios.ajax({
+            url: '/documentTypeConfig/getByType',
+            data: {
+                params: {
+                    type: 1
+                }
+            }
+        }).then((res) => {
+            if (res.status == 'success') {
+                _this.setState({
+                    class: res.data
+                })
+            }
+        })
+    }
     render() {
-        console.log(this.props.userInfo)
         const columns = [
             {
                 title:'通知类型',
@@ -295,15 +284,14 @@ class Announcement extends Component {
             {
                 title:'操作',
                 dataIndex:'operation',
-                width:'500px',
                 render:(text,record) => {                  
                         const reviewStatus = record.reviewResult == 1?'none':''
                         const obReviewStatus = record.reviewResult == 1?'':'none'
                     return <ButtonGroup>
                         <Button type='primary'  onClick={()=> {this.handleOperator('detail',record)}} >查看</Button>
-                        {this.props.acl.indexOf('/modify')>-1? <Button type='primary' style={{display:reviewStatus}} onClick={()=> {this.handleOperator('modify',record)}}>修改</Button>:null}
+                        <Button type='primary' style={{display:reviewStatus}} onClick={()=> {this.handleOperator('modify',record)}}>修改</Button>
                         {/* <Button type='primary' style={{display:obReviewStatus}} onClick={()=>{this.handleOperator('issueCancel',record)}}>取消发布</Button> */}
-                        {this.props.acl.indexOf('/delete')>-1? <Button type='primary' onClick={()=> {this.handleOperator('delete',record)}}>删除</Button>:null}
+                        <Button type='primary' onClick={()=> {this.handleOperator('delete',record)}}>删除</Button>
                     </ButtonGroup>
                 }
             },
@@ -339,10 +327,10 @@ class Announcement extends Component {
                     width='1000px'
                     title='通知公告'
                     visible={this.state.isVisible}
-                    footer = {[
-                        <Button type='primary' key='toPublic' onClick={e=>this.handleSubmit(1)}>保存直接发布</Button>,
+                    footer = {this.state.informData.typeId==4?
+                        <Button type='primary' key='toPublic' onClick={e=>this.handleSubmit(1)}>保存直接发布</Button>:
                         <Button type='primary' key='toPerson' onClick={e=>this.handleSubmit(2)}>转发给核验人</Button>
-                    ]}
+                    }
                     destroyOnClose={true}
                     onCancel={()=>{
                         this.setState({
@@ -352,28 +340,13 @@ class Announcement extends Component {
                     }}
                 >
                     <AddForm
+                        class={this.state.class}
                         informData ={this.state.informData}
                         dispatchInformData = {(value) => this.setState({informData:value})}
                         status = {this.state.type}
                      />
                 </Modal>
-                {/* <Modal
-                    width='1000px'
-                    title='法律法规'
-                    visible={this.state.isDetailVisible}
-                    onOk={()=>this.setState({isDetailVisible:false})}
-                    destroyOnClose={true}
-                    onCancel={()=>
-                        this.setState({
-                            isDetailVisible:false,
-                            informData:{}
-                        })
-                    }
-                >
-                    <DetailForm
-                        informData = {this.state.informData||{}}
-                    />
-                </Modal> */}
+
             </div>
         )
     }
