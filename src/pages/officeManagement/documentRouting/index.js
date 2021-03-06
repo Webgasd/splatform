@@ -64,7 +64,7 @@ class DocumentRouting extends Component {
         axios.PostAjax({
             url:'/documentCirculate/getPage',
             data:{
-                params:{..._this.params,"situation":2}
+                params:{..._this.params,"situation":2,module:1}
             }
         }).then((res)=>{
             if(res.status == "success"){
@@ -76,7 +76,7 @@ class DocumentRouting extends Component {
                     _this.setState({
                         list:list,
                         pagination:Utils.pagination(res,(current)=>{
-                            _this.params.pageNo = current;//	当前页数
+                            _this.params.pageNo = current;//当前页数
                             _this.requestListByCondition(); //刷新列表数据
                         })
                     })
@@ -100,7 +100,7 @@ class DocumentRouting extends Component {
         axios.PostAjax({
             url:'/documentCirculate/getPage',
             data:{
-                params:{..._this.params,"situation":3,"module":0,}
+                params:{..._this.params,"situation":2,"module":1,}
             }
         }).then((res)=>{
             if(res.status == "success"){
@@ -187,11 +187,12 @@ class DocumentRouting extends Component {
         console.log("item",item)
         let _this = this
         if(type == 'create'){
-            this.getMessage()
-            this.setState({
+            _this.getMessage()
+            _this.setState({
                 title:'添加公文',
                 isVisible:true,
-                informData:{issueDate:this.state.informData.date,author:"redux获取"},
+                informData:{author:"redux获取",date:this.state.informData.date},
+                status:false,
                 type
             })
         }
@@ -393,9 +394,9 @@ class DocumentRouting extends Component {
                         const reviewStatus = record.reviewResult == 0||2?'':'none'
                     return <ButtonGroup>
                         <Button type='primary' size='small' onClick={()=> {this.handleOperator('detail',record)}} >查看</Button>
-                        <Button type='primary' size='small' onClick={()=> {this.handleOperator('detail',record)}} >查阅记录</Button>
-                        <Button type='primary' size='small' onClick={()=> {this.handleOperator('check',record)}} >审核处理</Button>
-                        <Button type='primary' size='small'  onClick={()=> {this.handleOperator('check',record)}} >审核情况</Button>
+                        {/* <Button type='primary' size='small' onClick={()=> {this.handleOperator('detail',record)}} >查阅记录</Button> */}
+                        {/* <Button type='primary' size='small' onClick={()=> {this.handleOperator('check',record)}} >审核处理</Button> */}
+                        {/* <Button type='primary' size='small'  onClick={()=> {this.handleOperator('check',record)}} >审核情况</Button> */}
                         <Button type='primary' size='small' style={{display:reviewStatus}} onClick={()=> {this.handleOperator('modify',record)}}>修改</Button>
                         <Button type='primary' size='small' onClick={()=> {this.handleOperator('delete',record)}}>删除</Button>
                     </ButtonGroup>

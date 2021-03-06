@@ -1,61 +1,126 @@
 import React, { Component } from 'react'
-import { Button, Card, Row, Col, Table, Input, Select,Modal,Collapse} from 'antd'
+import { Button, Card, Row, Col, Table, Input, Select,Modal,Transfer,Upload,message,Icon} from 'antd'
+import {commonUrl} from "../../../axios/commonSrc";
 import './style.less'
 import axios from "../../../axios";
-import ETable from '../../../components/ETable'
 import Utils from "../../../utils";
-import  BaseForm  from '../../../components/BaseForm';
-import BraftEditor from 'braft-editor';
 import 'braft-editor/dist/index.css'
 import ButtonGroup from 'antd/lib/button/button-group'
-import SelectForm from './SelectForm'
 import Axios from 'axios';
+import difference from 'lodash/difference';
 const { TextArea } = Input;
 const { Option } = Select;
-// const { Link } = Anchor;
 const { Search } = Input;
+const confirm = Modal.confirm;
 
 class AddForm extends Component {
     state = {
         class: '',
         display_name: 'none',
-       sponsorsList:[]   //拟办人列表
+        mockData: [],
+        targetKeys:[],
+        isModalVisible: false,
+        isSelectVisible: false
     }
-    
+    params = {
+        pageNo: 1
+    }
     changeInput = (data, option) => {
         let value = this.props.informData
         value[option] = data
         this.props.dispatchInformData(value)
     }
     componentDidMount() {
+        this.getGovernment()
     }
-    //获取拟办人列表
-    GetSponsorsList = ()=>{
+    //获取政府人员信息
+    getGovernment = () => {
         let _this = this
         axios.PostAjax({
-            url: '',
+            url: '/supervision/ga/getList',
             data: {
-                params: ''
+                params: { ...this.params, isPage: 1 }
             }
         }).then((res) => {
             if (res.status == 'success') {
+                const originTargetKeys = res.data.data.map((item, index) => {
+                    return {
+                        key: item.id.toString(),
+                        name: item.name,
+                        deptName: item.deptName,
+                        jobName: item.jobName,
+                        id: item.id
+                    }
+                })
                 _this.setState({
-                    sponsorsList: res.data
+                    mockData: originTargetKeys,
                 })
             }
         })
     }
-    
+    //选择审核人
+    //穿梭框改变选择
+    onChange = nextTargetKeys => {
+        this.setState({ targetKeys: nextTargetKeys });
+    };
+    //选择审核人
+    handSelect = (value) => {
+        this.changeInput(value, 'reviewerId')
+        const reviewer = this.state.mockData.find(
+            item => value === item.id
+        )
+        this.changeInput(reviewer.name,'reviewer')
+        this.setState({
+            isSelectVisible:false
+        })
+    }
+    handleReader = () => {
+        const valueSelect = this.state.targetKeys||[]
+        const list = valueSelect.map((item,index)=>{
+            const reviewer = this.state.mockData.find(
+                data => parseInt(item) === data.id
+            )
+            return reviewer.name
+        })
+        this.changeInput(this.state.targetKeys,'ids')
+        this.changeInput(list.toString(),'allReaders')
+        this.setState({
+            isModalVisible:false
+        })
+    }
+    //处理上传文件
+    handleFile = (info) => {     
+        let fileList = info.fileList;
+        console.log("fileList",fileList)
+        if (info.file.status === 'done') {
+            message.success(`${info.file.name} 上传成功`);
+        } else if (info.file.status === 'error') {
+            message.error(`${info.file.name} 上传失败.`);
+        }
+        let appendix = JSON.stringify(fileList)//这里需转换格式
+        this.changeInput(appendix,"appendix"); 
+        
+    };
+    handleCancel = () => this.setState({ previewVisible: false });
 
+    handlePreview = file => {
+        this.setState({
+            previewImage: (file.response||{}).data,
+            previewVisible: true,
+        });
+    };
+    
+    
+    //文件结束
     render() {
-        let informData = this.props.informData||{};
+        let {informData} = this.props;
         const importance = this.props.importance
-        //转换返回的文件字段格式
+        //转换返回的文件字段格式  转了需要使用
         let appendix = JSON.parse(informData.appendix||JSON.stringify([]))
         //判断是编辑操作还是（查看|审核操作） 若是编辑操作 设置为false 允许编辑 
         const status = this.props.status == 'detail'||this.props.status == 'check' ? true : false
-        //如果是编辑操作 隐藏一个Card
-        this.state.display_name = this.props.status == 'modify' ? 'none':''
+        //如果是编辑和添加操作 隐藏一个Card
+        this.state.display_name = this.props.status == 'modify'||this.props.status == 'create' ? 'none':''
         ////如果是编辑操作 设置Card标题
         let titles = this.props.status == 'detail'?"审核":"拟办"
         //区分查看和审核处理  Card按钮
@@ -70,6 +135,8 @@ class AddForm extends Component {
             'media', 'separator',
             'clear'
         ]
+        //上传文件显示
+        const { previewVisible, previewImage,modifyVisible } = this.state;
         const columns = [
             {
                 title: '资料名称',
@@ -88,50 +155,123 @@ class AddForm extends Component {
             },
             {
                 title: '操作',
+                width:300,
                 dataIndex: 'operation',
-                render: (text, record) => {
+                render: (text, record,index) => {
+                    let displayButton = this.props.status == 'detail' ? 'none' : ''
                     return <ButtonGroup>
-                        <Button type='primary'>查看</Button>
-                        <Button type='primary'>下载</Button>
-                    </ButtonGroup>
+                        <Button type="primary" size="small" onClick={() => { this.handlePreview(record)}} style={{display:record.type=="image/jpeg"?'':'none'}}>查看</Button>
+                        <Button type="primary" size="small" onClick={() => { this.handlePreview(record)}}>下载</Button>
+                        <Button type="primary" size="small" onClick={() => { this.handleFileDelete(index) }} style={{display:displayButton}}>删除</Button>
+                     </ButtonGroup>
                 }
             }
         ]
-        const leftColumns = [
+
+        //穿梭框
+        const TableTransfer = ({ leftColumns, rightColumns, ...restProps }) => (
+            <Transfer {...restProps} showSelectAll={false} >
+                {({
+                    direction,
+                    filteredItems,
+                    onItemSelectAll,
+                    onItemSelect,
+                    selectedKeys: listSelectedKeys,
+                    disabled: listDisabled,
+                }) => {
+                    const columns = direction === 'left' ? leftColumns : rightColumns;
+                    const pagination = direction === 'left' ? this.state.pagination : true;
+                    const rowSelection = {
+                        getCheckboxProps: item => ({ disabled: listDisabled || item.disabled }),
+                        onSelectAll(selected, selectedRows) {
+                            const treeSelectedKeys = selectedRows
+                                .filter(item => !item.disabled)
+                                .map(({ key }) => key);
+                            const diffKeys = selected
+                                ? difference(treeSelectedKeys, listSelectedKeys)
+                                : difference(listSelectedKeys, treeSelectedKeys);
+                            onItemSelectAll(diffKeys, selected);
+                        },
+                        onSelect({ key }, selected) {
+                            onItemSelect(key, selected);
+                        },
+                        selectedRowKeys: listSelectedKeys,
+                    };
+
+                    return (
+                        <Table
+                            rowSelection={rowSelection}
+                            columns={columns}
+                            dataSource={filteredItems}
+                            size="small"
+                            pagination
+                            style={{ pointerEvents: listDisabled ? 'none' : null }}
+                            onRow={({ key, disabled: itemDisabled }) => ({
+                                onClick: () => {
+                                    if (itemDisabled || listDisabled) return;
+                                    onItemSelect(key, !listSelectedKeys.includes(key));
+                                },
+                            })}
+                        />
+                    );
+                }}
+            </Transfer>
+        );
+
+        const leftTableColumns = [
             {
+                dataIndex: 'name',
                 title: '姓名',
-                dataIndex: '',
-                key: ''
             },
             {
+                dataIndex: 'deptName',
                 title: '所属部门',
-                dataIndex: '',
-                key: ''
             },
             {
+                dataIndex: 'jobName',
                 title: '职务',
-                dataIndex: '',
-                key: ''
-            }
-        ]
-        const rigthColumns = [
+            },
+        ];
+        const columns1 = [
             {
+                dataIndex: 'name',
                 title: '姓名',
-                dataIndex: '',
-                key: ''
+            },
+            {
+                dataIndex: 'deptName',
+                title: '所属部门',
+            },
+            {
+                dataIndex: 'jobName',
+                title: '职务',
+            },
+            {
+                dataIndex: '操作',
+                dataIndex: 'operation',
+                render: (text, record) => {
+                    return <ButtonGroup>
+                        <Button type='default' onClick={()=>this.handSelect(record.id)}>选择</Button>
+                    </ButtonGroup>
+                }
             }
-        ]
+        ];
+        const rightTableColumns = [
+            {
+                dataIndex: 'name',
+                title: '姓名',
+            },
+        ];
         return (
             <div className='addContent'>
                 <div className='leftContent'>
                     <Card title="企业通知类型" style={{ width: 250 }}>
                         <Row style={{ marginTop: 10 }}>
                             <Col span={12} style={{ textAlign: 'right', fontSize: 15 }}>发布人：</Col>
-                            <Col span={12}>{informData.author}</Col>
+                            <Col span={12}>{status ? informData.author : informData.userName}</Col>
                         </Row>
                         <Row style={{ marginTop: 10 }}>
                             <Col span={12} style={{ textAlign: 'right', fontSize: 15 }}>收文日期：</Col>
-                            <Col span={12}>{informData.issueDate}</Col>
+                            <Col span={12}>{status ? informData.issueDate : informData.date}</Col>
                         </Row>
                         <Row style={{ marginTop: 10 }}>
                             <Col span={12} style={{ textAlign: 'right', fontSize: 15 }}>重要性：</Col>
@@ -144,17 +284,14 @@ class AddForm extends Component {
                             </Col>
                         </Row>
                     </Card>
-                    <Card title="拟办" style={{ width: 250, marginTop: 10 }} extra={<Button type="primary" size='small' onClick={()=>this.setState({isListVisible:true})} disabled={status}>拟办人</Button>} >
+                    <Card title="拟办" style={{ width: 250, marginTop: 10 }} extra={<Button type="primary" size='small' onClick={()=>this.setState({isSelectVisible:true})} disabled={status}>拟办人</Button>} >
                         <Row style={{ marginTop: 10 }}>
                             <Col span={12} style={{ textAlign: 'right', fontSize: 15 }}>拟办人：</Col>
                             <Col span={12}>{informData.reviewer}</Col>
                         </Row>
                     </Card>
-                    <Card title="发送给" style={{ width: 250,height:250,marginTop: 10 }} extra={<Button type="primary" size='small' onClick={()=>this.setState({isListVisible:true})} disabled={status}>查阅人</Button>}>                     
-                        <Row style={{ marginTop: 10 }}>
-                            <Col span={12} style={{ textAlign: 'right', fontSize: 15 }}>查阅人：</Col>
-                            <Col span={12}>{informData.allReaders}</Col>
-                        </Row> 
+                    <Card title="发送给" style={{ width: 250,height:250,marginTop: 10 }} extra={<Button type="primary" size='small' onClick={()=>this.setState({isModalVisible:true})} disabled={status}>查阅人</Button>}>                     
+                         <div>{informData.allReaders}</div> 
                      </Card>
                      <Card title={titles} style={{ width: 250,height:250,marginTop: 10 ,display:this.state.display_name}} extra={<Button type="primary" size='small' onClick={()=>this.setState({isListVisible:true})} disabled={flag}>处理</Button>}>                     
                         <Row style={{ marginTop: 10 }}>
@@ -171,17 +308,17 @@ class AddForm extends Component {
                     <Card title="企业公告正文" style={{ width: 700 }}>
                         <Row style={{marginTop:10}}>
                             <Col span={3} style={{textAlign:'right',fontSize:15}}>来文单位：</Col>
-                            <Col span={19}><Input placeholder='请输入来文单位' value={informData.sourcedocCompany||''} onChange={(e)=>this.changeInput(e.target.value,'articleNumber')} disabled={status}/></Col>
+                            <Col span={19}><Input placeholder='请输入来文单位' value={informData.sourcedocCompany||''} onChange={(e)=>this.changeInput(e.target.value,'sourcedocCompany')} disabled={status}/></Col>
                         </Row>
                         <Row style={{marginTop:10}}>
                             <Col span={3} style={{textAlign:'right',fontSize:15}}>来文文号：</Col>
-                            <Col span={7}><Input placeholder='请输入来入文号' value={informData.sourcedocNumber||''} onChange={(e)=>this.changeInput(e.target.value,'articleNumber')} disabled={status}/></Col>
+                            <Col span={7}><Input placeholder='请输入来入文号' value={informData.sourcedocNumber||''} onChange={(e)=>this.changeInput(e.target.value,'sourcedocNumber')} disabled={status}/></Col>
                             <Col span={5} style={{textAlign:'right',fontSize:15}}>公文流转号：</Col>
-                            <Col span={7}><Input placeholder='保存后自动生成' disabled="disabled" value={informData.docNumber||''} onChange={(e)=>this.changeInput(e.target.value,'articleNumber')} disabled={status}/></Col>       
+                            <Col span={7}><Input placeholder='保存后自动生成' disabled={true} value={informData.docNumber||''} onChange={(e)=>this.changeInput(e.target.value,'docNumber')}/></Col>       
                         </Row>
                         <Row style={{marginTop:10}}>
                             <Col span={3} style={{textAlign:'right',fontSize:15}}>标题：</Col>
-                            <Col span={19}><Input placeholder='请输入标题' value={informData.title||''} onChange={(e)=>this.changeInput(e.target.value,'articleNumber')} disabled={status}/></Col>
+                            <Col span={19}><Input placeholder='请输入标题' value={informData.title||''} onChange={(e)=>this.changeInput(e.target.value,'title')} disabled={status}/></Col>
                         </Row>
                         <Row style={{marginTop:10}}>
                             <TextArea rows={6} placeholder='请输入内容' value={informData.content} disabled={status}/>
@@ -189,24 +326,64 @@ class AddForm extends Component {
                     </Card>
                     <Card style={{ width: 700 }}>
                         <div>上传提示：上传的资质证照文件大小需≤5M；上传资料格式支持：jpg、png、pdf、world格式</div>
-                        <Table columns={columns}  dataSource={appendix} bordered />
+                        <Upload
+                        name='file'
+                        showUploadList={false}
+                        disabled={this.props.status=='detail'?true:false}
+                        action={commonUrl+'/upload/uploadReport'}
+                        onChange={this.handleFile}
+                        fileList={appendix}      
+                        >             
+                        <Button>
+                            <Icon type="upload" /> 选择上传文件
+                        </Button>
+                    </Upload>  
+                    <Table
+                        columns={columns}
+                        dataSource={appendix}
+                        pagination={false}
+                    />
+                    <Modal visible={previewVisible} footer={null} onCancel={this.handleCancel}>
+                    <img alt="example" style={{ width: '100%' }} src={commonUrl+'/upload/picture/'+previewImage} />
+                    </Modal>
+                    <Modal visible={modifyVisible} onOk={this.handleFileNameSubmit} okText='确定' cancelText='取消' onCancel={this.handleFileNameCancel}>
+                        <Input  disabled={this.props.status=='detail'?true:false} onChange={(e)=>this.changeFileName(e.target.value)} value={this.state.handleFileName}/>
+                    </Modal> 
                     </Card>
                 </div>
                 
                 <Modal
-                    width='1000px'
+                    width='800px'
                     title='人员列表'
-                    visible={this.state.isListVisible}
-                    onOk={()=>this.setState({isListVisible:false})}
-                    destroyOnClose={true}
-                    onCancel={()=>
-                        this.setState({
-                            isListVisible:false,
-                            informData:{}
-                        })
-                    }
+                    visible={this.state.isModalVisible}
+                    onOk={() => {this.handleReader()}}
+                    onCancel={() => { this.setState({ isModalVisible: false }) }}
                 >
-                   <SelectForm/>
+                    <TableTransfer
+                        dataSource={this.state.mockData}
+                        targetKeys={this.state.targetKeys}
+                        disabled={false}
+                        showSearch={true}
+                        onChange={this.onChange}
+                        filterOption={(inputValue, item) =>
+                            item.name.indexOf(inputValue) !== -1 || item.deptName.indexOf(inputValue) !== -1
+                        }
+                        leftColumns={leftTableColumns}
+                        rightColumns={rightTableColumns}
+                    />
+                </Modal>
+                <Modal
+                    width='800px'
+                    title='人员列表'
+                    visible={this.state.isSelectVisible}
+                    footer={null}
+                    onCancel={()=>this.setState({isSelectVisible:false})}
+                >
+                    <Table
+                        size='small'
+                        dataSource={this.state.mockData}
+                        columns={columns1}
+                    />
                 </Modal>
             </div>
         )

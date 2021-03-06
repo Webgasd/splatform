@@ -84,7 +84,7 @@ class AddForm extends Component {
         this.changeInput(this.state.targetKeys,'ids')
         this.changeInput(list.toString(),'allReaders')
         this.setState({
-            isSelectVisible:false
+            isModalVisible:false
         })
     }
     render() {
@@ -297,7 +297,8 @@ class AddForm extends Component {
                     width='800px'
                     title='人员列表'
                     visible={this.state.isSelectVisible}
-                    footer={false}
+                    footer={null}
+                    onCancel={()=>this.setState({isSelectVisible:false})}
                 >
                     <Table
                         size='small'
