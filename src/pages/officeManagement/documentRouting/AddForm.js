@@ -18,31 +18,16 @@ const { Search } = Input;
 class AddForm extends Component {
     state = {
         class: '',
+        display_name: 'none',
        sponsorsList:[]   //拟办人列表
     }
-    //获取通知类型
-    getClass = () => {
-        let _this = this
-        axios.PostAjax({
-            url: '/enterpriseNotice/getAllClass',
-            data: {
-                params: ''
-            }
-        }).then((res) => {
-            if (res.status == 'success') {
-                _this.setState({
-                    class: res.data
-                })
-            }
-        })
-    }
+    
     changeInput = (data, option) => {
         let value = this.props.informData
         value[option] = data
         this.props.dispatchInformData(value)
     }
     componentDidMount() {
-        //this.getClass()
     }
     //获取拟办人列表
     GetSponsorsList = ()=>{
@@ -60,16 +45,21 @@ class AddForm extends Component {
             }
         })
     }
-    //显示拟办人
-    showSponsors= ()=>{
-        this.setState({isList1Visible:true})
-    }
+    
 
     render() {
-        let sourceData = this.props.sourceData||{};
-        const allClass = this.state.class || []
+        let informData = this.props.informData||{};
+        const importance = this.props.importance
+        //转换返回的文件字段格式
+        let appendix = JSON.parse(informData.appendix||JSON.stringify([]))
+        //判断是编辑操作还是（查看|审核操作） 若是编辑操作 设置为false 允许编辑 
         const status = this.props.status == 'detail'||this.props.status == 'check' ? true : false
-        const { informData } = this.props
+        //如果是编辑操作 隐藏一个Card
+        this.state.display_name = this.props.status == 'modify' ? 'none':''
+        ////如果是编辑操作 设置Card标题
+        let titles = this.props.status == 'detail'?"审核":"拟办"
+        //区分查看和审核处理  Card按钮
+        let flag = this.props.status == 'detail'?true:false
         const controls = [
             'undo', 'redo', 'separator',
             'font-size', 'line-height', 'letter-spacing', 'separator',
@@ -83,18 +73,18 @@ class AddForm extends Component {
         const columns = [
             {
                 title: '资料名称',
-                dataIndex: '',
-                key: ''
+                dataIndex: 'name',
+                key: 'name'
             },
             {
                 title: '上传日期',
-                dataIndex: '',
-                key: ''
+                dataIndex: 'lastModifiedDate',
+                key: 'lastModifiedDate'
             },
             {
                 title: '文件大小',
-                dataIndex: '',
-                key: ''
+                dataIndex: 'size',
+                key: 'size'
             },
             {
                 title: '操作',
@@ -137,57 +127,69 @@ class AddForm extends Component {
                     <Card title="企业通知类型" style={{ width: 250 }}>
                         <Row style={{ marginTop: 10 }}>
                             <Col span={12} style={{ textAlign: 'right', fontSize: 15 }}>发布人：</Col>
-                            <Col span={12}>{informData.userName}</Col>
+                            <Col span={12}>{informData.author}</Col>
                         </Row>
                         <Row style={{ marginTop: 10 }}>
                             <Col span={12} style={{ textAlign: 'right', fontSize: 15 }}>收文日期：</Col>
-                            <Col span={12}>{informData.date}</Col>
+                            <Col span={12}>{informData.issueDate}</Col>
                         </Row>
                         <Row style={{ marginTop: 10 }}>
                             <Col span={12} style={{ textAlign: 'right', fontSize: 15 }}>重要性：</Col>
                             <Col span={12}>
                                 <Select value={informData.type} style={{ width: 120 }} onChange={(value) => this.changeInput(value, 'type')} disabled={status}>
-                                    {allClass.map((item) => {
-                                        return <Option key={item.id} value={item.type}>{item.type}</Option>
+                                    {importance.map((item) => {
+                                        return <Option key={item.id} value={item.type}>{item.className}</Option>
                                     })}
                                 </Select>
                             </Col>
                         </Row>
                     </Card>
-                    {/* extra={[<Button type="primary" size='small' onClick={()=>this.setState({isList1Visible:true})}>拟办人</Button>,<Button type="primary" size='small' onClick={()=>this.setState({isList2Visible:true})}>传阅人</Button>]} */}
-                    <Card title="拟办" style={{ width: 250, marginTop: 10 }} extra={<Button type="primary" size='small' onClick={()=>this.setState({isListVisible:true})}>拟办人</Button>} >
+                    <Card title="拟办" style={{ width: 250, marginTop: 10 }} extra={<Button type="primary" size='small' onClick={()=>this.setState({isListVisible:true})} disabled={status}>拟办人</Button>} >
                         <Row style={{ marginTop: 10 }}>
                             <Col span={12} style={{ textAlign: 'right', fontSize: 15 }}>拟办人：</Col>
-                            <Col span={12}>{informData.userName}</Col>
+                            <Col span={12}>{informData.reviewer}</Col>
                         </Row>
                     </Card>
-                    <Card title="发送给" style={{ width: 250,height:250,marginTop: 10 }} extra={<Button type="primary" size='small' onClick={()=>this.setState({isListVisible:true})}>查阅人</Button>}>
-
-                    </Card>
+                    <Card title="发送给" style={{ width: 250,height:250,marginTop: 10 }} extra={<Button type="primary" size='small' onClick={()=>this.setState({isListVisible:true})} disabled={status}>查阅人</Button>}>                     
+                        <Row style={{ marginTop: 10 }}>
+                            <Col span={12} style={{ textAlign: 'right', fontSize: 15 }}>查阅人：</Col>
+                            <Col span={12}>{informData.allReaders}</Col>
+                        </Row> 
+                     </Card>
+                     <Card title={titles} style={{ width: 250,height:250,marginTop: 10 ,display:this.state.display_name}} extra={<Button type="primary" size='small' onClick={()=>this.setState({isListVisible:true})} disabled={flag}>处理</Button>}>                     
+                        <Row style={{ marginTop: 10 }}>
+                            <Col span={12} style={{ textAlign: 'right', fontSize: 15 }}>拟办时间：</Col>
+                            <Col span={12}>{informData.operateTime}</Col>
+                        </Row> 
+                        <Row style={{ marginTop: 10 }}>
+                            <Col span={12} style={{ textAlign: 'right', fontSize: 15 }}>拟办结果：</Col>
+                            <Col span={12}>{informData.reviewComment}</Col>
+                        </Row> 
+                     </Card>
                 </div>
                 <div className='rightContent'>
                     <Card title="企业公告正文" style={{ width: 700 }}>
                         <Row style={{marginTop:10}}>
                             <Col span={3} style={{textAlign:'right',fontSize:15}}>来文单位：</Col>
-                            <Col span={19}><Input placeholder='请输入来文单位' value={sourceData.articleNumber||''} onChange={(e)=>this.changeInput(e.target.value,'articleNumber')} /></Col>
+                            <Col span={19}><Input placeholder='请输入来文单位' value={informData.sourcedocCompany||''} onChange={(e)=>this.changeInput(e.target.value,'articleNumber')} disabled={status}/></Col>
                         </Row>
                         <Row style={{marginTop:10}}>
                             <Col span={3} style={{textAlign:'right',fontSize:15}}>来文文号：</Col>
-                            <Col span={7}><Input placeholder='请输入来入文号' value={sourceData.articleNumber||''} onChange={(e)=>this.changeInput(e.target.value,'articleNumber')} /></Col>
+                            <Col span={7}><Input placeholder='请输入来入文号' value={informData.sourcedocNumber||''} onChange={(e)=>this.changeInput(e.target.value,'articleNumber')} disabled={status}/></Col>
                             <Col span={5} style={{textAlign:'right',fontSize:15}}>公文流转号：</Col>
-                            <Col span={7}><Input placeholder='请输输入公文流转号' value={sourceData.articleNumber||''} onChange={(e)=>this.changeInput(e.target.value,'articleNumber')} /></Col>       
+                            <Col span={7}><Input placeholder='保存后自动生成' disabled="disabled" value={informData.docNumber||''} onChange={(e)=>this.changeInput(e.target.value,'articleNumber')} disabled={status}/></Col>       
                         </Row>
                         <Row style={{marginTop:10}}>
                             <Col span={3} style={{textAlign:'right',fontSize:15}}>标题：</Col>
-                            <Col span={19}><Input placeholder='请输入标题' value={sourceData.articleNumber||''} onChange={(e)=>this.changeInput(e.target.value,'articleNumber')} /></Col>
+                            <Col span={19}><Input placeholder='请输入标题' value={informData.title||''} onChange={(e)=>this.changeInput(e.target.value,'articleNumber')} disabled={status}/></Col>
                         </Row>
                         <Row style={{marginTop:10}}>
-                            <TextArea rows={6} placeholder='请输入内容'/>
+                            <TextArea rows={6} placeholder='请输入内容' value={informData.content} disabled={status}/>
                         </Row>
                     </Card>
                     <Card style={{ width: 700 }}>
                         <div>上传提示：上传的资质证照文件大小需≤5M；上传资料格式支持：jpg、png、pdf、world格式</div>
-                        <Table columns={columns} bordered />
+                        <Table columns={columns}  dataSource={appendix} bordered />
                     </Card>
                 </div>
                 

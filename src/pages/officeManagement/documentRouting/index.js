@@ -40,6 +40,7 @@ class DocumentRouting extends Component {
     componentDidMount(){
         this.requestList()
         this.requestUnit()
+        this.requestImportance()
     }
     //发布人和发布日期信息
     getMessage = () => {
@@ -54,7 +55,44 @@ class DocumentRouting extends Component {
     //查询
     handleFilterSubmit = (params) => {
         this.params = params
-        this.params.startData = this.params.startTime
+        console.log(this.params)
+        this.requestListByCondition()
+    }
+    //按条件获取数据
+    requestListByCondition = ()=>{
+        let _this = this;
+        axios.PostAjax({
+            url:'/documentCirculate/getPage',
+            data:{
+                params:{..._this.params,"situation":2}
+            }
+        }).then((res)=>{
+            if(res.status == "success"){
+                if(res.data!==null){
+                    let list  = res.data.data.map((item,i)=>{
+                        item.key = i;
+                        return item;
+                    })
+                    _this.setState({
+                        list:list,
+                        pagination:Utils.pagination(res,(current)=>{
+                            _this.params.pageNo = current;//	当前页数
+                            _this.requestListByCondition(); //刷新列表数据
+                        })
+                    })
+                }else{
+                    res.data = {"total":0,"data":[],"pageNo": 1,"pageSize": 10}
+                    _this.setState({
+                        list:[],
+                        pagination:Utils.pagination(res,(current)=>{
+                            _this.params.pageNo = current;//	当前页数
+                            _this.requestListByCondition(); //刷新列表数据
+                        })
+                    })
+                }
+                
+            }
+        })
     }
     //获取表格数据
     requestList = ()=>{
@@ -80,9 +118,28 @@ class DocumentRouting extends Component {
             }
         })
     }
-    //获取重要性列表
-    requestImportants = ()=>{
-        
+     //获取重要性
+     requestImportance = ()=>{
+        let _this = this;
+        axios.ajax({
+            url:'/documentTypeConfig/getByType',
+            data:{
+                params:{"type":2}
+            }
+        }).then((res)=>{
+            if(res.status == "success"){
+                let Importance = res.data||[]
+                console.log("重要性",Importance)
+                let list = Importance.map((item,key)=>{
+                    item.id = item.id
+                    item.name = item.className
+                    return item
+                })
+                _this.setState({
+                    Importance:list
+                })
+            }
+        })
     }
     //获取来文单位
     requestUnit = ()=>{
@@ -97,7 +154,7 @@ class DocumentRouting extends Component {
                 let units = res.data.data||[]
                 console.log("来文单位",units)
                 let list = units.map((item,key)=>{
-                    item.id = item.name
+                    item.id = item.id
                     item.name = item.name
                     return item
                 })
@@ -107,37 +164,66 @@ class DocumentRouting extends Component {
             }
         })
     }
+    //获取详细信息
+    requestDetailById = (id)=>{
+        let _this = this;
+        axios.PostAjax({
+            url:'/documentCirculate/getById',
+            data:{
+                params:{..._this.params,docId:id,module:2}
+            }
+        }).then((res)=>{
+            if(res.status == "success"){
+                let item = res.data||[]
+                _this.setState({
+                    informData:item
+                })
+                // console.log("详细",this.state.detailItem)
+            }
+        })
+    }
     //查看 修改 删除数据   拟态框
     handleOperator = (type,item) => {
+        console.log("item",item)
         let _this = this
         if(type == 'create'){
             this.getMessage()
             this.setState({
-                title:'通知公告',
+                title:'添加公文',
                 isVisible:true,
+                informData:{issueDate:this.state.informData.date,author:"redux获取"},
                 type
             })
         }
-        else if(type == 'modify'||type == 'detail'){
+        else if(type == 'modify'||type == 'detail'||type == 'check'){
             if(type == 'modify'){
-                let content = item.content
-                item.content = BraftEditor.createEditorState(content)
+                _this.requestDetailById(item.id)
                 _this.setState({
                     title:item.title,
                     isVisible:true,
-                    informData:item,
+                    status:false,
                     type
                 })
             }
-            else if(type == 'detail'){
-                let content = item.content
-                item.content = BraftEditor.createEditorState(content)
+            else if(type == 'check'){
+                _this.requestDetailById(item.id)
                 _this.setState({
-                    title:item.title,
+                    title:"公文流转拟办",
+                    status:true, //拟办不需要右下角的按钮
                     isVisible:true,
-                    informData:item,
                     type
                 })
+                console.log("informData",this.state.informData)
+            }
+            else if(type == 'detail'){
+                _this.requestDetailById(item.id)
+                _this.setState({
+                    title:"公文流转查看",
+                    status:true, //查看不需要右下角的按钮
+                    isVisible:true,
+                    type
+                })
+                console.log("informData",this.state.informData)
             }
         }
         
@@ -294,22 +380,24 @@ class DocumentRouting extends Component {
                         color ='red'
                     }
                     return <Tag color={color} key={reviewResult}>
-                     {review.toUpperCase()}
+                     {review.toUpperCase()} 
                     </Tag>
                 }
             },
             {
                 title:'操作',
                 dataIndex:'operation',
-                width:'500px',
-                render:(text,record) => {                  
-                        const reviewStatus = record.reviewResult == 1?'none':''
-                        const obReviewStatus = record.reviewResult == 1?'':'none'
+                width:'400px',
+                render:(text,record) => {
+                        //0代表未审核 1代表通过 2代表不通过    未审核和不通过都可以修改                  
+                        const reviewStatus = record.reviewResult == 0||2?'':'none'
                     return <ButtonGroup>
-                        <Button type='primary'  onClick={()=> {this.handleOperator('detail',record)}} >查看</Button>
-                        {this.props.acl.indexOf('/modify')>-1? <Button type='primary' style={{display:reviewStatus}} onClick={()=> {this.handleOperator('modify',record)}}>修改</Button>:null}
-                        {/* <Button type='primary' style={{display:obReviewStatus}} onClick={()=>{this.handleOperator('issueCancel',record)}}>取消发布</Button> */}
-                        {this.props.acl.indexOf('/delete')>-1? <Button type='primary' onClick={()=> {this.handleOperator('delete',record)}}>删除</Button>:null}
+                        <Button type='primary' size='small' onClick={()=> {this.handleOperator('detail',record)}} >查看</Button>
+                        <Button type='primary' size='small' onClick={()=> {this.handleOperator('detail',record)}} >查阅记录</Button>
+                        <Button type='primary' size='small' onClick={()=> {this.handleOperator('check',record)}} >审核处理</Button>
+                        <Button type='primary' size='small'  onClick={()=> {this.handleOperator('check',record)}} >审核情况</Button>
+                        <Button type='primary' size='small' style={{display:reviewStatus}} onClick={()=> {this.handleOperator('modify',record)}}>修改</Button>
+                        <Button type='primary' size='small' onClick={()=> {this.handleOperator('delete',record)}}>删除</Button>
                     </ButtonGroup>
                 }
             },
@@ -320,15 +408,15 @@ class DocumentRouting extends Component {
                 type: 'SELECT',
                 label: '重要性',
                 placeholder: '请选择重要性',
-                field: 'type',
+                field: 'typeId',//id
                 width: 150,
-                list: [{id: 0, name: '一般'}, {id: 1, name: '重要'},{id: 2, name: '紧急'}]
+                list: this.state.Importance
             },
             {
                 type: 'SELECT',
                 label: '来文单位',
                 placeholder: '请选择来文单位',
-                field: 'sourcedocCompany',
+                field: 'sourcedocCompanyId',
                 width: 150,
                 list: this.state.units
             },
@@ -342,7 +430,7 @@ class DocumentRouting extends Component {
             {
                 type: 'DATE',
                 label: '收文日期',
-                field: 'issueDate',
+                field: 'endDate',
             },
             {
                 type: 'INPUT',
@@ -389,12 +477,15 @@ class DocumentRouting extends Component {
                 </Card>
                 <Modal
                     width='1000px'
-                    title='通知公告'
+                    title={this.state.title}
                     visible={this.state.isVisible}
-                    footer = {[
+                    footer = {
+                        this.state.status
+                        ?true:[
                         <Button type='primary' key='toPublic' onClick={e=>this.handleSubmit(1)}>保存直接发布</Button>,
                         <Button type='primary' key='toPerson' onClick={e=>this.handleSubmit(2)}>转发给拟办人</Button>
-                    ]}
+                        ]
+                }
                     destroyOnClose={true}
                     onCancel={()=>{
                         this.setState({
@@ -407,6 +498,7 @@ class DocumentRouting extends Component {
                         informData ={this.state.informData}
                         dispatchInformData = {(value) => this.setState({informData:value})}
                         status = {this.state.type}
+                        importance = {this.state.Importance}
                      />
                 </Modal>
                 <Modal
@@ -424,23 +516,7 @@ class DocumentRouting extends Component {
                 >
                    <RecordsFRorm/>
                 </Modal>
-                {/* <Modal
-                    width='1000px'
-                    title='法律法规'
-                    visible={this.state.isDetailVisible}
-                    onOk={()=>this.setState({isDetailVisible:false})}
-                    destroyOnClose={true}
-                    onCancel={()=>
-                        this.setState({
-                            isDetailVisible:false,
-                            informData:{}
-                        })
-                    }
-                >
-                    <DetailForm
-                        informData = {this.state.informData||{}}
-                    />
-                </Modal> */}
+                
             </div>
         )
     }
