@@ -12,42 +12,7 @@ const Panel = Collapse.Panel;
 const ButtonGroup = Button.Group;
 const confirm = Modal.confirm
 
-const formList = [
-    {
-        type: 'SELECT',
-        label: '企业通知类型',
-        placeholder: '请选择通知类型',
-        field: 'type',
-        width: 150,
-        list: [{id: 0, name: '0'}, {id: 1, name: '1'}]
-    },
-    {
-        type: 'INPUT',
-        label: '通知公告标题',
-        placeholder: '请输入查询关键词',
-        field: 'title',
-        width: 150,
-    },
-    {
-        type: 'INPUT',
-        label: '发布人',
-        placeholder: '请输入查询关键词',
-        field: 'author',
-        width: 150,
-    },
-    {
-        type: 'INPUT',
-        label: '核验人',
-        placeholder: '请输入查询关键词',
-        field: 'reviewer',
-        width: 150,
-    },
-    {
-        type: 'TIME',
-        label: '发布日期',
-        field: 'issueDate',
-    }
-];
+
 @connect(
     state=>({
         acl:state.acls['/announcement'],
@@ -84,10 +49,49 @@ class Announcement extends Component {
             informData:informData
         })
     }
-    //查询
-    handleFilterSubmit = (params) => {
+     //查询
+     handleFilterSubmit = (params) => {
         this.params = params
-        this.params.startData = this.params.startTime
+        this.params.startDate = this.params.startissueDate
+        this.params.endDate = this.params.endissueDate
+        console.log(this.params)
+        this.requestListByCondition()
+    }
+    //按条件获取数据
+    requestListByCondition = ()=>{
+        let _this = this;
+        axios.PostAjax({
+            url:'/documentCirculate/getPage',
+            data:{
+                params:{..._this.params,"situation":2,module:0}
+            }
+        }).then((res)=>{
+            if(res.status == "success"){
+                if(res.data!==null){
+                    let list  = res.data.data.map((item,i)=>{
+                        item.key = i;
+                        return item;
+                    })
+                    _this.setState({
+                        list:list,
+                        pagination:Utils.pagination(res,(current)=>{
+                            _this.params.pageNo = current;//	当前页数
+                            _this.requestListByCondition(); //刷新列表数据
+                        })
+                    })
+                }else{
+                    res.data = {"total":0,"data":[],"pageNo": 1,"pageSize": 10}
+                    _this.setState({
+                        list:[],
+                        pagination:Utils.pagination(res,(current)=>{
+                            _this.params.pageNo = current;//	当前页数
+                            _this.requestListByCondition(); //刷新列表数据
+                        })
+                    })
+                }
+                
+            }
+        })
     }
     //获取表格数据
     requestList = ()=>{
@@ -95,7 +99,7 @@ class Announcement extends Component {
         axios.PostAjax({
             url:'/documentCirculate/getPage',
             data:{
-                params:{..._this.params,situation:0,module:0}
+                params:{..._this.params,situation:2,module:0}
             }
         }).then((res)=>{
             if(res.status == "success"){
@@ -214,13 +218,55 @@ class Announcement extends Component {
             }
         }).then((res) => {
             if (res.status == 'success') {
+                let data = res.data||[]
+                let list = data.map((item,key)=>{
+                    item.id = item.id
+                    item.name = item.className
+                    return item
+                })
                 _this.setState({
-                    class: res.data
+                    class: list
                 })
             }
         })
     }
     render() {
+        const formList = [
+            {
+                type: 'SELECT',
+                label: '企业通知类型',
+                placeholder: '请选择通知类型',
+                field: 'typeId',
+                width: 150,
+                list: this.state.class
+            },
+            {
+                type: 'INPUT',
+                label: '通知公告标题',
+                placeholder: '请输入查询关键词',
+                field: 'title',
+                width: 150,
+            },
+            {
+                type: 'INPUT',
+                label: '发布人',
+                placeholder: '请输入查询关键词',
+                field: 'author',
+                width: 150,
+            },
+            {
+                type: 'INPUT',
+                label: '核验人',
+                placeholder: '请输入查询关键词',
+                field: 'reviewerName',
+                width: 150,
+            },
+            {
+                type: 'TIME',
+                label: '发布日期',
+                field: 'issueDate',
+            }
+        ];
         const columns = [
             {
                 title:'通知类型',

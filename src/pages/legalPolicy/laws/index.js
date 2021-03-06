@@ -246,7 +246,7 @@ class Laws extends Component {
         let type =this.state.type;
         let data = this.state.lewsData
         let content = data.content||BraftEditor.createEditorState(null)
-        console.log("新增数据data",content)
+        
         data.appendix = this.state.fileList
         data.type = 1 //法律法规
         data.content=content.toHTML()
@@ -269,8 +269,6 @@ class Laws extends Component {
     }
     
     render() {
-        // console.log(this.props.userInfo)
-        // console.log(this.state.lewsData)
         const columns = [
             {
                 title:'主题分类',
@@ -350,7 +348,7 @@ class Laws extends Component {
                 <Card style={{marginTop:10}}>
                     <div className='button-box'>
                         <Button type="primary" onClick={()=> this.handleOperator('create',null)}>数据新增</Button>
-                        <Button type="primary" onClick={()=>this.handleDelete}>批量删除</Button>
+                        <Button type="danger" onClick={()=>this.handleDelete}>批量删除</Button>
                     </div>
                     <div style={{marginTop:30}}>
                         <ETable

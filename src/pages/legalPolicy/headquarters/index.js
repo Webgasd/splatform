@@ -14,7 +14,6 @@ const ButtonGroup = Button.Group;
 const confirm = Modal.confirm
 
 
-
 @connect(
     state=>({
         acl:state.acls['/laws'],
@@ -367,7 +366,7 @@ class Laws extends Component {
                 <Card style={{marginTop:10}}>
                     <div className='button-box'>
                         <Button type="primary" onClick={()=> this.handleOperator('create',null)}>数据新增</Button>
-                        <Button type="primary" onClick={()=>this.handleDelete}>批量删除</Button>
+                        <Button type="danger" onClick={()=>this.handleDelete}>批量删除</Button>
                     </div>
                     <div style={{marginTop:30}}>
                         <ETable
