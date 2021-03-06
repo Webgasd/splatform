@@ -6,6 +6,7 @@ import Utils from "../../../utils";
 import axios from "../../../axios";
 import {connect} from "react-redux";
 import AddForm from './AddForm'
+import moment from 'moment';
 import { green } from 'chalk';
 const Panel = Collapse.Panel;
 const ButtonGroup = Button.Group;
@@ -64,7 +65,7 @@ class Announcement extends Component {
                 key:1
             }
         ],
-        title:''  //拟态框标题
+        title:'' , //拟态框标题
     }
     params = {
         pageNo:1
@@ -75,10 +76,10 @@ class Announcement extends Component {
     }
     //发布人和发布日期信息
     getMessage = () => {
-        let today = new Date()
-        let date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+        let date = moment().format("YYYY-MM-DD")
         let informData = this.state.informData
         informData.date = date
+        informData.issueDate = date
         this.setState({
             informData:informData
         })
@@ -189,7 +190,7 @@ class Announcement extends Component {
         axios.PostAjax({
                     url:this.state.type=='create'?'/documentCirculate/insert':'/documentCirculate/update',
                     data:{
-                        params:this.state.informData
+                        params:{...this.state.informData,module:0}
                     }
                 }).then((res)=>{
                     if(res.status == 'success'){
@@ -224,7 +225,11 @@ class Announcement extends Component {
             {
                 title:'通知类型',
                 dataIndex:'typeId',
-                key:'typeId'
+                key:'typeId',
+                render:(typeId)=>{
+                    let data = (this.state.class||[]).find((item)=>item.id==typeId)||{};
+                    return data.className;
+                }
             },
             {
                 title:'通知公告标题',
