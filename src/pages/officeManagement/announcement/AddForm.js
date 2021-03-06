@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Button, Card, Row, Col, Table, Input, Select, Transfer, Modal } from 'antd'
+import { Button, Card, Row, Col, Table, Input, Select, Transfer, Modal, Icon, Upload, message } from 'antd'
 import './style.less'
 import Utils from "../../../utils";
 import axios from "../../../axios";
@@ -8,6 +8,7 @@ import 'braft-editor/dist/index.css'
 import ButtonGroup from 'antd/lib/button/button-group'
 import Axios from 'axios';
 import difference from 'lodash/difference';
+import { commonUrl } from '../../../axios/commonSrc'
 const { TextArea } = Input;
 const { Option } = Select;
 
@@ -17,7 +18,7 @@ class AddForm extends Component {
     state = {
         class: '',
         mockData: [],
-        targetKeys:[],
+        targetKeys: this.props.informData.ids || [],
         isModalVisible: false,
         isSelectVisible: false
     }
@@ -68,44 +69,61 @@ class AddForm extends Component {
         const reviewer = this.state.mockData.find(
             item => value === item.id
         )
-        this.changeInput(reviewer.name,'reviewer')
+        this.changeInput(reviewer.name, 'reviewer')
         this.setState({
-            isSelectVisible:false
+            isSelectVisible: false
         })
     }
     handleReader = () => {
-        const valueSelect = this.state.targetKeys||[]
-        const list = valueSelect.map((item,index)=>{
+        const valueSelect = this.state.targetKeys || []
+        const list = valueSelect.map((item, index) => {
             const reviewer = this.state.mockData.find(
                 data => parseInt(item) === data.id
             )
             return reviewer.name
         })
-        this.changeInput(this.state.targetKeys,'ids')
-        this.changeInput(list.toString(),'allReaders')
+        this.changeInput(this.state.targetKeys, 'ids')
+        this.changeInput(list.toString(), 'allReaders')
         this.setState({
-            isModalVisible:false
+            isModalVisible: false
         })
     }
+    //上传文件
+    handleFile = (info) => {
+        const fileList = info.fileList;
+        if (info.file.status === 'done') {
+            message.success(`${info.file.name} 上传成功`);
+        } else if (info.file.status === 'error') {
+            message.error(`${info.file.name} 上传失败.`);
+        }
+        const data = JSON.stringify(fileList)
+        this.changeInput(data, 'appendix');
+
+    }
+    //查看图片
+    handlePreview = file => {
+        console.log(file)
+        this.setState({
+            previewImage: (file.response || {}).data,
+            previewVisible: true,
+        });
+    };
+    //下载文件
+    downLoad = (file) => {
+       const download = commonUrl + '/upload/picture/' + (file.response || {}).data
+       window.open(download)
+    }
     render() {
+        console.log(this.state.targetKeys)
+        const appendix = JSON.parse(this.props.informData.appendix || JSON.stringify([]))
         const allClass = this.props.class || []
         const status = this.props.status == 'detail' || this.props.status == 'check' ? true : false
         const { informData } = this.props
-        const controls = [
-            'undo', 'redo', 'separator',
-            'font-size', 'line-height', 'letter-spacing', 'separator',
-            'text-color', 'bold', 'italic', 'underline', 'strike-through', 'separator',
-            'superscript', 'subscript', 'remove-styles', 'emoji', 'separator', 'text-indent', 'text-align', 'separator',
-            'headings', 'list-ul', 'list-ol', 'blockquote', 'code', 'separator',
-            'link', 'separator', 'hr', 'separator',
-            'media', 'separator',
-            'clear'
-        ]
         const columns = [
             {
                 title: '资料名称',
-                dataIndex: '',
-                key: ''
+                dataIndex: 'name',
+                key: 'name'
             },
             {
                 title: '上传日期',
@@ -122,8 +140,8 @@ class AddForm extends Component {
                 dataIndex: 'operation',
                 render: (text, record) => {
                     return <ButtonGroup>
-                        <Button type='primary'>查看</Button>
-                        <Button type='primary'>下载</Button>
+                        <Button type='primary' style={{display:record.type=='image/jpg'?"":'none'}} onClick={() => { this.handlePreview(record) }}>查看</Button>
+                        <Button type='primary' onClick={() => { this.downLoad(record) }}>下载</Button>
                     </ButtonGroup>
                 }
             }
@@ -209,7 +227,7 @@ class AddForm extends Component {
                 dataIndex: 'operation',
                 render: (text, record) => {
                     return <ButtonGroup>
-                        <Button type='default' onClick={()=>this.handSelect(record.id)}>选择</Button>
+                        <Button type='default' onClick={() => this.handSelect(record.id)}>选择</Button>
                     </ButtonGroup>
                 }
             }
@@ -230,7 +248,7 @@ class AddForm extends Component {
                         </Row>
                         <Row style={{ marginTop: 10 }}>
                             <Col span={12} style={{ textAlign: 'right', fontSize: 15 }}>发布日期：</Col>
-                            <Col span={12}>{this.props.status == 'detail' ? informData.issueDate : informData.date}</Col>
+                            <Col span={12}>{informData.issueDate}</Col>
                         </Row>
                         <Row style={{ marginTop: 10 }}>
                             <Col span={12} style={{ textAlign: 'right', fontSize: 15 }}>类型：</Col>
@@ -243,13 +261,13 @@ class AddForm extends Component {
                             </Col>
                         </Row>
                     </Card>
-                    <Card title="审核人" style={{ width: 250, marginTop: 10 }} extra={<Button type='primary' onClick={() => this.setState({ isSelectVisible: true })}>审核人</Button>}>
+                    <Card title="审核人" style={{ width: 250, marginTop: 10 }} extra={<Button disabled={status} type='primary' onClick={() => this.setState({ isSelectVisible: true })}>审核人</Button>}>
                         <Row style={{ marginTop: 10 }}>
                             <Col span={12} style={{ textAlign: 'right', fontSize: 15 }}>审核人：</Col>
                             <Col span={12}>{informData.reviewer}</Col>
                         </Row>
                     </Card>
-                    <Card title="发送给" style={{ width: 250, marginTop: 10 }} extra={<Button type='primary' onClick={() => this.setState({ isModalVisible: true })}>人员</Button>}>
+                    <Card title="发送给" style={{ width: 250, marginTop: 10 }} extra={<Button disabled={status} type='primary' onClick={() => this.setState({ isModalVisible: true })}>人员</Button>}>
                         <div>{informData.allReaders}</div>
                     </Card>
                 </div>
@@ -257,27 +275,35 @@ class AddForm extends Component {
                     <Card title="通知公告正文" style={{ width: 700 }}>
                         <Row style={{ marginTop: 10 }}>
                             <Col span={6} style={{ textAlign: 'right', fontSize: 15 }}>通知文号：</Col>
-                            <Col span={18}><Input value={informData.docNumber} onChange={(e) => this.changeInput(e.target.value, 'docNumber')} /></Col>
+                            <Col span={18}><Input value={informData.docNumber} disabled={status} onChange={(e) => this.changeInput(e.target.value, 'docNumber')} /></Col>
                         </Row>
                         <Row style={{ marginTop: 10 }}>
                             <Col span={6} style={{ textAlign: 'right', fontSize: 15 }}>标题：</Col>
-                            <Col span={18}><Input value={informData.title} onChange={(e) => this.changeInput(e.target.value, 'title')}/></Col>
+                            <Col span={18}><Input value={informData.title} disabled={status} onChange={(e) => this.changeInput(e.target.value, 'title')} /></Col>
                         </Row>
                         <Row style={{ marginTop: 10 }}>
                             <Col span={6} style={{ textAlign: 'right', fontSize: 15 }}>通知公告内容：</Col>
-                            <Col span={18}><TextArea rows={4} value={informData.content} onChange={(e) => this.changeInput(e.target.value, 'content')}/></Col>
+                            <Col span={18}><TextArea rows={4} value={informData.content} disabled={status} onChange={(e) => this.changeInput(e.target.value, 'content')} /></Col>
                         </Row>
                     </Card>
                     <Card style={{ width: 700 }}>
                         <div>上传提示：上传的资质证照文件大小需≤5M；上传资料格式支持：jpg、png、pdf、world格式</div>
-                        <Table columns={columns} bordered />
+                        <Upload
+                            action={commonUrl + '/upload/uploadReport'}
+                            onChange={(info) => this.handleFile(info)}
+                            showUploadList={false}
+                            fileList={appendix}
+                        >
+                            <Button style={{ margin: 10 }}><Icon type="upload" />上传附件</Button>
+                        </Upload>
+                        <Table columns={columns} dataSource={appendix} bordered />
                     </Card>
                 </div>
                 <Modal
                     width='800px'
                     title='人员列表'
                     visible={this.state.isModalVisible}
-                    onOk={() => {this.handleReader()}}
+                    onOk={() => { this.handleReader() }}
                     onCancel={() => { this.setState({ isModalVisible: false }) }}
                 >
                     <TableTransfer
@@ -298,13 +324,16 @@ class AddForm extends Component {
                     title='人员列表'
                     visible={this.state.isSelectVisible}
                     footer={null}
-                    onCancel={()=>this.setState({isSelectVisible:false})}
+                    onCancel={() => { this.setState({ isSelectVisible: false }) }}
                 >
                     <Table
                         size='small'
                         dataSource={this.state.mockData}
                         columns={columns1}
                     />
+                </Modal>
+                <Modal visible={this.state.previewVisible} footer={null} onCancel={() => this.setState({ previewVisible: false })}>
+                    <img alt="example" style={{ width: '100%' }} src={commonUrl + '/upload/picture/' + this.state.previewImage} />
                 </Modal>
             </div>
         )
