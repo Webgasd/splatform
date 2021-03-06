@@ -150,7 +150,7 @@ class Announcement extends Component {
                okType:'danger',
                cancelText:'否',
                onOk:() => {
-                   axios.ajax({
+                   axios.PostAjax({
                        url:'/documentCirculate/delete',
                        data:{
                            params:{

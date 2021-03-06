@@ -1,10 +1,11 @@
 
 import React, { Component } from 'react'
-import {Row,Col,Input,Select,DatePicker, Upload,Table,Button, Card} from 'antd'
+import {Row,Col,Input,Select,DatePicker, Upload,Table,Button, Icon,message} from 'antd'
 import BraftEditor from 'braft-editor';
 import 'braft-editor/dist/index.css'
 import axios from "../../axios";
 import moment from 'moment';
+import {commonUrl} from '../../axios/commonSrc'
 import './style.less'
 const {Option} = Select
 const ButtonGroup = Button.Group;
@@ -92,9 +93,33 @@ export default class AddForm extends Component{
             }
         })
     }
+    //上传文件
+    handleFile = (info) => {
+    const fileList = info.fileList;
+    if (info.file.status === 'done') {
+        message.success(`${info.file.name} 上传成功`);
+    } else if (info.file.status === 'error') {
+        message.error(`${info.file.name} 上传失败.`);
+    }
+    const data = JSON.stringify(fileList)
+    this.changeInput(data, 'appendix');
 
+    }
+    //查看图片
+    handlePreview = file => {
+        console.log(file)
+        this.setState({
+            previewImage: (file.response || {}).data,
+            previewVisible: true,
+        });
+    };
+    //下载文件
+    downLoad = (file) => {
+    const download = commonUrl + '/upload/picture/' + (file.response || {}).data
+    window.open(download)
+    }
     render() {
-        console.log("格式",this.state.affiliatedInstitutions)
+        const appendix = JSON.parse(this.props.sourceData.appendix || JSON.stringify([]))
         const columns = [
             {
                 title:'资料名称',
@@ -206,15 +231,14 @@ export default class AddForm extends Component{
                 <div className="editAreaBody">
                     <span style={{marginTop:30,flex:1}}>上传提示：上传的资质证照文件大小需≤5M；上传资料格式支持：jpg、png、pdf、world格式</span>
                     <Upload
-                        name='file'
+                        action={commonUrl + '/upload/uploadReport'}
+                        onChange={(info) => this.handleFile(info)}
                         showUploadList={false}
-                        //action={}
-                        fileList={this.props.fileList}
-                        onChange={(info) => this.handleChange(info)}
+                        fileList={appendix}
                     >
-                        <Button className='button'>添加附件</Button>
+                        <Button style={{ margin: 10 }}><Icon type="upload" />上传附件</Button>
                     </Upload>
-                    <Table bordered className='table' columns={columns} dataSource={this.props.fileList}/>
+                    <Table bordered className='table' columns={columns} dataSource={appendix}/>
                 </div>
             </div>
         )
