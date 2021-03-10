@@ -114,7 +114,6 @@ class AddForm extends Component {
        window.open(download)
     }
     render() {
-        console.log(this.state.targetKeys)
         const appendix = JSON.parse(this.props.informData.appendix || JSON.stringify([]))
         const allClass = this.props.class || []
         const status = this.props.status == 'detail' || this.props.status == 'check' ? true : false
@@ -243,15 +242,15 @@ class AddForm extends Component {
                 <div className='leftContent'>
                     <Card title="企业通知类型" style={{ width: 250 }}>
                         <Row style={{ marginTop: 10 }}>
-                            <Col span={12} style={{ textAlign: 'right', fontSize: 15 }}>发布人：</Col>
+                            <Col span={12} style={{ fontSize: 15 }}>发布人：</Col>
                             <Col span={12}>{informData.userName}</Col>
                         </Row>
                         <Row style={{ marginTop: 10 }}>
-                            <Col span={12} style={{ textAlign: 'right', fontSize: 15 }}>发布日期：</Col>
+                            <Col span={12} style={{ fontSize: 15 }}>发布日期：</Col>
                             <Col span={12}>{informData.issueDate}</Col>
                         </Row>
                         <Row style={{ marginTop: 10 }}>
-                            <Col span={12} style={{ textAlign: 'right', fontSize: 15 }}>类型：</Col>
+                            <Col span={12} style={{ fontSize: 15 }}>类型：</Col>
                             <Col span={12}>
                                 <Select value={informData.typeId} style={{ width: 120 }} onChange={(value) => this.changeInput(value, 'typeId')} disabled={status}>
                                     {allClass.map((item, index) => {
@@ -263,7 +262,7 @@ class AddForm extends Component {
                     </Card>
                     <Card title="审核人" style={{ width: 250, marginTop: 10 }} extra={<Button disabled={status} type='primary' onClick={() => this.setState({ isSelectVisible: true })}>审核人</Button>}>
                         <Row style={{ marginTop: 10 }}>
-                            <Col span={12} style={{ textAlign: 'right', fontSize: 15 }}>审核人：</Col>
+                            <Col span={12} style={{ fontSize: 15 }}>审核人：</Col>
                             <Col span={12}>{informData.reviewer}</Col>
                         </Row>
                     </Card>
@@ -274,16 +273,16 @@ class AddForm extends Component {
                 <div className='rightContent'>
                     <Card title="通知公告正文" style={{ width: 700 }}>
                         <Row style={{ marginTop: 10 }}>
-                            <Col span={6} style={{ textAlign: 'right', fontSize: 15 }}>通知文号：</Col>
-                            <Col span={18}><Input value={informData.docNumber} disabled={status} onChange={(e) => this.changeInput(e.target.value, 'docNumber')} /></Col>
+                            <Col span={4} style={{ fontSize: 15 }}>通知文号：</Col>
+                            <Col span={20}><Input value={informData.docNumber} disabled={status} onChange={(e) => this.changeInput(e.target.value, 'docNumber')} /></Col>
                         </Row>
                         <Row style={{ marginTop: 10 }}>
-                            <Col span={6} style={{ textAlign: 'right', fontSize: 15 }}>标题：</Col>
-                            <Col span={18}><Input value={informData.title} disabled={status} onChange={(e) => this.changeInput(e.target.value, 'title')} /></Col>
+                            <Col span={4} style={{ fontSize: 15 }}>标题：</Col>
+                            <Col span={20}><Input value={informData.title} disabled={status} onChange={(e) => this.changeInput(e.target.value, 'title')} /></Col>
                         </Row>
                         <Row style={{ marginTop: 10 }}>
-                            <Col span={6} style={{ textAlign: 'right', fontSize: 15 }}>通知公告内容：</Col>
-                            <Col span={18}><TextArea rows={4} value={informData.content} disabled={status} onChange={(e) => this.changeInput(e.target.value, 'content')} /></Col>
+                            <Col span={4} style={{ fontSize: 15 }}>通知公告内容：</Col>
+                            <Col span={20}><TextArea rows={4} value={informData.content} disabled={status} onChange={(e) => this.changeInput(e.target.value, 'content')} /></Col>
                         </Row>
                     </Card>
                     <Card style={{ width: 700 }}>

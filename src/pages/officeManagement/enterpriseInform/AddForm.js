@@ -111,15 +111,15 @@ class AddForm extends Component {
                 <div className='leftContent'>
                     <Card title="企业通知类型" style={{ width: 250 }}>
                         <Row style={{ marginTop: 10 }}>
-                            <Col span={12} style={{ textAlign: 'right', fontSize: 15 }}>发布人：</Col>
+                            <Col span={12} style={{ fontSize: 15 }}>发布人：</Col>
                             <Col span={12}>{informData.userName}</Col>
                         </Row>
                         <Row style={{ marginTop: 10 }}>
-                            <Col span={12} style={{ textAlign: 'right', fontSize: 15 }}>发布日期：</Col>
+                            <Col span={12} style={{ fontSize: 15 }}>发布日期：</Col>
                             <Col span={12}>{informData.date}</Col>
                         </Row>
                         <Row style={{ marginTop: 10 }}>
-                            <Col span={12} style={{ textAlign: 'right', fontSize: 15 }}>类型：</Col>
+                            <Col span={12} style={{ fontSize: 15 }}>类型：</Col>
                             <Col span={12}>
                                 <Select value={informData.type} style={{ width: 120 }} onChange={(value) => this.changeInput(value, 'type')} disabled={status}>
                                     {allClass.map((item) => {

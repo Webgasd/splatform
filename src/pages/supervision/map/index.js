@@ -52,6 +52,7 @@ const AMap = window.AMap;
 let cluster = {};
 @connect(
     state => ({
+        input:state.enterprise,
         industryList: state.industryList,
         areaList: state.areaList,
     }), {
@@ -800,6 +801,28 @@ class map extends React.Component {
             }
         })
     }
+    //提交更改
+    handleSubmit = ()=>{
+        let type =this.state.type;
+        axios.PostAjax({
+            url:'/supervision/enterprise/update',
+            data:{
+                params:{
+                    ...this.props.input
+
+                }
+              
+            }  
+                         
+        }).then((res)=>{
+            if(res){
+                this.setState({
+                    baseInfoVisible: false, //关闭弹框
+                })
+                this.props.clearEnterprise();
+            }
+        })
+    }
     render() {
         const { iCount, cCount, qCount, hCount } = this.state;
         const formList = [
@@ -824,9 +847,11 @@ class map extends React.Component {
                     baseInfoVisible: false,
                 })
             }}
-            footer={false}
+            onOk={() => {
+                this.handleSubmit()
+            }}
         >
-            <Add type={"detail"} searchEmployee={this.state.searchEmployee} />
+            <Add type={"edit"} searchEmployee={this.state.searchEmployee} />
         </Modal>)
         const ledgerTable = (
             <Modal
