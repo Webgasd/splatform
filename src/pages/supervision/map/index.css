@@ -88,13 +88,19 @@
     border-radius: 0.4rem;
     box-shadow:rgba(114, 124, 245, .5);
     position: relative;
-    bottom: 44rem;
+    bottom: 43rem;
     -ms-flex: 1 1 auto;
     flex: 1 1 auto;
     color:#000;
     box-shadow:0 0 20px rgba(0, 0, 0, 0.3);
 }
-
+#backbtn {
+    display: flex;
+    position: relative;
+    bottom: 47.5rem;
+    -ms-flex: 1 1 auto;
+    flex: 1 1 auto;
+}
 .input-card .btn:first-child {
     margin-right: 1.3rem;
 }
