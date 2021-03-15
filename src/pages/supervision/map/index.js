@@ -135,7 +135,6 @@ class map extends React.Component {
     }
     initMap =()=>{
         this.clearAll();
-       // this.requestList();
         this.setData(this.state.data1);
         this.drawBounds();
         this.setState({mapBackButton:'none'})
@@ -312,10 +311,6 @@ class map extends React.Component {
             }
         }).then((res) => {
             if (res.status == "success") {
-                this.setState({
-                    datai1: [], datai2: [], datai3: [], datac1: [], datac2: [], datac3: [],
-                    datah1: [], datah2: [], datah3: [], dataq1: [], dataq2: [], dataq3: [], t1: 0,
-                })
                 this.setState({data1:res.data});
                 this.setData(this.state.data1)
             }
@@ -335,6 +330,19 @@ class map extends React.Component {
     setData = (list) => {
         let oms = ["个体", "公司", "合作社", "其他"];
         let icons = [i1, i2, i3, c1, c2, c3, h1, h2, h3, q1, q2, q3];
+        this.state.datai1=[]
+        this.state.datai2=[]
+        this.state.datai3=[]
+        this.state.datac1=[]
+        this.state.datac2=[]
+        this.state.datac3=[]
+        this.state.datah1=[]
+        this.state.datah2=[]
+        this.state.datah3=[]
+        this.state.dataq1=[]
+        this.state.dataq2=[]
+        this.state.dataq3=[]
+        this.state.t1=0
         let data = [this.state.datai1, this.state.datai2, this.state.datai3,
         this.state.datac1, this.state.datac2, this.state.datac3,
         this.state.datah1, this.state.datah2, this.state.datah3,
