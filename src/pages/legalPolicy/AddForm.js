@@ -14,7 +14,8 @@ export default class AddForm extends Component{
     state = {
         subjectClassification:[],
         businessClassification:[],
-        affiliatedInstitutions:[]
+        affiliatedInstitutions:[],
+        list:[]
     }
     changeInput = (data,option) => {
         let value = this.props.sourceData
@@ -29,88 +30,133 @@ export default class AddForm extends Component{
         }
     }
     componentDidMount(){
-        this.requestGetBC();
-        this.requestGetAI();
-        this.requestGetSC();
+        // this.requestGetBC();
+        // this.requestGetAI();
+        // this.requestGetSC();
+        this.getList();
     }
-    //获取业务分类
-    requestGetBC = ()=>{
-        let level = 2
+    // //获取业务分类
+    // requestGetBC = ()=>{
+    //     let level = 2
+    //     axios.ajax({
+    //         url:'/lawAndDocument/getBusinessType',
+    //         data:{
+    //             params:{
+    //                 level,
+    //             }
+    //         }
+    //     }).then((res)=>{
+    //         if(res){
+    //             this.setState({
+    //                 isVisible:false,
+    //                 lewsData:{},
+    //                 businessClassification:res.data
+    //             })
+    //         }
+    //     })
+    // }
+    // //获取所属机构
+    // requestGetAI = ()=>{
+    //     let level = 1
+    //     axios.ajax({
+    //         url:'/lawAndDocument/getBusinessType',
+    //         data:{
+    //             params:{
+    //                 level,
+    //             }
+    //         }
+    //     }).then((res)=>{
+    //         if(res){
+    //             this.setState({
+    //                 isVisible:false,
+    //                 lewsData:{},
+    //                 affiliatedInstitutions:res.data
+    //             })
+    //         }
+    //     })
+    // }
+    // //获取主题分类
+    // requestGetSC = ()=>{
+    //     let level = 0
+    //     axios.ajax({
+    //         url:'/lawAndDocument/getBusinessType',
+    //         data:{
+    //             params:{
+    //                 level,
+    //             }
+    //         }
+    //     }).then((res)=>{
+    //         if(res){
+    //             this.setState({
+    //                 isVisible:false,
+    //                 lewsData:{},
+    //                 subjectClassification:res.data
+    //             })
+    //         }
+    //     })
+    // }
+    //获取级联列表
+    getList = ()=>{
         axios.ajax({
-            url:'/lawAndDocument/getBusinessType',
+            url:'/lawAndDocument/getJiLian',
             data:{
                 params:{
-                    level,
+                    typeDocument:0,
                 }
             }
         }).then((res)=>{
             if(res){
                 this.setState({
-                    isVisible:false,
-                    lewsData:{},
-                    businessClassification:res.data
+                    list:res.data
                 })
             }
         })
     }
-    //获取所属机构
-    requestGetAI = ()=>{
-        let level = 1
-        axios.ajax({
-            url:'/lawAndDocument/getBusinessType',
-            data:{
-                params:{
-                    level,
-                }
+    //改变选择框
+    changeList = (value,option) =>{
+        this.changeInput(value,option)
+        const {sourceData} = this.props
+        if(option == 'subjectClassification'){
+            if(sourceData.affiliatedInstitutions||sourceData.businessClassification){
+                this.changeInput('','affiliatedInstitutions')
+                this.changeInput('','businessClassification')
             }
-        }).then((res)=>{
-            if(res){
-                this.setState({
-                    isVisible:false,
-                    lewsData:{},
-                    affiliatedInstitutions:res.data
-                })
-            }
-        })
-    }
-    //获取主题分类
-    requestGetSC = ()=>{
-        let level = 0
-        axios.ajax({
-            url:'/lawAndDocument/getBusinessType',
-            data:{
-                params:{
-                    level,
-                }
-            }
-        }).then((res)=>{
-            if(res){
-                this.setState({
-                    isVisible:false,
-                    lewsData:{},
-                    subjectClassification:res.data
-                })
-            }
-        })
-    }
-    //处理上传文件
-    handleFile = (info) => {     
-        let fileList = info.fileList;
-        console.log("fileList",fileList)
-        if (info.file.status === 'done') {
-            message.success(`${info.file.name} 上传成功`);
-        } else if (info.file.status === 'error') {
-            message.error(`${info.file.name} 上传失败.`);
+            const affiliatedInstitutions = this.state.list.filter((item)=>{
+                return item.info.className == sourceData.subjectClassification?true:false
+            })
+            this.setState({
+                affiliatedInstitutions:affiliatedInstitutions[0].children
+            })
         }
-        let appendix = JSON.stringify(fileList)//这里需转换格式
-        this.changeInput(appendix,"appendix"); 
-        
-    };
-    handleCancel = () => this.setState({ previewVisible: false });
+        else if(option == 'affiliatedInstitutions'){
+            if(sourceData.businessClassification){
+                this.changeInput('','businessClassification')
+            }
+            const businessClassification = this.state.affiliatedInstitutions.filter((item)=>{
+                return item.info.className == sourceData.affiliatedInstitutions?true:false
+            })
+            this.setState({
+                businessClassification:businessClassification[0].children
+            })
+        }
+    }
+    //上传文件
+    handleFile = (info) => {
+    const fileList = info.fileList;
+    if (info.file.status === 'done') {
+        message.success(`${info.file.name} 上传成功`);
+    } else if (info.file.status === 'error') {
+        message.error(`${info.file.name} 上传失败.`);
+    }
+    const data = JSON.stringify(fileList)
+    this.changeInput(data, 'appendix');
+
+    }
     //查看图片
     handlePreview = file => {
+        console.log(file)
         this.setState({
-            previewImage: (file.response||{}).data,
+            previewImage: (file.response || {}).data,
             previewVisible: true,
         });
     };
@@ -194,30 +240,30 @@ export default class AddForm extends Component{
                 <Row style={{marginTop:30}}>
                     <Col span={3} style={{textAlign:'right',fontSize:15}}>主题分类：</Col>
                     <Col span={5}>
-                        <Select placeholder='请选择主题分类' style={{width:'100%'}} value={sourceData.subjectClassification||undefined} onChange={(value)=>this.changeInput(value,'subjectClassification')}> 
+                        <Select placeholder='请选择主题分类' style={{width:'100%'}} value={sourceData.subjectClassification} onChange={(value)=>this.changeList(value,'subjectClassification')}> 
                             {
-                                this.state.subjectClassification.map((v)=>(
-                                    <Option value={v.className} key={v.className}>{v.className}</Option>
+                                this.state.list.map((item,index)=>(
+                                    <Option value={item.info.className} key={index}>{item.info.className}</Option>
                                 ))
                             }
                         </Select>
                     </Col>
                     <Col span={3} style={{textAlign:'right',fontSize:15}}>所属机构：</Col>
                     <Col span={5}>
-                        <Select placeholder='请选择所属机构' style={{width:'100%'}} value={sourceData.affiliatedInstitutions||undefined} onChange={(value)=>this.changeInput(value,'affiliatedInstitutions')}> 
+                        <Select placeholder='请选择所属机构' style={{width:'100%'}} value={sourceData.affiliatedInstitutions} onChange={(value)=>this.changeList(value,'affiliatedInstitutions')}> 
                         {
-                            this.state.affiliatedInstitutions.map((v)=>(
-                                <Option value={v.className} key={v.className}>{v.className}</Option>
+                            this.state.affiliatedInstitutions.map((item,index)=>(
+                                <Option value={item.info.className||''} key={index}>{item.info.className||''}</Option>
                             ))
                         }
                         </Select>
                     </Col>
                     <Col span={3} style={{textAlign:'right',fontSize:15}}>业务分类：</Col>
                     <Col span={5}>
-                        <Select placeholder='请选择业务分类' style={{width:'100%'}} value={sourceData.businessClassification||undefined} onChange={(value)=>this.changeInput(value,'businessClassification')}> 
+                        <Select placeholder='请选择业务分类' style={{width:'100%'}} value={sourceData.businessClassification} onChange={(value)=>this.changeList(value,'businessClassification')}> 
                         {
-                            this.state.businessClassification.map((v)=>(
-                                <Option value={v.className} key={v.className}>{v.className}</Option>
+                            this.state.businessClassification.map((item,index)=>(
+                                <Option value={item.info.className} key={index}>{item.info.className}</Option>
                             ))
                         }
                         </Select>

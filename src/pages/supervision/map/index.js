@@ -52,6 +52,7 @@ const AMap = window.AMap;
 let cluster = {};
 @connect(
     state => ({
+        input:state.enterprise,
         industryList: state.industryList,
         areaList: state.areaList,
     }), {
@@ -100,6 +101,9 @@ class map extends React.Component {
             searchEmployee: '',
             areaList:[],
             currentArea:"",
+            mapBackButton:'none',
+            data1:[],
+            clusterColor:"#0067CC",
         }
         window.detaiDisplay = (value) => this.detaiDisplay(value);
     }
@@ -129,7 +133,12 @@ class map extends React.Component {
         this.drawBounds();
         //this.drawDisrict();
     }
-
+    initMap =()=>{
+        this.clearAll();
+        this.setData(this.state.data1);
+        this.drawBounds();
+        this.setState({mapBackButton:'none'})
+    }
     drawBounds() {
         let district=unitName;
         let that = this;
@@ -261,6 +270,7 @@ class map extends React.Component {
             strokeColor: '#ea5299'
         });
         this.clearAll()
+        this.setState({mapBackButton:'inline'});
         this.map.setFitView(polygon);//视口自适应
         // this.map.setZoom(14);
         if (level == 2) {
@@ -268,7 +278,7 @@ class map extends React.Component {
         } else {
             this.map.add(polygon);
             this.getdata1(id)
-            this.getdata2(id)
+           // this.getdata2(id)
         }
     }
     getdata1 = (id) => {
@@ -289,27 +299,6 @@ class map extends React.Component {
             }
         })
     }
-    getdata2 = (id) => {
-        // let list = []
-        // list = this.state.PointsList.filter((item) => (item.grid == id))
-        // this.addGridPoints(list);
-        // axios.ajax({
-        //     url:"/grid/points/getByAreaId",
-        //     data: {
-        //         params:{id:id}
-        //     }
-        // }).then((res)=>{
-        //     if(res.status == "success"){
-        //         if(res.data.length>0){
-        //             if(res.data.length>0){
-        //                 console.log("123")
-        //                 this.addGridPoints(res.data);
-        //             }
-        //         }
-        //     }
-        // })
-
-    }
     requestList = () => {
         axios.PostAjax({
             url: "/grid/points/getSmilePoints",
@@ -321,13 +310,9 @@ class map extends React.Component {
                 }
             }
         }).then((res) => {
-            console.log(res)
             if (res.status == "success") {
-                this.setState({
-                    datai1: [], datai2: [], datai3: [], datac1: [], datac2: [], datac3: [],
-                    datah1: [], datah2: [], datah3: [], dataq1: [], dataq2: [], dataq3: [], t1: 0
-                })
-                this.setData(res.data)
+                this.setState({data1:res.data});
+                this.setData(this.state.data1)
             }
         })
 
@@ -345,6 +330,19 @@ class map extends React.Component {
     setData = (list) => {
         let oms = ["个体", "公司", "合作社", "其他"];
         let icons = [i1, i2, i3, c1, c2, c3, h1, h2, h3, q1, q2, q3];
+        this.state.datai1=[]
+        this.state.datai2=[]
+        this.state.datai3=[]
+        this.state.datac1=[]
+        this.state.datac2=[]
+        this.state.datac3=[]
+        this.state.datah1=[]
+        this.state.datah2=[]
+        this.state.datah3=[]
+        this.state.dataq1=[]
+        this.state.dataq2=[]
+        this.state.dataq3=[]
+        this.state.t1=0
         let data = [this.state.datai1, this.state.datai2, this.state.datai3,
         this.state.datac1, this.state.datac2, this.state.datac3,
         this.state.datah1, this.state.datah2, this.state.datah3,
@@ -568,9 +566,29 @@ class map extends React.Component {
 
         cluster = new AMap.MarkerClusterer(this.map, dataplus, {
             gridSize: 80,
+            renderClusterMarker: this._renderClusterMarker
         });
         cluster.on('click', this.markerClick);
     }
+    _renderClusterMarker = (context)=> {
+         let factor = Math.pow(context.count / 100, 1 / 18);
+        let div = document.createElement('div');
+        let Hue = 180 - factor * 180;
+        let fontColor = 'white';
+        div.style.backgroundColor = this.state.clusterColor;
+        let  size = Math.round(30 + Math.pow(context.count / 100, 1 / 5) * 20);
+        div.style.width = div.style.height = size + 'px';
+        div.style.border = 'solid 1px ';
+        div.style.borderRadius = size / 2 + 'px';
+        div.style.boxShadow = '0 0 1px ';
+        div.innerHTML = context.count;
+        div.style.lineHeight = size + 'px';
+        div.style.color = fontColor;
+        div.style.fontSize = '14px';
+        div.style.textAlign = 'center';
+        context.marker.setOffset(new AMap.Pixel(-size / 2, -size / 2));
+        context.marker.setContent(div)
+    };
     markerClick = (e) => {
         if (this.map.getZoom() === 18) {
             var infoWindow = new AMap.InfoWindow({ offset: new AMap.Pixel(0, -30) });
@@ -579,7 +597,12 @@ class map extends React.Component {
             content += "<div id='companyLists'style='yellow;max-height:100px;width:250px;overflow-y:auto'>"
             for (let i = 0; i < e.markers.length; i++) {
                 let asd = JSON.stringify(e.markers[i].content)
-                content += "<div  class='bottomGrayBox'style='font-size:13px;font-family:黑体;min-width:200px;cursor:pointer' onclick= detaiDisplay('" + asd + "')>" + e.markers[i].content.enterpriseName + "</div>";
+                let color="blue";
+                if(e.markers[i].content.businessState==2)
+                    color="green";
+                else if(e.markers[i].content.businessState==3)
+                    color="red";
+                content += "<div  class='bottomGrayBox'style='color:"+color+";font-size:13px;font-family:黑体;min-width:200px;cursor:pointer' onclick= detaiDisplay('" + asd + "')>" + e.markers[i].content.enterpriseName + "</div>";
             }
             content += "</div>";
             content += "</div>";
@@ -653,8 +676,9 @@ class map extends React.Component {
     onlyDisplay = (t1) => {
         this.setState({ t1: t1 }, () => { this.displayMakers() });
     }
-    onlyDisplay1 = (t2) => {
-        this.setState({ t2: t2 }, () => { this.displayMakers() });
+    onlyDisplay1 = (t2,color) => {
+
+        this.setState({ t2: t2,clusterColor:color }, () => { this.displayMakers() });
     }
 
 
@@ -800,6 +824,28 @@ class map extends React.Component {
             }
         })
     }
+    //提交更改
+    handleSubmit = ()=>{
+        let type =this.state.type;
+        axios.PostAjax({
+            url:'/supervision/enterprise/update',
+            data:{
+                params:{
+                    ...this.props.input
+
+                }
+              
+            }  
+                         
+        }).then((res)=>{
+            if(res){
+                this.setState({
+                    baseInfoVisible: false, //关闭弹框
+                })
+                this.props.clearEnterprise();
+            }
+        })
+    }
     render() {
         const { iCount, cCount, qCount, hCount } = this.state;
         const formList = [
@@ -824,9 +870,11 @@ class map extends React.Component {
                     baseInfoVisible: false,
                 })
             }}
-            footer={false}
+            onOk={() => {
+                this.handleSubmit()
+            }}
         >
-            <Add type={"detail"} searchEmployee={this.state.searchEmployee} />
+            <Add type={"edit"} searchEmployee={this.state.searchEmployee} />
         </Modal>)
         const ledgerTable = (
             <Modal
@@ -969,6 +1017,9 @@ class map extends React.Component {
                                     </div>
                                 </div>
                             </div>
+                            <div id="backbtn" style={{display: this.state.mapBackButton }}>
+                                <button onClick={this.initMap}>《返回</button>
+                            </div>
                         </div>
                         {/* 以上为地图，坐标提示，数据信息 */}
 
@@ -1010,10 +1061,10 @@ class map extends React.Component {
                         <div className="grayBox" style={{ width: "100%", height: "400px" }}>
                             <div className={"bottomGrayBox"} style={{ fontWeight: "bold", fontSize: "17px" }}><img src={analysisPic} />企业状态分析</div>
                             <div style={{ margin: 8 }}>
-                                <img src={allPic} width="68px" style={{ cursor: 'pointer' }} alt='' onClick={() => this.onlyDisplay1(0)} />&nbsp;
-                            <img src={newPic} width="68px" style={{ cursor: 'pointer' }} alt='' onClick={() => this.onlyDisplay1(1)} />&nbsp;
-                            <img src={nomalPic} width="68px" style={{ cursor: 'pointer' }} alt='' onClick={() => this.onlyDisplay1(2)} />&nbsp;
-                            <img src={abnomalPic} width="68px" style={{ cursor: 'pointer' }} alt='' onClick={() => this.onlyDisplay1(3)} />
+                                <img src={allPic} width="68px" style={{ cursor: 'pointer' }} alt='' onClick={() => this.onlyDisplay1(0,"#0067CC")} />&nbsp;
+                            <img src={newPic} width="68px" style={{ cursor: 'pointer' }} alt='' onClick={() => this.onlyDisplay1(1,"#30A5FD")} />&nbsp;
+                            <img src={nomalPic} width="68px" style={{ cursor: 'pointer' }} alt='' onClick={() => this.onlyDisplay1(2,"#99CC00")} />&nbsp;
+                            <img src={abnomalPic} width="68px" style={{ cursor: 'pointer' }} alt='' onClick={() => this.onlyDisplay1(3,"#FF0000")} />
                             </div>
                             <div style={{ width: '96%', height: 5, background: '#DCDCDC' }}></div>
                             <ReactEcharts option={this.getOption()} />

@@ -62,6 +62,7 @@ const AMap=window.AMap;
                         that.map.add(marker);
                         that.map.setFitView(marker)
                         that.changeInput('',"location")
+                        that.changeInput(2,'businessState')
                     }else {
                         that.map.clearMap();
                          message.error("地址有误，请输入详细地址并点击默认定位按钮刷新地图")
@@ -140,13 +141,13 @@ const AMap=window.AMap;
                 draggable:true
             });
             that.map.add(marker);
+            that.changeInput(2,'businessState')
             that.map.setFitView(marker)
             marker.on("dragend",function (e) {
                 message.success("经纬度修改成功")
                 that.changeInput((e.lnglat.lng+','+e.lnglat.lat),"location")
             })
         }
-
         if(type == "detail"){
             if(that.props.input.location&&that.props.input.gpsFlag == 1){
                 let lnglat = that.props.input.location.split(',')

@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
-import { Button, Card, Row, Col, Table, Input, Select } from 'antd'
+import { Button, Card, Row, Col, Table, Input, Select,Icon,Upload,message } from 'antd'
 import './style.less'
 import axios from "../../../axios";
 import BraftEditor from 'braft-editor';
 import 'braft-editor/dist/index.css'
 import ButtonGroup from 'antd/lib/button/button-group'
 import Axios from 'axios';
+import {commonUrl} from '../../../axios/commonSrc'
 const { TextArea } = Input;
 const { Option } = Select;
 
@@ -38,7 +39,33 @@ class AddForm extends Component {
     componentDidMount() {
         this.getClass()
     }
+    //上传文件
+    handleFile = (info) => {
+        const fileList = info.fileList;
+        if (info.file.status === 'done') {
+            message.success(`${info.file.name} 上传成功`);
+        } else if (info.file.status === 'error') {
+            message.error(`${info.file.name} 上传失败.`);
+        }
+        const data = JSON.stringify(fileList)
+        this.changeInput(data, 'appendix');
+
+    }
+    //查看图片
+    handlePreview = file => {
+        console.log(file)
+        this.setState({
+            previewImage: (file.response || {}).data,
+            previewVisible: true,
+        });
+    };
+    //下载文件
+    downLoad = (file) => {
+       const download = commonUrl + '/upload/picture/' + (file.response || {}).data
+       window.open(download)
+    }
     render() {
+        const appendix = JSON.parse(this.props.informData.appendix || JSON.stringify([]))
         const allClass = this.state.class || []
         const status = this.props.status == 'detail'||this.props.status == 'check' ? true : false
         const { informData } = this.props
@@ -55,7 +82,7 @@ class AddForm extends Component {
         const columns = [
             {
                 title: '资料名称',
-                dataIndex: '',
+                dataIndex: 'name',
                 key: ''
             },
             {
@@ -84,15 +111,15 @@ class AddForm extends Component {
                 <div className='leftContent'>
                     <Card title="企业通知类型" style={{ width: 250 }}>
                         <Row style={{ marginTop: 10 }}>
-                            <Col span={12} style={{ textAlign: 'right', fontSize: 15 }}>发布人：</Col>
+                            <Col span={12} style={{ fontSize: 15 }}>发布人：</Col>
                             <Col span={12}>{informData.userName}</Col>
                         </Row>
                         <Row style={{ marginTop: 10 }}>
-                            <Col span={12} style={{ textAlign: 'right', fontSize: 15 }}>发布日期：</Col>
+                            <Col span={12} style={{ fontSize: 15 }}>发布日期：</Col>
                             <Col span={12}>{informData.date}</Col>
                         </Row>
                         <Row style={{ marginTop: 10 }}>
-                            <Col span={12} style={{ textAlign: 'right', fontSize: 15 }}>类型：</Col>
+                            <Col span={12} style={{ fontSize: 15 }}>类型：</Col>
                             <Col span={12}>
                                 <Select value={informData.type} style={{ width: 120 }} onChange={(value) => this.changeInput(value, 'type')} disabled={status}>
                                     {allClass.map((item) => {
@@ -127,7 +154,15 @@ class AddForm extends Component {
                     </Card>
                     <Card style={{ width: 700 }}>
                         <div>上传提示：上传的资质证照文件大小需≤5M；上传资料格式支持：jpg、png、pdf、world格式</div>
-                        <Table columns={columns} bordered />
+                        <Upload
+                            action={commonUrl + '/upload/uploadReport'}
+                            onChange={(info) => this.handleFile(info)}
+                            showUploadList={false}
+                            fileList={appendix}
+                        >
+                            <Button style={{ margin: 10 }}><Icon type="upload" />上传附件</Button>
+                        </Upload>
+                    <Table columns={columns} dataSource={appendix} bordered />
                     </Card>
                 </div>
             </div>
