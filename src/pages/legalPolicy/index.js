@@ -80,10 +80,11 @@ export default class LegalPolicy extends Component {
     //获取业务分类
     getBusinessType = (params) => {
         let _this = this
+        let level = 1
         axios.PostAjax({
             url:'/lawAndDocument/getBusinessType',
             data:{
-                params:{}
+                params:{level,}
             }
         }).then((res) => {
             if(res.status == 'success'){

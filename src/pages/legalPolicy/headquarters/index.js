@@ -283,7 +283,43 @@ class Laws extends Component {
             }
         })
     }
-    
+    //批量删除
+    handleDelete = ()=>{
+        if(this.state.selectedRowKeys.length==0){
+            confirm({
+                title:'至少选择一条数据',
+                okText:'确定',
+                okType:'primary',
+                onOk:()=>{
+
+                }
+            })
+        }else{
+            confirm({
+                title:'确定删除?',
+                okText:'是',
+                okType:'danger',
+                cancelText:'否',
+                onOk:() => {
+                    axios.PostAjax({
+                        url:'/lawAndDocument/deleteMultiple',
+                        data:{
+                            params:{
+                               idList: this.state.selectedRowKeys
+                            }
+                        }
+                    }).then((res)=>{
+                        if(res.status == "success"){
+                            this.setState({
+                                selectedRowKeys:[]
+                            })
+                            this.requestList();
+                        }
+                    })
+                }
+            })
+        }
+    }
     render() {
         console.log(this.props.userInfo)
         console.log(this.state.lewsData)
@@ -366,7 +402,7 @@ class Laws extends Component {
                 <Card style={{marginTop:10}}>
                     <div className='button-box'>
                         <Button type="primary" onClick={()=> this.handleOperator('create',null)}>数据新增</Button>
-                        <Button type="danger" onClick={()=>this.handleDelete}>批量删除</Button>
+                        <Button type="danger" onClick={this.handleDelete}>批量删除</Button>
                     </div>
                     <div style={{marginTop:30}}>
                         <ETable

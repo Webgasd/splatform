@@ -7,6 +7,7 @@ import axios from "../../../axios";
 import {connect} from "react-redux";
 import AddForm from './AddForm'
 import moment from 'moment';
+import RecordsFRorm from '../documentRouting/RecordsFRorm'
 import { green } from 'chalk';
 const Panel = Collapse.Panel;
 const ButtonGroup = Button.Group;
@@ -147,27 +148,75 @@ class Announcement extends Component {
             })
         }
         
-        else if(type == 'delete'){
-           confirm({
-               title:'确定删除?',
-               okText:'是',
-               okType:'danger',
-               cancelText:'否',
-               onOk:() => {
-                   axios.ajax({
-                       url:'/documentCirculate/delete',
-                       data:{
-                           params:{
-                            idList:[item.id]
-                           }
-                       }
-                   }).then((res)=>{
-                       if(res.status == "success"){
-                           _this.requestList();
-                       }
-                   })
-               }
-           })
+        else if(type == 'delete'||type =='deleteGroup'){
+            let idList = []
+            if(type =='delete'){
+                idList=[item.id]
+                console.log("idlist",idList)
+            }else if(type =='deleteGroup'){
+                idList=_this.state.selectedRowKeys
+                console.log("idlist",idList)
+            }
+            if(idList.length==0){
+                confirm({
+                    title:'至少选择一条数据',
+                    okText:'确定',
+                    okType:'primary',
+                    onOk:()=>{
+
+                    }
+                })
+            }else{
+                confirm({
+                    title:'确定删除?',
+                    okText:'是',
+                    okType:'danger',
+                    cancelText:'否',
+                    onOk:() => {
+                        axios.PostAjax({
+                            url:'/documentCirculate/delete',
+                            data:{
+                                params:{
+                                 idList:idList
+                                }
+                            }
+                        }).then((res)=>{
+                            if(res.status == "success"){
+                                _this.requestList();
+                            }
+                        })
+                    }
+                })
+            }
+        }else if(type == 'records'){
+            axios.PostAjax({
+                url:'/documentAuthorReader/getById',
+                data:{
+                    params:{..._this.params,"module":0,id:item.id}
+                }
+            }).then((res)=>{
+                if(res.status == "success"){
+                    let recordsData = res.data.data||[]
+                    let list = recordsData.map((item,key)=>{
+                        item.id = item.id
+                        item.name = item.name
+                        if(item.readState==1){
+                            item.readstatus="已查阅"
+                        }else if(item.readState==0){
+                            item.readstatus="未读"
+                        }
+                        return item
+                    })
+                    _this.setState({
+                        recordsData:list,
+                        isRecordsVisible:true,
+                        pagination:Utils.pagination(res,(current)=>{
+                            _this.params.pageNo = current;//	当前页数
+                            _this.requestList(); //刷新列表数据
+                        })
+                    })
+                }
+            })
         }
     }
     //提交新增 更改
@@ -274,6 +323,7 @@ class Announcement extends Component {
                 key:'typeId',
                 render:(typeId)=>{
                     let data = (this.state.class||[]).find((item)=>item.id==typeId)||{};
+                    console.log(data)
                     return data.className;
                 }
             },
@@ -340,6 +390,7 @@ class Announcement extends Component {
                         const obReviewStatus = record.reviewResult == 1?'':'none'
                     return <ButtonGroup>
                         <Button type='primary'  onClick={()=> {this.handleOperator('detail',record)}} >查看</Button>
+                        <Button type='primary'  onClick={()=> {this.handleOperator('records',record)}} >查阅记录</Button>
                         <Button type='primary' style={{display:reviewStatus}} onClick={()=> {this.handleOperator('modify',record)}}>修改</Button>
                         {/* <Button type='primary' style={{display:obReviewStatus}} onClick={()=>{this.handleOperator('issueCancel',record)}}>取消发布</Button> */}
                         <Button type='primary' onClick={()=> {this.handleOperator('delete',record)}}>删除</Button>
@@ -359,7 +410,7 @@ class Announcement extends Component {
                 <Card style={{marginTop:10}}>
                     <div className='button-box'>
                         <Button type="primary" onClick={()=> this.handleOperator('create',null)}>数据新增</Button>
-                        <Button type="primary" onClick={()=>this.handleDelete}>批量删除</Button>
+                        <Button type="danger" onClick={()=>this.handleOperator('deleteGroup',null)}>批量删除</Button>
                     </div>
                     <div style={{marginTop:30}}>
                         <ETable
@@ -397,7 +448,21 @@ class Announcement extends Component {
                         status = {this.state.type}
                      />
                 </Modal>
-
+                <Modal
+                    width='1000px'
+                    title='查阅记录'
+                    visible={this.state.isRecordsVisible}
+                    onOk={()=>this.setState({isRecordsVisible:false})}
+                    destroyOnClose={true}
+                    onCancel={()=>
+                        this.setState({
+                            isRecordsVisible:false,
+                            informData:{}
+                        })
+                    }
+                >
+                   <RecordsFRorm recordsData={this.state.recordsData}/>
+                </Modal>
             </div>
         )
     }
