@@ -15,7 +15,7 @@ function getBase64(file) {
   });
 }
 
-class PictureCarousel extends Component {
+class ScrollChart extends Component {
     state = {
         previewVisible: false,
         previewImage: '',
@@ -42,7 +42,7 @@ class PictureCarousel extends Component {
       handleChange = ({ fileList }) => this.setState({ fileList });
       //获取图片
       requestPicture = () =>{
-        let type = 1
+        let type = 2
         axios.ajax({
           url:'/supervision/enterprise/getRollPicture',
           data:{
@@ -50,18 +50,24 @@ class PictureCarousel extends Component {
           }
        }).then((res)=>{
           if(res.status == "success"){
-            //转换返回的文件字段格式  转了需要使用
-             let appendix = JSON.parse(res.data.rollPicture||JSON.stringify([]))
-             console.log("appendix1",appendix)
-             appendix.map((item)=>{
-                let url = commonUrl+'/upload/report/'+item.response.data
-                item.url = url
-             })
-             console.log("appendix",appendix)
+            let appendix = JSON.parse(JSON.stringify([]))
+            if(res.data!=null){
+              //转换返回的文件字段格式  转了需要使用
+              appendix = JSON.parse(res.data.rollPicture||JSON.stringify([]))
+              appendix.map((item)=>{
+                  let url = commonUrl+'/upload/uploadReport/'+item.response.data
+                  item.url = url
+              })
               this.setState({
                 fileList:appendix,
                 id:res.data.id
               })
+            }else{
+              this.setState({
+                fileList:appendix,
+                id:0
+              })
+            }
           }
        })
       }
@@ -76,7 +82,7 @@ class PictureCarousel extends Component {
         axios.PostAjax({
           url:'/supervision/enterprise/updateRollPicture',
           data:{
-              params:{id:this.state.id||0,type:1,rollPicture:JSON.stringify(fileList)} // 将文件数组转化为字符串
+              params:{id:this.state.id||0,type:2,rollPicture:JSON.stringify(fileList)} // 将文件数组转化为字符串
           }
        }).then((res)=>{
           if(res.status == "success"){
@@ -102,7 +108,7 @@ class PictureCarousel extends Component {
         );
         return (
           <>
-            <Card style={{marginTop:10,width:1400}} title="app端通知文件图片-上传" extra={<Button onClick={this.handleUpload}>上传</Button>}>
+            <Card style={{marginTop:10,width:1400}} title="网格员小程序图片-上传" extra={<Button onClick={this.handleUpload}>上传</Button>}>
               <div style={{marginTop:10}}>
               说明：图片比例为3/5；即高度为300px，宽度为500px
               </div>
@@ -114,7 +120,6 @@ class PictureCarousel extends Component {
                 onPreview={this.handlePreview}
                 onChange={this.handleChange}
                 className="avatar-uploader"
-                accept='image/jpeg'
                 >
                 {fileList.length >= 4 ? null : uploadButton}
                 </Upload>
@@ -133,4 +138,4 @@ class PictureCarousel extends Component {
       }
 }
 
-export default  PictureCarousel
+export default  ScrollChart;

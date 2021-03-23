@@ -2,7 +2,7 @@
 // export const commonUrl = "http://172.26.103.203:8080";
 export const commonUrl = "http://172.25.78.57:8088";
 // export const commonUrl = "http://192.168.43.122:8088";
-
+// export const commonUrl = "http://101.201.239.28:8088";
 
 //本地使用勿删,前端连接后端时的ip请写在最后
 // export const commonUrl = "http://localhost:8088";

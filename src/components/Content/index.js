@@ -35,6 +35,11 @@ const Announcement = loadable(()=>import('./../../pages/officeManagement/announc
 const DocumentRouting = loadable(()=>import('../../pages/officeManagement/documentRouting'));
 const AllocationUnit = loadable(()=>import('../../pages/officeManagement/allocationUnit'));
 const PictureCarousel = loadable(()=>import('../../pages/officeManagement/pictureCarousel'))
+const PersonnelPool = loadable(()=>import('../../pages/gridMember/personnelPool'))
+const TaskDeployment = loadable(()=>import('../../pages/gridMember/taskDeployment'))
+const InspectionStatus = loadable(()=>import('../../pages/gridMember/inspectionStatus'))
+const InspectDataStatistics = loadable(()=>import('../../pages/gridMember/inspectDataStatistics'))
+const ScrollChart = loadable(()=>import('../../pages/gridMember/scrollChart'))
 const Interacion = loadable(()=>import('./../../pages/interaction'));
 const InteracionEx = loadable(()=>import('./../../pages/interactionEx'));
 const V = loadable(()=>import('./../../pages/video'));
@@ -261,6 +266,16 @@ export default class Content extends Component{
                 return <AllocationUnit/>
             case '/pictureCarousel':
                 return <PictureCarousel/>
+            case '/personnelPool':
+                return <PersonnelPool/>
+            case '/taskDeployment':
+                return <TaskDeployment/>
+            case '/inspectionStatus':
+                return <InspectionStatus/> 
+            case '/inspectDataStatistics':
+                return <InspectDataStatistics/>
+            case '/scrollChart':
+                return <ScrollChart/>
             case '/interaction':
                 return <Interacion/>
             case '/roleManager':
