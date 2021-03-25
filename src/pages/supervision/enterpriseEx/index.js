@@ -113,7 +113,7 @@ import ImportData from './childrenForm/ImportData';
         }).then((res)=>{console.log(res)
             if(res.status == "success"){
                 this.setState({
-                    deptTree: res.data.deptTree
+                    deptTree: res.data.deptTree||[]
                 })
             }
         })

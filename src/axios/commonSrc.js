@@ -1,6 +1,6 @@
 
 // export const commonUrl = "http://172.26.103.203:8080";
-export const commonUrl = "http://172.25.78.57:8088";
+// export const commonUrl = "http://172.25.78.57:8088";
 // export const commonUrl = "http://192.168.43.122:8088";
 // export const commonUrl = "http://101.201.239.28:8088";
 
@@ -33,7 +33,7 @@ export const commonUrl = "http://172.25.78.57:8088";
 export const lng=118.58215
 export const lat=37.44878
 
-// export const commonUrl = "https://www.yiwifi1.com:8088";
+export const commonUrl = "https://www.yiwifi1.com:8088";
 export const baseUrl = "http://101.201.239.28:8090"
 export const unitName = "平邑县"
 export const bookName = "平邑"

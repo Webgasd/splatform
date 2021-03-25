@@ -28,6 +28,8 @@ export default class LegalPolicy extends Component {
     componentDidMount(){
         this.requestList();
         this.getBusinessType();
+        this.getLowType();
+        this.requestGetSC();
     }
     //查询列表 刷新数据
     requestList = (params) => {
@@ -80,8 +82,8 @@ export default class LegalPolicy extends Component {
     //获取业务分类
     getBusinessType = (params) => {
         let _this = this
-        let level = 1
-        axios.PostAjax({
+        let level = 2
+        axios.ajax({
             url:'/lawAndDocument/getBusinessType',
             data:{
                 params:{level,}
@@ -97,6 +99,30 @@ export default class LegalPolicy extends Component {
                 })
                 _this.setState({
                     businessType:list
+                })
+            }
+        })
+    }
+    //获取主题分类
+    requestGetSC = ()=>{
+        let level = 0
+        axios.ajax({
+            url:'/lawAndDocument/getBusinessType',
+            data:{
+                params:{
+                    level,
+                }
+            }
+        }).then((res)=>{
+            if(res){
+                let themeType = res.data||[]
+                let list = themeType.map((item,key)=>{
+                    item.id = item.className
+                    item.name = item.className
+                    return item
+                })
+                this.setState({
+                    themeType:list
                 })
             }
         })
@@ -172,7 +198,7 @@ export default class LegalPolicy extends Component {
                 type: 'SELECT',
                 label: '文库分类',
                 placeholder: '请选择文库种类',
-                field: 'workType',
+                field: 'type',
                 width: 150,
                 list: [{id: 1, name: '法律法规'}, {id: 2, name: '总局文件'}, {id: 3, name: '地方性文件'}]
             },
@@ -182,7 +208,7 @@ export default class LegalPolicy extends Component {
                 placeholder: '请选择主题种类',
                 field: 'subjectClassification',
                 width: 150,
-                list: [{id: 0, name: '0'}, {id: 1, name: '1'}]
+                list: this.state.themeType||[]
             },
             {
                 type: 'SELECT',
@@ -195,7 +221,7 @@ export default class LegalPolicy extends Component {
             {
                 type: 'INPUT',
                 label: '请输入关键词',
-                field: 'workType',
+                field: 'content',
                 width: 150,
             },
             {

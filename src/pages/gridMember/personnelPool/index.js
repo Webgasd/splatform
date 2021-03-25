@@ -22,6 +22,16 @@ class PersonnelPool extends Component {
             }
         ],
         title:'' , //拟态框标题
+        sexType:[
+            {
+            "className": "男",
+            "id": 0,
+            },
+            {
+            "className": "女",
+            "id": 1,
+            }
+        ]                   
     }
     params = {
         pageNo:1
@@ -73,11 +83,11 @@ class PersonnelPool extends Component {
     //获取表格数据
     requestList = ()=>{
         let _this = this;
-        let job = ''
+        let job = 7
         axios.PostAjax({
             url:'/supervision/ga/getGridMemberPage',
             data:{
-                params:{..._this.params,pageNo:1}
+                params:{..._this.params,pageNo:1,job}
             }
         }).then((res)=>{
             if(res.status == "success"){
@@ -231,7 +241,11 @@ class PersonnelPool extends Component {
             {
                 title:'性别',
                 dataIndex:'sexy',
-                key:'sexy'
+                key:'sexy',
+                render:(sexy)=>{
+                    let data = (this.state.sexType||[]).find(item=>item.id==sexy)||{};
+                    return data.className
+                }
             },
             {
                 title:'联系电话',
@@ -242,11 +256,6 @@ class PersonnelPool extends Component {
                 title:'职务',
                 dataIndex:'job',
                 key:'job'
-            },
-            {
-                title:'管辖范围',
-                dataIndex:'contactPerson',
-                key:'contactPerson'
             },
             {
                 title:'操作',
@@ -304,6 +313,7 @@ class PersonnelPool extends Component {
                         informData ={this.state.informData}
                         dispatchInformData = {(value) => this.setState({informData:value})}
                         status = {this.state.type}
+                        sexType = {this.state.sexType}
                      />
                 </Modal>
             </div>

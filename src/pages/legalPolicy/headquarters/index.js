@@ -244,7 +244,7 @@ class Laws extends Component {
         let type =this.state.type;
         let data = this.state.lewsData
         //console.log("新增数据data",data)
-        data.appendix = this.state.fileList
+        // data.appendix = this.state.fileList
         data.type = 2 //总局文件
         data.content=data.content.toHTML()
         axios.PostAjax({

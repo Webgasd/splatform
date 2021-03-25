@@ -246,10 +246,9 @@ class Laws extends Component {
         let type =this.state.type;
         let data = this.state.lewsData
         let content = data.content||BraftEditor.createEditorState(null)
-        
-        data.appendix = this.state.fileList
         data.type = 1 //法律法规
         data.content=content.toHTML()
+        console.log("data",data)
         axios.PostAjax({
             url:type=='create'?'/lawAndDocument/insert':'/lawAndDocument/update',
             data:{

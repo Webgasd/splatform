@@ -140,16 +140,19 @@ export default class AddForm extends Component{
             })
         }
     }
+    handleCancel = () => this.setState({ previewVisible: false });
     //上传文件
     handleFile = (info) => {
-    const fileList = info.fileList;
-    if (info.file.status === 'done') {
-        message.success(`${info.file.name} 上传成功`);
-    } else if (info.file.status === 'error') {
-        message.error(`${info.file.name} 上传失败.`);
-    }
-    const data = JSON.stringify(fileList)
-    this.changeInput(data, 'appendix');
+        const fileList = info.fileList;
+        console.log("fileList",fileList)
+        if (info.file.status === 'done') {
+            message.success(`${info.file.name} 上传成功`);
+        } else if (info.file.status === 'error') {
+            message.error(`${info.file.name} 上传失败.`);
+        }
+        const data = JSON.stringify(fileList)
+        console.log("appendix",data)
+        this.changeInput(data, 'appendix');
 
     }
     //查看图片
@@ -169,7 +172,8 @@ export default class AddForm extends Component{
         let sourceData = this.props.sourceData||{};
         //转换返回的文件字段格式  转了需要使用
         let appendix = JSON.parse(sourceData.appendix||JSON.stringify([]))
-        console.log("格式",this.state.affiliatedInstitutions)
+        console.log("文件显示",appendix)
+        // console.log("格式",this.state.affiliatedInstitutions)
          //上传文件显示
          const { previewVisible, previewImage,modifyVisible } = this.state;
          const columns = [
@@ -301,7 +305,7 @@ export default class AddForm extends Component{
                         pagination={false}
                     />
                     <Modal visible={previewVisible} footer={null} onCancel={this.handleCancel}>
-                    <img alt="example" style={{ width: '100%' }} src={commonUrl+'/upload/picture/'+previewImage} />
+                    <img alt="example" style={{ width: '100%' }} src={commonUrl+'/upload/report/'+previewImage} />
                     </Modal>
                     <Modal visible={modifyVisible} onOk={this.handleFileNameSubmit} okText='确定' cancelText='取消' onCancel={this.handleFileNameCancel}>
                         <Input  disabled={this.props.status=='detail'?true:false} onChange={(e)=>this.changeFileName(e.target.value)} value={this.state.handleFileName}/>

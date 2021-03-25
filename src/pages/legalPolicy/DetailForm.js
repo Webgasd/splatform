@@ -1,9 +1,10 @@
 
 import React, { Component } from 'react'
-import {Button, Card,Col,Row, Table} from 'antd'
+import {Button, Card,Col,Row, Table,Modal} from 'antd'
 import BraftEditor from 'braft-editor';
 import 'braft-editor/dist/index.css'
 import './style.less'
+import {commonUrl} from "../../axios/commonSrc";
 import { render } from 'less'
 import ButtonGroup from 'antd/lib/button/button-group'
 
@@ -11,33 +12,49 @@ export default class DetailForm extends Component {
     state = {
         list:[]
     }
-
+    //查看图片
+    handlePreview = file => {
+        this.setState({
+            previewImage: (file.response||{}).data,
+            previewVisible: true,
+        });
+    };
+    //下载文件
+    downLoad = (file) => {
+       const download = commonUrl + '/upload/report/' + (file.response || {}).data
+       window.open(download)
+    }
+    handleCancel = () => this.setState({ previewVisible: false });
     render() {
         const detailData = this.props.detailData||{}
-        console.log("法律法规详细信息",detailData)
+        // console.log("法律法规详细信息",detailData)
+         //转换返回的文件字段格式  转了需要使用
+         let appendix = JSON.parse(detailData.appendix||JSON.stringify([]))
+         //上传文件显示
+        const { previewVisible, previewImage,modifyVisible } = this.state;
         const columns = [
             {
                 title:'资料名称',
-                dataIndex:'',
-                key:''
+                dataIndex:'name',
+                key:'name'
             },
             {
                 title:'上传日期',
-                dataIndex:'',
-                key:''
+                dataIndex:'lastModifiedDate',
+                key:'lastModifiedDate'
             },
             {
                 title:'文件大小',
-                dataIndex:'',
-                key:''
+                dataIndex:'size',
+                key:'size'
             },
             {
                 title:'操作',
                 dataIndex:'operation',
                 render:(text,record) => {
                     return <ButtonGroup>
-                        <Button type='primary'>查看</Button>
-                        <Button type='primary'>下载</Button>
+                        <Button type="primary" size="small" onClick={() => { this.handlePreview(record)}} style={{display:record.type=="image/jpeg"?'':'none'}}>查看</Button>
+                        <Button type="primary" size="small" onClick={() => { this.downLoad(record) }}>下载</Button>
                     </ButtonGroup>
                 }
             }
@@ -84,8 +101,11 @@ export default class DetailForm extends Component {
                     </div>
                 </Card>
                 <Card style={{marginTop:20}}> 
-                    <Table columns={columns} dataSource={this.state.list} bordered/>
+                    <Table columns={columns} dataSource={appendix} bordered/>
                 </Card>
+                <Modal visible={previewVisible} footer={null} onCancel={this.handleCancel}>
+                    <img alt="example" style={{ width: '100%' }} src={commonUrl+'/upload/report/'+previewImage} />
+                </Modal>
             </div>
         )
     }

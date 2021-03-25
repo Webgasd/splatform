@@ -114,7 +114,7 @@ class AddForm extends Component {
     };
     //下载文件
     downLoad = (file) => {
-       const download = commonUrl + '/upload/picture/' + (file.response || {}).data
+       const download = commonUrl + '/upload/report/' + (file.response || {}).data
        window.open(download)
     }
     
@@ -387,7 +387,7 @@ class AddForm extends Component {
                         pagination={false}
                     />
                     <Modal visible={previewVisible} footer={null} onCancel={this.handleCancel}>
-                    <img alt="example" style={{ width: '100%' }} src={commonUrl+'/upload/picture/'+previewImage} />
+                    <img alt="example" style={{ width: '100%' }} src={commonUrl+'/upload/report/'+previewImage} />
                     </Modal>
                     <Modal visible={modifyVisible} onOk={this.handleFileNameSubmit} okText='确定' cancelText='取消' onCancel={this.handleFileNameCancel}>
                         <Input  disabled={this.props.status=='detail'?true:false} onChange={(e)=>this.changeFileName(e.target.value)} value={this.state.handleFileName}/>

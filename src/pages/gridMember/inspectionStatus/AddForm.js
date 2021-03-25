@@ -26,7 +26,7 @@ class AddForm extends Component {
                     <Col span={5}><DatePicker  value={informData.issueDate==undefined?null:moment(informData.issueDate, dateFormat)} format={dateFormat} onChange={(dataString)=>this.changeInput(dataString,'issueDate')} disabled={true} bordered={false}/></Col>
                     <Col span={3} style={{textAlign:'right',fontSize:15}}>问题类型：</Col>
                     <Col span={5}>
-                        <Select value={informData.typeId}  style={{ width: 120 }} onChange={(value) => this.changeInput(value, 'typeId')} disabled={true}>
+                        <Select value={informData.typeId}  style={{ width: 120 }} onChange={(value) => this.changeInput(value, 'typeId')} disabled={true} bordered={false}>
                             {InspectionType.map((item) => {
                                 return <Option key={item.id} value={item.id}>{item.className}</Option>
                             })}
@@ -38,7 +38,7 @@ class AddForm extends Component {
                     <Col span={10}><Input placeholder='请输入内容' value={informData.inspectTitle} onChange={(e)=>this.changeInput(e.target.value,'inspectTitle')} disabled={true} bordered={false}/></Col>
                     <Col span={3} style={{textAlign:'right',fontSize:15}}>巡检区域：</Col>
                     <Col span={5}>
-                            <Select value={informData.inspectStreet}  style={{ width: 120 }} onChange={(value) => this.changeInput(value, 'inspectStreet')} disabled={true}>
+                            <Select value={informData.inspectStreet}  style={{ width: 120 }} onChange={(value) => this.changeInput(value, 'inspectStreet')} disabled={true} bordered={false}>
                                 {mockData.map((item) => {
                                     return <Option key={item.id} value={item.id}>{item.name}</Option>
                                 })}

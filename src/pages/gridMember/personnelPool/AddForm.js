@@ -20,16 +20,6 @@ class AddForm extends Component {
         fileList: [],
         imageUrl:'',
         loading: false,
-        sexType:[
-            {
-            "className": "男",
-            "id": 0,
-            },
-            {
-            "className": "女",
-            "id": 1,
-            }
-        ]
       };
 
     changeInput = (data, option) => {
@@ -83,6 +73,7 @@ class AddForm extends Component {
             </div>
         );
         let sourceData = this.props.informData
+        let sexType = this.props.sexType
         let status = this.props.status=='detail'? true:false
         //转换返回的文件字段格式  转了需要使用
         let appendix = JSON.parse(sourceData.appendix||JSON.stringify([]))
@@ -142,7 +133,7 @@ class AddForm extends Component {
                                 <Col span={3} style={{textAlign:'right',fontSize:15}}>性别：</Col>
                                 <Col span={4}>
                                 <Select value={sourceData.sexy}  style={{ width: 120 }} onChange={(value) => this.changeInput(value, 'sexy')} disabled={status}>
-                                {this.state.sexType.map((item) => {
+                                {sexType.map((item) => {
                                     return <Option key={item.id} value={item.id}>{item.className}</Option>
                                 })}
                                 </Select>
@@ -162,26 +153,17 @@ class AddForm extends Component {
                     </div>
                     <Row style={{marginTop:10}}>
                                 <Col span={3} style={{textAlign:'right',fontSize:15}}>乡镇：</Col>
-                                {/* <Col span={4}><Input placeholder='请输入内容' value={sourceData.street} onChange={(e)=>this.changeInput(e.target.value,'name')} disabled={status} /></Col> */}
-                                <Select value={sourceData.sexy}  style={{ width: 120 }} onChange={(value) => this.changeInput(value, 'sexy')} disabled={status}>
+                                <Col span={8}><Select value={sourceData.sexy}  style={{ width: 250 }} onChange={(value) => this.changeInput(value, 'sexy')} disabled={status}>
                                 {[].map((item) => {
                                     return <Option key={item.id} value={item.id}>{item.className}</Option>
                                 })}
-                                </Select>
-                                <Col span={3} style={{textAlign:'right',fontSize:15}}>所属社区：</Col>
-                                <Select value={sourceData.sexy}  style={{ width: 120 }} onChange={(value) => this.changeInput(value, 'sexy')} disabled={status}>
-                                {[].map((item) => {
-                                    return <Option key={item.id} value={item.id}>{item.className}</Option>
-                                })}
-                                </Select>
-                                {/* <Col span={4}><Input placeholder='请输入内容' value={sourceData.name} onChange={(e)=>this.changeInput(e.target.value,'name')} disabled={status} /></Col> */}
+                                </Select></Col>
                                 <Col span={3} style={{textAlign:'right',fontSize:15}}>所属网格：</Col>
-                                <Select value={sourceData.grid}  style={{ width: 120 }} onChange={(value) => this.changeInput(value, 'grid')} disabled={status}>
+                                <Col span={8}><Select value={sourceData.grid}  style={{ width: 250 }} onChange={(value) => this.changeInput(value, 'grid')} disabled={status}>
                                 {[].map((item) => {
                                     return <Option key={item.id} value={item.id}>{item.className}</Option>
                                 })}
-                                </Select>
-                                {/* <Col span={4}><Input placeholder='请输入内容' value={sourceData.grid} onChange={(e)=>this.changeInput(e.target.value,'name')} disabled={status} /></Col> */}
+                                </Select></Col>
                             </Row>
                     <Row style={{marginTop:10}}>
                     <Col span={3} style={{textAlign:'right',fontSize:15}}>管辖范围：</Col>

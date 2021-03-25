@@ -321,7 +321,7 @@ class DocumentRouting extends Component {
     //提交新增 更改
     handleSubmit = (key) => {
         let data = this.state.informData
-        data.fileList = this.state.fileList
+        // data.fileList = this.state.fileList
         if(key == 1){
             data.reviewResult = 1
             this.setState({
