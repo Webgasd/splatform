@@ -361,15 +361,15 @@ class Laws extends Component {
                 width: 150,
             },
             {
+                type: 'TIME',
+                label: '发布日期',
+                field: 'time',
+            },
+            {
                 type: 'INPUT',
                 label: '文号',
                 placeholder: '请输入查询关键词',
                 field: 'articleNumber',
-            },
-            {
-                type: 'TIME',
-                label: '发布日期',
-                field: 'time',
             }
         ];
         return (

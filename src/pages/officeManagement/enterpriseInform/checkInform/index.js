@@ -13,42 +13,7 @@ const Panel = Collapse.Panel;
 const ButtonGroup = Button.Group;
 const confirm = Modal.confirm
 
-const formList = [
-    {
-        type: 'SELECT',
-        label: '企业通知类型',
-        placeholder: '请选择通知类型',
-        field: 'type',
-        width: 150,
-        list: [{ id: 0, name: '0' }, { id: 1, name: '1' }]
-    },
-    {
-        type: 'INPUT',
-        label: '通知公告标题',
-        placeholder: '请输入查询关键词',
-        field: 'title',
-        width: 150,
-    },
-    {
-        type: 'INPUT',
-        label: '发布人',
-        placeholder: '请输入查询关键词',
-        field: 'author',
-        width: 150,
-    },
-    {
-        type: 'INPUT',
-        label: '核验人',
-        placeholder: '请输入查询关键词',
-        field: 'reviewer',
-        width: 150,
-    },
-    {
-        type: 'TIME',
-        label: '发布日期',
-        field: 'issueDate',
-    }
-];
+
 @connect(
     state => ({
         acl: state.acls['/laws'],
@@ -74,6 +39,29 @@ class CheckInform extends Component {
     }
     componentDidMount() {
         this.requestList()
+        this.requestType()
+    }
+    //获取企业通知类型
+    requestType = ()=>{
+        let _this = this;
+        axios.ajax({
+            url:'/enterpriseNotice/getAllClass',
+            data:{
+                params:{}
+            }
+        }).then((res)=>{
+            if(res.status == "success"){
+                let enterpriseNotice = res.data||[]
+                let list = enterpriseNotice.map((item,key)=>{
+                    item.id = item.id
+                    item.name = item.type
+                    return item
+                })
+                _this.setState({
+                    enterpriseNotice:list
+                })
+            }
+        })
     }
     //发布人和发布日期信息
     getMessage = () => {
@@ -86,10 +74,48 @@ class CheckInform extends Component {
             informData: informData
         })
     }
+    //按条件获取数据
+    requestListByCondition = ()=>{
+        let _this = this;
+        axios.PostAjax({
+            url:'/enterpriseNotice/getApprovalData',
+            data:{
+                params:{..._this.params}
+            }
+        }).then((res)=>{
+            if(res.status == "success"){
+                if(res.data!==null){
+                    let list  = res.data.data.map((item,i)=>{
+                        item.key = i;
+                        return item;
+                    })
+                    _this.setState({
+                        list:list,
+                        pagination:Utils.pagination(res,(current)=>{
+                            _this.params.pageNo = current;//当前页数
+                            _this.requestListByCondition(); //刷新列表数据
+                        })
+                    })
+                }else{
+                    res.data = {"total":0,"data":[],"pageNo": 1,"pageSize": 10}
+                    _this.setState({
+                        list:[],
+                        pagination:Utils.pagination(res,(current)=>{
+                            _this.params.pageNo = current;//	当前页数
+                            _this.requestListByCondition(); //刷新列表数据
+                        })
+                    })
+                }
+                
+            }
+        })
+    }
     //查询
     handleFilterSubmit = (params) => {
         this.params = params
-        this.params.startData = this.params.startTime
+        this.params.startDate = this.params.starttime
+        this.params.endDate = this.params.endtime
+        this.requestListByCondition()
     }
     //获取表格数据
     requestList = () => {
@@ -286,7 +312,43 @@ class CheckInform extends Component {
         })
     }
     render() {
-        console.log(this.props.userInfo)
+        // console.log(this.props.userInfo)
+        const formList = [
+            {
+                type: 'SELECT',
+                label: '企业通知类型',
+                placeholder: '请选择通知类型',
+                field: 'type',
+                width: 150,
+                list: this.state.enterpriseNotice||[]
+            },
+            {
+                type: 'INPUT',
+                label: '通知公告标题',
+                placeholder: '请输入查询关键词',
+                field: 'title',
+                width: 150,
+            },
+            {
+                type: 'INPUT',
+                label: '发布人',
+                placeholder: '请输入查询关键词',
+                field: 'authorName',
+                width: 150,
+            },
+            {
+                type: 'INPUT',
+                label: '核验人',
+                placeholder: '请输入查询关键词',
+                field: 'reviewer_name',
+                width: 150,
+            },
+            {
+                type: 'TIME',
+                label: '发布日期',
+                field: 'time',
+            }
+        ];
         const columns = [
             {
                 title: '企业通知类型',

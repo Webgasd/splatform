@@ -228,9 +228,9 @@ export default class LegalPolicy extends Component {
                 type: 'SELECT',
                 label: '检索类型',
                 placeholder: '请选择检索类型',
-                field: 'workType',
+                field: 'classType',
                 width: 150,
-                list: [{id: 0, name: '标题'}, {id: 1, name: '内容'}, {id: 2, name: '附件'}]
+                list: [{id: 2, name: '标题'}, {id: 1, name: '内容'}, {id: 3, name: '附件'}]
             },
         ]
         return (

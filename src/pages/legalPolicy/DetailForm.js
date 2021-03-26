@@ -5,7 +5,7 @@ import BraftEditor from 'braft-editor';
 import 'braft-editor/dist/index.css'
 import './style.less'
 import {commonUrl} from "../../axios/commonSrc";
-import { render } from 'less'
+import moment from 'moment';
 import ButtonGroup from 'antd/lib/button/button-group'
 
 export default class DetailForm extends Component {
@@ -41,7 +41,10 @@ export default class DetailForm extends Component {
             {
                 title:'上传日期',
                 dataIndex:'lastModifiedDate',
-                key:'lastModifiedDate'
+                key:'lastModifiedDate',
+                render:(lastModifiedDate)=>{
+                    return moment(lastModifiedDate).format('YYYY-MM-DD')
+                }
             },
             {
                 title:'文件大小',

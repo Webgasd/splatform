@@ -13,42 +13,7 @@ const Panel = Collapse.Panel;
 const ButtonGroup = Button.Group;
 const confirm = Modal.confirm
 
-const formList = [
-    {
-        type: 'SELECT',
-        label: '企业通知类型',
-        placeholder: '请选择通知类型',
-        field: 'type',
-        width: 150,
-        list: [{id: 0, name: '0'}, {id: 1, name: '1'}]
-    },
-    {
-        type: 'INPUT',
-        label: '通知公告标题',
-        placeholder: '请输入查询关键词',
-        field: 'title',
-        width: 150,
-    },
-    {
-        type: 'INPUT',
-        label: '发布人',
-        placeholder: '请输入查询关键词',
-        field: 'author',
-        width: 150,
-    },
-    {
-        type: 'INPUT',
-        label: '核验人',
-        placeholder: '请输入查询关键词',
-        field: 'reviewer',
-        width: 150,
-    },
-    {
-        type: 'TIME',
-        label: '发布日期',
-        field: 'issueDate',
-    }
-];
+
 @connect(
     state=>({
         acl:state.acls['/laws'],
@@ -73,6 +38,7 @@ class EnterpriseInform extends Component {
     }
     componentDidMount(){
         this.requestList()
+        this.requestType()
     }
     //发布人和发布日期信息
     getMessage = () => {
@@ -84,10 +50,48 @@ class EnterpriseInform extends Component {
             informData:informData
         })
     }
+    //按条件获取数据
+    requestListByCondition = ()=>{
+        let _this = this;
+        axios.PostAjax({
+            url:'/enterpriseNotice/getByCondition',
+            data:{
+                params:{..._this.params}
+            }
+        }).then((res)=>{
+            if(res.status == "success"){
+                if(res.data!==null){
+                    let list  = res.data.data.map((item,i)=>{
+                        item.key = i;
+                        return item;
+                    })
+                    _this.setState({
+                        list:list,
+                        pagination:Utils.pagination(res,(current)=>{
+                            _this.params.pageNo = current;//当前页数
+                            _this.requestListByCondition(); //刷新列表数据
+                        })
+                    })
+                }else{
+                    res.data = {"total":0,"data":[],"pageNo": 1,"pageSize": 10}
+                    _this.setState({
+                        list:[],
+                        pagination:Utils.pagination(res,(current)=>{
+                            _this.params.pageNo = current;//	当前页数
+                            _this.requestListByCondition(); //刷新列表数据
+                        })
+                    })
+                }
+                
+            }
+        })
+    }
     //查询
     handleFilterSubmit = (params) => {
         this.params = params
-        this.params.startData = this.params.startTime
+        this.params.startDate = this.params.starttime
+        this.params.endDate = this.params.endtime
+        this.requestListByCondition()
     }
     //获取表格数据
     requestList = ()=>{
@@ -109,6 +113,29 @@ class EnterpriseInform extends Component {
                         _this.params.pageNo = current;//	当前页数
                         _this.requestList(); //刷新列表数据
                     })
+                })
+            }
+        })
+    }
+
+    //获取企业通知类型
+    requestType = ()=>{
+        let _this = this;
+        axios.ajax({
+            url:'/enterpriseNotice/getAllClass',
+            data:{
+                params:{}
+            }
+        }).then((res)=>{
+            if(res.status == "success"){
+                let enterpriseNotice = res.data||[]
+                let list = enterpriseNotice.map((item,key)=>{
+                    item.id = item.id
+                    item.name = item.type
+                    return item
+                })
+                _this.setState({
+                    enterpriseNotice:list
                 })
             }
         })
@@ -146,7 +173,6 @@ class EnterpriseInform extends Component {
                 })
             }
         }
-        
         else if(type == 'delete'){
            confirm({
                title:'确定删除?',
@@ -169,6 +195,40 @@ class EnterpriseInform extends Component {
                }
            })
         }
+        else if(type == 'deletes'){
+            let idList = _this.state.selectedRowKeys
+            if(idList.length==0){
+                confirm({
+                    title:'至少选择一条数据',
+                    okText:'确定',
+                    okType:'primary',
+                    onOk:()=>{
+
+                    }
+                })
+            }else{
+                confirm({
+                    title:'确定删除?',
+                    okText:'是',
+                    okType:'danger',
+                    cancelText:'否',
+                    onOk:() => {
+                        axios.PostAjax({
+                            url:'/enterpriseNotice/deleteMultiple',
+                            data:{
+                                params:{
+                                 idList:idList
+                                }
+                            }
+                        }).then((res)=>{
+                            if(res.status == "success"){
+                                _this.requestList();
+                            }
+                        })
+                    }
+                })
+            }
+         }
         // else if(type == 'detail'){
         //     axios.ajax({
         //         url:'',
@@ -303,6 +363,42 @@ class EnterpriseInform extends Component {
                 }
             },
         ]
+        const formList = [
+            {
+                type: 'SELECT',
+                label: '企业通知类型',
+                placeholder: '请选择通知类型',
+                field: 'type',
+                width: 150,
+                list: this.state.enterpriseNotice||[]
+            },
+            {
+                type: 'INPUT',
+                label: '通知公告标题',
+                placeholder: '请输入查询关键词',
+                field: 'title',
+                width: 150,
+            },
+            {
+                type: 'INPUT',
+                label: '发布人',
+                placeholder: '请输入查询关键词',
+                field: 'authorName',
+                width: 150,
+            },
+            {
+                type: 'INPUT',
+                label: '核验人',
+                placeholder: '请输入查询关键词',
+                field: 'reviewer_name',
+                width: 150,
+            },
+            {
+                type: 'TIME',
+                label: '发布日期',
+                field: 'time',
+            }
+        ];
         return (
             <div>
                 <Card>
@@ -315,7 +411,7 @@ class EnterpriseInform extends Component {
                 <Card style={{marginTop:10}}>
                     <div className='button-box'>
                         <Button type="primary" onClick={()=> this.handleOperator('create',null)}>数据新增</Button>
-                        <Button type="primary" onClick={()=>this.handleDelete}>批量删除</Button>
+                        <Button type="danger" onClick={()=>this.handleOperator('deletes',null)}>批量删除</Button>
                     </div>
                     <div style={{marginTop:30}}>
                         <ETable
@@ -334,7 +430,7 @@ class EnterpriseInform extends Component {
                     width='1000px'
                     title='通知公告'
                     visible={this.state.isVisible}
-                    footer = {[
+                    footer = {this.state.type=='detail'?'':[
                         <Button type='primary' key='toPublic' onClick={e=>this.handleSubmit(1)}>保存直接发布</Button>,
                         <Button type='primary' key='toPerson' onClick={e=>this.handleSubmit(2)}>转发给核验人</Button>
                     ]}

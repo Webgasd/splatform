@@ -1,19 +1,24 @@
 import React, { Component } from 'react'
 import { Button, Card, Row, Col, Table, Input, Select, Transfer, Modal, Icon, Upload, message } from 'antd'
 import './style.less'
-import Utils from "../../../utils";
+import Process from '../documentRouting/Process'
 import axios from "../../../axios";
-import BraftEditor from 'braft-editor';
+import moment from "moment";
 import 'braft-editor/dist/index.css'
 import ButtonGroup from 'antd/lib/button/button-group'
-import Axios from 'axios';
+import {connect} from "react-redux";
 import difference from 'lodash/difference';
 import { commonUrl } from '../../../axios/commonSrc'
 const { TextArea } = Input;
 const { Option } = Select;
 
 
-
+@connect(
+    state=>({
+        userInfo:state.userInfo
+    }),{
+    }
+)
 class AddForm extends Component {
     state = {
         class: '',
@@ -88,6 +93,32 @@ class AddForm extends Component {
             isModalVisible: false
         })
     }
+     //处理功能  处理时间为当前时间
+     handleDocument = () => {
+        let date = moment().format("YYYY-MM-DD")
+        this.setState({
+            informData:{reviewTime:date},
+            isProVisible:true
+        })
+    }
+    //处理提交   发起请求
+    handleProcess = ()=>{
+        axios.PostAjax({
+            url:'/documentCirculate/updateState',
+            data:{
+                params:{...this.state.informData,id:this.props.userInfo.id}
+            }
+        }).then((res)=>{
+            if(res.status == "success"){
+                let data = res.data.data||[]
+                this.setState({
+                    informData:this.state.informData,
+                    isProVisible:false
+                })
+            }
+        })
+    }
+    handleCancel = () => this.setState({ previewVisible: false });
     //上传文件
     handleFile = (info) => {
         const fileList = info.fileList;
@@ -110,14 +141,20 @@ class AddForm extends Component {
     };
     //下载文件
     downLoad = (file) => {
-       const download = commonUrl + '/upload/picture/' + (file.response || {}).data
+       const download = commonUrl + '/upload/report/' + (file.response || {}).data
        window.open(download)
     }
     render() {
+         //上传文件显示
+        const { previewVisible, previewImage,modifyVisible } = this.state;
         const appendix = JSON.parse(this.props.informData.appendix || JSON.stringify([]))
         const allClass = this.props.class || []
         const status = this.props.status == 'detail' || this.props.status == 'check' ? true : false
         const { informData } = this.props
+        //如果是编辑和添加操作 隐藏一个Card
+        this.state.display_name = this.props.status == 'modify'||this.props.status == 'create' ? 'none':''
+        //区分查看和审核处理  Card按钮 若是审核操作显示按钮
+        let displayHandleButton = this.props.status == 'detail'?'none':''
         const columns = [
             {
                 title: '资料名称',
@@ -126,13 +163,16 @@ class AddForm extends Component {
             },
             {
                 title: '上传日期',
-                dataIndex: '',
-                key: ''
+                dataIndex: 'lastModifiedDate',
+                key: 'lastModifiedDate',
+                render:(lastModifiedDate)=>{
+                    return moment(lastModifiedDate).format('YYYY-MM-DD')
+                }
             },
             {
                 title: '文件大小',
-                dataIndex: '',
-                key: ''
+                dataIndex: 'size',
+                key: 'size'
             },
             {
                 title: '操作',
@@ -269,6 +309,16 @@ class AddForm extends Component {
                     <Card title="发送给" style={{ width: 250, marginTop: 10 }} extra={<Button disabled={status} type='primary' onClick={() => this.setState({ isModalVisible: true })}>人员</Button>}>
                         <div>{informData.allReaders}</div>
                     </Card>
+                    <Card title="审核处理" style={{ width: 250,height:250,marginTop: 10 ,display:this.state.display_name}} extra={<Button type="primary" size='small' onClick={this.handleDocument} style={{display:displayHandleButton}}>处理</Button>}>                     
+                        <Row style={{ marginTop: 10 }}>
+                            <Col span={12} style={{ textAlign: 'right', fontSize: 15 }}>拟办时间：</Col>
+                            <Col span={12}>{informData.reviewTime}</Col>
+                        </Row> 
+                        <Row style={{ marginTop: 10 }}>
+                            <Col span={12} style={{ textAlign: 'right', fontSize: 15 }}>拟办结果：</Col>
+                            <Col span={12}>{informData.reviewComment}</Col>
+                        </Row> 
+                     </Card>
                 </div>
                 <div className='rightContent'>
                     <Card title="通知公告正文" style={{ width: 700 }}>
@@ -292,10 +342,17 @@ class AddForm extends Component {
                             onChange={(info) => this.handleFile(info)}
                             showUploadList={false}
                             fileList={appendix}
+                            disabled={this.props.status=='detail'?true:false}
                         >
                             <Button style={{ margin: 10 }}><Icon type="upload" />上传附件</Button>
                         </Upload>
                         <Table columns={columns} dataSource={appendix} bordered />
+                        <Modal visible={previewVisible} footer={null} onCancel={this.handleCancel}>
+                        <img alt="example" style={{ width: '100%' }} src={commonUrl+'/upload/report/'+previewImage} />
+                        </Modal>
+                        <Modal visible={modifyVisible} onOk={this.handleFileNameSubmit} okText='确定' cancelText='取消' onCancel={this.handleFileNameCancel}>
+                            <Input  disabled={this.props.status=='detail'?true:false} onChange={(e)=>this.changeFileName(e.target.value)} value={this.state.handleFileName}/>
+                        </Modal> 
                     </Card>
                 </div>
                 <Modal
@@ -331,8 +388,20 @@ class AddForm extends Component {
                         columns={columns1}
                     />
                 </Modal>
-                <Modal visible={this.state.previewVisible} footer={null} onCancel={() => this.setState({ previewVisible: false })}>
-                    <img alt="example" style={{ width: '100%' }} src={commonUrl + '/upload/picture/' + this.state.previewImage} />
+                <Modal
+                    width='600px'
+                    title='处理'
+                    visible={this.state.isProVisible}
+                    onOk={this.handleProcess}
+                    destroyOnClose={true}
+                    onCancel={()=>
+                        this.setState({
+                            isProVisible:false,
+                            informData:{}
+                        })
+                    }
+                >
+                   <Process informData={this.state.informData} dispatchInformData = {(value) => this.setState({informData:value})}/>
                 </Modal>
             </div>
         )

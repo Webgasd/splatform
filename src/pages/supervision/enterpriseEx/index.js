@@ -89,18 +89,31 @@ import ImportData from './childrenForm/ImportData';
             }
         }).then((res)=>{console.log(res)
             if(res.status == "success"){
-                let list  = res.data.data.map((item,i)=>{
-                    item.key = i;
-                    return item;
-                })
-                this.setState({
-                    list:list,
-                    total:res.data.total,
-                    pagination:Utils.pagination(res,(current)=>{
-                        _this.params.pageNo = current;//	当前页数
-                        _this.requestList(); //刷新列表数据
-                    })
-                })
+                if(res.status == "success"){
+                    if(res.data!==null){
+                        let list  = res.data.data.map((item,i)=>{
+                            item.key = i;
+                            return item;
+                        })
+                        this.setState({
+                            list:list,
+                            total:res.data.total,
+                            pagination:Utils.pagination(res,(current)=>{
+                                _this.params.pageNo = current;//	当前页数
+                                _this.requestList(); //刷新列表数据
+                            })
+                        })
+                    }else{
+                        res.data = {"total":0,"data":[],"pageNo": 1,"pageSize": 10}
+                        this.setState({
+                            list:res.data.data,
+                            pagination:Utils.pagination(res,(current)=>{
+                                this.params.pageNo = current;//	当前页数
+                                this.requestList(); //刷新列表数据
+                            })
+                        })
+                    }
+                }
             }
         })
     }

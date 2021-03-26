@@ -165,14 +165,14 @@ export default class AddForm extends Component{
     };
     //下载文件
     downLoad = (file) => {
-       const download = commonUrl + '/upload/picture/' + (file.response || {}).data
+       const download = commonUrl + '/upload/report/' + (file.response || {}).data
        window.open(download)
     }
     render() {
         let sourceData = this.props.sourceData||{};
         //转换返回的文件字段格式  转了需要使用
         let appendix = JSON.parse(sourceData.appendix||JSON.stringify([]))
-        console.log("文件显示",appendix)
+        // console.log("",appendix)
         // console.log("格式",this.state.affiliatedInstitutions)
          //上传文件显示
          const { previewVisible, previewImage,modifyVisible } = this.state;
@@ -185,7 +185,10 @@ export default class AddForm extends Component{
              {
                  title: '上传日期',
                  dataIndex: 'lastModifiedDate',
-                 key: 'lastModifiedDate'
+                 key: 'lastModifiedDate',
+                 render:(lastModifiedDate)=>{
+                     return moment(lastModifiedDate).format('YYYY-MM-DD')
+                 }
              },
              {
                  title: '文件大小',

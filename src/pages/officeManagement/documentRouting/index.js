@@ -191,7 +191,7 @@ class DocumentRouting extends Component {
             _this.setState({
                 title:'添加公文',
                 isVisible:true,
-                informData:{author:"redux获取",issueDate:_this.state.informData.date},
+                informData:{author:_this.props.userInfo.userName,issueDate:_this.state.informData.date},
                 status:false,
                 type
             })
@@ -230,7 +230,7 @@ class DocumentRouting extends Component {
                 console.log("idlist",idList)
             }else if(type =='deleteGroup'){
                 idList=_this.state.selectedRowKeys
-                console.log("idlist",idList)
+                // console.log("idlist",idList)
             }
             if(idList.length==0){
                 confirm({
@@ -257,6 +257,7 @@ class DocumentRouting extends Component {
                             }
                         }).then((res)=>{
                             if(res.status == "success"){
+                                _this.setState({selectedRowKeys:[]})
                                 _this.requestList();
                             }
                         })

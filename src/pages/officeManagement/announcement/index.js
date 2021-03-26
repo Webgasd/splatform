@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import {Button,Card,Collapse,Modal,Tag} from 'antd'
+import {Button,Card,Collapse,Modal,Tag,Dropdown,Menu} from 'antd'
 import  BaseForm  from '../../../components/BaseForm';
 import ETable from '../../../components/ETable'
 import Utils from "../../../utils";
@@ -32,6 +32,7 @@ class Announcement extends Component {
             }
         ],
         title:'' , //拟态框标题
+        idList:[]
     }
     params = {
         pageNo:1
@@ -126,10 +127,11 @@ class Announcement extends Component {
             this.setState({
                 title:'通知公告',
                 isVisible:true,
-                type
+                type,
+                status:false
             })
         }
-        else if(type == 'modify'||type == 'detail'){
+        else if(type == 'modify'||type == 'detail'||type == 'check'){
             let _this = this;
             axios.PostAjax({
                 url:'/documentCirculate/getById',
@@ -139,23 +141,40 @@ class Announcement extends Component {
             }).then((res)=>{
                 let informData = res.data||{}
                 if(res.status == "success"){
-                    _this.setState({
-                        isVisible:true,
-                        type,
-                        informData:informData
-                    })
+                    // _this.setState({
+                    //     isVisible:true,
+                    //     type,
+                    //     informData:informData
+                    // })
+                    if(type == 'modify'){
+                        _this.setState({
+                            title:"公文流转",
+                            isVisible:true,
+                            status:false,
+                            type,
+                            informData:informData
+                        })
+                    }
+                    else if(type == 'check'||type == 'detail'){
+                        _this.setState({
+                            title:"公文流转",
+                            status:true, //拟办不需要右下角的按钮
+                            isVisible:true,
+                            type,
+                            informData:informData
+                        })
+                    }
                 }
+                
             })
+            
         }
-        
         else if(type == 'delete'||type =='deleteGroup'){
             let idList = []
             if(type =='delete'){
                 idList=[item.id]
-                console.log("idlist",idList)
             }else if(type =='deleteGroup'){
                 idList=_this.state.selectedRowKeys
-                console.log("idlist",idList)
             }
             if(idList.length==0){
                 confirm({
@@ -182,6 +201,7 @@ class Announcement extends Component {
                             }
                         }).then((res)=>{
                             if(res.status == "success"){
+                                _this.setState({selectedRowKeys:[]})
                                 _this.requestList();
                             }
                         })
@@ -231,7 +251,7 @@ class Announcement extends Component {
             this.handleOk()
         }
         else {
-            data.reviewResult = 2
+            data.reviewResult = 0
             this.setState({
                 informData:data
             })
@@ -279,7 +299,24 @@ class Announcement extends Component {
             }
         })
     }
+    //下拉菜单
+    menu =(record)=>{
+        let direct = this.state.direct
+        return(
+            <Menu>
+                <Menu.Item key="0">
+                  <Button type='text'  size='small' onClick={()=> {this.handleOperator('records',record)}} >查阅记录</Button>
+                </Menu.Item>
+                <Menu.Item key="1">
+                  <Button type='text' size='small' onClick={()=> {this.handleOperator('delete',record)}}>删除数据</Button>
+                </Menu.Item>
+            </Menu>
+        )
+    }
     render() {
+        //如果选择了拟办人  则转发给拟办人   否则直接发布
+        let selected = this.state.informData.reviewer?'':'none'
+        let notSelected = this.state.informData.reviewer?'none':''
         const formList = [
             {
                 type: 'SELECT',
@@ -387,13 +424,18 @@ class Announcement extends Component {
                 dataIndex:'operation',
                 render:(text,record) => {                  
                         const reviewStatus = record.reviewResult == 1?'none':''
-                        const obReviewStatus = record.reviewResult == 1?'':'none'
+                        // const obReviewStatus = record.reviewResult == 1?'':'none'
+                        //两种情况不显示：1.已经审核 2.无需审核   0代表未审核 1代表通过 2代表不通过  直接下发     显示条件审核人id与当前用户一样
+                        const hanleStatus = record.reviewResult == 1||record.reviewResult == 2||!record.reviewer?'none':''
                     return <ButtonGroup>
-                        <Button type='primary'  onClick={()=> {this.handleOperator('detail',record)}} >查看</Button>
-                        <Button type='primary'  onClick={()=> {this.handleOperator('records',record)}} >查阅记录</Button>
-                        <Button type='primary' style={{display:reviewStatus}} onClick={()=> {this.handleOperator('modify',record)}}>修改</Button>
-                        {/* <Button type='primary' style={{display:obReviewStatus}} onClick={()=>{this.handleOperator('issueCancel',record)}}>取消发布</Button> */}
-                        <Button type='primary' onClick={()=> {this.handleOperator('delete',record)}}>删除</Button>
+                        <Button type='text'  size='small' onClick={()=> {this.handleOperator('detail',record)}} >查看</Button>
+                        <Button type='text' size='small' style={{display:reviewStatus}} onClick={()=> {this.handleOperator('modify',record)}}>修改</Button>
+                        <Button type='text' size='small' style={{display:hanleStatus}} onClick={()=>{this.handleOperator('check',record)}}>审核处理</Button>
+                        <Dropdown overlay={()=>this.menu(record)} trigger={['click']}>
+                            <a  onClick={()=>this.setState({record:record})}>
+                            ... 
+                            </a>
+                        </Dropdown>
                     </ButtonGroup>
                 }
             },
@@ -429,9 +471,11 @@ class Announcement extends Component {
                     width='1000px'
                     title='通知公告'
                     visible={this.state.isVisible}
-                    footer = {this.state.informData.typeId==4?
-                        <Button type='primary' key='toPublic' onClick={e=>this.handleSubmit(1)}>保存直接发布</Button>:
-                        <Button type='primary' key='toPerson' onClick={e=>this.handleSubmit(2)}>转发给核验人</Button>
+                    footer = {this.state.status
+                    ?true:[
+                            <Button type='primary' key='toPublic' onClick={e=>this.handleSubmit(1)} style={{display:notSelected}}>保存直接发布</Button>,
+                            <Button type='primary' key='toPerson' onClick={e=>this.handleSubmit(2)} style={{display:selected}}>转发给核验人</Button>
+                        ]
                     }
                     destroyOnClose={true}
                     onCancel={()=>{

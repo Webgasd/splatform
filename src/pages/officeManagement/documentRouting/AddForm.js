@@ -3,7 +3,7 @@ import { Button, Card, Row, Col, Table, Input, Select,Modal,Transfer,Upload,mess
 import {commonUrl} from "../../../axios/commonSrc";
 import './style.less'
 import axios from "../../../axios";
-import Utils from "../../../utils";
+import {connect} from "react-redux";
 import 'braft-editor/dist/index.css'
 import Process from './Process'
 import moment from 'moment';
@@ -15,7 +15,12 @@ const { Option } = Select;
 const { Search } = Input;
 const confirm = Modal.confirm;
 
-
+@connect(
+    state=>({
+        userInfo:state.userInfo
+    }),{
+    }
+)
 class AddForm extends Component {
     state = {
         class: '',
@@ -132,7 +137,7 @@ class AddForm extends Component {
         axios.PostAjax({
             url:'/documentCirculate/updateState',
             data:{
-                params:{...this.state.informData}
+                params:{...this.state.informData,id:this.props.userInfo.id}
             }
         }).then((res)=>{
             if(res.status == "success"){
@@ -183,7 +188,10 @@ class AddForm extends Component {
             {
                 title: '上传日期',
                 dataIndex: 'lastModifiedDate',
-                key: 'lastModifiedDate'
+                key: 'lastModifiedDate',
+                render:(lastModifiedDate)=>{
+                    return moment(lastModifiedDate).format('YYYY-MM-DD')
+                }
             },
             {
                 title: '文件大小',
