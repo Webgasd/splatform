@@ -21,10 +21,10 @@ export default class CommonPage extends Component{
     }
     requestList = ()=>{
         let _this = this;
-        axios.ajax({
+        axios.PostAjax({
             url:this.props.baseUrl+'/getPage',
             data:{
-                params:this.params
+                params:{..._this.params}
             }
         }).then((res)=>{
             if(res.status == "success"){
