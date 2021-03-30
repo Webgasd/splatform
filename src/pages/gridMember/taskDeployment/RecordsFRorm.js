@@ -17,7 +17,6 @@ export default class RecordsFRorm extends Component {
     getRowClassName = (record, index) => {
         let className = '';
         className = record.readState == 1 ? 'viewed' : 'notViewed';
-        console.log("行样式",className,record.readState)
         return className;
 
     }
@@ -35,9 +34,9 @@ export default class RecordsFRorm extends Component {
                 key:'reader'
             },
             {
-                title:'所属部门',
-                dataIndex:'readerDepartment',
-                key:'readerDepartment'
+                title:'所属区域',
+                dataIndex:'areaName',
+                key:'areaName'
             },
             {
                 title:'查询时间',

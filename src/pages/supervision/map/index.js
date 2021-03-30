@@ -15,6 +15,7 @@ import h3 from "./images/33.png";
 import q1 from "./images/41.png";
 import q2 from "./images/42.png";
 import q3 from "./images/43.png";
+import upPic from "./images/up.png";
 import allPic from "./images/all.png";
 import newPic from "./images/new.png";
 import nomalPic from "./images/nomal.png";
@@ -993,7 +994,13 @@ class map extends React.Component {
                                 </div>
                             </div>
                             <div id="companyInfo" >
-                                <div className={"bottomGrayBox"}>&nbsp;&nbsp;<img src={detailPic} alt='' />数据信息</div>
+                                <div className={"bottomGrayBox"}>&nbsp;&nbsp;<img src={detailPic} alt='' />数据信息
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <img src={upPic} alt='' width='20px' height='20px' onClick={() => this.setState({detailDisplay:"none"})}/>
+                                </div>
                                 <div style={{ display: this.state.detailDisplay }}>
                                     {
                                         this.state.propagandaEnclosure.length >= 1 ?
@@ -1013,12 +1020,14 @@ class map extends React.Component {
                                             <img src={nav2} onClick={() => this.showVideo()} width='30px' height='30px' alt='' />&nbsp;&nbsp;
                                             <img src={nav3} onClick={() => this.showLedgerTable()} width='30px' height='30px' alt='' />&nbsp;&nbsp;
                                             <img src={nav4} onClick={this.toGaodeLocation} width='30px' height='30px' alt='' />&nbsp;&nbsp;
+
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div id="backbtn" style={{display: this.state.mapBackButton }}>
-                                <button onClick={this.initMap}>《返回</button>
+                            <div id="backbtn" >
+                                <button onClick={this.requestList}>刷新</button>
+                                <button onClick={this.initMap} style={{display: this.state.mapBackButton }}>《返回</button>
                             </div>
                         </div>
                         {/* 以上为地图，坐标提示，数据信息 */}

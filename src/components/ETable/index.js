@@ -80,6 +80,7 @@ export default class ETable extends React.Component {
             pagination={this.props.pagination}
             rowSelection={rowSelection}
                 expandable = { {expandedRowRender: record => <p>{record.description}</p> }}
+            rowKey={record=>record.id} //必须指定，否则，selectedRowKeys 控制的只是dataSource当前的顺序编号 或者rowKey="id"
             onRow={(record,index) => ({
                 onClick: ()=>{
                     if(!row_selection){

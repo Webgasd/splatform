@@ -59,7 +59,7 @@ class Person extends Component{
                                     >
                                         {imageUrl ? <img src={imageUrl} style={{height:'130px'}} alt="avatar" />:
                                             (photo.length>=1&&!this.state.loading?
-                                                <img src={commonUrl+"/upload/picture/" +photo[0].response.data} style={{height:'130px'}} alt="avatar" />:
+                                                <img src={commonUrl+"/upload/" +photo[0].response.data} style={{height:'130px'}} alt="avatar" />:
                                                 uploadButton
                                             )
                                         }

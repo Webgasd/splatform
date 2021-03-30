@@ -1,11 +1,11 @@
 
 import React, { Component } from 'react'
-import {Row,Col,Input,Select,DatePicker, Upload,Table,Button, Icon,message} from 'antd'
+import { Button, Card, Row, Col, Table, Input, Select,Modal,DatePicker,Upload,message,Icon} from 'antd'
+import {commonUrl} from "../../axios/commonSrc";
 import BraftEditor from 'braft-editor';
 import 'braft-editor/dist/index.css'
 import axios from "../../axios";
 import moment from 'moment';
-import {commonUrl} from '../../axios/commonSrc'
 import './style.less'
 const {Option} = Select
 const ButtonGroup = Button.Group;
@@ -140,16 +140,19 @@ export default class AddForm extends Component{
             })
         }
     }
+    handleCancel = () => this.setState({ previewVisible: false });
     //上传文件
     handleFile = (info) => {
-    const fileList = info.fileList;
-    if (info.file.status === 'done') {
-        message.success(`${info.file.name} 上传成功`);
-    } else if (info.file.status === 'error') {
-        message.error(`${info.file.name} 上传失败.`);
-    }
-    const data = JSON.stringify(fileList)
-    this.changeInput(data, 'appendix');
+        const fileList = info.fileList;
+        console.log("fileList",fileList)
+        if (info.file.status === 'done') {
+            message.success(`${info.file.name} 上传成功`);
+        } else if (info.file.status === 'error') {
+            message.error(`${info.file.name} 上传失败.`);
+        }
+        const data = JSON.stringify(fileList)
+        console.log("appendix",data)
+        this.changeInput(data, 'appendix');
 
     }
     //查看图片
@@ -162,38 +165,49 @@ export default class AddForm extends Component{
     };
     //下载文件
     downLoad = (file) => {
-    const download = commonUrl + '/upload/picture/' + (file.response || {}).data
-    window.open(download)
+       const download = commonUrl + '/upload/report/' + (file.response || {}).data
+       window.open(download)
     }
     render() {
-        const appendix = JSON.parse(this.props.sourceData.appendix || JSON.stringify([]))
-        const columns = [
-            {
-                title:'资料名称',
-                dataIndex:'',
-                key:''
-            },
-            {
-                title:'上传日期',
-                dataIndex:'',
-                key:''
-            },
-            {
-                title:'文件大小',
-                dataIndex:'',
-                key:''
-            },
-            {
-                title:'操作',
-                dataIndex:'operation',
-                render:(text,record) => {
-                    return <ButtonGroup>
-                        <Button type='primary'>查看</Button>
-                        <Button type='primary'>下载</Button>
-                    </ButtonGroup>
-                }
-            }
-        ]
+        let sourceData = this.props.sourceData||{};
+        //转换返回的文件字段格式  转了需要使用
+        let appendix = JSON.parse(sourceData.appendix||JSON.stringify([]))
+        // console.log("",appendix)
+        // console.log("格式",this.state.affiliatedInstitutions)
+         //上传文件显示
+         const { previewVisible, previewImage,modifyVisible } = this.state;
+         const columns = [
+             {
+                 title: '资料名称',
+                 dataIndex: 'name',
+                 key: 'name'
+             },
+             {
+                 title: '上传日期',
+                 dataIndex: 'lastModifiedDate',
+                 key: 'lastModifiedDate',
+                 render:(lastModifiedDate)=>{
+                     return moment(lastModifiedDate).format('YYYY-MM-DD')
+                 }
+             },
+             {
+                 title: '文件大小',
+                 dataIndex: 'size',
+                 key: 'size'
+             },
+             {
+                 title: '操作',
+                 dataIndex: 'operation',
+                 render: (text, record,index) => {
+                     // let displayButton = this.props.status == 'detail' ? 'none' : ''
+                     return <ButtonGroup>
+                         <Button type="primary" size="small" onClick={() => { this.handlePreview(record)}} style={{display:record.type=="image/jpeg"?'':'none'}}>查看</Button>
+                         <Button type="primary" size="small" onClick={() => { this.downLoad(record) }}>下载</Button>
+                         {/* <Button type="primary" size="small" onClick={() => { this.handleFileDelete(index) }} style={{display:displayButton}}>删除</Button> */}
+                      </ButtonGroup>
+                 }
+             }
+         ]
         const controls =[
             'undo', 'redo', 'separator',
             'font-size', 'line-height', 'letter-spacing', 'separator',
@@ -204,7 +218,6 @@ export default class AddForm extends Component{
             'media', 'separator',
             'clear'
         ]
-        let sourceData = this.props.sourceData||{};
         const status = this.props.type == 'create'?'none':'block'
         const dateFormat = 'YYYY/MM/DD';
         return (
@@ -275,18 +288,32 @@ export default class AddForm extends Component{
                      onChange={(data)=>this.changeInput(data,'content')}
                  />
                 </div>
-                <div className="editAreaBody">
-                    <span style={{marginTop:30,flex:1}}>上传提示：上传的资质证照文件大小需≤5M；上传资料格式支持：jpg、png、pdf、world格式</span>
-                    <Upload
-                        action={commonUrl + '/upload/uploadReport'}
-                        onChange={(info) => this.handleFile(info)}
+                <Card style={{ width: 934,marginLeft:10 }}>
+                        <div>上传提示：上传的资质证照文件大小需≤5M；上传资料格式支持：jpg、png、pdf、world格式</div>
+                        <Upload
+                        name='file'
                         showUploadList={false}
-                        fileList={appendix}
-                    >
-                        <Button style={{ margin: 10 }}><Icon type="upload" />上传附件</Button>
-                    </Upload>
-                    <Table bordered className='table' columns={columns} dataSource={appendix}/>
-                </div>
+                        disabled={this.props.status=='detail'?true:false}
+                        action={commonUrl+'/upload/uploadReport'}
+                        onChange={this.handleFile}
+                        fileList={appendix}      
+                        >             
+                        <Button>
+                            <Icon type="upload" /> 选择上传文件
+                        </Button>
+                    </Upload>  
+                    <Table
+                        columns={columns}
+                        dataSource={appendix}
+                        pagination={false}
+                    />
+                    <Modal visible={previewVisible} footer={null} onCancel={this.handleCancel}>
+                    <img alt="example" style={{ width: '100%' }} src={commonUrl+'/upload/report/'+previewImage} />
+                    </Modal>
+                    <Modal visible={modifyVisible} onOk={this.handleFileNameSubmit} okText='确定' cancelText='取消' onCancel={this.handleFileNameCancel}>
+                        <Input  disabled={this.props.status=='detail'?true:false} onChange={(e)=>this.changeFileName(e.target.value)} value={this.state.handleFileName}/>
+                    </Modal> 
+                </Card>
             </div>
         )
     }

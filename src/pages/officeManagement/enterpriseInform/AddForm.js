@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
-import { Button, Card, Row, Col, Table, Input, Select,Icon,Upload,message } from 'antd'
+import { Button, Card, Row, Col, Table, Input, Select,Icon,Upload,message,Modal} from 'antd'
 import './style.less'
 import axios from "../../../axios";
 import BraftEditor from 'braft-editor';
 import 'braft-editor/dist/index.css'
 import ButtonGroup from 'antd/lib/button/button-group'
-import Axios from 'axios';
+import moment from 'moment';
 import {commonUrl} from '../../../axios/commonSrc'
 const { TextArea } = Input;
 const { Option } = Select;
@@ -39,15 +39,18 @@ class AddForm extends Component {
     componentDidMount() {
         this.getClass()
     }
+    handleCancel = () => this.setState({ previewVisible: false });
     //上传文件
     handleFile = (info) => {
         const fileList = info.fileList;
+        console.log("fileList",fileList)
         if (info.file.status === 'done') {
             message.success(`${info.file.name} 上传成功`);
         } else if (info.file.status === 'error') {
             message.error(`${info.file.name} 上传失败.`);
         }
         const data = JSON.stringify(fileList)
+        console.log("appendix",data)
         this.changeInput(data, 'appendix');
 
     }
@@ -61,7 +64,7 @@ class AddForm extends Component {
     };
     //下载文件
     downLoad = (file) => {
-       const download = commonUrl + '/upload/picture/' + (file.response || {}).data
+       const download = commonUrl + '/upload/report/' + (file.response || {}).data
        window.open(download)
     }
     render() {
@@ -79,6 +82,8 @@ class AddForm extends Component {
             'media', 'separator',
             'clear'
         ]
+        //上传文件显示
+        const { previewVisible, previewImage,modifyVisible } = this.state;
         const columns = [
             {
                 title: '资料名称',
@@ -87,21 +92,24 @@ class AddForm extends Component {
             },
             {
                 title: '上传日期',
-                dataIndex: '',
-                key: ''
+                dataIndex: 'lastModifiedDate',
+                key: 'lastModifiedDate',
+                render:(lastModifiedDate)=>{
+                    return moment(lastModifiedDate).format('YYYY-MM-DD')
+                }
             },
             {
                 title: '文件大小',
-                dataIndex: '',
-                key: ''
+                dataIndex: 'size',
+                key: 'size'
             },
             {
                 title: '操作',
                 dataIndex: 'operation',
                 render: (text, record) => {
                     return <ButtonGroup>
-                        <Button type='primary'>查看</Button>
-                        <Button type='primary'>下载</Button>
+                        <Button type="primary" size="small" onClick={() => { this.handlePreview(record)}} style={{display:record.type=="image/jpeg"?'':'none'}}>查看</Button>
+                         <Button type="primary" size="small" onClick={() => { this.downLoad(record) }}>下载</Button>
                     </ButtonGroup>
                 }
             }
@@ -159,10 +167,17 @@ class AddForm extends Component {
                             onChange={(info) => this.handleFile(info)}
                             showUploadList={false}
                             fileList={appendix}
+                            disabled={this.props.status=='detail'?true:false}
                         >
-                            <Button style={{ margin: 10 }}><Icon type="upload" />上传附件</Button>
+                            <Button style={{ margin: 10 }}><Icon type="upload"/>上传附件</Button>
                         </Upload>
                     <Table columns={columns} dataSource={appendix} bordered />
+                    <Modal visible={previewVisible} footer={null} onCancel={this.handleCancel}>
+                    <img alt="example" style={{ width: '100%' }} src={commonUrl+'/upload/report/'+previewImage} />
+                    </Modal>
+                    <Modal visible={modifyVisible} onOk={this.handleFileNameSubmit} okText='确定' cancelText='取消' onCancel={this.handleFileNameCancel}>
+                        <Input  disabled={this.props.status=='detail'?true:false} onChange={(e)=>this.changeFileName(e.target.value)} value={this.state.handleFileName}/>
+                    </Modal> 
                     </Card>
                 </div>
             </div>

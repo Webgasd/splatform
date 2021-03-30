@@ -3,8 +3,10 @@ import { Button, Card, Row, Col, Table, Input, Select,Modal,Transfer,Upload,mess
 import {commonUrl} from "../../../axios/commonSrc";
 import './style.less'
 import axios from "../../../axios";
-import Utils from "../../../utils";
+import {connect} from "react-redux";
 import 'braft-editor/dist/index.css'
+import Process from './Process'
+import moment from 'moment';
 import ButtonGroup from 'antd/lib/button/button-group'
 import Axios from 'axios';
 import difference from 'lodash/difference';
@@ -13,6 +15,12 @@ const { Option } = Select;
 const { Search } = Input;
 const confirm = Modal.confirm;
 
+@connect(
+    state=>({
+        userInfo:state.userInfo
+    }),{
+    }
+)
 class AddForm extends Component {
     state = {
         class: '',
@@ -102,29 +110,63 @@ class AddForm extends Component {
         
     };
     handleCancel = () => this.setState({ previewVisible: false });
-
+    //查看图片
     handlePreview = file => {
         this.setState({
             previewImage: (file.response||{}).data,
             previewVisible: true,
         });
     };
-    
+    //下载文件
+    downLoad = (file) => {
+       const download = commonUrl + '/upload/report/' + (file.response || {}).data
+       window.open(download)
+    }
     
     //文件结束
+     //处理功能  处理时间为当前时间
+     handleDocument = () => {
+        let date = moment().format("YYYY-MM-DD")
+        this.setState({
+            informData:{reviewTime:date},
+            isProVisible:true
+        })
+    }
+    //处理提交   发起请求
+    handleProcess = ()=>{
+        axios.PostAjax({
+            url:'/documentCirculate/updateState',
+            data:{
+                params:{...this.state.informData,id:this.props.userInfo.id}
+            }
+        }).then((res)=>{
+            if(res.status == "success"){
+                let data = res.data.data||[]
+                this.setState({
+                    informData:this.state.informData,
+                    isProVisible:false
+                })
+            }
+        })
+    }
     render() {
         let {informData} = this.props;
         const importance = this.props.importance
+        const units = this.props.units
+        //若是添加，显示当前用户名 查看和修改显示已有的作者
+        let userFlag = this.props.status == 'create'?true:false
         //转换返回的文件字段格式  转了需要使用
         let appendix = JSON.parse(informData.appendix||JSON.stringify([]))
         //判断是编辑操作还是（查看|审核操作） 若是编辑操作 设置为false 允许编辑 
         const status = this.props.status == 'detail'||this.props.status == 'check' ? true : false
+        //判断是编辑操作还是（查看|审核操作） 若是编辑操作 设置为false 允许编辑 
+        let displayButton = this.props.status == 'detail'||this.props.status == 'check' ? 'none' : ''
         //如果是编辑和添加操作 隐藏一个Card
         this.state.display_name = this.props.status == 'modify'||this.props.status == 'create' ? 'none':''
         ////如果是编辑操作 设置Card标题
         let titles = this.props.status == 'detail'?"审核":"拟办"
-        //区分查看和审核处理  Card按钮
-        let flag = this.props.status == 'detail'?true:false
+        //区分查看和审核处理  Card按钮 若是审核操作显示按钮
+        let displayHandleButton = this.props.status == 'detail'?'none':''
         const controls = [
             'undo', 'redo', 'separator',
             'font-size', 'line-height', 'letter-spacing', 'separator',
@@ -146,7 +188,10 @@ class AddForm extends Component {
             {
                 title: '上传日期',
                 dataIndex: 'lastModifiedDate',
-                key: 'lastModifiedDate'
+                key: 'lastModifiedDate',
+                render:(lastModifiedDate)=>{
+                    return moment(lastModifiedDate).format('YYYY-MM-DD')
+                }
             },
             {
                 title: '文件大小',
@@ -158,11 +203,11 @@ class AddForm extends Component {
                 width:300,
                 dataIndex: 'operation',
                 render: (text, record,index) => {
-                    let displayButton = this.props.status == 'detail' ? 'none' : ''
+                    // let displayButton = this.props.status == 'detail' ? 'none' : ''
                     return <ButtonGroup>
                         <Button type="primary" size="small" onClick={() => { this.handlePreview(record)}} style={{display:record.type=="image/jpeg"?'':'none'}}>查看</Button>
-                        <Button type="primary" size="small" onClick={() => { this.handlePreview(record)}}>下载</Button>
-                        <Button type="primary" size="small" onClick={() => { this.handleFileDelete(index) }} style={{display:displayButton}}>删除</Button>
+                        <Button type="primary" size="small" onClick={() => { this.downLoad(record) }}>下载</Button>
+                        {/* <Button type="primary" size="small" onClick={() => { this.handleFileDelete(index) }} style={{display:displayButton}}>删除</Button> */}
                      </ButtonGroup>
                 }
             }
@@ -267,36 +312,36 @@ class AddForm extends Component {
                     <Card title="企业通知类型" style={{ width: 250 }}>
                         <Row style={{ marginTop: 10 }}>
                             <Col span={12} style={{ textAlign: 'right', fontSize: 15 }}>发布人：</Col>
-                            <Col span={12}>{status ? informData.author : informData.userName}</Col>
+                            <Col span={12}>{userFlag?informData.userName:informData.author}</Col>
                         </Row>
                         <Row style={{ marginTop: 10 }}>
                             <Col span={12} style={{ textAlign: 'right', fontSize: 15 }}>收文日期：</Col>
-                            <Col span={12}>{status ? informData.issueDate : informData.date}</Col>
+                            <Col span={12}>{informData.issueDate}</Col>
                         </Row>
                         <Row style={{ marginTop: 10 }}>
                             <Col span={12} style={{ textAlign: 'right', fontSize: 15 }}>重要性：</Col>
                             <Col span={12}>
-                                <Select value={informData.type} style={{ width: 120 }} onChange={(value) => this.changeInput(value, 'type')} disabled={status}>
+                                <Select value={informData.typeId} style={{ width: 120 }} onChange={(value) => this.changeInput(value, 'typeId')} disabled={status}>
                                     {importance.map((item) => {
-                                        return <Option key={item.id} value={item.type}>{item.className}</Option>
+                                        return <Option key={item.id} value={item.id}>{item.className}</Option>
                                     })}
                                 </Select>
                             </Col>
                         </Row>
                     </Card>
-                    <Card title="拟办" style={{ width: 250, marginTop: 10 }} extra={<Button type="primary" size='small' onClick={()=>this.setState({isSelectVisible:true})} disabled={status}>拟办人</Button>} >
+                    <Card title="拟办" style={{ width: 250, marginTop: 10 }} extra={<Button type="primary" size='small' onClick={()=>this.setState({isSelectVisible:true})} disabled={status} style={{display:displayButton}}>拟办人</Button>} >
                         <Row style={{ marginTop: 10 }}>
                             <Col span={12} style={{ textAlign: 'right', fontSize: 15 }}>拟办人：</Col>
                             <Col span={12}>{informData.reviewer}</Col>
                         </Row>
                     </Card>
-                    <Card title="发送给" style={{ width: 250,height:250,marginTop: 10 }} extra={<Button type="primary" size='small' onClick={()=>this.setState({isModalVisible:true})} disabled={status}>查阅人</Button>}>                     
+                    <Card title="发送给" style={{ width: 250,height:250,marginTop: 10 }} extra={<Button type="primary" size='small' onClick={()=>this.setState({isModalVisible:true})} disabled={status} style={{display:displayButton}}>查阅人</Button>}>                     
                          <div>{informData.allReaders}</div> 
                      </Card>
-                     <Card title={titles} style={{ width: 250,height:250,marginTop: 10 ,display:this.state.display_name}} extra={<Button type="primary" size='small' onClick={()=>this.setState({isListVisible:true})} disabled={flag}>处理</Button>}>                     
+                     <Card title={titles} style={{ width: 250,height:250,marginTop: 10 ,display:this.state.display_name}} extra={<Button type="primary" size='small' onClick={this.handleDocument} style={{display:displayHandleButton}}>处理</Button>}>                     
                         <Row style={{ marginTop: 10 }}>
                             <Col span={12} style={{ textAlign: 'right', fontSize: 15 }}>拟办时间：</Col>
-                            <Col span={12}>{informData.operateTime}</Col>
+                            <Col span={12}>{informData.reviewTime}</Col>
                         </Row> 
                         <Row style={{ marginTop: 10 }}>
                             <Col span={12} style={{ textAlign: 'right', fontSize: 15 }}>拟办结果：</Col>
@@ -308,7 +353,13 @@ class AddForm extends Component {
                     <Card title="企业公告正文" style={{ width: 700 }}>
                         <Row style={{marginTop:10}}>
                             <Col span={3} style={{textAlign:'right',fontSize:15}}>来文单位：</Col>
-                            <Col span={19}><Input placeholder='请输入来文单位' value={informData.sourcedocCompany||''} onChange={(e)=>this.changeInput(e.target.value,'sourcedocCompany')} disabled={status}/></Col>
+                            <Col span={19}>
+                                <Select value={informData.sourcedocCompanyId}  style={{ width: 120 }} onChange={(value) => this.changeInput(value, 'sourcedocCompanyId')} disabled={status}>
+                                    {units.map((item) => {
+                                        return <Option key={item.id} value={item.id}>{item.name}</Option>
+                                    })}
+                                </Select>
+                            </Col>
                         </Row>
                         <Row style={{marginTop:10}}>
                             <Col span={3} style={{textAlign:'right',fontSize:15}}>来文文号：</Col>
@@ -321,7 +372,7 @@ class AddForm extends Component {
                             <Col span={19}><Input placeholder='请输入标题' value={informData.title||''} onChange={(e)=>this.changeInput(e.target.value,'title')} disabled={status}/></Col>
                         </Row>
                         <Row style={{marginTop:10}}>
-                            <TextArea rows={6} placeholder='请输入内容' value={informData.content} disabled={status}/>
+                            <TextArea rows={6} placeholder='请输入内容' value={informData.content} disabled={status} onChange={(e) => this.changeInput(e.target.value, 'content')}/>
                         </Row>
                     </Card>
                     <Card style={{ width: 700 }}>
@@ -344,7 +395,7 @@ class AddForm extends Component {
                         pagination={false}
                     />
                     <Modal visible={previewVisible} footer={null} onCancel={this.handleCancel}>
-                    <img alt="example" style={{ width: '100%' }} src={commonUrl+'/upload/picture/'+previewImage} />
+                    <img alt="example" style={{ width: '100%' }} src={commonUrl+'/upload/report/'+previewImage} />
                     </Modal>
                     <Modal visible={modifyVisible} onOk={this.handleFileNameSubmit} okText='确定' cancelText='取消' onCancel={this.handleFileNameCancel}>
                         <Input  disabled={this.props.status=='detail'?true:false} onChange={(e)=>this.changeFileName(e.target.value)} value={this.state.handleFileName}/>
@@ -384,6 +435,21 @@ class AddForm extends Component {
                         dataSource={this.state.mockData}
                         columns={columns1}
                     />
+                </Modal>
+                <Modal
+                    width='600px'
+                    title='处理'
+                    visible={this.state.isProVisible}
+                    onOk={this.handleProcess}
+                    destroyOnClose={true}
+                    onCancel={()=>
+                        this.setState({
+                            isProVisible:false,
+                            informData:{}
+                        })
+                    }
+                >
+                   <Process informData={this.state.informData} dispatchInformData = {(value) => this.setState({informData:value})}/>
                 </Modal>
             </div>
         )

@@ -246,10 +246,9 @@ class Laws extends Component {
         let type =this.state.type;
         let data = this.state.lewsData
         let content = data.content||BraftEditor.createEditorState(null)
-        
-        data.appendix = this.state.fileList
         data.type = 1 //法律法规
         data.content=content.toHTML()
+        console.log("data",data)
         axios.PostAjax({
             url:type=='create'?'/lawAndDocument/insert':'/lawAndDocument/update',
             data:{
@@ -266,6 +265,43 @@ class Laws extends Component {
                 this.requestList();
             }
         })
+    }
+    //批量删除
+    handleDelete = ()=>{
+        if(this.state.selectedRowKeys.length==0){
+            confirm({
+                title:'至少选择一条数据',
+                okText:'确定',
+                okType:'primary',
+                onOk:()=>{
+
+                }
+            })
+        }else{
+            confirm({
+                title:'确定删除?',
+                okText:'是',
+                okType:'danger',
+                cancelText:'否',
+                onOk:() => {
+                    axios.PostAjax({
+                        url:'/lawAndDocument/deleteMultiple',
+                        data:{
+                            params:{
+                               idList: this.state.selectedRowKeys
+                            }
+                        }
+                    }).then((res)=>{
+                        if(res.status == "success"){
+                            this.setState({
+                                selectedRowKeys:[]
+                            })
+                            this.requestList();
+                        }
+                    })
+                }
+            })
+        }
     }
     
     render() {
@@ -325,15 +361,15 @@ class Laws extends Component {
                 width: 150,
             },
             {
+                type: 'TIME',
+                label: '发布日期',
+                field: 'time',
+            },
+            {
                 type: 'INPUT',
                 label: '文号',
                 placeholder: '请输入查询关键词',
                 field: 'articleNumber',
-            },
-            {
-                type: 'TIME',
-                label: '发布日期',
-                field: 'time',
             }
         ];
         return (
@@ -348,7 +384,7 @@ class Laws extends Component {
                 <Card style={{marginTop:10}}>
                     <div className='button-box'>
                         <Button type="primary" onClick={()=> this.handleOperator('create',null)}>数据新增</Button>
-                        <Button type="danger" onClick={()=>this.handleDelete}>批量删除</Button>
+                        <Button type="danger" onClick={this.handleDelete}>批量删除</Button>
                     </div>
                     <div style={{marginTop:30}}>
                         <ETable
