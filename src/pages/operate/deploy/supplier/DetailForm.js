@@ -157,17 +157,17 @@ class DetailForm extends Component{
                             <tr>
                                 <td style={{background:'#F2F2F2',width:'15%'}}>联系电话<span style={{color:'#FF3300'}}>*</span></td>
                                 <td style={{width:'30%'}}><Input value={formData.phone} disabled={type=='detail'?true:false} onChange={(e)=>this.changeInput(e.target.value,'phone')}/></td>
-                                {/* <td style={{background:'#F2F2F2',width:'15%'}}>开始日期<span style={{color:'#FF3300'}}>*</span></td>
+                                <td style={{background:'#F2F2F2',width:'15%'}}>开始日期<span style={{color:'#FF3300'}}>*</span></td>
                                 <td>
                                     <DatePicker style={{width:'100%'}}
                                                 disabled={type=='detail'?true:false}
                                                 value={formData.start===''?moment():moment(formData.start)}
                                                 onChange={(date)=>this.changeInput(date,'start')}
                                                 showTime={true} format="YYYY-MM-DD" disabledDate={this.disabledDate}/>
-                                </td> */}
+                                </td>
                             </tr>
 
-                            {/* <tr>
+                            <tr>
                                 <td style={{background:'#F2F2F2',width:'15%'}}>截止日期<span style={{color:'#FF3300'}}>*</span></td>
                                 <td>
                                     <DatePicker style={{width:'100%'}}
@@ -176,7 +176,7 @@ class DetailForm extends Component{
                                                 onChange={(date)=>this.changeInput(date,'end')}
                                                 showTime={true} format="YYYY-MM-DD" disabledDate={this.disabledDate}/>
                                 </td>
-                            </tr> */}
+                            </tr>
                             <tr>
                                 <td>附件信息</td>
                                 <td colSpan={5}><Upload

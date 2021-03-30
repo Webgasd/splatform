@@ -19,7 +19,7 @@ const confirm = Modal.confirm
 @connect(
     state=>({
         acl:state.acls['/laws'],
-        userInfo:state
+        userInfo:state.userInfo
     }),{
     }
 )

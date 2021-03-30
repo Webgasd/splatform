@@ -88,11 +88,11 @@ class DetailForm extends Component{
         const type=this.props.type;
         console.log(this.state.type)
         const formData = this.props.input || {};
-        const list1 = this.props.input.list1 || [];
-        const list2 = this.props.input.list2 || [];
-        const list3 = this.props.input.list3 || [];
-        const list4 = this.props.input.list4 || [];
-        const list5 = this.props.input.list5 || [];
+        const list = this.props.input.list || [];
+        // const list2 = this.props.input.list2 || [];
+        // const list3 = this.props.input.list3 || [];
+        // const list4 = this.props.input.list4 || [];
+        // const list5 = this.props.input.list5 || [];
         const { previewVisible, previewImage,modifyVisible } = this.state;
         const columns = [
             {
@@ -160,9 +160,9 @@ class DetailForm extends Component{
                             </div>
                             <div className='msgChange'>
                                 <div className='commonEnterpriseBox' style={{display:this.state.msgIndex === 0?'block':'none'}}>
-                                    <ListForm listType={list4} type={type}/>
+                                    <ListForm listType={list} type={type}/>
                                 </div>
-                                <div className='commonEnterpriseBox' style={{display:this.state.msgIndex === 1?'block':'none'}}>
+                                {/* <div className='commonEnterpriseBox' style={{display:this.state.msgIndex === 1?'block':'none'}}>
                                     <ListForm listType={list1} type={type}/>
                                 </div>
                                 <div className='commonEnterpriseBox' style={{display:this.state.msgIndex === 2?'block':'none'}}>
@@ -173,7 +173,7 @@ class DetailForm extends Component{
                                 </div>
                                 <div className='commonEnterpriseBox' style={{display:this.state.msgIndex === 4?'block':'none'}}>
                                     <ListForm listType={list2} type={type}/>
-                                </div>
+                                </div> */}
                             </div>
                         </Form>
                         <table>

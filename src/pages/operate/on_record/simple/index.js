@@ -151,11 +151,7 @@ class Simple extends Component{
                 operator: "",
                 operatorIp: "",
                 operatorTime: "",
-                list1: [],
-                list2: [],
-                list3: [],
-                list4: [],
-                list5: []
+                list:[]
             }
             this.props.changeSimple({...data,document:JSON.parse(data.document||JSON.stringify([]))});
         }else if(type=="edit" || type=='detail'){
