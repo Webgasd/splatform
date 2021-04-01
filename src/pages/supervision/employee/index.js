@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import {Card, Button, Modal, message, Icon, Upload} from 'antd';
+import {Card, Button, Modal, message, Icon, Upload, Tag} from 'antd';
 import  BaseForm  from '../../../components/BaseForm';
 import ETable from '../../../components/ETable';
 import Utils from "../../../utils";
@@ -446,6 +446,17 @@ class employee extends Component{
                 </div>
                 <div style={{margin:10,marginLeft:5}}>数量: {this.state.trainNumber} 人</div>
             </div>
+            <div className='statisticsTipsBox' style={{height:"100px"}}>
+                <div style={{color:"#99CC33",marginTop:10,marginLeft:7,fontSize:16,borderBottom:'1px solid #E6E9EC'}}>状态提示:</div>
+                    <div style={{height:16,margin:10}}>
+                        <div style={{width:30,height:15,background:'RGB(255, 118, 95)',borderRadius:5,float:"left"}}></div>
+                        <div style={{float:"left",marginLeft:15}}>许可证超期报警</div>
+                    </div>
+                <div style={{height:16,margin:10}}>
+                    <div style={{width:30,height:15,background:'RGB(253, 221, 110)',borderRadius:5,float:"left"}}></div>
+                    <div style={{float:"left",marginLeft:15}}>许可证超期预警（30天内）</div>
+                </div>
+        </div>
 
         </div>
         return (

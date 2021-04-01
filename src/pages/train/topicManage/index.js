@@ -103,7 +103,7 @@ export default class TopicManage extends Component{
     }
 
     handleDelete = ()=>{
-        let item = this.state.selectedItem;
+        let item = this.state.selectedIds;
         let _this = this;
         if(!item){
             Modal.info({
@@ -119,7 +119,7 @@ export default class TopicManage extends Component{
                     url:'/post.json',
                     data:{
                         params:{
-                            id:item.id
+                            id:item
                         }
                     }
                 }).then((res)=>{
@@ -291,7 +291,7 @@ export default class TopicManage extends Component{
                 <Card style={{marginTop:10}}>
                     <div className='button-box'>
                         <Button type="primary" onClick={()=> this.handleOperator('create',null)}>添加</Button>
-                        <Button type="primary" onClick={()=>this.handleDelete}>删除</Button>
+                        <Button type="primary" onClick={()=>this.handleDelete()}>删除</Button>
                     </div>
                     <div style={{marginTop:30}}>
                         <ETable
