@@ -89,12 +89,13 @@ class DetailForm extends Component{
 render(){
     const type=this.props.type;
     const formData = this.props.input || {};
-   // console.log(formData)
-    const list1 = this.props.input.list1 || [];
-    const list2 = this.props.input.list2 || [];
-    const list3 = this.props.input.list3 || [];
-    const list4 = this.props.input.list4 || [];
-    const list5 = this.props.input.list5 || [];
+    const list = this.props.input.list || [];
+    console.log(list)
+    // const list1 = this.props.input.list1 || [];
+    // const list2 = this.props.input.list2 || [];
+    // const list3 = this.props.input.list3 || [];
+    // const list4 = this.props.input.list4 || [];
+    // const list5 = this.props.input.list5 || [];
     const { previewVisible, previewImage,modifyVisible } = this.state;
     const columns = [
         {
@@ -156,18 +157,18 @@ render(){
                         </tbody>
                     </table>
                     <Form layout="inline">
-                        <div className='msgIndexBox'>
+                        {/* <div className='msgIndexBox'>
                             <div className={this.state.msgIndex === 0?'msgIndex showIndex':'msgIndex'} onClick={this.changeMsgIndex.bind(this,0)}>主菜</div>
                             <div className={this.state.msgIndex === 1?'msgIndex showIndex':'msgIndex'} onClick={this.changeMsgIndex.bind(this,1)}>凉菜</div>
                             <div className={this.state.msgIndex === 2?'msgIndex showIndex':'msgIndex'} onClick={this.changeMsgIndex.bind(this,2)}>主食</div>
                             <div className={this.state.msgIndex === 3?'msgIndex showIndex':'msgIndex'} onClick={this.changeMsgIndex.bind(this,3)}>汤</div>
                             <div className={this.state.msgIndex === 4?'msgIndex showIndex':'msgIndex'} onClick={this.changeMsgIndex.bind(this,4)}>水果</div>
-                        </div>
-                        <div className='msgChange'>
+                        </div> */}
+                        <div className='msgChange' style={{marginTop:'10px'}}>
                             <div className='commonEnterpriseBox' style={{display:this.state.msgIndex === 0?'block':'none'}}>
-                                <ListForm listType={list4} type={type}/>
+                                <ListForm listType={list} type={type}/>
                             </div>
-                            <div className='commonEnterpriseBox' style={{display:this.state.msgIndex === 1?'block':'none'}}>
+                            {/* <div className='commonEnterpriseBox' style={{display:this.state.msgIndex === 1?'block':'none'}}>
                                 <ListForm listType={list1} type={type}/>
                             </div>
                             <div className='commonEnterpriseBox' style={{display:this.state.msgIndex === 2?'block':'none'}}>
@@ -178,7 +179,7 @@ render(){
                             </div>
                             <div className='commonEnterpriseBox' style={{display:this.state.msgIndex === 4?'block':'none'}}>
                                 <ListForm listType={list2} type={type}/>
-                            </div>
+                            </div> */}
                         </div>
                     </Form>
                     {/* <table>

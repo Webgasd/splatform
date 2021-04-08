@@ -42,7 +42,6 @@ const AMap=window.AMap;
 
         if(option === "default"&& type != "detail"){
             that.changeInput(0,"gpsFlag")
-            
             AMap.plugin('AMap.Geocoder', function() {
                 geocoder = new AMap.Geocoder({
                     // city 指定进行编码查询的城市，支持传入城市名、adcode 和 citycode
@@ -61,8 +60,7 @@ const AMap=window.AMap;
                         });
                         that.map.add(marker);
                         that.map.setFitView(marker)
-                        that.changeInput('',"location")
-                        that.changeInput(2,'businessState')
+                        that.changeInput((lnglat.lng+','+lnglat.lat),"location")
                     }else {
                         that.map.clearMap();
                          message.error("地址有误，请输入详细地址并点击默认定位按钮刷新地图")
@@ -141,7 +139,6 @@ const AMap=window.AMap;
                 draggable:true
             });
             that.map.add(marker);
-            that.changeInput(2,'businessState')
             that.map.setFitView(marker)
             marker.on("dragend",function (e) {
                 message.success("经纬度修改成功")
