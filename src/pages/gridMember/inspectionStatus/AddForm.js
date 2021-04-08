@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
-import { Button, Card, Row, Col, Table, Input, Select,DatePicker} from 'antd'
+import { Button, Card, Row, Col, Input, Select,DatePicker} from 'antd'
 import moment from "moment";
+import {commonUrl} from "../../../axios/commonSrc";
+import './style.less'
 const { TextArea } = Input;
 const ButtonGroup = Button.Group;
 const { Option } = Select;
@@ -17,6 +19,8 @@ class AddForm extends Component {
         const dateFormat = 'YYYY-MM-DD'||undefined;
         let status = this.props.status=='detail'? true:false
         const {InspectionType,informData,mockData,inspectionHandle,InfoValidity} = this.props.state
+        //转换返回的文件字段格式  转了需要使用
+        const appendix = JSON.parse(informData.pic||JSON.stringify([]))
         return (
             <div>
                 <Row style={{marginTop:10}}>
@@ -50,7 +54,19 @@ class AddForm extends Component {
                     <Col span={20}><TextArea rows={6} placeholder='请输入内容' value={informData.problemContent}  onChange={(e) => this.changeInput(e.target.value, 'problemContent')} disabled={true}/></Col>
                 </Row>
                  <Card title="违规照片" style={{marginTop:10}}>
-
+                    <div className="ImgDiv">
+                    {
+                         appendix.map((item)=>{
+                            let url = commonUrl+'/upload/picture/'+item.response.data
+                            item.url = url
+                            return <image
+                                className='Img'
+                                src={url}
+                                />
+                        })
+                        
+                     }
+                    </div>
                  </Card>
                  <Card title="处理结果反馈" style={{marginTop:10}}>
                       <Row style={{marginTop:10}}>
@@ -64,7 +80,7 @@ class AddForm extends Component {
                         </Col>
                         <Col span={3} style={{textAlign:'right',fontSize:15}}>处理方式：</Col>
                         <Col span={5}>
-                                <Select value={informData.handle}  style={{ width: 120 }} onChange={(value) => this.changeInput(value, 'handle')} disabled={status}>
+                                <Select value={informData.handleType}  style={{ width: 120 }} onChange={(value) => this.changeInput(value, 'handleType')} disabled={status}>
                                     {inspectionHandle.map((item) => {
                                         return <Option key={item.id} value={item.id}>{item.className}</Option>
                                     })}

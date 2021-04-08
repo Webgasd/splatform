@@ -3,7 +3,9 @@ import CommonPage from './../../../components/CommonPage';
 import axios from "../../../axios";
 
 export default class bigclass extends Component{
-    state={}
+    state={
+        checkList:[{id: 1, name: '小作坊'}, {id: 2, name: '小餐饮'},{id: 3, name: '食品摊贩'}]
+    }
     componentDidMount() {
         this.requestIndustry();
     }
@@ -32,7 +34,7 @@ export default class bigclass extends Component{
                 label: '检查项类型',
                 field: 'checkitem',
                 width: 150,
-                list: [{id: 1, name: '1'}, {id: 2, name: '2'}, {id: 3, name: '3'}]
+                list: this.state.checkList
             },{
                 type: 'INPUT',
                 label: '名称',
@@ -45,7 +47,11 @@ export default class bigclass extends Component{
                 dataIndex: 'industryName'
             },{
                 title: '检查项类型',
-                dataIndex: 'checkitem'
+                dataIndex: 'checkitem',
+                render:(checkitem)=>{
+                   let data = (this.state.checkList||[]).find((item)=>{return item.id==checkitem})||{}
+                   return data.name
+                }
             },{
                 title: '序号',
                 dataIndex: 'seq'
@@ -70,7 +76,7 @@ export default class bigclass extends Component{
                 label: '检查项类型',
                 field: 'checkitem',
                 width: '100%',
-                list: [{id: 1, name: '1'}, {id: 2, name: '2'}, {id: 3, name: '3'}]
+                list: this.state.checkList
             }, {
                 type: 'INPUT',
                 label: '序号',

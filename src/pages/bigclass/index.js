@@ -25,10 +25,10 @@ export default class bigclass extends Component{
     }
     requestList = ()=>{
         let _this = this;
-        axios.ajax({
+        axios.PostAjax({
             url:'/bigclass.json',
             data:{
-                params:{}
+                params:{..._this.params}
             }
         }).then((res)=>{
 

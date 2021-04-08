@@ -11,6 +11,7 @@ import AddForm from './AddForm'
 import Deploy from './Deploy'
 import Journal from './Journal'
 import {commonUrl} from "../../../axios/commonSrc";
+const confirm = Modal.confirm
 
 
 @connect(
@@ -109,22 +110,33 @@ class government extends Component{
     handleSubmit = ()=>{
         let type =this.state.type;
         let _this=this;
-        axios.PostAjax({
-            url:type=='create'?'/supervision/ga/insert':'/supervision/ga/update',
-            data:{
-                params:{
-                    ..._this.props.input
+        //判断必填字段是否为空
+        let data = _this.props.input
+        if((data.unitName==undefined||'')||(data.department==undefined||'')||(data.name==undefined||'')||(data.type==undefined||'')||(data.workPhone==undefined||'')||(data.mobilePhone==undefined||'')){
+            Modal.confirm({
+                content:'必填字段不能为空，请检查！',
+                onOk:()=>{
+                    
                 }
-            }
-        }).then((res)=>{
-            if(res.status == 'success'){
-                this.setState({
-                    isVisible:false
-                })
-                 this.props.clearGovernment();
-                this.requestList();
-            }
-        })
+            })
+        }else{
+            axios.PostAjax({
+                url:type=='create'?'/supervision/ga/insert':'/supervision/ga/update',
+                data:{
+                    params:{
+                        ..._this.props.input
+                    }
+                }
+            }).then((res)=>{
+                if(res.status == 'success'){
+                    this.setState({
+                        isVisible:false
+                    })
+                     this.props.clearGovernment();
+                    this.requestList();
+                }
+            })
+        }
     }
 
     handleSubmitDept=()=>{

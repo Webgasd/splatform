@@ -6,40 +6,12 @@ import AddForm from "./AddForm";
 import Utils from "../../../utils";
 import axios from "../../../axios";
 const Panel = Collapse.Panel;
-const formList = [
-    {
-        type: 'SELECT',
-        label: '行业类别',
-        field: 'kind',
-        initialValue: '0',
-        width: 150,
-        list: [{id: '0', name: '食品经营企业'}, {id: '1', name: '餐饮服务单位'},{id: '2', name: '食品流通企业'}]
-    },
-    {
-        type: 'SELECT',
-        label: '检查项类型',
-        field: 'checkItem',
-        initialValue: '0',
-        width: 150,
-        list: [{id: '0', name: '小作坊'}, {id: '1', name: '小餐饮'},{id: '2', name: '食品摊贩'}]
-    },
-    {
-        type: 'INPUT',
-        label: '检查项目',
-        field: 'largeClassName',
-    },
-    {
-        type: 'INPUT',
-        label: '检查内容',
-        field: 'clauseName',
-    }
 
-]
 
 export default class configmanagersmall extends Component{
     state = {
         selectedRowKeys: [], // Check here to configure the default column
-
+        checkList:[{id: 1, name: '小作坊'}, {id: 2, name: '小餐饮'},{id: 3, name: '食品摊贩'}]
       };
     params = {
         pageNo:1
@@ -50,13 +22,14 @@ export default class configmanagersmall extends Component{
     //调用封装好的axios.requestList()获取角色数据
     componentDidMount(){
         this.requestList();
+        this.requestIndustry();
     }
     requestList = ()=>{
         let _this = this;
-        axios.ajax({
+        axios.PostAjax({
             url:'/inspect/clauseConf/getPage',
             data:{
-                params:this.params
+                params:{..._this.params}
             }
         }).then((res)=>{
             if(res.status == "success"){
@@ -74,7 +47,17 @@ export default class configmanagersmall extends Component{
             }
         })
     }
-
+    requestIndustry=()=>{
+        axios.noLoadingAjax({
+            url:'/sys/industry/getList'
+        }).then((res)=>{
+            if(res.status == 'success'){
+                this.setState({
+                    industryList:res.data,
+                })
+            }
+        })
+    }
     // 查询表单
     handleFilterSubmit = (filterParams) => {
         this.params = filterParams;
@@ -187,14 +170,44 @@ export default class configmanagersmall extends Component{
 
 
     render() {
+        const formList = [
+            {
+                type: 'SELECT',
+                label: '行业类别',
+                field: 'industry',
+                width: 150,
+                list: (this.state.industryList||[]).map((item)=>{return {id: item.id, name:item.name}})
+            },
+            {
+                type: 'SELECT',
+                label: '检查项类型',
+                field: 'checkItem',
+                width: 150,
+                list: this.state.checkList
+            },
+            {
+                type: 'INPUT',
+                label: '检查项目',
+                field: 'largeClassName',
+            },
+            {
+                type: 'INPUT',
+                label: '检查内容',
+                field: 'clauseName',
+            }
+        
+        ]
         const columns = [
            {
                 title: '检查项类型',
                 dataIndex: 'checkItem',
+                render:(checkitem)=>{
+                    let data = (this.state.checkList||[]).find((item)=>{return item.id==checkitem})||{}
+                    return data.name
+                 }
             }, {
                 title: '行业类别',
                 dataIndex: 'industryName',
-
             },
             {
                 title: '序号',
