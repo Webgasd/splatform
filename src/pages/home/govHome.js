@@ -16,6 +16,7 @@ import taiAnApkPicture from './image/taian.png'
 import pingYuanApkPicture from './image/pingyuan.png'
 import dongYingApkPicture from './image/dongying.png'
 import pingYiApkPicture from './image/pingyi.png'
+import boxingApkPicture from './image/boxing.png'
 import zhongduan from './image/zhongduan.png';
 import { changeEnterprise, clearEnterprise } from "../../redux/action";
 //引入地图的不同标识
@@ -690,6 +691,8 @@ class govHome extends Component {
                 return dongYingApkPicture;
             case "平邑县":
                 return pingYiApkPicture;
+            case "博兴":
+                return boxingApkPicture;
             default:
                 return liXiaApkPicture;
         }
