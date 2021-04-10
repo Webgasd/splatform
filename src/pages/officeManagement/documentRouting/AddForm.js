@@ -321,7 +321,7 @@ class AddForm extends Component {
                         <Row style={{ marginTop: 10 }}>
                             <Col span={12} style={{ textAlign: 'right', fontSize: 15 }}>重要性：</Col>
                             <Col span={12}>
-                                <Select value={informData.typeId} style={{ width: 120 }} onChange={(value) => this.changeInput(value, 'typeId')} disabled={status}>
+                                <Select value={informData.typeId} style={{ width: 120 }} onChange={(value) => this.changeInput(value, 'typeId')} disabled={status} getPopupContainer={triggerNode => triggerNode.parentNode}>
                                     {importance.map((item) => {
                                         return <Option key={item.id} value={item.id}>{item.className}</Option>
                                     })}

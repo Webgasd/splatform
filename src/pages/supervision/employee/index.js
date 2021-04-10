@@ -386,7 +386,7 @@ class employee extends Component{
                 field: 'education',
                 placeholder: '请选择文化程度',
                 width: 150,
-                list: [{id: '大学', name: '大学'}, {id: '高中', name: '高中'}, {id: '初小', name: '初小'}]
+                list: [{id: '研究生', name: '研究生'},{id: '大学', name: '大学'}, {id: '高中', name: '高中'},{id: '初中', name: '初中'}, {id: '初小', name: '初小'}]
             },
             {
                 type: 'SELECT',

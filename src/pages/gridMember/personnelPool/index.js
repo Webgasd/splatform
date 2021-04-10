@@ -38,6 +38,9 @@ class PersonnelPool extends Component {
     }
     componentDidMount(){
         this.requestList()
+        this.requestGridAndStreet()
+        this.requestJob()
+        this.requestArea()
     }
      //查询
      handleFilterSubmit = (params) => {
@@ -83,7 +86,7 @@ class PersonnelPool extends Component {
     //获取表格数据
     requestList = ()=>{
         let _this = this;
-        let job = 7
+        let job = 7 //表示网格员对应id,后端数据库表sys_duties
         axios.PostAjax({
             url:'/supervision/ga/getGridMemberPage',
             data:{
@@ -101,6 +104,69 @@ class PersonnelPool extends Component {
                         _this.params.pageNo = current;//	当前页数
                         _this.requestList(); //刷新列表数据
                     })
+                })
+            }
+        })
+    }
+     //获取网格和街道
+     requestGridAndStreet = ()=>{
+        let _this = this
+        axios.ajax({
+            url:'/sys/area/tree',
+            data:{
+                params:{}
+            }
+        }).then((res)=>{
+            if(res.status == "success"){
+                let list  = res.data[0].childrenList.map((item,i)=>{
+                    item.id = item.id
+                    item.name = item.name
+                    return item
+                })
+                _this.setState({
+                    gridAndStreet:list,
+                })
+            }
+        })
+    }
+    //获取职务
+    requestJob = ()=>{
+        let _this = this
+        axios.ajax({
+            url:'/sys/duties/getPage',
+            data:{
+                params:{}
+            }
+        }).then((res)=>{
+            if(res.status == "success"){
+                let list  = res.data.data.map((item,i)=>{
+                    item.id = item.id
+                    item.name = item.name
+                    return item
+                })
+                _this.setState({
+                    jobList:list
+                })
+            }
+        })
+    }
+    //获取所有区域 用于匹配网格
+    requestArea = ()=>{
+        let _this = this
+        axios.ajax({
+            url:'/sys/area/getAll',
+            data:{
+                params:{}
+            }
+        }).then((res)=>{
+            if(res.status == "success"){
+                let list  = res.data.map((item,i)=>{
+                    item.id = item.id
+                    item.name = item.name
+                    return item
+                })
+                _this.setState({
+                    areaList:list
                 })
             }
         })
@@ -126,33 +192,17 @@ class PersonnelPool extends Component {
         else if(type == 'delete'||type =='deleteGroup'){
             let idList = []
             if(type =='delete'){
-                idList=[item.id]
-                console.log("idlist",idList)
-            }else if(type =='deleteGroup'){
-                idList=_this.state.selectedRowKeys
-                console.log("idlist",idList)
-            }
-            if(idList.length==0){
-                confirm({
-                    title:'至少选择一条数据',
-                    okText:'确定',
-                    okType:'primary',
-                    onOk:()=>{
-
-                    }
-                })
-            }else{
                 confirm({
                     title:'确定删除?',
                     okText:'是',
                     okType:'danger',
                     cancelText:'否',
                     onOk:() => {
-                        axios.PostAjax({
-                            url:'/documentSourceunit/delete',
+                        axios.ajax({
+                            url:'/supervision/ga/delete',
                             data:{
                                 params:{
-                                 idList:idList
+                                    gaId:item.id
                                 }
                             }
                         }).then((res)=>{
@@ -162,6 +212,39 @@ class PersonnelPool extends Component {
                         })
                     }
                 })
+            }else if(type =='deleteGroup'){
+                idList=_this.state.selectedRowKeys
+                if(idList.length==0){
+                    confirm({
+                        title:'至少选择一条数据',
+                        okText:'确定',
+                        okType:'primary',
+                        onOk:()=>{
+    
+                        }
+                    })
+                }else{
+                    confirm({
+                        title:'确定删除?',
+                        okText:'是',
+                        okType:'danger',
+                        cancelText:'否',
+                        onOk:() => {
+                            axios.PostAjax({
+                                url:'/supervision/ga/delete',
+                                data:{
+                                    params:{
+                                        gaId:idList
+                                    }
+                                }
+                            }).then((res)=>{
+                                if(res.status == "success"){
+                                    _this.requestList();
+                                }
+                            })
+                        }
+                    })
+                }
             }
         }
     }
@@ -175,6 +258,7 @@ class PersonnelPool extends Component {
     }
     handleOk = () =>{
         let _this = this
+        let job = 7 //表示网格员对应id,后端数据库表sys_duties
         if(this.state.type=='detail'){
             _this.setState({
                 isVisible:false,
@@ -184,7 +268,7 @@ class PersonnelPool extends Component {
             axios.PostAjax({
                 url:this.state.type=='create'?'/supervision/ga/insert':'/supervision/ga/update',
                 data:{
-                    params:{...this.state.informData}
+                    params:{...this.state.informData,number:1000,job}
                 }
             }).then((res)=>{
                 if(res.status == 'success'){
@@ -226,12 +310,20 @@ class PersonnelPool extends Component {
             {
                 title:'乡镇/街道',
                 dataIndex:'street',
-                key:'street'
+                key:'street',
+                render:(street)=>{
+                    let data = (this.state.gridAndStreet||[]).find(item=>item.id==street)||{};
+                    return data.name
+                }
             },
             {
                 title:'所属网格',
                 dataIndex:'grid',
-                key:'grid'
+                key:'grid',
+                render:(grid)=>{
+                    let data = (this.state.areaList||[]).find(item=>item.id==grid)||{};
+                    return data.name
+                }
             },
             {
                 title:'姓名',
@@ -255,7 +347,11 @@ class PersonnelPool extends Component {
             {
                 title:'职务',
                 dataIndex:'job',
-                key:'job'
+                key:'job',
+                render:(job)=>{
+                    let data = (this.state.jobList||[]).find(item=>item.id==job)||{};
+                    return data.name
+                }
             },
             {
                 title:'操作',
@@ -314,6 +410,9 @@ class PersonnelPool extends Component {
                         dispatchInformData = {(value) => this.setState({informData:value})}
                         status = {this.state.type}
                         sexType = {this.state.sexType}
+                        gridAndStreet = {this.state.gridAndStreet}
+                        jobList = {this.state.jobList}
+                        gridList = {this.state.areaList}
                      />
                 </Modal>
             </div>

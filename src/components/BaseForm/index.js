@@ -191,7 +191,7 @@ class FilterForm extends Component{
                             getFieldDecorator(field, {
                                 initialValue: initialValue
                             })(
-                                <Select
+                                <Select 
                                     style={{ width: width }}
                                     placeholder={placeholder}
                                 >

@@ -157,7 +157,7 @@ class PointForm extends Component {
                                             <td><input disabled={checkStatus} type="radio" name={item.key} checked={item.result==1?true:false} value={1} onChange={(e)=>this.changeList(e.target.value,"result",item.key)}/></td>
                                             <td><input disabled={checkStatus} type="radio" name={item.key} checked={item.result==2?true:false} value={2} onChange={(e)=>this.changeList(e.target.value,"result",item.key)}/></td>
                                             <td><input disabled={checkStatus} type="radio" name={item.key} checked={item.result==3?true:false} value={3} onChange={(e)=>this.changeList(e.target.value,"result",item.key)}/></td>
-                                            <td><Input disabled={checkStatus} value={item.resultRemark||''}/></td>
+                                            <td><Input disabled={checkStatus} value={item.resultRemark||''} onChange={(e)=>this.changeList(e.target.value,"resultRemark",item.key)}/></td>
                                             <td>{item.result==2?<a disabled={checkStatus}>添加</a>:null}</td>
                                         </tr>
                                     }else{
@@ -168,7 +168,7 @@ class PointForm extends Component {
                                             <td><input disabled={checkStatus} type="radio" name={item.key} checked={item.result==1?true:false} value={1} onChange={(e)=>this.changeList(e.target.value,"result",item.key)}/></td>
                                             <td><input disabled={checkStatus} type="radio" name={item.key} checked={item.result==2?true:false} value={2} onChange={(e)=>this.changeList(e.target.value,"result",item.key)}/></td>
                                             <td><input disabled={checkStatus} type="radio" name={item.key} checked={item.result==3?true:false} value={3} onChange={(e)=>this.changeList(e.target.value,"result",item.key)}/></td>
-                                            <td><Input disabled={checkStatus} value={item.resultRemark||''}/></td>
+                                            <td><Input disabled={checkStatus} value={item.resultRemark||''} onChange={(e)=>this.changeList(e.target.value,"resultRemark",item.key)}/></td>
                                             <td>{item.result==2?<a disabled={checkStatus}>添加</a>:null}</td>
                                         </tr>
                                     }

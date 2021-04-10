@@ -55,7 +55,7 @@ class ScrollChart extends Component {
               //转换返回的文件字段格式  转了需要使用
               appendix = JSON.parse(res.data.rollPicture||JSON.stringify([]))
               appendix.map((item)=>{
-                  let url = commonUrl+'/upload/uploadReport/'+item.response.data
+                  let url = commonUrl+'/upload/report/'+item.response.data
                   item.url = url
               })
               this.setState({

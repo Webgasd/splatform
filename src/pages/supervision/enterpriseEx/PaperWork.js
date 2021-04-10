@@ -133,7 +133,7 @@ function getBase64(img, callback) {
                 <div className='commonEnterpriseBox' style={{marginTop:20}}>
                     <div className='permission-title-text'>企业基本简介</div>
                     <table>
-                        <tbody>
+                        {/* <tbody>
                         <tr>
                             <td style={{width:'13%'}}>
                                 <Upload
@@ -148,10 +148,10 @@ function getBase64(img, callback) {
                                     fileList={propagandaEnclosure}
                                     onChange={this.handleChange}
                                 >
-                                    {imageUrl?<img style={{height:'10%'}} src={imageUrl}  alt="avatar" />:
+                                    {imageUrl?<img style={{height:'auto'}} src={imageUrl}  alt="avatar" />:
                                         (
                                             propagandaEnclosure.length>=1&&!this.state.loading?
-                                            <img style={{height:'10%'}} src={commonUrl+"/upload/picture/"+propagandaEnclosure[0].response.data}  alt="avatar"/>
+                                            <img style={{height:'auto'}} src={commonUrl+"/upload/picture/"+propagandaEnclosure[0].response.data}  alt="avatar"/>
                                             //<img style={{height:'10%'}} src={commonUrl+"/upload/"+propagandaEnclosure[0].response.data}  alt="avatar"/>
                                         :uploadButton
                                         )
@@ -160,6 +160,36 @@ function getBase64(img, callback) {
                             </td>
                             <td ><TextArea rows={4} value={formData.introduction} onChange={(e)=>this.changeInput(e.target.value,"introduction")} placeholder={"请输入企业基本介绍"} disabled={checkStatus}/></td>
                         </tr>
+                        </tbody> */}
+                        <tbody>
+                           <tr>
+                               <td style={{width:250,height:250}}>
+                               <Upload
+                                    disabled={checkStatus}
+                                    name="file"
+                                    listType="picture-card"
+                                    className="avatar-uploader"
+                                    showUploadList={false}
+                                    accept='image/png,image/jpeg'
+                                    // action={commonUrl+"/upload/uploadFile"}
+                                    action={commonUrl+"/upload/uploadPicture"}
+                                    fileList={propagandaEnclosure}
+                                    onChange={this.handleChange}
+                                >
+                                    {imageUrl?<img style={{height:200,width:200}} src={imageUrl}  alt="avatar" />:
+                                        (
+                                            propagandaEnclosure.length>=1&&!this.state.loading?
+                                            <img style={{height:200,width:200}} src={commonUrl+"/upload/picture/"+propagandaEnclosure[0].response.data}  alt="avatar"/>
+                                            //<img style={{height:'10%'}} src={commonUrl+"/upload/"+propagandaEnclosure[0].response.data}  alt="avatar"/>
+                                        :uploadButton
+                                        )
+                                    }
+                                </Upload>
+                               </td>
+                               <td>
+                               <TextArea rows={9} value={formData.introduction} onChange={(e)=>this.changeInput(e.target.value,"introduction")} placeholder={"请输入企业基本介绍"} disabled={checkStatus}/>
+                               </td>
+                           </tr>
                         </tbody>
                     </table>   
                 </div>

@@ -406,9 +406,10 @@ class Laws extends Component {
                     onOk={this.handleSubmit}
                     destroyOnClose={true}
                     onCancel={()=>{
+                        this.requestList()
                         this.setState({
                             isVisible:false,
-                            lewsData:{}
+                            lewsData:{},
                         })
                     }}
                 >
@@ -428,7 +429,7 @@ class Laws extends Component {
                     onCancel={()=>
                         this.setState({
                             isDetailVisible:false,
-                            lewsData:{}
+                            lewsData:{},
                         })
                     }
                 >

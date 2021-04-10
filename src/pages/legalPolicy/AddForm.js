@@ -226,7 +226,7 @@ export default class AddForm extends Component{
                     <Col span={3} style={{textAlign:'right',fontSize:15}}>标题：</Col>
                     <Col span={15}><Input placeholder='请输入标题' value={sourceData.title} onChange={(e)=>this.changeInput(e.target.value,'title')} /></Col>
                     <Col span={3} style={{display:status,marginLeft:30}}>
-                        <Select
+                        <Select getPopupContainer={triggerNode => triggerNode.parentNode}
                             style={{width:'100%'}}
                             value={sourceData.effect||undefined}
                             onChange={(value)=>{this.changeInput(value,'effect')}}
@@ -247,7 +247,7 @@ export default class AddForm extends Component{
                 <Row style={{marginTop:30}}>
                     <Col span={3} style={{textAlign:'right',fontSize:15}}>主题分类：</Col>
                     <Col span={5}>
-                        <Select placeholder='请选择主题分类' style={{width:'100%'}} value={sourceData.subjectClassification} onChange={(value)=>this.changeList(value,'subjectClassification')}> 
+                        <Select placeholder='请选择主题分类' style={{width:'100%'}} value={sourceData.subjectClassification} onChange={(value)=>this.changeList(value,'subjectClassification')} getPopupContainer={triggerNode => triggerNode.parentNode}> 
                             {
                                 this.state.list.map((item,index)=>(
                                     <Option value={item.info.className} key={index}>{item.info.className}</Option>
@@ -257,7 +257,7 @@ export default class AddForm extends Component{
                     </Col>
                     <Col span={3} style={{textAlign:'right',fontSize:15}}>所属机构：</Col>
                     <Col span={5}>
-                        <Select placeholder='请选择所属机构' style={{width:'100%'}} value={sourceData.affiliatedInstitutions} onChange={(value)=>this.changeList(value,'affiliatedInstitutions')}> 
+                        <Select placeholder='请选择所属机构' style={{width:'100%'}} value={sourceData.affiliatedInstitutions} onChange={(value)=>this.changeList(value,'affiliatedInstitutions')} getPopupContainer={triggerNode => triggerNode.parentNode}> 
                         {
                             this.state.affiliatedInstitutions.map((item,index)=>(
                                 <Option value={item.info.className||''} key={index}>{item.info.className||''}</Option>
@@ -267,7 +267,7 @@ export default class AddForm extends Component{
                     </Col>
                     <Col span={3} style={{textAlign:'right',fontSize:15}}>业务分类：</Col>
                     <Col span={5}>
-                        <Select placeholder='请选择业务分类' style={{width:'100%'}} value={sourceData.businessClassification} onChange={(value)=>this.changeList(value,'businessClassification')}> 
+                        <Select placeholder='请选择业务分类' style={{width:'100%'}} value={sourceData.businessClassification} onChange={(value)=>this.changeList(value,'businessClassification')} getPopupContainer={triggerNode => triggerNode.parentNode}> 
                         {
                             this.state.businessClassification.map((item,index)=>(
                                 <Option value={item.info.className} key={index}>{item.info.className}</Option>
