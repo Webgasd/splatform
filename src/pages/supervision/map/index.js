@@ -39,7 +39,7 @@ import { Input, Button, message, Modal, Row, Col, Card } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import ReactEcharts from 'echarts-for-react';
 import axios from "../../../axios";
-import {commonUrl, unitName} from "../../../axios/commonSrc";
+import {commonUrl, unitName,lng,lat} from "../../../axios/commonSrc";
 import connect from "react-redux/es/connect/connect";
 import { changeEnterprise, clearEnterprise } from "../../../redux/action";
 import BaseForm from '../../../components/BaseFormForMap';
@@ -115,9 +115,13 @@ class map extends React.Component {
     }
     componentDidMount() {
         this.map = new AMap.Map("container1", {
-            center: [118.674413, 37.433808],//东营市政府
+            center: [lng, lat],//东营市政府
             zoom: 15,
             resizeEnable: true,
+            pitchEnable:true,
+            pitch:25,
+            viewMode: '3D', // 地图模式
+
 
         });
         this.map.on('click', () => {
@@ -126,8 +130,8 @@ class map extends React.Component {
         let geocoder;
         AMap.plugin('AMap.Geocoder', function () {
             geocoder = new AMap.Geocoder({
-                city: "370500",
-                // city: '东营'
+                //city: "370500",
+                 city: unitName
             });
         })
         this.requestList();
@@ -173,7 +177,7 @@ class map extends React.Component {
         })
     }
     drawDisrict=()=>{
-        if(this.state.currentArea==="" ||this.state.currentArea.areaId===1 ){
+        if(!this.state.currentArea  ||this.state.currentArea.areaId===1 ){
             axios.ajax({
                 url: "/grid/grid/getTop",
                 data: {

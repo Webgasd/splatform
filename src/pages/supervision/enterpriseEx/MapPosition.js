@@ -4,6 +4,7 @@ import axios from "../../../axios";
 import connect from "react-redux/es/connect/connect";
 import {changeEnterprise} from "../../../redux/action";
 import {lng,lat} from "../../../axios/commonSrc";
+import { unitName } from '../../../axios/commonSrc'
 const AMap=window.AMap;
 
 
@@ -45,7 +46,7 @@ const AMap=window.AMap;
             AMap.plugin('AMap.Geocoder', function() {
                 geocoder = new AMap.Geocoder({
                     // city 指定进行编码查询的城市，支持传入城市名、adcode 和 citycode
-                     city: '东营'
+                     city: unitName
                 });
                
                 geocoder.getLocation(address, function(status, result) {
@@ -92,7 +93,7 @@ const AMap=window.AMap;
                     AMap.plugin('AMap.Geocoder', function() {
                     geocoder = new AMap.Geocoder({
                         // city 指定进行编码查询的城市，支持传入城市名、adcode 和 citycode
-                         city: '东营'
+                         city: unitName
                     });
                     geocoder.getLocation(address, function(status, result) {
                         if (status === 'complete' && result.info === 'OK') {
@@ -174,7 +175,7 @@ const AMap=window.AMap;
             AMap.plugin('AMap.Geocoder', function() {
                 geocoder = new AMap.Geocoder({
                     // city 指定进行编码查询的城市，支持传入城市名、adcode 和 citycode
-                     city: '东营'
+                     city: unitName
                 });
                
                 geocoder.getLocation(address, function(status, result) {

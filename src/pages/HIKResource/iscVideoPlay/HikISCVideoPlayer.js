@@ -127,6 +127,7 @@ const { TextArea } = Input;
                     params:value
                 }
             }).then((res)=> {
+                console.log(res)
                 if (res.status == "success" && res.data.code == "0") {
                     this.player.pause();
                     this.player.src(res.data.data.url);

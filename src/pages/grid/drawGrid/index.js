@@ -136,7 +136,7 @@ class DrawTest extends React.Component{
     }
     onSelect = (keys, event) => {
         let value = this.state.gridData.find((item)=>(item.areaId==keys))
-        console.log(value)
+        console.log(this.state.gridData)
         if (value!==undefined&&value.areaId>1){
             let le=value.level.split(".").length;
             if (le==2) {
@@ -162,6 +162,7 @@ class DrawTest extends React.Component{
                 fillColor: value.color,
                 strokeColor: '#0091ea'
             });
+            console.log(overlays[l]);
             this.map.add(overlays[l]);
             if (le===2) {this.map.setFitView(overlays[l]);}
             // this.map.setZoom(14);
