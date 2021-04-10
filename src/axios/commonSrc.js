@@ -47,8 +47,8 @@
 // export const lat=35.511519
 
 
-export const commonUrl = "http://58.58.36.198:9100";
-export const baseUrl = "http://58.58.36.198:6190";
+export const commonUrl = "http://112.6.36.78:9100";
+export const baseUrl = "http://112.6.36.78:6190";
 export const unitName = "博兴县"
 export const bookName = "博兴"
 export const footName = "中国移动通信集团山东有限公司博兴分公司"

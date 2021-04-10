@@ -1,8 +1,8 @@
 import React,{Component} from 'react';
 import loadable from '../../utils/loadable';
 
-//const Home = loadable(()=>import('./../../pages/home'));
-const Home = loadable(()=>import('./../../pages/supervision/map'));
+const Home = loadable(()=>import('./../../pages/home'));
+// const Home = loadable(()=>import('./../../pages/supervision/map'));
 const Footer = loadable(()=>import('../Footer'));
 const EnterpriseInformation = loadable(()=>import('../../pages/supervision/enterprise'));
 const EnterpriseInformationEx = loadable(()=>import('../../pages/supervision/enterpriseEx'));
