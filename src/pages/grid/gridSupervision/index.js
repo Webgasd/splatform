@@ -3,7 +3,7 @@ import {Row, Col, Tree, Divider, Card, Button, message,Modal,TreeSelect,Input} f
 import connect from "react-redux/es/connect/connect";
 import {changeEnterprise, clearEnterprise} from "../../../redux/action";
 import axios from "../../../axios";
-import {commonUrl, unitName} from '../../../axios/commonSrc'
+import {commonUrl, unitName,videoType} from '../../../axios/commonSrc'
 import moment from 'moment';
 import './index.css'
 import Add from "../../supervision/enterprise/Add";
@@ -672,7 +672,7 @@ class GridSupervision extends React.Component{
         this.props.changeEnterprise({...data,propagandaEnclosure:JSON.parse(data.propagandaEnclosure||JSON.stringify([]))});
     }
     handleOperator(id){
-        if(unitName=="平原县" ||unitName=="临清市"){
+        if(videoType=="isc"){
             axios.ajax({
                 url:'/videoIsc/selectByEnterpriseId',
                 data:{

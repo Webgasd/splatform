@@ -12,7 +12,7 @@ import GradeC from './icon/dynamic_level_commonly.png'
 import GradeNull from './icon/dynamic_level_null.png'
 import EnterpriseModularNew from './enterpriseModularNew'
 import axios from "../../axios"
-import {commonUrl, unitName} from "../../axios/commonSrc"
+import {commonUrl, unitName,videoType} from "../../axios/commonSrc"
 
 export default class EnterpriseInfo extends Component {
 
@@ -97,11 +97,11 @@ export default class EnterpriseInfo extends Component {
                 //     this.getEnclosure(JSON.parse(item.data.enterprise.propagandaEnclosure));
                 // }
 
-                this.getPhotoNew(item.data.enterprise);
+                //this.getPhotoNew(item.data.enterprise);
 
                 this.handleDept(item.data.enterprise.regulators);
                 this.getRawMaterialNew(item.data.enterprise.id);
-                if (unitName == "平原县" || unitName == "临清市") {
+                if (videoType === "isc" ) {
                     this.getVideoNew(item.data.enterprise.id);
                 } else {
                     this.getVideo(item.data.enterprise.id);
@@ -514,7 +514,7 @@ export default class EnterpriseInfo extends Component {
                                             minWidth: 50
                                         }}
                                         onClick={() => {
-                                            if (unitName == "平原县" || unitName == "临清市") {
+                                            if (videoType === "isc") {
                                                 this.getVideoContent(item);
                                             } else {
                                                 this.setUrl(item.number, item.channelNumber, item.byteType);
