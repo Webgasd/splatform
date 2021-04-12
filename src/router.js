@@ -3,6 +3,7 @@ import {HashRouter,Route,Switch} from "react-router-dom";
 //Switch包裹的路由只会渲染一个
 import App from './App';
 import Login from './pages/login';
+//import Login from './pages/supervision/map1';
 import Register from './pages/login/register';
 import loadable from "./utils/loadable";
 const Takeout = loadable(()=>import('./pages/takeOut'));
