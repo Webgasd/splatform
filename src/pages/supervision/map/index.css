@@ -96,8 +96,8 @@
 }
 #backbtn {
     display: flex;
-    position: relative;
-    bottom: 47.5rem;
+    position: absolute;
+    bottom: 50.6rem;
     -ms-flex: 1 1 auto;
     flex: 1 1 auto;
 }
