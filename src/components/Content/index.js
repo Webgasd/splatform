@@ -1,8 +1,8 @@
 import React,{Component} from 'react';
 import loadable from '../../utils/loadable';
 
-// const Home = loadable(()=>import('./../../pages/home'));
-const Home = loadable(()=>import('./../../pages/supervision/map'));
+const Home = loadable(()=>import('./../../pages/home'));
+// const Home = loadable(()=>import('./../../pages/supervision/map'));
 const Footer = loadable(()=>import('../Footer'));
 const EnterpriseInformation = loadable(()=>import('../../pages/supervision/enterprise'));
 const EnterpriseInformationEx = loadable(()=>import('../../pages/supervision/enterpriseEx'));
@@ -14,7 +14,7 @@ const DrawGrid = loadable(()=>import('../../pages/grid/drawGrid'));
 const ShowGrid = loadable(()=>import('../../pages/grid/showGrid'));
 const SmileMap = loadable(()=>import('../../pages/grid/smileMap'));
 const SearchMap = loadable(()=>import('../../pages/grid/searchMap'));
-const DataMap = loadable(()=>import('./../../pages/home'));
+const DataMap = loadable(()=>import('./../../pages/home/govHome'));
 const RoleManager = loadable(()=>import('../../pages/permission/roleManager'));
 const PermManager = loadable(()=>import('../../pages/permission/permManger'));
 const DeptManger = loadable(()=>import('../../pages/permission/deptManager'));
