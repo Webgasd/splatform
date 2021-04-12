@@ -46,7 +46,7 @@ import BaseForm from '../../../components/BaseFormForMap';
 import Utils from "../../../utils";
 import Add from '../enterpriseEx/Add';
 import LedgerTable from "../../grid/gridSupervision/LedgerTable";
-import LiveVideo from "../../grid/gridSupervision/LiveVideo";
+import LiveVideo from "../../HIKResource/iscVideoPlay/HikISCVideoPlayer";
 const { Search } = Input;
 
 const AMap = window.AMap;
@@ -731,22 +731,26 @@ class map extends React.Component {
     }
     showVideo = () => {
         axios.ajax({
-            url: '/grid/points/getVideoIdByEnterprise',
+            //url: '/video/get。。。',  //两种取视频流类型
+            url: '/videoIsc/selectByEnterpriseId',
             data: {
                 params: {
                     id: this.state.enterpriseId
                 }
             }
         }).then((res) => {
+            console.log(res.data)
             if (res.status == "success") {
                 if (res.data == 0) {
                     message.info("暂无数据")
                 } else {
                     axios.ajax({
-                        url: '/video/getById',
+                        //url: '/video/getById',//两种取视频流类型
+                        url: '/videoIsc/getById',
                         data: {
                             params: {
-                                id: res.data
+                                id: res.data.id,
+                                region:unitName
                             }
                         }
                     }).then((res) => {

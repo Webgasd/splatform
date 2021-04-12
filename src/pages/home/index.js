@@ -1,6 +1,7 @@
 import React,{Component} from 'react';
 import './style.less';
-import GovHome from './govHome';
+//import GovHome from './govHome';
+import GovHome from '../supervision/map';
 import EnterpriseHome from './enterpriseHome';
 import PersonHome from './personHome';
 import QuickCheckHome from './quickCheckHome';
