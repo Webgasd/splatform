@@ -3,6 +3,7 @@
 // export const commonUrl = "http://172.26.96.146:8088";
 // export const commonUrl = "http://172.26.69.52:8088";
 export const videoCutPath = "/usr/local/src/upload/cut/"; //视频截图地址 edit by ljh
+export const videoType = "isc"; //视频类型 edit by ljh
 //export const videoCutPath = "d://"; //视频截图地址 edit by ljh
 //本地使用勿删,前端连接后端时的ip请写在最后
 // export const commonUrl = "http://localhost:8088";

@@ -3,7 +3,7 @@ import {Button, Col, message, Modal, Row, Tree} from "antd";
 import Add from "../supervision/enterprise/Add";
 import LiveVideo from "../grid/gridSupervision/LiveVideo";
 import LedgerTable from "../grid/gridSupervision/LedgerTable";
-import {commonUrl, unitName} from "../../axios/commonSrc";
+import {commonUrl, unitName,videoType} from "../../axios/commonSrc";
 import axios from "../../axios";
 import moment from 'moment';
 import './map.css'
@@ -592,7 +592,7 @@ class wholeNumber extends Component {
         this.props.changeEnterprise({...data,propagandaEnclosure:JSON.parse(data.propagandaEnclosure||JSON.stringify([]))});
     }
     handleOperator(id){
-        if(unitName=="平原县" ||unitName=="临清市"){
+        if(videoType=="isc"){
             axios.ajax({
                 url:'/videoIsc/selectByEnterpriseId',
                 data:{
