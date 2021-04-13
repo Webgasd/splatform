@@ -354,7 +354,6 @@ class map extends React.Component {
         this.state.dataq1, this.state.dataq2, this.state.dataq3];
         list.map((item, index) => {
             let k = 0;
-
             for (let i = 0; i < oms.length; i++) {
                 for (let j = 1; j <= 3; j++) {
                     if (item.operationMode === oms[i] && parseInt(item.businessState) === j && item.point !== '') {
@@ -731,26 +730,22 @@ class map extends React.Component {
     }
     showVideo = () => {
         axios.ajax({
-            //url: '/video/get。。。',  //两种取视频流类型
-            url: '/videoIsc/selectByEnterpriseId',
+            url: '/grid/points/getVideoIdByEnterprise',
             data: {
                 params: {
                     id: this.state.enterpriseId
                 }
             }
         }).then((res) => {
-            console.log(res.data)
             if (res.status == "success") {
                 if (res.data == 0) {
                     message.info("暂无数据")
                 } else {
                     axios.ajax({
-                        //url: '/video/getById',//两种取视频流类型
-                        url: '/videoIsc/getById',
+                        url: '/video/getById',
                         data: {
                             params: {
-                                id: res.data.id,
-                                region:unitName
+                                id: res.data
                             }
                         }
                     }).then((res) => {
