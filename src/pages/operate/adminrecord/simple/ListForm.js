@@ -45,7 +45,7 @@ class ListForm extends Component{
                 <table>
                     <tbody>
                     <tr>
-                        {/* <th>序号</th> */}
+                        <th>菜品类型</th>
                         <th>菜名</th>
                         <th>原料</th>
                         <th>留样状态</th>
@@ -53,7 +53,13 @@ class ListForm extends Component{
                     </tr>
                     {list.map((item,index)=>(
                         <tr key={index}>
-                            {/* <td><Input value={item.seq} onChange={(e)=>this.changeList(e.target.value,"seq",index)} disabled={type=='detail'?true:false}/></td> */}
+                            <td><Select value={item.type} style={{width:120}} onChange={(value)=>this.changeList(value,"type",index)}>
+                                <Option value={1} disabled={type=='detail'?true:false}>主食</Option>
+                                <Option value={2} disabled={type=='detail'?true:false}>热菜</Option>
+                                <Option value={3} disabled={type=='detail'?true:false}>凉菜</Option>
+                                <Option value={4} disabled={type=='detail'?true:false}>汤/奶</Option>
+                                <Option value={5} disabled={type=='detail'?true:false}>水果</Option>
+                            </Select></td>
                             <td><Input value={item.name} onChange={(e)=>this.changeList(e.target.value,"name",index)} disabled={type=='detail'?true:false}/></td>
                             <td><Input value={item.material1} onClick={()=>this.setState({isVisible:true,materialName:'material1',Index:index})} disabled={type=='detail'?true:false} suffix={<Icon type="search" />}/></td>
                             <td>

@@ -44,6 +44,7 @@ class DetailForm extends Component{
         // 不能选今天和今天之前的日期
         return current > moment();
     };
+
     handlePreview = file => {
 
         this.setState({
@@ -88,11 +89,13 @@ class DetailForm extends Component{
 render(){
     const type=this.props.type;
     const formData = this.props.input || {};
-    const list1 = this.props.input.list1 || [];
-    const list2 = this.props.input.list2 || [];
-    const list3 = this.props.input.list3 || [];
-    const list4 = this.props.input.list4 || [];
-    const list5 = this.props.input.list5 || [];
+    const list = this.props.input.list || [];
+    console.log(list)
+    // const list1 = this.props.input.list1 || [];
+    // const list2 = this.props.input.list2 || [];
+    // const list3 = this.props.input.list3 || [];
+    // const list4 = this.props.input.list4 || [];
+    // const list5 = this.props.input.list5 || [];
     const { previewVisible, previewImage,modifyVisible } = this.state;
     const columns = [
         {
@@ -123,12 +126,6 @@ render(){
                 <div className='commonEnterpriseBox'>
                     <table>
                         <tbody>
-                        {/*<tr>*/}
-                            {/*<td style={{background:'#F2F2F2'}}>企业名称<span style={{color:'#FF3300'}}>*</span></td>*/}
-                            {/*<td><Input value={formData.enterpriseName} disabled={type=='detail'?true:false}/></td>*/}
-                            {/*<td style={{background:'#F2F2F2'}}>所属区域<span style={{color:'#FF3300'}}>*</span></td>*/}
-                            {/*<td ><Input value={formData.areaName} disabled={type=='detail'?true:false}/></td>*/}
-                        {/*</tr>*/}
                         <tr>
                             <td style={{background:'#F2F2F2',width:55}}>就餐类型<span style={{color:'#FF3300'}}>*</span></td>
                             <td style={{width:105}}><Input value={formData.type} disabled={type=='detail'?true:false} onChange={(e)=>this.changeInput(e.target.value,'type')}/></td>
@@ -136,9 +133,10 @@ render(){
                             <td style={{width:105}}>
                                 <DatePicker style={{width:'100%'}}
                                             disabled={type=='detail'?true:false}
-                                            value={formData.date===''?moment():moment(formData.date)}
+                                            value={formData.date=moment(formData.date)}
                                             onChange={(date)=>this.changeInput(date,'date')}
-                                            showTime={true} format="YYYY-MM-DD" disabledDate={this.disabledDate}/></td>
+                                             format="YYYY-MM-DD" disabledDate={this.disabledDate}/>
+                                             </td>
                             <td style={{background:'#F2F2F2',width:40}}>餐次<span style={{color:'#FF3300'}}>*</span></td>
                             <td style={{width:80}}>
                                 <Select value={formData.meal} style={{width:"100%"}} onChange={(value)=>this.changeInput(value,"meal")}>
@@ -149,26 +147,28 @@ render(){
                             </td>
                         </tr>
                         <tr>
+                        <td style={{background:'#F2F2F2',width:55}}>就餐人数<span style={{color:'#FF3300'}}>*</span></td>
+                            <td style={{width:105}}><Input value={formData.number} disabled={type=='detail'?true:false} onChange={(e)=>this.changeInput(e.target.value,'number')}/></td>
                             <td style={{background:'#F2F2F2',width:55}}>事项<span style={{color:'#FF3300'}}>*</span></td>
                             <td style={{width:105}}><Input value={formData.matter} disabled={type=='detail'?true:false} onChange={(e)=>this.changeInput(e.target.value,'matter')}/></td>
-                            <td style={{background:'#F2F2F2',width:55}}>就餐人数<span style={{color:'#FF3300'}}>*</span></td>
-                            <td style={{width:105}}><Input value={formData.number} disabled={type=='detail'?true:false} onChange={(e)=>this.changeInput(e.target.value,'number')}/></td>
+                            <td style={{background:'#F2F2F2',width:55}}>操作人<span style={{color:'#FF3300'}}>*</span></td>
+                            <td style={{width:105}}><Input value={formData.person} disabled={type=='detail'?true:false} onChange={(e)=>this.changeInput(e.target.value,'person')}/></td>
                         </tr>
                         </tbody>
                     </table>
                     <Form layout="inline">
-                        <div className='msgIndexBox'>
+                        {/* <div className='msgIndexBox'>
                             <div className={this.state.msgIndex === 0?'msgIndex showIndex':'msgIndex'} onClick={this.changeMsgIndex.bind(this,0)}>主菜</div>
                             <div className={this.state.msgIndex === 1?'msgIndex showIndex':'msgIndex'} onClick={this.changeMsgIndex.bind(this,1)}>凉菜</div>
                             <div className={this.state.msgIndex === 2?'msgIndex showIndex':'msgIndex'} onClick={this.changeMsgIndex.bind(this,2)}>主食</div>
                             <div className={this.state.msgIndex === 3?'msgIndex showIndex':'msgIndex'} onClick={this.changeMsgIndex.bind(this,3)}>汤</div>
                             <div className={this.state.msgIndex === 4?'msgIndex showIndex':'msgIndex'} onClick={this.changeMsgIndex.bind(this,4)}>水果</div>
-                        </div>
-                        <div className='msgChange'>
+                        </div> */}
+                        <div className='msgChange' style={{marginTop:'10px'}}>
                             <div className='commonEnterpriseBox' style={{display:this.state.msgIndex === 0?'block':'none'}}>
-                                <ListForm listType={list4} type={type}/>
+                                <ListForm listType={list} type={type}/>
                             </div>
-                            <div className='commonEnterpriseBox' style={{display:this.state.msgIndex === 1?'block':'none'}}>
+                            {/* <div className='commonEnterpriseBox' style={{display:this.state.msgIndex === 1?'block':'none'}}>
                                 <ListForm listType={list1} type={type}/>
                             </div>
                             <div className='commonEnterpriseBox' style={{display:this.state.msgIndex === 2?'block':'none'}}>
@@ -179,7 +179,7 @@ render(){
                             </div>
                             <div className='commonEnterpriseBox' style={{display:this.state.msgIndex === 4?'block':'none'}}>
                                 <ListForm listType={list2} type={type}/>
-                            </div>
+                            </div> */}
                         </div>
                     </Form>
                     {/* <table>
