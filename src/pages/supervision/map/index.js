@@ -39,7 +39,7 @@ import { Input, Button, message, Modal, Row, Col, Card } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import ReactEcharts from 'echarts-for-react';
 import axios from "../../../axios";
-import {commonUrl, unitName,lng,lat} from "../../../axios/commonSrc";
+import {commonUrl, unitName,lng,lat,videoType} from "../../../axios/commonSrc";
 import connect from "react-redux/es/connect/connect";
 import { changeEnterprise, clearEnterprise } from "../../../redux/action";
 import BaseForm from '../../../components/BaseFormForMap';
@@ -729,8 +729,14 @@ class map extends React.Component {
         })
     }
     showVideo = () => {
+        let v1="/grid/points/getVideoIdByEnterprise"
+        let v2="/video/getById"
+        if(videoType==="isc"){
+            v1="/videoIsc/selectByEnterpriseId"
+            v2="/videoIsc/getById"
+        }
         axios.ajax({
-            url: '/grid/points/getVideoIdByEnterprise',
+            url: v1,
             data: {
                 params: {
                     id: this.state.enterpriseId
@@ -742,7 +748,7 @@ class map extends React.Component {
                     message.info("暂无数据")
                 } else {
                     axios.ajax({
-                        url: '/video/getById',
+                        url: v2,
                         data: {
                             params: {
                                 id: res.data

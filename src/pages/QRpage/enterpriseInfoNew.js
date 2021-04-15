@@ -96,8 +96,8 @@ export default class EnterpriseInfo extends Component {
                 // if (item.data.enterprise.propagandaEnclosure !== "" && item.data.enterprise.propagandaEnclosure !== "[]") {
                 //     this.getEnclosure(JSON.parse(item.data.enterprise.propagandaEnclosure));
                 // }
-
-                //this.getPhotoNew(item.data.enterprise);
+                console.log(item.data.enterprise)
+                this.getPhotoNew(item.data.enterprise);
 
                 this.handleDept(item.data.enterprise.regulators);
                 this.getRawMaterialNew(item.data.enterprise.id);
