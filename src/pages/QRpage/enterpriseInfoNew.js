@@ -321,15 +321,15 @@ export default class EnterpriseInfo extends Component {
             data: {
                 params: {
                     id: id,
-                    start1: this.GetDateStr(-1),
-                    end1: this.GetDateStr(0)
+                  //  start1: this.GetDateStr(-1),
+                 //   end1: this.GetDateStr(0)
                     // start:"2018-09-16",
                     // end: "2018-09-17"
                 }
             }
         }).then((item) => {
             if (item.status === "success") {
-                console.log("get Raw Material New Data");
+                console.log(item.data.data);
                 this.setState({
                     rawMaterialList: item.data.data
                 });
@@ -593,7 +593,7 @@ export default class EnterpriseInfo extends Component {
                                               info={this.state.info}
                                               dept={this.state.deptName}
                                               foodCommon={this.state.info.foodCommon}
-                                              foodBusiness={this.state.info.foodBusiness}
+                                              foodBusiness={this.state.info.foodBusinessList}
                                               foodCirculate={this.state.info.foodCirculate}
                                               cosmeticsUse={this.state.info.cosmeticsUse}
                                               foodProduce={this.state.info.foodProduce}
@@ -617,9 +617,7 @@ export default class EnterpriseInfo extends Component {
                         <EnterpriseModularNew title="食品安全相关知识"
                                               knowledgeList={this.state.knowledgeList.length > 5 ? this.state.knowledgeList.slice(0, 5) : this.state.knowledgeList}/>
                     </div>
-                    <div style={{marginBottom: "50px"}}>
-                        <EnterpriseModularNew title="通知公告"/>
-                    </div>
+
                     <footer>
                         投诉电话:12345 12331 12315
                     </footer>
