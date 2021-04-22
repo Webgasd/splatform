@@ -83,7 +83,7 @@ class Simple extends Component{
     handleDetailSubmit = ()=>{
         let type =this.state.type;
         axios.PostAjax({
-            url:type=='create'?'/formatleave/insert':'/formatleave/update',
+            url:type=='create'?'/formatleave/miniInsert':'/formatleave/miniUpdate',
             data:{
                 params:{
                     ...this.props.input
