@@ -16,7 +16,7 @@ import 'video.js/dist/video-js.css';
 import InstructList from "../../interaction/InstructList";
 import EmployeeList from '../../video/enterpriseWorkerList'
 import EnterpriseRecords from '../../video/enterpriseRecord'
-import {commonUrl, unitName} from '../../../axios/commonSrc'
+import {commonUrl, unitName,videoCutPath} from '../../../axios/commonSrc'
 
 const Option=Select.Option;
 const { TextArea } = Input;
@@ -53,10 +53,11 @@ class HikISCVideoPlay extends Component{
                 data:{
                     params:{
                         pic:evt.detail[0],
-                        // filePath:videoCutPath,
+                         filePath:videoCutPath,
                     }
                 }
             }).then((res)=>{
+                console.log(res)
                 if(res.status =='success'){
 
                     if(!this.props.videoInfo.recordPicture1&&!this.props.videoInfo.recordPicture2){
