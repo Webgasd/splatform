@@ -125,8 +125,12 @@ class EnterpriseModular extends Component {
                                 <label>{this.props.info.enterpriseName}</label>
                             </li>
                             <li>
+                                经营类别：
+                                <label>{this.props.info.businessScale}</label>
+                            </li>
+                            <li>
                                 生产地址：
-                                <label>{this.props.info.businessAddress}</label>
+                                <label>{this.props.info.businessAddress!=""?this.props.info.businessAddress:this.props.info.registeredAddress}</label>
                             </li>
                             <li>
                                 日常监管责任机构：
@@ -134,7 +138,7 @@ class EnterpriseModular extends Component {
                             </li>
                             <li>
                                 日常监管责任人员：
-                                <label>{this.props.info.supervisor}</label>
+                                <label>{this.props.info.legalPerson}</label>
                             </li>
                             <div>
                                 {this.props.foodCommon ?
@@ -170,20 +174,20 @@ class EnterpriseModular extends Component {
                                         </li>
                                         <li>
                                             许可证号：
-                                            <label>{this.props.foodBusiness.number}</label>
+                                            <label>{this.props.foodBusiness[0].number}</label>
                                         </li>
                                         <li>
                                             发证机关：
-                                            <label>{this.props.foodBusiness.licenseAuthority}</label>
+                                            <label>{this.props.foodBusiness[0].licenseAuthority}</label>
                                         </li>
                                         <li>
                                             核定经营项目：
-                                            <label>{this.props.foodBusiness.businessProject}</label>
+                                            <label>{this.props.foodBusiness[0].businessProject}</label>
                                         </li>
                                         <li>
                                             许可期限：
-                                            <label>{this.props.foodBusiness.startTime ? this.props.foodBusiness.startTime.substring(0, 10) : ""}至
-                                                {this.props.foodBusiness.endTime ? this.props.foodBusiness.endTime.substring(0, 10) : ""}</label>
+                                            <label>{this.props.foodBusiness[0].startTime ? this.props.foodBusiness[0].startTime.substring(0, 10) : ""}至
+                                                {this.props.foodBusiness[0].endTime ? this.props.foodBusiness[0].endTime.substring(0, 10) : ""}</label>
                                         </li>
                                     </div> : null
                                 }
@@ -346,7 +350,7 @@ class EnterpriseModular extends Component {
                                                                  style={{width: "120px", marginLeft: "-20px"}}
                                                                  alt=""/> :
                                                             <img
-                                                                src={commonUrl + '/upload/picture/' + JSON.parse(item.photo)[0].response.data}
+                                                                src={commonUrl + '/upload/' + JSON.parse(item.photo)[0].response.data}
                                                                 style={{width: "120px", marginLeft: "-20px"}}
                                                                 alt=""/>}
                                                     </div>
