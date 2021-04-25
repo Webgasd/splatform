@@ -53,7 +53,7 @@ class HikISCVideoPlay extends Component{
                 data:{
                     params:{
                         pic:evt.detail[0],
-                         filePath:videoCutPath,
+                        filePath:videoCutPath,
                     }
                 }
             }).then((res)=>{
@@ -220,7 +220,7 @@ class HikISCVideoPlay extends Component{
                     </Col>
                     <Col span={14} >
                         <live-player alt="视频正在加载...." id="player01"
-                                     video-url={this.state.videoUrl}
+                                     video-url="http://218.56.165.61:83/openUrl/wdkpmyk/live.m3u8"
                                      live="true" stretch="true" show-custom-button="false" autoplay>
                         </live-player>
                     </Col>

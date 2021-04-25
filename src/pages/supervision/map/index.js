@@ -743,6 +743,7 @@ class map extends React.Component {
                 }
             }
         }).then((res) => {
+            console.log(res)
             if (res.status == "success") {
                 if (res.data == 0) {
                     message.info("暂无数据")
@@ -751,10 +752,11 @@ class map extends React.Component {
                         url: v2,
                         data: {
                             params: {
-                                id: res.data
+                                id: res.data.id
                             }
                         }
                     }).then((res) => {
+                        console.log(res)
                         if (res.status == 'success') {
                             this.setState({
                                 videoVisible: true,
