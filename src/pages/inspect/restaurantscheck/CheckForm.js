@@ -192,7 +192,7 @@ class CheckForm extends Component {
                                 data.checkObjectId=item.id
                                 data.checkObject=item.enterpriseName
                                 data.checkAddress=item.registeredAddress
-                                data.okNumber=item.foodCommon?item.foodCommon.number:(item.foodBusiness||{}).number
+                                data.okNumber=item.foodCommon?item.foodCommon.number:(item.foodBusinessList[0]||{}).number
                                 data.chargePerson=item.legalPerson
                                 data.contactPhone=item.cantactWay
                                 data.region=item.area

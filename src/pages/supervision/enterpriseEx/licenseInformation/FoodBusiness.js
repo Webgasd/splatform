@@ -4,6 +4,7 @@ import connect from "react-redux/es/connect/connect";
 import {changeEnterprise} from "../../../../redux/action";
 import axios from "../../../../axios";
 import moment from "moment"
+import "../style.less"
 
 
 const Option = Select.Option;
@@ -169,17 +170,17 @@ class FoodBusiness extends Component{
                     <tbody>
                     <tr>
                         <td rowSpan={2} style={{width:'10%'}}>检查归类<span style={{color:'#FF3300'}}>*</span></td>
-                        <td><img src={require("./imgs/u823.png")} style={{height:'8%'}} alt=""/></td>
+                        <td><img src={require("./imgs/u823.png")} className="tdimg" alt=""/></td>
                         <td style={{width:'30%',textAlign:"left"}}><Checkbox value={"餐饮服务"} >餐饮服务</Checkbox></td>
-                        <td><img src={require("./imgs/u831.png")} style={{height:'8%'}} alt=""/> </td>
+                        <td><img src={require("./imgs/u831.png")} className="tdimg" alt=""/> </td>
                         <td style={{width:'30%',textAlign:"left"}}><Checkbox value={"食品流通"} >食品流通</Checkbox> </td>
-                        <td><img src={require("./imgs/u835.png")} style={{height:'8%'}} alt=""/> </td>
+                        <td><img src={require("./imgs/u835.png")} className="tdimg" alt=""/> </td>
                         <td style={{width:'30%',textAlign:"left"}}><Checkbox value={"保健品经营"}>保健品经营</Checkbox> </td> 
                     </tr>
                     <tr>
-                        <td><img src={require("./imgs/u829.png")} style={{height:'8%'}} alt=""/> </td>
+                        <td><img src={require("./imgs/u829.png")} className="tdimg" alt=""/> </td>
                         <td style={{textAlign:"left"}}><Checkbox value={"学校食堂"}>学校食堂</Checkbox></td>
-                        <td><img src={require("./imgs/u839.png")} style={{height:'8%'}} alt=""/> </td>
+                        <td><img src={require("./imgs/u839.png")} className="tdimg" alt=""/> </td>
                         <td style={{textAlign:"left"}}><Checkbox value={"婴幼儿配方奶粉"}>婴幼儿配方奶粉</Checkbox> </td>
                     </tr>
                     </tbody>

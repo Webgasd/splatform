@@ -1,7 +1,6 @@
 import React,{Component} from 'react';
 import './style.less';
-//import GovHome from './govHome';
-import GovHome from '../supervision/map';
+import Map from '../supervision/map';
 import EnterpriseHome from './enterpriseHome';
 import PersonHome from './personHome';
 import QuickCheckHome from './quickCheckHome';
@@ -19,9 +18,9 @@ class Home extends Component{
     renderContent=()=>{
         switch (this.props.userType) {
             case 0 :
-                return <GovHome/>
+                return <Map/>
             case 2 :
-                return <GovHome/>
+                return <Map/>
             case 1 :
                 return <EnterpriseHome/>
             case 3 :

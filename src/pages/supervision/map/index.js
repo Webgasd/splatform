@@ -39,7 +39,7 @@ import { Input, Button, message, Modal, Row, Col, Card } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import ReactEcharts from 'echarts-for-react';
 import axios from "../../../axios";
-import {commonUrl, unitName,lng,lat} from "../../../axios/commonSrc";
+import {commonUrl, unitName,lng,lat,videoType} from "../../../axios/commonSrc";
 import connect from "react-redux/es/connect/connect";
 import { changeEnterprise, clearEnterprise } from "../../../redux/action";
 import BaseForm from '../../../components/BaseFormForMap';
@@ -354,7 +354,6 @@ class map extends React.Component {
         this.state.dataq1, this.state.dataq2, this.state.dataq3];
         list.map((item, index) => {
             let k = 0;
-
             for (let i = 0; i < oms.length; i++) {
                 for (let j = 1; j <= 3; j++) {
                     if (item.operationMode === oms[i] && parseInt(item.businessState) === j && item.point !== '') {
@@ -730,30 +729,34 @@ class map extends React.Component {
         })
     }
     showVideo = () => {
+        let v1="/grid/points/getVideoIdByEnterprise"
+        let v2="/video/getById"
+        if(videoType==="isc"){
+            v1="/videoIsc/selectByEnterpriseId"
+            v2="/videoIsc/getById"
+        }
         axios.ajax({
-            //url: '/video/get。。。',  //两种取视频流类型
-            url: '/videoIsc/selectByEnterpriseId',
+            url: v1,
             data: {
                 params: {
                     id: this.state.enterpriseId
                 }
             }
         }).then((res) => {
-            console.log(res.data)
+            console.log(res)
             if (res.status == "success") {
                 if (res.data == 0) {
                     message.info("暂无数据")
                 } else {
                     axios.ajax({
-                        //url: '/video/getById',//两种取视频流类型
-                        url: '/videoIsc/getById',
+                        url: v2,
                         data: {
                             params: {
-                                id: res.data.id,
-                                region:unitName
+                                id: res.data.id
                             }
                         }
                     }).then((res) => {
+                        console.log(res)
                         if (res.status == 'success') {
                             this.setState({
                                 videoVisible: true,

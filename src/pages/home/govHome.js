@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Card, Row, Col, List, Table, Modal, message } from 'antd';
 import ReactEcharts from 'echarts-for-react';
-import { commonUrl, unitName } from '../../axios/commonSrc'
+import { commonUrl, unitName,baseUrl } from '../../axios/commonSrc'
 import echartTheme from './echartTheme';
 import moment from 'moment';
 import Utils from "../../utils";
@@ -10,14 +10,16 @@ import axios from "../../axios";
 import Add from "../supervision/enterpriseEx/Add";
 import tubiao from "./image/pic1.png";
 import InfoWindow from './InfoWindow'
-import liXiaApkPicture from './image/lixia.png';
-import linQingApkPicture from './image/linqing.png'
-import taiAnApkPicture from './image/taian.png'
-import pingYuanApkPicture from './image/pingyuan.png'
-import dongYingApkPicture from './image/dongying.png'
-import pingYiApkPicture from './image/pingyi.png'
-import boxingApkPicture from './image/boxing.png'
+// import liXiaApkPicture from './image/lixia.png';
+// import linQingApkPicture from './image/linqing.png'
+// import taiAnApkPicture from './image/taian.png'
+// import pingYuanApkPicture from './image/pingyuan.png'
+// import dongYingApkPicture from './image/dongying.png'
+// import pingYiApkPicture from './image/pingyi.png'
+// import boxingApkPicture from './image/boxing.png'
+// import guanxianApkPicture from './image/boxing.png'
 import zhongduan from './image/zhongduan.png';
+import QRCode from "qrcode.react";
 import { changeEnterprise, clearEnterprise } from "../../redux/action";
 //引入地图的不同标识
 import Eat from "./image/eat.png"
@@ -676,27 +678,7 @@ class govHome extends Component {
         // })
 
     }
-    //设置Apk二维码图片
-    setApkPicture = () => {
-        switch (unitName) {
-            case "历下区":
-                return liXiaApkPicture;
-            case "平原县":
-                return pingYuanApkPicture;
-            case "临清市":
-                return linQingApkPicture;
-            case "泰山区":
-                return taiAnApkPicture;
-            case "东营区":
-                return dongYingApkPicture;
-            case "平邑县":
-                return pingYiApkPicture;
-            case "博兴县":
-                return boxingApkPicture;
-            default:
-                return liXiaApkPicture;
-        }
-    };
+
 
     drawBounds(district, polygons) {
         let that = this;
@@ -967,8 +949,11 @@ class govHome extends Component {
                                     <div style={{ marginLeft: 20 }}>移动执法终端下载</div>
                                 </Col>
                                 <Col span={12}>
-                                    <img src={this.setApkPicture()}
-                                        style={{ height: 150, marginLeft: 20, marginTop: 10, marginBottom: 10 }} />
+                                    <QRCode
+                                        value={baseUrl+"/mobileLaw.apk"}  //value参数为生成二维码的链接
+                                        size={150} //二维码的宽高尺寸
+                                        fgColor="#000000"  //二维码的颜色
+                                    />
                                 </Col>
                             </Row>
                         </Card>

@@ -16,7 +16,7 @@ import 'video.js/dist/video-js.css';
 import InstructList from "../../interaction/InstructList";
 import EmployeeList from '../../video/enterpriseWorkerList'
 import EnterpriseRecords from '../../video/enterpriseRecord'
-import {commonUrl, unitName, videoCutPath} from '../../../axios/commonSrc'
+import {commonUrl, unitName,videoCutPath} from '../../../axios/commonSrc'
 
 const Option=Select.Option;
 const { TextArea } = Input;
@@ -57,6 +57,7 @@ class HikISCVideoPlay extends Component{
                     }
                 }
             }).then((res)=>{
+                console.log(res)
                 if(res.status =='success'){
 
                     if(!this.props.videoInfo.recordPicture1&&!this.props.videoInfo.recordPicture2){
@@ -219,7 +220,7 @@ class HikISCVideoPlay extends Component{
                     </Col>
                     <Col span={14} >
                         <live-player alt="视频正在加载...." id="player01"
-                                     video-url={this.state.videoUrl}
+                                     video-url="http://218.56.165.61:83/openUrl/wdkpmyk/live.m3u8"
                                      live="true" stretch="true" show-custom-button="false" autoplay>
                         </live-player>
                     </Col>
