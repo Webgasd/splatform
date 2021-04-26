@@ -56,15 +56,44 @@ class Person extends Component{
         input.photo=[file];
         this.props.changeEmployee(input);
     };
+    handleChangeCa = info => {
+        const fileList = info.fileList;
+        const file = fileList.pop();
+        if (info.file.status === 'uploading') {
+            this.setState({ loading: true });
+        }
+        if (info.file.status === 'done') {
+            // Get this url from response in real world.
+            getBase64(info.file.originFileObj, imageUrlCa =>{
+                    this.setState({
+                        loading: false,
+                    });
+                    this.setState({imageUrlCa});
+                }
+            );
+        }
+        let input = {...this.props.input}
+        input.caPhoto=[file];
+        this.props.changeEmployee(input);
+    };
     render() {
         const checkStatus = this.props.type=='detail'?true:false;
         const formData=this.props.input;
         const imageUrl = this.state.imageUrl||'';
+        const imageUrlCa = this.state.imageUrlCa||'';
+        console.log('imageUrlCa',imageUrlCa)
         const photo = this.props.input.photo||[];
-        const uploadButton = (
-            <div>
-                <Icon type={this.state.loading ? 'loading' : 'plus'} />
-                <div className="ant-upload-text">选择上传证件照</div>
+        const caPhoto = this.props.input.caPhoto||[];
+        const uploadButton1 = (
+            <div style={{height:'100px',width:'130px'}}>
+                <Icon style={{marginTop:30}} type={this.state.loading ? 'loading' : 'plus'} />
+                <div className="ant-upload-text">健康证上传</div>
+            </div>
+        );
+        const uploadButton2 = (
+            <div style={{height:'100px',width:'130px'}}>
+                <Icon style={{marginTop:30}} type={this.state.loading ? 'loading' : 'plus'} />
+                <div className="ant-upload-text">人脸识别上传</div>
             </div>
         );
         return (
@@ -82,11 +111,24 @@ class Person extends Component{
                                         className="avatar-uploader"
                                         showUploadList={false}
                                         accept='image/png,image/jpeg'
+                                        action={commonUrl+"/upload/uploadCaPicture"}
+                                        fileList={caPhoto}
+                                        onChange={this.handleChangeCa}
+                                    >
+                                        {imageUrlCa ? <img src={imageUrlCa} style={{height:'130px',width:'160px'}} alt="avatar" />:(caPhoto.length>=1&&!this.state.loading?<img src={commonUrl+"/upload/" +caPhoto[0].response.data} style={{height:'130px'}} alt="avatar" />:uploadButton1)}
+                                    </Upload>
+                                    <Upload
+                                        disabled={checkStatus}
+                                        name="file"
+                                        listType="picture-card"
+                                        className="avatar-uploader"
+                                        showUploadList={false}
+                                        accept='image/png,image/jpeg'
                                         action={commonUrl+"/upload/miniUploadPicture"}
                                         fileList={photo}
                                         onChange={this.handleChange}
                                     >
-                                        {imageUrl ? <img src={imageUrl} style={{height:'130px'}} alt="avatar" />:(photo.length>=1&&!this.state.loading?<img src={commonUrl+"/upload/" +photo[0].response.data} style={{height:'130px'}} alt="avatar" />:uploadButton)}
+                                        {imageUrl ? <img src={imageUrl} style={{height:'130px',width:'160px'}} alt="avatar" />:(photo.length>=1&&!this.state.loading?<img src={require('./img/已上传.png')} style={{height:'130px'}} alt="avatar" />:uploadButton2)}
                                     </Upload>
                                 </td>
                             </tr>

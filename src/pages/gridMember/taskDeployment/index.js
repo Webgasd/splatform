@@ -135,6 +135,7 @@ class TaskDeployment extends Component {
         let _this = this
         if(type == 'create'){
             this.setState({
+                informData:{},
                 title:'网格员任务部署',
                 isVisible:true,
                 type

@@ -46,6 +46,7 @@ class AddForm extends Component{
         value[option]=data
         this.props.dispatchNewsData(value);
     }
+
     handleFocus(which){
         this.setState({
             [which]:true
@@ -125,6 +126,8 @@ class AddForm extends Component{
         let newsData = this.props.newsData||{};
         const imageUrl = this.props.imageUrl;
       
+        let compress = this.props.compress
+        console.log('compress',compress)
         const uploadButton = (
             <div>
                 <Icon type={this.state.loading ? 'loading' : 'plus'} />
@@ -164,7 +167,7 @@ class AddForm extends Component{
                                 <Radio value={0}>否</Radio>
                             </Radio.Group>
                         </Col >
-                       
+                        
                         {this.getMethodDisplay()}
                         {/*<div>*/}
                             {/*<Col span={2} style={{textAlign:'right',fontSize:15}}>审核人：</Col>*/}
@@ -174,6 +177,15 @@ class AddForm extends Component{
                                 {/*<DatePicker value={newsData.puDate=moment(newsData.puDate)} onChange={(event)=>this.changeInput(event,"puDate")} format="YYYY-MM-DD"/>*/}
                             {/*</Col>*/}
                         {/*</div>*/}
+                    </Row>
+                    <Row style={{marginTop:10}}>
+                       <Col span={3} style={{textAlign:'right',fontSize:15}}>是否压缩：</Col>
+                        <Col span={4}>
+                            <Radio.Group value={compress} onChange={(e)=>this.props.dispatchCompress(e.target.value)}>
+                                <Radio value={1}>是</Radio>
+                                <Radio value={0}>否</Radio>
+                            </Radio.Group>
+                        </Col >
                     </Row>
                 </Col>
                     <Col span={4}>

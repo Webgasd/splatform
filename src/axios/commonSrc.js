@@ -12,6 +12,7 @@ export const videoType = "isc"; //视频类型 edit by ljh
 //本地使用勿删,前端连接后端时的ip请写在最后
 //export const commonUrl = "http://localhost:9101";
 // export const baseUrl = "http://localhost:3000"
+// export const commonUrl = "http://192.168.43.122:8088";
 export const commonUrl = "http://112.6.36.78:9100";
 export const baseUrl = "http://112.6.36.78:6190"
 // export const commonUrl = "http://27.223.88.149:8092";

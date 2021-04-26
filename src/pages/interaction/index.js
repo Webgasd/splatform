@@ -26,6 +26,7 @@ const formList = [
 export default class Notice extends Component{
     state = {
         selectedRowKeys: [], // Check here to configure the default column
+        compress:0
     };
     params = {
         pageNo:1
@@ -69,13 +70,64 @@ export default class Notice extends Component{
             isVisible:true
         })
     }
+    //压缩函数
+    compress = (base64String, w, quality) => {
+        let getMimeType = (urlData) => {
+            let arr = urlData.split(',');
+            let mime = arr[0].match(/:(.*?);/)[1];
+            return mime;
+        };
+        let newImage = new Image();
+        let imgWidth, imgHeight;
+ 
+        // let promise = new Promise(resolve => newImage.onload = resolve);
+        newImage.src = base64String;
+        return (() => {
+            imgWidth = newImage.width;
+            imgHeight = newImage.height;
+            let canvas = document.createElement("canvas");
+            let ctx = canvas.getContext("2d");
+            if (Math.max(imgWidth, imgHeight) > w) {
+                if (imgWidth > imgHeight) {
+                    canvas.width = w;
+                    canvas.height = w * imgHeight / imgWidth;
+                } else {
+                    canvas.height = w;
+                    canvas.width = w * imgWidth / imgHeight;
+                }
+            }else{
+                canvas.width = imgWidth;
+                canvas.height = imgHeight;
+            }
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.drawImage(newImage, 0, 0, canvas.width, canvas.height);
+            let base64 = canvas.toDataURL(getMimeType(base64String), quality);
+            return base64;
+        })
+    }
 
     handleSubmit = ()=>{
         let type = this.state.type;
         let data=this.state.newsData;
         data.content=data.content.toHTML();
+        if(this.state.compress==1){
+            console.log("压缩前：",data.content)
+            let patt = /<img[^>]+src=['"]([^'"]+)['"]+/g;
+            let result = [],temp;
+            while ((temp = patt.exec(data.content)) != null) {
+                result.push({'url':temp[1]});
+            }
+            // console.log(result)
+            result.map((item)=>{
+               let val = this.compress(item.url,400,0.5)
+               data.content = data.content.replace('<img','<img style=\"width:400px\"')
+               data.content =  data.content.replace(item.url,val)
+               console.log('data.content',data.content)
+            })
+        }
         data.enclosure=this.state.picture;
         data.checkPerson = data.pid;
+        console.log('data',data)
       //  delete data.id
         axios.PostAjax({
             url:type=='create'?'/sys/news/insert':'/sys/news/update',
@@ -90,7 +142,8 @@ export default class Notice extends Component{
                     isVisible:false,
                     newsData:{},
                     picture:[],
-                    imageUrl:''
+                    imageUrl:'',
+                    compress:0
                 })
                 this.requestList();
             }
@@ -337,12 +390,14 @@ export default class Notice extends Component{
                 >
                     <AddForm 
                     type={this.state.type}
+                    compress={this.state.compress||0}
                     newsData={this.state.newsData||{}}
-                             dispatchNewsData={(value)=>this.setState({newsData:value})}
-                             imageUrl={this.state.imageUrl||''}
-                             picture={this.state.picture||[]}
-                             dispatchPicture={(data)=>this.setState({picture:data})}
-                             disPatchImageUrl={(data)=>this.setState({imageUrl:data})}/>
+                    dispatchNewsData={(value)=>this.setState({newsData:value})}
+                    imageUrl={this.state.imageUrl||''}
+                    picture={this.state.picture||[]}
+                    dispatchPicture={(data)=>this.setState({picture:data})}
+                    dispatchCompress={(data)=>this.setState({compress:data})}
+                    disPatchImageUrl={(data)=>this.setState({imageUrl:data})}/>
                 </Modal>
 
                 <Modal
