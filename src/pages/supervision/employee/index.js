@@ -230,7 +230,7 @@ class employee extends Component{
                   isVisible:true,
                   type
               })
-              this.props.changeEmployee({...item,photo:JSON.parse(item.photo||JSON.stringify([]))});
+              this.props.changeEmployee({...item,photo:JSON.parse(item.photo||JSON.stringify([])),caPhoto:JSON.parse(item.caPhoto||JSON.stringify([]))});
           }else if(type=="delete"){
               Modal.confirm({
                   content:'确定要删除此用户吗？',

@@ -60,13 +60,13 @@ class Person extends Component{
         const fileList = info.fileList;
         const file = fileList.pop();
         if (info.file.status === 'uploading') {
-            this.setState({ loading: true });
+            this.setState({ loadingCa: true });
         }
         if (info.file.status === 'done') {
             // Get this url from response in real world.
             getBase64(info.file.originFileObj, imageUrlCa =>{
                     this.setState({
-                        loading: false,
+                        loadingCa: false,
                     });
                     this.setState({imageUrlCa});
                 }
@@ -81,12 +81,12 @@ class Person extends Component{
         const formData=this.props.input;
         const imageUrl = this.state.imageUrl||'';
         const imageUrlCa = this.state.imageUrlCa||'';
-        console.log('imageUrlCa',imageUrlCa)
+        // console.log('imageUrlCa',imageUrlCa)
         const photo = this.props.input.photo||[];
         const caPhoto = this.props.input.caPhoto||[];
         const uploadButton1 = (
             <div style={{height:'100px',width:'130px'}}>
-                <Icon style={{marginTop:30}} type={this.state.loading ? 'loading' : 'plus'} />
+                <Icon style={{marginTop:30}} type={this.state.loadingCa ? 'loading' : 'plus'} />
                 <div className="ant-upload-text">健康证上传</div>
             </div>
         );
@@ -115,7 +115,7 @@ class Person extends Component{
                                         fileList={caPhoto}
                                         onChange={this.handleChangeCa}
                                     >
-                                        {imageUrlCa ? <img src={imageUrlCa} style={{height:'130px',width:'160px'}} alt="avatar" />:(caPhoto.length>=1&&!this.state.loading?<img src={commonUrl+"/upload/" +caPhoto[0].response.data} style={{height:'130px'}} alt="avatar" />:uploadButton1)}
+                                        {imageUrlCa ? <img src={imageUrlCa} style={{height:130,width:160}} alt="avatar" />:(caPhoto.length>=1&&!this.state.loadingCa?<img src={commonUrl+"/upload/" +caPhoto[0].response.data} style={{height:130,width:160}} alt="avatar" />:uploadButton1)}
                                     </Upload>
                                     <Upload
                                         disabled={checkStatus}
@@ -128,7 +128,7 @@ class Person extends Component{
                                         fileList={photo}
                                         onChange={this.handleChange}
                                     >
-                                        {imageUrl ? <img src={imageUrl} style={{height:'130px',width:'160px'}} alt="avatar" />:(photo.length>=1&&!this.state.loading?<img src={require('./img/已上传.png')} style={{height:'130px'}} alt="avatar" />:uploadButton2)}
+                                        {imageUrl ? <img src={imageUrl} style={{height:130,width:160}} alt="avatar" />:(photo.length>=1&&!this.state.loading?<img src={require('./img/已上传.png')} style={{height:130,width:160}} alt="avatar" />:uploadButton2)}
                                     </Upload>
                                 </td>
                             </tr>

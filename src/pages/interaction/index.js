@@ -111,7 +111,7 @@ export default class Notice extends Component{
         let data=this.state.newsData;
         data.content=data.content.toHTML();
         if(this.state.compress==1){
-            console.log("压缩前：",data.content)
+            // console.log("压缩前：",data.content)
             let patt = /<img[^>]+src=['"]([^'"]+)['"]+/g;
             let result = [],temp;
             while ((temp = patt.exec(data.content)) != null) {
@@ -122,12 +122,12 @@ export default class Notice extends Component{
                let val = this.compress(item.url,400,0.5)
                data.content = data.content.replace('<img','<img style=\"width:400px\"')
                data.content =  data.content.replace(item.url,val)
-               console.log('data.content',data.content)
+            //    console.log('data.content',data.content)
             })
         }
         data.enclosure=this.state.picture;
         data.checkPerson = data.pid;
-        console.log('data',data)
+        // console.log('data',data)
       //  delete data.id
         axios.PostAjax({
             url:type=='create'?'/sys/news/insert':'/sys/news/update',
