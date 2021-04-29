@@ -316,8 +316,9 @@ class map extends React.Component {
             }
         }).then((res) => {
             if (res.status == "success") {
+                console.log(res.data)
                 this.setState({data1:res.data});
-                this.setData(this.state.data1)
+                this.setData(res.data)
             }
         })
 
@@ -357,6 +358,7 @@ class map extends React.Component {
             for (let i = 0; i < oms.length; i++) {
                 for (let j = 1; j <= 3; j++) {
                     if (item.operationMode === oms[i] && parseInt(item.businessState) === j && item.point !== '') {
+                        console.log(item)
                         let ll = item.point.split(",");
                         let marker = new AMap.Marker({
                             position: new AMap.LngLat(ll[0], ll[1]),
@@ -386,7 +388,6 @@ class map extends React.Component {
             "iCount": iCount, "cCount": cCount, "hCount": hCount, "qCount": qCount,
             "newCount": newCount, "nomalCount": nomalCount, "abnCount": abnCount
         };
-
         this.setStateFromMap(value);
         this.setState({ detailDisplay: "none" })
     }
