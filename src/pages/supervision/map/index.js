@@ -56,6 +56,7 @@ let cluster = {};
         input:state.enterprise,
         industryList: state.industryList,
         areaList: state.areaList,
+        recordPerson:state.userName,
     }), {
     clearEnterprise,
     changeEnterprise,
@@ -105,6 +106,7 @@ class map extends React.Component {
             mapBackButton:'none',
             data1:[],
             clusterColor:"#0067CC",
+            videoInfo:{}
         }
         window.detaiDisplay = (value) => this.detaiDisplay(value);
     }
@@ -114,6 +116,7 @@ class map extends React.Component {
         areaList: ''
     }
     componentDidMount() {
+
         this.map = new AMap.Map("container1", {
             center: [lng, lat],//东营市政府
             zoom: 15,
@@ -316,7 +319,7 @@ class map extends React.Component {
             }
         }).then((res) => {
             if (res.status == "success") {
-                console.log(res.data)
+                //console.log(res.data)
                 this.setState({data1:res.data});
                 this.setData(res.data)
             }
@@ -358,7 +361,7 @@ class map extends React.Component {
             for (let i = 0; i < oms.length; i++) {
                 for (let j = 1; j <= 3; j++) {
                     if (item.operationMode === oms[i] && parseInt(item.businessState) === j && item.point !== '') {
-                        console.log(item)
+                       // console.log(item)
                         let ll = item.point.split(",");
                         let marker = new AMap.Marker({
                             position: new AMap.LngLat(ll[0], ll[1]),
@@ -777,8 +780,10 @@ class map extends React.Component {
 
     }
     handleVideoSubmit = () => {
+
+        let recordPerson=this.props.recordPerson
         const {
-            recordPerson,
+
             enterpriseId,
             enterpriseName,
             permissionId,
@@ -821,6 +826,7 @@ class map extends React.Component {
             Modal.error({ title: "请填写所有带*号的选项" })
             return
         }
+        console.log( data)
         axios.PostAjax({
             url: '/videoRecord/insert',
             data: {
