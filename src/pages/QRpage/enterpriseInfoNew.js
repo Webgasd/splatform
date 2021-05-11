@@ -12,6 +12,7 @@ import GradeC from './icon/dynamic_level_commonly.png'
 import GradeNull from './icon/dynamic_level_null.png'
 import EnterpriseModularNew from './enterpriseModularNew'
 import axios from "../../axios"
+import pic from "../video/img/top.gif";
 import {commonUrl, unitName,videoType} from "../../axios/commonSrc"
 
 export default class EnterpriseInfo extends Component {
@@ -35,7 +36,7 @@ export default class EnterpriseInfo extends Component {
             rawMaterial: [],
 
             videoInfo: [],
-
+            videoUrl:'',
             knowledgeList: [],
         }
     }
@@ -51,15 +52,6 @@ export default class EnterpriseInfo extends Component {
     GetQueryString = (name) => {
         var reg = new RegExp('(^|&|/?)' + name + '=([^&|/?]*)(&|/?|$)');
         var r = window.location.search.substr(1).match(reg);
-        // var r = "http://124.128.84.40:8086/supervision/enterprise/getQrcodeById?id=43148".substr(1).match(reg);
-        // 0: "id=43148"
-        // 1: ""
-        // 2: "43148"
-        // 3: ""
-        // index: 62
-        // input: "ttp://124.128.84.40:8086/supervision/enterprise/getQrcodeById?id=43148"
-        // length: 4
-        console.log(r);
         if (r != null) return decodeURIComponent(r[2]);
         return null;
     };
@@ -135,27 +127,9 @@ export default class EnterpriseInfo extends Component {
 
     //获取所有相关证照
     getPhotoNew = (data) => {
-        // if (item.data.enterprise.propagandaEnclosure !== "" && item.data.enterprise.propagandaEnclosure !== "[]") {
-        //     this.getEnclosure(JSON.parse(item.data.enterprise.propagandaEnclosure));
-        // }
-
-        // console.log('getPhotoNew', data);
 
         let enclosure = [];
-        // console.log(this.setPhotoList(data.businessLicensePhoto));
-        // console.log(this.setPhotoList(data.foodBusinessPhotos));
-        // console.log(this.setPhotoList(data.smallCaterPhotos));
-        // console.log(this.setPhotoList(data.smallWorkshopPhotos));
-        // console.log(this.setPhotoList(data.foodProducePhotos));
-        // console.log(this.setPhotoList(data.drugsBusinessPhotos));
-        // console.log(this.setPhotoList(data.drugsProducePhotos));
-        // console.log(this.setPhotoList(data.cosmeticsUsePhotos));
-        // console.log(this.setPhotoList(data.medicalProducePhotos));
-        // console.log(this.setPhotoList(data.medicalBusinessPhotos));
-        // console.log(this.setPhotoList(data.industrialProductsPhotos));
-        //publicityPhotos
-        //certificatePhotos
-        //otherPhotos
+
 
         enclosure.push(...this.setPhotoList(data.businessLicensePhoto));
         enclosure.push(...this.setPhotoList(data.foodBusinessPhotos));
@@ -354,21 +328,17 @@ export default class EnterpriseInfo extends Component {
                 // this.setUrl(res.data.list[0].number);
                 const list = this.state.videoInfo.list || [];
                 const {httpIp, httpPort, rtmpIp, rtmpPort, vagIp, vagPort, type} = this.state.videoInfo;
-                this.player = videojs('myVideo', {}, function onPlayerReady() { //(id或者refs获取节点，options，回调函数)
-                    let byteType = "MAIN";
-                    if (list[0].byteType === "MAIN" || list[0].byteType === "SUB") byteType = list[0].byteType;
-                    else if (list[0].byteType === "2") byteType = "SUB";
-                    let byteType2 = "MAIN";
-                    if (byteType === "MAIN") byteType2 = 1;
-                    else if (byteType === "SUB") byteType2 = 2;
-                    let url = type == '海康' ? `http://${httpIp}:${httpPort}/pag/${vagIp}/${vagPort}/${list[0].number}/0/${byteType}/TCP/live.m3u8` :
-                        `http://${httpIp}:${httpPort}/live/cameraid/${list[0].number}%24${list[0].channelNumber}/substream/${byteType2}.m3u8`;
-                    this.src(url);
-                    this.load();
-                    this.play();
-                    this.on('ended', function () {
-                    });
-                });
+                let byteType = "MAIN";
+                if (list[0].byteType === "MAIN" || list[0].byteType === "SUB") byteType = list[0].byteType;
+                else if (list[0].byteType === "2") byteType = "SUB";
+                //`rtmp://${rtmpIp}:${rtmpPort}/live/pag/${vagIp}/${vagPort}/${list[0].number}/0/MAIN/TCP` :
+                let url=type == '海康' ? `http://${httpIp}:${httpPort}/pag/${vagIp}/${vagPort}/${list[0].number}/0/MAIN/TCP/live.m3u8`:
+                    `http://${httpIp}:${httpPort}/live/cameraid/${list[0].number}%24${list[0].channelNumber}/substream/${byteType}.m3u8`;
+                //if(unitName==="冠县")url=list[0].number //冠县特殊处理
+                this.setState({
+                    videoUrl:url,
+
+                })
             }
         })
     };
@@ -387,11 +357,8 @@ export default class EnterpriseInfo extends Component {
                 this.setState({
                     videoInfo: res.data,
                 });
-                this.player = videojs('myVideo', {}, function onPlayerReady() { //(id或者refs获取节点，options，回调函数)
-                    this.on('ended', function () {
-                    });
-                });
-            }
+                this.getVideoContent(res.data.list[0])
+             }
         })
     };
 
@@ -404,10 +371,9 @@ export default class EnterpriseInfo extends Component {
             }
         }).then((res) => {
             if (res.status == "success" && res.data.code == "0") {
-                this.player.pause();
-                this.player.src(res.data.data.url);
-                this.player.load();
-                this.player.play()
+                this.setState({
+                    videoUrl:res.data.data.url,
+                })
             } else if (res.status == "success" && res.data.code == "0x01b01301") {
                 Modal.error({
                     title: 'URL',
@@ -424,13 +390,8 @@ export default class EnterpriseInfo extends Component {
 
     // 拼接视频
     setUrl = (number, channelNumber, byteType) => {
+        console.log(this.state.videoInfo)
         const {httpIp, httpPort, rtmpIp, rtmpPort, vagIp, vagPort, type} = this.state.videoInfo;
-        // console.log("httpIp:" + httpIp);
-        // console.log("httpPort:" + httpPort);
-        // console.log("rtmpIp:" + rtmpIp);
-        // console.log("rtmpPort:" + rtmpPort);
-        // console.log("vagIp:" + vagIp);
-        // console.log("vagPort:" + vagPort);
         console.log("number:" + number + "channelNumber:" + channelNumber + "byteType:" + byteType);
         let byteType1 = "MAIN";
         if (byteType === "MAIN" || byteType === "SUB") byteType1 = byteType;
@@ -438,13 +399,12 @@ export default class EnterpriseInfo extends Component {
         let byteType2 = "MAIN";
         if (byteType === "MAIN") byteType2 = 1;
         else if (byteType === "SUB") byteType2 = 2;
-        let url = type == '海康' ? `http://${httpIp}:${httpPort}/pag/${vagIp}/${vagPort}/${number}/0/${byteType1}/TCP/live.m3u8` :
-            `http://${httpIp}:${httpPort}/live/cameraid/${number}%24${channelNumber}/substream/${byteType2}.m3u8`;
-        console.log("url:" + url);
-        this.player.pause();
-        this.player.src(url);
-        this.player.load();
-        this.player.play();
+        //`rtmp://${rtmpIp}:${rtmpPort}/live/pag/${vagIp}/${vagPort}/${number}/0/MAIN/TCP` :
+        let url = type == '海康' ? `http://${httpIp}:${httpPort}/pag/${vagIp}/${vagPort}/${number}/0/MAIN/TCP/live.m3u8`:
+            `http://${httpIp}:${httpPort}/live/cameraid/${number}%24${channelNumber}/substream/${byteType1}.m3u8`;
+        this.setState({
+            videoUrl:url,
+        })
     };
 
     //食品安全相关知识
@@ -476,24 +436,11 @@ export default class EnterpriseInfo extends Component {
                 <div className="EnterpriseInfo">
                     <div className="EnterpriseInfo-head"
                          style={{display: this.state.transformationType === "视频" || this.state.transformationType === "明厨亮灶" || this.state.transformationType === "车间量化" ? "block" : "none"}}>
-                        <video
-                            id="myVideo"
-                            className="video-js vjs-default-skin vjs-big-play-centered"
-                            controls
-                            //解决微信自动全屏
-                            //android
-                            x5-playsinline="true"
-                            //ios
-                            webkit-playsinline="true" playsinline="true"
-                            preload="auto"
-                            data-setup="{}"
-                            style={{width: this.state.width, height: "250px"}}>
-                            <source id="source"
-                                // src={"http://124.128.248.250:83/pag/10.15.10.90/7302/001085/0/MAIN/TCP/live.m3u8"}
-                                // src={"rtmp://124.128.248.250:1935/live/pag/10.15.10.90/7302/001078/0/MAIN/TCP"}
-                                    src={Movie}
-                                    type="application/x-mpegURL"/>
-                        </video>
+                        <live-player id="player01"
+                                     video-url={this.state.videoUrl}
+                                     poster={pic}
+                                     live="true" stretch="true" show-custom-button="false" autoplay>
+                        </live-player>
                     </div>
                     <img src={Image}
                          style={{
