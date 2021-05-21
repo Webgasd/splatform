@@ -13,6 +13,7 @@ import abnomalPic from "./images/abnomal.png";
 import totalPic from "./images/total.png";
 import searchPic from "./images/search.png";
 import analysisPic from "./images/analysis.png";
+import { unitName,lng,lat } from '../../../axios/commonSrc'
 //导入饼图
 import 'echarts/lib/chart/pie'
 import 'echarts/lib/component/tooltip'
@@ -109,9 +110,10 @@ class map extends React.Component{
     }
     componentDidMount() {
         this.map = new AMap.Map("container", {
-            center: [118.674413, 37.433808],//东营市政府
-            zoom: 15,
+            center: [lng, lat],
+            zoom: 13,
             resizeEnable: true,
+            pitch:20,
 
         });
         this.map.on('click', ()=> {
@@ -120,8 +122,8 @@ class map extends React.Component{
         let geocoder;
         AMap.plugin('AMap.Geocoder', function() {
             geocoder = new AMap.Geocoder({
-                city: "370500",
-                // city: '东营'
+                //city: "370500",
+                 city: unitName
             });
         })
         this.requestList()

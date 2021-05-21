@@ -117,7 +117,7 @@ class AddForm extends Component {
         return (
             <div className='addContent'>
                 <div className='leftContent'>
-                    <Card title="企业通知类型" style={{ width: 250 }}>
+                    <Card title="通知类型" style={{ width: 250 }}>
                         <Row style={{ marginTop: 10 }}>
                             <Col span={12} style={{ fontSize: 15 }}>发布人：</Col>
                             <Col span={12}>{informData.userName}</Col>

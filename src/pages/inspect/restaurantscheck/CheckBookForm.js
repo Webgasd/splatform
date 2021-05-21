@@ -15,7 +15,7 @@ export default class CheckBookForm extends Component{
     }
     requestList = ()=>{
         let _this = this;
-        axios.ajax({
+        axios.PostAjax({
             url:'/inspect/bookConf/getPage',
             data:{
                 params:{
