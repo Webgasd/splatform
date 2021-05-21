@@ -26,6 +26,7 @@ let markers=[]
 let cluster=[]
 @connect(
     state=>({
+        input:state.enterprise,
         industryList:state.industryList,
     }),{
         clearEnterprise,
@@ -348,6 +349,28 @@ class SmileMap extends Component{
                     offset: new AMap.Pixel(8, -25),
                 });
                 infoWindow.open(that.map,[JSON.parse(point1[0]),JSON.parse(point1[1])])
+            }
+        })
+    }
+    //提交更改
+    handleSubmit = ()=>{
+
+        axios.PostAjax({
+            url:'/supervision/enterprise/update',
+            data:{
+                params:{
+                    ...this.props.input
+
+                }
+
+            }
+
+        }).then((res)=>{
+            if(res){
+                this.setState({
+                    baseInfoVisible: false, //关闭弹框
+                })
+                this.props.clearEnterprise();
             }
         })
     }

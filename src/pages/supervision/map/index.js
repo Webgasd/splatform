@@ -844,7 +844,6 @@ class map extends React.Component {
     }
     //提交更改
     handleSubmit = ()=>{
-        let type =this.state.type;
         axios.PostAjax({
             url:'/supervision/enterprise/update',
             data:{
