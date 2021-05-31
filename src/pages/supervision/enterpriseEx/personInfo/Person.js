@@ -24,15 +24,15 @@ function getBase64(img, callback) {
 class Person extends Component{
     state={}
     componentDidMount() {
-       
+
+
     }
-
-
     render() {
         const checkStatus = true;
         const formData=this.props.input;
         const imageUrl = this.state.imageUrl||'';
         const photo = this.props.input.photo||[];
+        const caPhoto = this.props.input.caPhoto||[];
         const uploadButton = (
             <div>
                 <Icon type={this.state.loading ? 'loading' : 'plus'} />
@@ -59,7 +59,7 @@ class Person extends Component{
                                     >
                                         {imageUrl ? <img src={imageUrl} style={{height:'130px'}} alt="avatar" />:
                                             (photo.length>=1&&!this.state.loading?
-                                                <img src={commonUrl+"/upload/" +photo[0].response.data} style={{height:'130px'}} alt="avatar" />:
+                                                <img src={commonUrl+"/upload/" +caPhoto[0].response.data} style={{height:'130px'}} alt="avatar" />:
                                                 uploadButton
                                             )
                                         }

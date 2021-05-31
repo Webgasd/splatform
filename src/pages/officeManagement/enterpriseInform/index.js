@@ -17,7 +17,7 @@ const confirm = Modal.confirm
 @connect(
     state=>({
         acl:state.acls['/laws'],
-        userInfo:state
+        userInfo:state.userInfo
     }),{
     }
 )
@@ -290,7 +290,6 @@ class EnterpriseInform extends Component {
                 })
     }
     render() {
-        console.log(this.props.userInfo)
         const columns = [
             {
                 title:'企业通知类型',
@@ -446,6 +445,7 @@ class EnterpriseInform extends Component {
                         informData ={this.state.informData}
                         dispatchInformData = {(value) => this.setState({informData:value})}
                         status = {this.state.type}
+                        userName = {this.props.userInfo.name||''}
                      />
                 </Modal>
                 {/* <Modal

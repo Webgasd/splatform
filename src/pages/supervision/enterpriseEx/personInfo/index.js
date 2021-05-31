@@ -80,7 +80,7 @@ class PersonInfo extends Component{
             title:'查看详情',
             isVisible:true,
         })
-        this.props.changeEmployee({...item,photo:JSON.parse(item.photo||JSON.stringify([]))});
+        this.props.changeEmployee({...item,photo:JSON.parse(item.photo||JSON.stringify([])),caPhoto:JSON.parse(item.caPhoto||JSON.stringify([]))});
   }
   
     render() {
