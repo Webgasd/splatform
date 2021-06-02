@@ -63,11 +63,10 @@ export default class MyExam extends Component {
                 }
             },
             {
-                title: '考试开始和结束时间',
+                title: '考试开始时间',
                 dataIndex: 'examDate',
-                render(examDate){
-                    return (`${Utils.formatDateNoSeconds(examDate)}——${Utils.plusTime(examDate,caInfo.examTime)}`)
-
+                render(){
+                    return caInfo.examDate  
                 }
             },
             {
