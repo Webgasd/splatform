@@ -4,6 +4,7 @@ import moment from 'moment';
 import connect from "react-redux/es/connect/connect";
 import axios from "../../../axios";
 import Add from "../../supervision/enterprise/Add"
+import pic from "../../video/img/top.gif";
 import videojs from 'video.js';
 // import './myVideo.less';
 import CheckData from './img/check_data.png';
@@ -220,7 +221,8 @@ class HikISCVideoPlay extends Component{
                     </Col>
                     <Col span={14} >
                         <live-player alt="视频正在加载...." id="player01"
-                                     video-url="http://218.56.165.61:83/openUrl/wdkpmyk/live.m3u8"
+                                     poster={pic}
+                                     video-url={this.state.videoUrl}
                                      live="true" stretch="true" show-custom-button="false" autoplay>
                         </live-player>
                     </Col>
@@ -230,7 +232,7 @@ class HikISCVideoPlay extends Component{
                             <table>
                                 <tbody>
                                 <tr>
-                                    <td>企业名称</td>
+                                    <td>企业名称1</td>
                                     <td><Input value={videoInfo.enterpriseName} /></td>
                                 </tr>
                                 <tr>
@@ -325,9 +327,9 @@ class HikISCVideoPlay extends Component{
                                 <Col span={6}> <DatePicker showTime placeholder="选择时间" onChange={(value)=>this.changeInput(value,"recordTime")}  /></Col>
                                 <Col span={3} style={{lineHeight:'32px',textAlign:"center"}}>巡查等级<span style={{color:'#FF3300'}}>*</span></Col>
                                 <Col span={5}> <Select style={{width:121}}   onChange={(value)=>this.changeInput(value,'level')}>
-                                    <Option value={'一级警告'}>一级警告</Option>
-                                    <Option value={'二级警告'}>二级警告</Option>
-                                    <Option value={'三级警告'}>三级警告</Option>
+                                    <Option value={'一级预警'}>一级预警</Option>
+                                    <Option value={'二级预警'}>二级预警</Option>
+                                    <Option value={'三级预警'}>三级预警</Option>
                                 </Select></Col>
                             </Row>
                             <Row style={{marginTop:10}}>

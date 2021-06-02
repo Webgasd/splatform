@@ -262,7 +262,7 @@ class AddForm extends Component {
                 title: '职务',
             },
             {
-                dataIndex: '操作',
+                title: '操作',
                 dataIndex: 'operation',
                 render: (text, record) => {
                     return <ButtonGroup>
@@ -280,10 +280,10 @@ class AddForm extends Component {
         return (
             <div className='addContent'>
                 <div className='leftContent'>
-                    <Card title="企业通知类型" style={{ width: 250 }}>
+                    <Card title="通知类型" style={{ width: 250 }}>
                         <Row style={{ marginTop: 10 }}>
                             <Col span={12} style={{ fontSize: 15 }}>发布人：</Col>
-                            <Col span={12}>{informData.userName||this.props.userName}</Col>
+                            <Col span={12}>{informData.userName}</Col>
                         </Row>
                         <Row style={{ marginTop: 10 }}>
                             <Col span={12} style={{ fontSize: 15 }}>发布日期：</Col>

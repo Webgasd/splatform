@@ -76,19 +76,21 @@ export default class EnterpriseInfo extends Component {
                 }
             }).then((item) => {
             if (item.status === "success") {
-                console.log("data success");
                 this.setState({
                     info: item.data.enterprise,
                     health: item.data.caList,
-                    grade: item.data.enterprise.yearAssessment,
-                    dynamicGrade: item.data.enterprise.dynamicGrade,
                     transformationType: item.data.enterprise.transformationType
                 });
 
-                // if (item.data.enterprise.propagandaEnclosure !== "" && item.data.enterprise.propagandaEnclosure !== "[]") {
-                //     this.getEnclosure(JSON.parse(item.data.enterprise.propagandaEnclosure));
-                // }
-                console.log(item.data.enterprise)
+                if (item.data.enterprise.foodBusinessList) {
+                    this.setState({
+                        info: item.data.enterprise,
+                        health: item.data.caList,
+                        grade: item.data.enterprise.foodBusinessList[0].yearAssessment,
+                        dynamicGrade: item.data.enterprise.foodBusinessList[0].dynamicGrade,
+                        transformationType: item.data.enterprise.transformationType
+                    });
+                 }
                 this.getPhotoNew(item.data.enterprise);
 
                 this.handleDept(item.data.enterprise.regulators);
@@ -103,11 +105,11 @@ export default class EnterpriseInfo extends Component {
     };
 
     hangleGrade = (data) => {
-        if (data == "s") {
+        if (data == "A") {
             return GradeA;
-        } else if (data == "a") {
+        } else if (data == "B") {
             return GradeB;
-        } else if (data == "b") {
+        } else if (data == "C") {
             return GradeC;
         } else {
             return GradeNull;
