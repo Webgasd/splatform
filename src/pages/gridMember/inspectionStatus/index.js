@@ -217,7 +217,7 @@ class InspectionStatus extends Component {
                     cancelText:'否',
                     onOk:() => {
                         axios.PostAjax({
-                            url:'/gridInspection/delete`',
+                            url:'/gridInspection/delete',
                             data:{
                                 params:{
                                  idList:idList
