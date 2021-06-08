@@ -141,7 +141,6 @@ export default class MyExam extends Component {
                                 <td>{caInfo.companyName}</td>
                                 <td style={{background:'#F2F2F2'}}>社会信用代码：</td>
                                 <td colSpan={3}>{caInfo.creditNumber}</td>
-                                
                             </tr>
                             <tr>
                                 <td style={{background:'#F2F2F2'}}>企业地址：</td>
