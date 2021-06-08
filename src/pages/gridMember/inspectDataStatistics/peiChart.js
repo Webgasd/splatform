@@ -37,7 +37,7 @@ class PeiChart extends Component {
                             color: '#000',
                             fontSize: 20,
                             //   fontWeight: 'bold',
-                            formatter: '有效率\n' + this.props.valid&&this.props.total!=0?(this.props.valid/this.props.total).toFixed(4)*100 + '%':'无数据'
+                            formatter: '有效率\n' + this.props.valid>=0&&this.props.total!=0?(this.props.valid/this.props.total).toFixed(4)*100 + '%':'无数据'
                         }
                     },
                     // emphasis: {

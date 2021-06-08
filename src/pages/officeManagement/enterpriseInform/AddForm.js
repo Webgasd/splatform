@@ -60,7 +60,7 @@ class AddForm extends Component {
             message.error(`${info.file.name} 上传失败.`);
         }
         const data = JSON.stringify(info.file)
-        this.changeInput(data,'titlePicture')
+        this.changeInput(data,'titlePic')
     }
     //查看图片
     handlePreview = file => {
@@ -77,7 +77,7 @@ class AddForm extends Component {
     }
     render() {
         const appendix = JSON.parse(this.props.informData.appendix || JSON.stringify([]))
-        const titlePicture = JSON.parse(this.props.informData.titlePicture || JSON.stringify([]))
+        const titlePic = JSON.parse(this.props.informData.titlePic || JSON.stringify([]))
         const allClass = this.state.class || []
         const status = this.props.status == 'detail'||this.props.status == 'check' ? true : false
         const { informData } = this.props
@@ -166,7 +166,7 @@ class AddForm extends Component {
                         </Upload>
                         }
                     >{
-                        titlePicture.response == undefined ? null:<img style={{height:'200px',width:'200px'}} src={commonUrl+'/upload/report/'+(titlePicture.response||{}).data}/>
+                        titlePic.response == undefined ? null:<img style={{height:'200px',width:'200px'}} src={commonUrl+'/upload/report/'+(titlePic.response||{}).data}/>
                     }  
                     </Card>
                 </div>

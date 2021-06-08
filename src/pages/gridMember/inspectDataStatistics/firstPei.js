@@ -35,7 +35,7 @@ class FirstPei extends Component {
                           color: '#000',
                           fontSize: 20,
                         //   fontWeight: 'bold',
-                          formatter: '问题类型\n'+ (this.props.typeNum/this.props.total).toFixed(4)*100 + '%' 
+                          formatter: '问题类型\n'+ this.props.typeNum>=0&&this.props.total!=0?(this.props.typeNum/this.props.total).toFixed(4)*100 + '%':'无数据'
                         }
                     },
                     labelLine: {

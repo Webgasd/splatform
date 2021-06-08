@@ -4,7 +4,6 @@ import {commonUrl} from "./commonSrc";
 
 axios.defaults.withCredentials=true;
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
-
 export default class Axios {
 
     static ajax(options){
@@ -30,10 +29,12 @@ export default class Axios {
         return new Promise((resolve,reject)=>{
             axios({
                 url:options.url,
-                method:'get',
+                method:'get',       
                 baseURL:commonUrl,
-                params: (options.data && options.data.params) || ''
+                params: (options.data && options.data.params) || '',
             }).then((response)=>{
+                console.log(response)
+                
                 if (options.data && options.data.isShowLoading !== false) {
                     loading = document.getElementById('ajaxLoading');
                     loading.style.display = 'none';

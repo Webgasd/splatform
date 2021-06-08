@@ -4,6 +4,7 @@ import {Form, Input, Button, message, Icon, Checkbox} from 'antd'
 import Footer from '../../components/Footer'
 import './style.less'
 import axios from "../../axios";
+import startAxios from 'axios'
 import connect from "react-redux/es/connect/connect";
 import {refreshUser} from "../../redux/action";
 import {login, header, words1, words2} from "../../axios/commonSrc";
@@ -31,9 +32,11 @@ class Login extends React.Component {
                 params: {...params}
             }
         }).then((res) => {
+            let a = document.cookie
+            console.log(a)
             if (res.status == 'success') {
-
                 // console.dir(params);
+                startAxios.defaults.headers['token']=res.data
                 localStorage.setItem('keyName', params.loginName);
                 if (this.state.check === 2) {
                     localStorage.removeItem('keyPass');

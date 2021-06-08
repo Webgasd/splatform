@@ -38,8 +38,8 @@ export const videoType = "isc"; //视频类型 edit by ljh
 // export const lat=35.511519
 
 
-// export const commonUrl = "https://www.bxscjg.cn:9100"
-export const commonUrl = "http://39628e7h48.qicp.vip"
+// export const commonUrl = "http://39628e7h48.qicp.vip"
+export const commonUrl = "https://www.bxscjg.cn:9100"
 export const baseUrl = "http://112.6.36.78:6190"
 export const unitName = "博兴县"
 export const bookName = "博兴"
