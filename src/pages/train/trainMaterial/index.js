@@ -274,7 +274,7 @@ export default class TrainMaterial extends Component{
                     </div>
                 </Card>
                 <Modal
-                    width='700px'
+                    width='800px'
                     title="教材信息"
                     okText="确定"
                     cancelText="取消"

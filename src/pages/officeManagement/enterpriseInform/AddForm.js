@@ -43,7 +43,6 @@ class AddForm extends Component {
     //上传文件
     handleFile = (info) => {
         const fileList = info.fileList;
-        console.log("fileList",fileList)
         if (info.file.status === 'done') {
             message.success(`${info.file.name} 上传成功`);
         } else if (info.file.status === 'error') {
@@ -53,6 +52,15 @@ class AddForm extends Component {
         console.log("appendix",data)
         this.changeInput(data, 'appendix');
 
+    }
+    handleTitlePng = (info) =>{
+        if (info.file.status === 'done') {
+            message.success(`${info.file.name} 上传成功`);
+        } else if (info.file.status === 'error') {
+            message.error(`${info.file.name} 上传失败.`);
+        }
+        const data = JSON.stringify(info.file)
+        this.changeInput(data,'titlePicture')
     }
     //查看图片
     handlePreview = file => {
@@ -69,6 +77,7 @@ class AddForm extends Component {
     }
     render() {
         const appendix = JSON.parse(this.props.informData.appendix || JSON.stringify([]))
+        const titlePicture = JSON.parse(this.props.informData.titlePicture || JSON.stringify([]))
         const allClass = this.state.class || []
         const status = this.props.status == 'detail'||this.props.status == 'check' ? true : false
         const { informData } = this.props
@@ -117,10 +126,10 @@ class AddForm extends Component {
         return (
             <div className='addContent'>
                 <div className='leftContent'>
-                    <Card title="企业通知类型" style={{ width: 250 }}>
+                    <Card title="通知类型" style={{ width: 250 }}>
                         <Row style={{ marginTop: 10 }}>
                             <Col span={12} style={{ fontSize: 15 }}>发布人：</Col>
-                            <Col span={12}>{informData.userName}</Col>
+                            <Col span={12}>{informData.userName||this.props.userName}</Col>
                         </Row>
                         <Row style={{ marginTop: 10 }}>
                             <Col span={12} style={{ fontSize: 15 }}>发布日期：</Col>
@@ -146,8 +155,19 @@ class AddForm extends Component {
                             disabled={status}
                         />
                     </Card>
-                    <Card title="标题图" style={{ width: 250, marginTop: 10 }}>
-
+                    <Card title="标题图" style={{ width: 250, marginTop: 10 }} 
+                     extra={this.props.status == 'detail'?null:
+                        <Upload
+                            action={commonUrl+'/upload/uploadReport'}
+                            onChange={(info)=>this.handleTitlePng(info)}
+                            showUploadList={false}
+                        >
+                            <Button>上传</Button>
+                        </Upload>
+                        }
+                    >{
+                        titlePicture.response == undefined ? null:<img style={{height:'200px',width:'200px'}} src={commonUrl+'/upload/report/'+(titlePicture.response||{}).data}/>
+                    }  
                     </Card>
                 </div>
                 <div className='rightContent'>

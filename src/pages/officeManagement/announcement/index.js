@@ -17,7 +17,7 @@ const confirm = Modal.confirm
 @connect(
     state=>({
         acl:state.acls['/announcement'],
-        userInfo:state
+        userInfo:state.userInfo
     }),{
     }
 )
@@ -490,6 +490,7 @@ class Announcement extends Component {
                         informData ={this.state.informData}
                         dispatchInformData = {(value) => this.setState({informData:value})}
                         status = {this.state.type}
+                        userName = {this.props.userInfo.name||''}
                      />
                 </Modal>
                 <Modal

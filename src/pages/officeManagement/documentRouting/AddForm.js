@@ -291,7 +291,7 @@ class AddForm extends Component {
                 title: '职务',
             },
             {
-                dataIndex: '操作',
+                title: '操作',
                 dataIndex: 'operation',
                 render: (text, record) => {
                     return <ButtonGroup>

@@ -56,6 +56,7 @@ let cluster = {};
         input:state.enterprise,
         industryList: state.industryList,
         areaList: state.areaList,
+        recordPerson:state.userName,
     }), {
     clearEnterprise,
     changeEnterprise,
@@ -105,8 +106,9 @@ class map extends React.Component {
             mapBackButton:'none',
             data1:[],
             clusterColor:"#0067CC",
+            videoInfo:{}
         }
-        window.detaiDisplay = (value) => this.detaiDisplay(value);
+        window.detailDisplay = (value) => this.detailDisplay(value);
     }
     params = {
         pageNo: 1,
@@ -114,6 +116,7 @@ class map extends React.Component {
         areaList: ''
     }
     componentDidMount() {
+
         this.map = new AMap.Map("container1", {
             center: [lng, lat],//东营市政府
             zoom: 15,
@@ -316,7 +319,7 @@ class map extends React.Component {
             }
         }).then((res) => {
             if (res.status == "success") {
-                console.log(res.data)
+                //console.log(res.data)
                 this.setState({data1:res.data});
                 this.setData(res.data)
             }
@@ -358,7 +361,7 @@ class map extends React.Component {
             for (let i = 0; i < oms.length; i++) {
                 for (let j = 1; j <= 3; j++) {
                     if (item.operationMode === oms[i] && parseInt(item.businessState) === j && item.point !== '') {
-                        console.log(item)
+                       // console.log(item)
                         let ll = item.point.split(",");
                         let marker = new AMap.Marker({
                             position: new AMap.LngLat(ll[0], ll[1]),
@@ -466,7 +469,7 @@ class map extends React.Component {
                     that.map.add(marker);
                     that.map.setFitView(marker)
                     message.success("搜索到一家企业")
-                    that.detaiDisplay(JSON.stringify(res.data[0]));
+                    that.detailDisplay(JSON.stringify(res.data[0]));
                 } else if (res.status == "success" && res.data.length > 1) {
                     that.map.clearMap()
                     for (let i in res.data) {
@@ -478,7 +481,7 @@ class map extends React.Component {
                         that.map.add(marker);
                     }
                     message.success(`${res.data.length}个搜索结果以标记在地图上`)
-                    that.detaiDisplay(JSON.stringify({}));
+                    that.detailDisplay(JSON.stringify({}));
                 }
                 else {
                     message.error("未搜索到该企业")
@@ -607,7 +610,7 @@ class map extends React.Component {
                     color="green";
                 else if(e.markers[i].content.businessState==3)
                     color="red";
-                content += "<div  class='bottomGrayBox'style='color:"+color+";font-size:13px;font-family:黑体;min-width:200px;cursor:pointer' onclick= detaiDisplay('" + asd + "')>" + e.markers[i].content.enterpriseName + "</div>";
+                content += "<div  class='bottomGrayBox'style='color:"+color+";font-size:13px;font-family:黑体;min-width:200px;cursor:pointer' onclick= detailDisplay('" + asd + "')>" + e.markers[i].content.enterpriseName + "</div>";
             }
             content += "</div>";
             content += "</div>";
@@ -618,7 +621,7 @@ class map extends React.Component {
         }
     }
 
-    detaiDisplay = (item) => {
+    detailDisplay = (item) => {
         // alert(12);
         let content = JSON.parse(item)
         if (content.enterpriseId) {
@@ -693,7 +696,6 @@ class map extends React.Component {
         w.location.href = 'https://www.amap.com/search?query=' + this.state.registeredAddress
     }
     baseInfo = () => {
-        console.log(this.state.enterpriseId)
         axios.ajax({
             url: '/supervision/enterprise/getById',
             data: {
@@ -777,8 +779,10 @@ class map extends React.Component {
 
     }
     handleVideoSubmit = () => {
+
+        let recordPerson=this.props.recordPerson
         const {
-            recordPerson,
+
             enterpriseId,
             enterpriseName,
             permissionId,
@@ -821,6 +825,7 @@ class map extends React.Component {
             Modal.error({ title: "请填写所有带*号的选项" })
             return
         }
+        console.log( data)
         axios.PostAjax({
             url: '/videoRecord/insert',
             data: {
@@ -839,7 +844,6 @@ class map extends React.Component {
     }
     //提交更改
     handleSubmit = ()=>{
-        let type =this.state.type;
         axios.PostAjax({
             url:'/supervision/enterprise/update',
             data:{

@@ -5,6 +5,7 @@ import connect from "react-redux/es/connect/connect";
 import ETable from '../../../components/ETable';
 import Utils from "../../../utils";
 import axios from "../../../axios";
+
 import HikISCVideoPlay from './HikISCVideoPlayer';
 import 'video.js/dist/video-js.min.css';
 const Panel = Collapse.Panel;

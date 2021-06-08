@@ -23,10 +23,9 @@ export const videoType = "isc"; //视频类型 edit by ljh
 // export const login = "欢迎"
 // export const lng=118.58215//东营
 // export const lat=37.44878
-
+//
 // export const commonUrl = "https://www.yiwifi1.com:8088";
 // export const baseUrl = "http://101.201.239.28:8090"
-// // export const commonUrl = "http://192.168.43.122:8088"
 // export const unitName = "平邑县"
 // export const bookName = "平邑"
 // export const footName = "山东联合网络通信有限公司平邑分公司"
@@ -39,8 +38,9 @@ export const videoType = "isc"; //视频类型 edit by ljh
 // export const lat=35.511519
 
 
-export const commonUrl = "https://www.bxscjg.cn:9100";
-export const baseUrl = "http://112.6.36.78:6190";
+// export const commonUrl = "https://www.bxscjg.cn:9100"
+export const commonUrl = "http://39628e7h48.qicp.vip"
+export const baseUrl = "http://112.6.36.78:6190"
 export const unitName = "博兴县"
 export const bookName = "博兴"
 export const footName = "中国移动通信集团山东有限公司博兴分公司"

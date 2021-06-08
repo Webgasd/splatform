@@ -9,7 +9,7 @@ import C from "./image/C.png"
 import Undefined from "./image/undefined.png"
 import {Modal,Collapse,Botton,Input,Select,message} from "antd";
 import InfoWindow from "../../home/govHome";
-import Add from "../../supervision/enterprise/Add"
+import Add from '../../supervision/enterpriseEx/Add';
 import Button from "antd/lib/button";
 import moment from 'moment'
 import CorporateIcon from "../showGrid/image/弹窗地图定位图标.png";
@@ -26,6 +26,7 @@ let markers=[]
 let cluster=[]
 @connect(
     state=>({
+        input:state.enterprise,
         industryList:state.industryList,
     }),{
         clearEnterprise,
@@ -37,6 +38,7 @@ class SmileMap extends Component{
         super(props)
         this.state={
             visiable:false,
+            baseInfoVisible:false,
             PointData:[],
             grade:[],
             BaseInfo:[],
@@ -58,10 +60,8 @@ class SmileMap extends Component{
     }
     getdata=()=>{
         axios.PostAjax({
-            url:"/grid/points/getSmilePoints",
-            data: {
-                params:{areaList:[''],industryList:['']}
-            }
+            url:"/grid/points/getSmileAllFoodBu",
+
             }).then((res)=>{
                 if(res.status == "success"){
                     this.addGridPoints(res.data)
@@ -96,6 +96,7 @@ class SmileMap extends Component{
                     if(res.status =='success'){
                         that.setState({
                             // visible:true,
+                            enterpriseId: id,
                             BaseInfo:res.data,
                             AddressForGaoDe:res.data.registeredAddress
                         })
@@ -132,8 +133,6 @@ class SmileMap extends Component{
                         info.push("<div class='middle-info'><div class='middle-info-text'><text>日常监督员："+value.supervisor+"</text></div></div>");
                         info.push("<div class='middle-info'><div class='middle-info-text'><text>证件有效期：" +startTime+"至"+endTime+"</text></div></div>");
                         info.push("<div class='bottom-icon'><img src='"+ToGaoDeMap+"' onclick='ToGaodeLocation()' width='40px' height='40px'/></div>");
-                        info.push("<div class='bottom-icon'><img src='"+CommonCheck+"' width='40px' height='40px'/></div><Divider type=\"vertical\" />");
-                        info.push("<div class='bottom-icon'><img src='"+CheckView+"' width='40px' height='40px'/></div><Divider type=\"vertical\" />");
                         info.push("<div class='bottom-icon'><img src='"+BaseInfo+"'id='BaseInfo' onclick='getBaseInfo()'  width='40px' height='40px'/></div><Divider type=\"vertical\" />");
                         info.push("</div>");
 
@@ -158,11 +157,41 @@ class SmileMap extends Component{
         });
     };
     getBaseInfo=()=>{
-        this.setState({
-            visible:true,
+        console.log(this.state.enterpriseId)
+        axios.ajax({
+            url: '/supervision/enterprise/getById',
+            data: {
+                params: {
+                    id: this.state.enterpriseId
+                }
+            }
+        }).then((res) => {
+            if (res.status == 'success') {
+                this.setState({
+                    baseInfoVisible: true,
+                    searchEmployee: this.state.enterpriseId
+                })
+                let data = res.data;
+                this.props.changeEnterprise({
+                    ...data,
+                    propagandaEnclosure: JSON.parse(data.propagandaEnclosure || JSON.stringify([])),
+                    businessLicensePhoto: JSON.parse(data.businessLicensePhoto || JSON.stringify([])),
+                    foodBusinessPhotos: JSON.parse(data.foodBusinessPhotos || JSON.stringify([])),
+                    smallCaterPhotos: JSON.parse(data.smallCaterPhotos || JSON.stringify([])),
+                    smallWorkshopPhotos: JSON.parse(data.smallWorkshopPhotos || JSON.stringify([])),
+                    foodProducePhotos: JSON.parse(data.foodProducePhotos || JSON.stringify([])),
+                    drugsBusinessPhotos: JSON.parse(data.drugsBusinessPhotos || JSON.stringify([])),
+                    drugsProducePhotos: JSON.parse(data.drugsProducePhotos || JSON.stringify([])),
+                    cosmeticsUsePhotos: JSON.parse(data.cosmeticsUsePhotos || JSON.stringify([])),
+                    medicalProducePhotos: JSON.parse(data.medicalProducePhotos || JSON.stringify([])),
+                    medicalBusinessPhotos: JSON.parse(data.medicalBusinessPhotos || JSON.stringify([])),
+                    industrialProductsPhotos: JSON.parse(data.industrialProductsPhotos || JSON.stringify([])),
+                    publicityPhotos: JSON.parse(data.publicityPhotos || JSON.stringify([])),
+                    certificatePhotos: JSON.parse(data.certificatePhotos || JSON.stringify([])),
+                    otherPhotos: JSON.parse(data.otherPhotos || JSON.stringify([]))
+                });
+            }
         })
-        let data = this.state.BaseInfo;
-        this.props.changeEnterprise({...data,propagandaEnclosure:JSON.parse(data.propagandaEnclosure||JSON.stringify([]))});
     }
     ToGaodeLocation=()=>{
         const w=window.open('about:blank');
@@ -323,27 +352,50 @@ class SmileMap extends Component{
             }
         })
     }
+    //提交更改
+    handleSubmit = ()=>{
+
+        axios.PostAjax({
+            url:'/supervision/enterprise/update',
+            data:{
+                params:{
+                    ...this.props.input
+
+                }
+
+            }
+
+        }).then((res)=>{
+            if(res){
+                this.setState({
+                    baseInfoVisible: false, //关闭弹框
+                })
+                this.props.clearEnterprise();
+            }
+        })
+    }
     render() {
         const children = [<Option key={'A'}>A</Option>,
             <Option key={'B'}>B</Option>,
             <Option key={'C'}>C</Option>,
         ];
-        const modal=(<Modal
-             title="企业信息"
-            visible={this.state.visible}
+        const modal = (<Modal
+            title="企业信息"
+            visible={this.state.baseInfoVisible}
             destroyOnClose
             centered={true}
-            mask={false}
             width={1000}
-            onCancel={()=>{
+            onCancel={() => {
                 this.props.clearEnterprise();
                 this.setState({
-                    visible:false,
+                    baseInfoVisible: false,
                 })
             }}
-            footer={false}
+            onOk={() => {
+                this.handleSubmit()
+            }}
         >
-              <Add type={"detail"}/>
+            <Add type={"edit"} searchEmployee={this.state.searchEmployee} />
         </Modal>)
         return (<div>
             <div style={{paddingBottom:'1%',marginRight:'5%',float:'right'}} >
