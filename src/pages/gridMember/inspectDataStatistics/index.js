@@ -122,7 +122,7 @@ class InspectDataStatistics extends Component {
                             <div className='quest-type-top5-show'>
                                 {
                                     (fiveQuestion || []).map((item) => {
-                                        return <div className='top-show'><FirstPei total={data.allNumber} typeNum={item.value} id={item.name} /></div>
+                                        return <div className='top-show'><FirstPei total={data.allNumber} typeNum={item.value} typeName={item.name}  id={item.name} /></div>
                                     })
                                 }
                                 
