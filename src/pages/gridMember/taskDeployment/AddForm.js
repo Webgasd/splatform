@@ -128,7 +128,7 @@ class AddForm extends Component {
             <div>
                 <Row style={{marginTop:10}}>
                     <Col span={3} style={{textAlign:'right',fontSize:15}}>发布人：</Col>
-                    <Col span={4}><Input placeholder='请输入内容' value={sourceData.author} onChange={(e)=>this.changeInput(e.target.value,'author')} disabled={status} /></Col>
+                    <Col span={4}><Input placeholder='' value={sourceData.userName||this.props.userName} onChange={(e)=>this.changeInput(e.target.value,'userName')} disabled={true} /></Col>
                     <Col span={3} style={{textAlign:'right',fontSize:15}}>发布日期：</Col>
                     <Col span={4}><DatePicker  value={sourceData.issueDate==undefined?null:moment(sourceData.issueDate, dateFormat)} format={dateFormat} onChange={(dataString)=>this.changeInput(dataString,'issueDate')} disabled={status}/></Col>
                     <Col span={3} style={{textAlign:'right',fontSize:15}}>发布状态：</Col>
@@ -142,11 +142,11 @@ class AddForm extends Component {
                 </Row>
                 <Row style={{marginTop:10}}>
                     <Col span={3} style={{textAlign:'right',fontSize:15}}>任务标题：</Col>
-                    <Col span={15}><Input placeholder='请输入内容' value={sourceData.taskTitle} onChange={(e)=>this.changeInput(e.target.value,'taskTitle')} disabled={status} /></Col>
+                    <Col span={17}><Input placeholder='请输入内容' value={sourceData.taskTitle} onChange={(e)=>this.changeInput(e.target.value,'taskTitle')} disabled={status} /></Col>
                 </Row>
                 <Row style={{marginTop:10}}>
                     <Col span={3} style={{textAlign:'right',fontSize:15}}>任务期限：</Col>
-                    <Col span={10}>
+                    <Col span={11}>
                         <RangePicker 
                          format={dateFormat} 
                          disabled={status}
@@ -156,7 +156,7 @@ class AddForm extends Component {
                          />
                     </Col>
                     <Col span={3} style={{textAlign:'right',fontSize:15}}>任务类型：</Col>
-                    <Col span={7}>
+                    <Col span={4}>
                             <Select value={sourceData.taskType}  style={{ width: 120 }} onChange={(value) => this.changeInput(value, 'taskType')} disabled={status}>
                                 {taskType.map((item) => {
                                     return <Option key={item.id} value={item.id}>{item.className}</Option>

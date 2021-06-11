@@ -173,6 +173,22 @@ class InspectionStatus extends Component {
             }
         })
     }
+    //根据id获取详情
+    getInfoById = (id) =>{
+        let _this = this;
+        axios.ajax({
+            url:'/gridInspection/getById',
+            data:{
+                params:{id}
+            }
+        }).then((res)=>{
+            if(res.status == "success"){
+                _this.setState({
+                    informData:res.data,
+                })
+            }
+        })
+    }
     //查看 修改 删除数据   拟态框
     handleOperator = (type,item) => {
         let _this = this
@@ -184,21 +200,21 @@ class InspectionStatus extends Component {
             })
         }
         else if(type == 'detail'||type == 'handle'){
+            _this.getInfoById(item.id)
             _this.setState({
                 title:'巡检情况',
                 isVisible:true,
                 type,
-                informData:this.state.list[0]
             })
         }    
         else if(type == 'delete'||type =='deleteGroup'){
             let idList = []
             if(type =='delete'){
                 idList=[item.id]
-                console.log("idlist",idList)
+                // console.log("idlist",idList)
             }else if(type =='deleteGroup'){
                 idList=_this.state.selectedRowKeys
-                console.log("idlist",idList)
+                // console.log("idlist",idList)
             }
             if(idList.length==0){
                 confirm({
@@ -217,7 +233,7 @@ class InspectionStatus extends Component {
                     cancelText:'否',
                     onOk:() => {
                         axios.PostAjax({
-                            url:'/gridInspection/delete`',
+                            url:'/gridInspection/delete',
                             data:{
                                 params:{
                                  idList:idList
@@ -326,7 +342,7 @@ class InspectionStatus extends Component {
             {
                 title:'问题类型',
                 dataIndex:'type',
-                key:'ttype',
+                key:'type',
             },
             {
                 title:'上报日期',
@@ -340,12 +356,12 @@ class InspectionStatus extends Component {
                 render:(reviewFlag)=>{
                     let review = ''
                     let color = ''
-                    if(reviewFlag == 0){
-                        review = '未处理'
+                    if(reviewFlag == 1){
+                        review = '已处理'
                         color ='blue'
                     }
-                    else if(reviewFlag == 1){
-                        review = '已处理'
+                    else if(reviewFlag == 0){
+                        review = '未处理'
                         color ='green'
                     }
                     return <Tag color={color} key={reviewFlag}>
@@ -421,6 +437,7 @@ class InspectionStatus extends Component {
                         dispatchInformData = {(value) => this.setState({informData:value})}
                         status = {this.state.type}
                         state = {this.state}
+                        informData = {this.state.informData}
                      />
                 </Modal>
             </div>

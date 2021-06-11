@@ -6,12 +6,18 @@ import ETable from '../../../components/ETable'
 import Utils from "../../../utils";
 import axios from "../../../axios";
 import AddForm from './AddForm'
+import {connect} from "react-redux";
 const Panel = Collapse.Panel;
 const ButtonGroup = Button.Group;
 const confirm = Modal.confirm
 
 
-
+@connect(
+    state=>({
+        userInfo:state.userInfo
+    }),{
+    }
+)
 class TaskDeployment extends Component {
     state = {
         informData:{},
@@ -530,6 +536,7 @@ class TaskDeployment extends Component {
                         taskType = {this.state.taskType}
                         releaseStatus = {this.state.releaseStatus}
                         mockData = {this.state.mockData}
+                        userName = {this.props.userInfo.name||''}
                      />
                 </Modal>
             </div>

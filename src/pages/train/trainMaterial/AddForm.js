@@ -99,7 +99,8 @@ export default class AddForm extends Component{
         const uploadButton = (
             <div>
                 <Icon type={this.state.loading ? 'loading' : 'plus'} />
-                <div className="ant-upload-text">Upload</div>
+                <div className="ant-upload-text">上传</div>
+                <div style={{color:'red',fontSize:10}}>封面图必须上传</div>
             </div>
         );
         const imageUrl = this.props.imageUrl;
