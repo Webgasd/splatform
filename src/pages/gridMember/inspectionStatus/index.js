@@ -281,7 +281,31 @@ class InspectionStatus extends Component {
             })
         }
     }
-    
+    handleToSave = () =>{
+        let data = this.state.informData
+        let {id,infoValid,handleType,reviewDate,reviewContent} = data
+        // let id = data.id||''
+        // let infoValid = data.infoValid||''
+        // let handleType = data.handleType||''
+        // let reviewDate = data.reviewDate||''
+        // let reviewContent = data.reviewContent||''
+        let checkData = {id,infoValid,handleType,reviewDate,reviewContent}
+        console.log('checkData',checkData)
+        axios.PostAjax({
+            url:'/gridInspection/reviewTerm',
+            data:{
+                params:{...checkData}
+            }
+        }).then((res)=>{
+            if(res.status == 'success'){
+                this.setState({
+                    isVisible:false,
+                    informData:{},
+                })
+                this.requestList()
+            }
+        })
+    }
     render() {
         const formList = [
             {
@@ -356,11 +380,11 @@ class InspectionStatus extends Component {
                 render:(reviewFlag)=>{
                     let review = ''
                     let color = ''
-                    if(reviewFlag == 1){
+                    if(reviewFlag == 0){
                         review = '已处理'
                         color ='blue'
                     }
-                    else if(reviewFlag == 0){
+                    else if(reviewFlag == 1){
                         review = '未处理'
                         color ='green'
                     }
@@ -423,7 +447,7 @@ class InspectionStatus extends Component {
                     title={this.state.title}
                     visible={this.state.isVisible}
                     footer = {this.state.type=='detail'?"":
-                        <Button type='primary' key='toPublic' onClick={this.handleSubmit}>保存并回复</Button>
+                        <Button type='primary' key='toPublic' onClick={this.handleToSave}>保存并回复</Button>
                     }
                     destroyOnClose={true}
                     onCancel={()=>{
@@ -438,6 +462,7 @@ class InspectionStatus extends Component {
                         status = {this.state.type}
                         state = {this.state}
                         informData = {this.state.informData}
+                        checkData = {this.state.checkData}
                      />
                 </Modal>
             </div>

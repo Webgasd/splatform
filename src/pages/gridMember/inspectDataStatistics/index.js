@@ -20,8 +20,9 @@ class InspectDataStatistics extends Component {
         color: ['#ff0000', '#0f58a4', '#3fd49a', '#6c6cce', '#1c1818'],
     }
     componentDidMount() {
-        let startDate = moment().format("YYYY")+'-01-01'
-        let endDate =  moment().format("YYYY-MM-DD")
+        let startDate = moment().startOf('year')
+        let endDate =  moment()
+        // console.log(moment().startOf('year').format("YYYY-MM-DD"))
         this.getData(startDate,endDate)
     }
     
