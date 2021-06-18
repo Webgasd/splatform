@@ -1,3 +1,4 @@
+//修改微笑地图搜索功能不能正常使用
 import React,{ Component } from 'react';
 import axios from "../../../axios";
 import Eat from "../../home/image/eat.png";
@@ -18,7 +19,7 @@ import CommonCheck from "../showGrid/image/dangan的副本 2.png";
 import CheckView from "../showGrid/image/jiankong.png";
 import BaseInfo from "../showGrid/image/qiye.png";
 import './index.css'
-import {commonUrl, unitName} from '../../../axios/commonSrc'
+import {commonUrl, unitName, baseUrl} from '../../../axios/commonSrc'
 const AMap=window.AMap;
 const { Panel } = Collapse;
 const { Option } = Select;
@@ -52,6 +53,8 @@ class SmileMap extends Component{
         this.map = new AMap.Map('mapSmileContainer', {
             center:[117.000923,36.675807],
             zoom:12,
+            viewMode:'3D',
+            pitch:45
         });
         var district = unitName;
         var polygons=[];
@@ -75,7 +78,7 @@ class SmileMap extends Component{
         let that=this;
         data.map((item,index)=>{
             let point=item.point;
-             let point1=point.split(",");
+            let point1=point.split(",");
             let grade=item.dynamic_grade
             let icon;
             if(grade=='s' || grade=='A'){icon=A}
@@ -267,7 +270,7 @@ class SmileMap extends Component{
             }
         })
         this.clear()
-         this.addGridPoints(value)
+        this.addGridPoints(value)
     }
     clear=()=>{
         // this.map.clearMap();
@@ -303,9 +306,12 @@ class SmileMap extends Component{
         }).then((res)=>{
             if(res.status =='success'){
                 value=res.data
+                console.log("showwindow - search",value)
+
                 that.setState({
                     BaseInfo:res.data,
-                    AddressForGaoDe:res.data.registeredAddress
+                    AddressForGaoDe:res.data.registeredAddress,
+                    enterpriseId: value.id,//搜索框内容窗体
                 })
                 let start,end
                 for(var key in value){
@@ -333,14 +339,15 @@ class SmileMap extends Component{
                 }
                 info.push("</div>");
                 info.push("<div class='middle'><img src='"+CorporateIcon+"' width='30px' height='30px'/><text>"+value.enterpriseName+"</text></div>");
-                info.push("<div class='middle-info'><div class='middle-info-text'><text>企业地址:"+value.businessAddress+"</text></div></div>");
+                // info.push("<div class='middle-info'><div class='middle-info-text'><text>企业地址:"+value.businessAddress+"</text></div></div>");
+                info.push("<div class='middle-info'><div class='middle-info-text'><text>企业地址:"+value.registeredAddress+"</text></div></div>");
                 info.push("<div class='middle-info'><div class='middle-info-text'><text>法人/负责人："+value.legalPerson+"</text></div>" +
                     "<div class='middle-info-text1'><text>联系电话："+value.cantactWay+"</text></div></div>");
                 info.push("<div class='middle-info'><div class='middle-info-text'><text>日常监督员："+value.supervisor+"</text></div></div>");
                 info.push("<div class='middle-info'><div class='middle-info-text'><text>证件有效期：" +startTime+"至"+endTime+"</text></div></div>");
                 info.push("<div class='bottom-icon'><img src='"+ToGaoDeMap+"' onclick='ToGaodeLocation()' width='40px' height='40px'/></div>");
-                info.push("<div class='bottom-icon'><img src='"+CommonCheck+"' onclick='showLedgerTable("+id+")' width='40px' height='40px'/></div><Divider type=\"vertical\" />");
-                info.push("<div class='bottom-icon'><img src='"+CheckView+"' onclick='handleOperator("+id+")' width='40px' height='40px'/></div><Divider type=\"vertical\" />");
+                // info.push("<div class='bottom-icon'><img src='"+CommonCheck+"' onclick='showLedgerTable("+id+")' width='40px' height='40px'/></div><Divider type=\"vertical\" />");
+                // info.push("<div class='bottom-icon'><img src='"+CheckView+"' onclick='handleOperator("+id+")' width='40px' height='40px'/></div><Divider type=\"vertical\" />");
                 info.push("<div class='bottom-icon'><img src='"+BaseInfo+"'id='BaseInfo' onclick='getBaseInfo()'  width='40px' height='40px'/></div><Divider type=\"vertical\" />");
                 info.push("</div>");
 
@@ -399,6 +406,7 @@ class SmileMap extends Component{
         </Modal>)
         return (<div>
             <div style={{paddingBottom:'1%',marginRight:'5%',float:'right'}} >
+                {/*<a href={`${baseUrl}/warnP`} target="_blank" style={{position:"absolute",left:"10px"}}>可视化平台&gt;&gt;</a>*/}
                 <Input style={{ width: 300 }}   placeholder="企业名称" onChange={(e)=>this.setState({searchEnterprise:e.target.value})}/>
                 <Button style={{width:100,marginLeft:20}} type={"primary"} onClick={()=>this.searchEnterprise()}>查询</Button>
                 <Select

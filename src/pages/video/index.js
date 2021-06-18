@@ -79,6 +79,7 @@ class Video extends Component{
     };
 
     handleOperator = (item)=>{
+        console.log(item.id);
             axios.ajax({
                 url:'/video/getById',
                 data:{

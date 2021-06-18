@@ -20,9 +20,8 @@ class InspectDataStatistics extends Component {
         color: ['#ff0000', '#0f58a4', '#3fd49a', '#6c6cce', '#1c1818'],
     }
     componentDidMount() {
-        let startDate = moment().startOf('year')
-        let endDate =  moment()
-        // console.log(moment().startOf('year').format("YYYY-MM-DD"))
+        let startDate = moment().format("YYYY")+'-01-01'
+        let endDate =  moment().format("YYYY-MM-DD")
         this.getData(startDate,endDate)
     }
     
@@ -41,15 +40,20 @@ class InspectDataStatistics extends Component {
                 //解析地域问题数据
                 let label = this.state.label
                 let areaNum = this.state.areaNum
+
                 for (var i = 0; i < data.areaCount.length; i++) {
                     label[i] = data.areaCount[i].name
                     areaNum[i] = data.areaCount[i].value
                 }
-                console.log(data)
+                console.log("网格员巡检情况",areaNum)
                 //取常见类型前五
                 let fiveQuestion = data.typeCount.slice(0,5)
-                // console.log('fiveQuestion',fiveQuestion)
-                this.setState({data,fiveQuestion})
+                console.log('fiveQuestion',fiveQuestion)
+                this.setState({
+                    data,
+                    fiveQuestion,
+
+                })
             }
         })
     }
@@ -67,6 +71,7 @@ class InspectDataStatistics extends Component {
     }
     render() {
         const { data,fiveQuestion, label, useful, areaNum, startTime, endTime } = this.state
+        console.log("inspectDataStatistics",this.state)
         const dateFormat = 'YY-MM-DD'
         return (
             <div>
@@ -86,7 +91,7 @@ class InspectDataStatistics extends Component {
                     </Row>
                 </div>
                 <div style={{ marginTop: 20 }}>
-                    <Card title='网格员巡查问题反馈量' style={{ width: '18%', height: 430, float: 'left' }}>
+                    <Card title='网格员巡查问题反馈量' style={{ width: '17%', height: 430, float: 'left' }}>
                         <Row style={{ marginLeft: "20%", marginTop: 20 }}>
                             <h1 >{data.allNumber || '暂无数据'}</h1>
                             <Col style={{ fontfamily: 'ArialMT', alignContent: 'center' }}>反馈问题数量</Col>
@@ -123,7 +128,7 @@ class InspectDataStatistics extends Component {
                             <div className='quest-type-top5-show'>
                                 {
                                     (fiveQuestion || []).map((item) => {
-                                        return <div className='top-show'><FirstPei total={data.allNumber} typeNum={item.value} typeName={item.name}  id={item.name} /></div>
+                                        return <div className='top-show'><FirstPei total={data.allNumber} typeNum={item.value} id={item.name} /></div>
                                     })
                                 }
                                 
@@ -132,9 +137,11 @@ class InspectDataStatistics extends Component {
                     </Card>
                 </div>
                 <div>
-                    <Card title='常见问题分布图' style={{ width: '29%', height: 430, float: 'left', marginTop: 10 }}>
+                    <Card title='常见问题分布图' style={{ width: '30%', height: 430, float: 'left', marginTop: 10 }}>
                         <div style={{ width: 400, height: 420, marginTop: 10, marginLeft: 5 }}>
                             <Common data={data.typeCount||{}} />
+                            {/*<Common data={data.typeCount} />*/}
+
                         </div>
                     </Card>
                     <Card title='辖区问题分布' style={{ width: '70%', height: 430, float: 'right', marginTop: 10 }}>

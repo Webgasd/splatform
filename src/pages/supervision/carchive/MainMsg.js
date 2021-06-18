@@ -23,6 +23,7 @@ class MainMsg extends Component{
     }
     componentDidMount() {
         this.getData()
+        console.log("弹窗信息",this.props)
     }
     getData = () => {
         let _this = this
@@ -69,22 +70,27 @@ class MainMsg extends Component{
                         </td>
                     </tr>
                     <tr>
-                        <td>企业行业类型</td>
-                        <td >
-                            <Select style={{width:'100%'}} value={formData.industry} style={{width:"100%"}} onChange={(value)=>this.changeInput(value,"industry")} disabled={typeStatus}>
-                                <Option value={1}>餐饮行业</Option>
-                                <Option value={2}>小餐饮</Option>
-                            </Select>
-                        </td>
-                        <td>企业类型</td>
-                        <td >
-                            <Select style={{width:'100%'}} value={formData.type} style={{width:"100%"}} onChange={(value)=>this.changeInput(value,"type")} disabled={typeStatus}>
-                                <Option value={1}>特大型餐馆</Option>
-                                <Option value={2}>小型餐馆</Option>
-                            </Select>
-                        </td>
+                        {/*<td>企业行业类型</td>*/}
+                        {/*<td >*/}
+                        {/*    <Select style={{width:'100%'}} value={formData.industry} style={{width:"100%"}} onChange={(value)=>this.changeInput(value,"industry")} disabled={typeStatus}>*/}
+                        {/*        <Option value={1}>餐饮行业</Option>*/}
+                        {/*        <Option value={2}>小餐饮</Option>*/}
+                        {/*    </Select>*/}
+                        {/*</td>*/}
+                        {/*<td>企业类型</td>*/}
+                        {/*<td >*/}
+                        {/*    <Select style={{width:'100%'}} value={formData.type} style={{width:"100%"}} onChange={(value)=>this.changeInput(value,"type")} disabled={typeStatus}>*/}
+                        {/*        <Option value={1}>特大型餐馆</Option>*/}
+                        {/*        <Option value={2}>小型餐馆</Option>*/}
+                        {/*    </Select>*/}
+                        {/*</td>*/}
                         <td>社会信用代码</td>
+
                         <td><Input placeholder={"请输入社会信用代码"} value={formData.idNumber} onChange={(e)=>this.changeInput(e.target.value,'creditCode')} disabled={typeStatus}/></td>
+                        <td>注册地址</td>
+
+                        <td><Input placeholder={"请输入注册地址"} value={enterpriseData.registeredAddress} onChange={(e)=>this.changeInput(e.target.value,'address')} disabled={typeStatus}/></td>
+
                     </tr>
                     <tr>
                         <td>法定代表人</td>
@@ -94,25 +100,25 @@ class MainMsg extends Component{
                         <td>联系电话</td>
                         <td><Input placeholder={"请输入联系电话"} value={formData.cantactWay} onChange={(e)=>this.changeInput(e.target.value,'telephone')} disabled={typeStatus}/></td>
                     </tr>
-                    <tr>
-                        <td>企业规模</td>
-                        <td >
-                            <Select value={formData.enterpriseScale} style={{width:"100%"}} onChange={(value)=>this.changeInput(value,"enterpriseScale")} disabled={typeStatus}>
-                                <Option value={"1"}>超大</Option>
-                                <Option value={"2"}>很大</Option>
-                            </Select>
-                        </td>
-                        <td>注册地址</td>
-                        <td><Input placeholder={"请输入注册地址"} value={enterpriseData.registeredAddress} onChange={(e)=>this.changeInput(e.target.value,'address')} disabled={typeStatus}/></td>
-                    </tr>
-                    <tr>
-                        <td>经营范围</td>
-                        <td colSpan={5}><Input placeholder={"请输入经营范围"} value={formData.businessScope} onChange={(e)=>this.changeInput(e.target.value,'businessScope')} disabled={typeStatus}/></td>
-                    </tr>
-                    <tr>
-                        <td>许可证相关记录</td>
-                        <td colSpan={5}><TextArea rows={6} value={formData.licenseRecord} onChange={(e)=>this.changeInput(e.target.value,'licenseRecord')} disabled={typeStatus}/></td>
-                    </tr>
+                    {/*<tr>*/}
+                    {/*    /!*<td>企业规模</td>*!/*/}
+                    {/*    /!*<td >*!/*/}
+                    {/*    /!*    <Select value={formData.enterpriseScale} style={{width:"100%"}} onChange={(value)=>this.changeInput(value,"enterpriseScale")} disabled={typeStatus}>*!/*/}
+                    {/*    /!*        <Option value={"1"}>超大</Option>*!/*/}
+                    {/*    /!*        <Option value={"2"}>很大</Option>*!/*/}
+                    {/*    /!*    </Select>*!/*/}
+                    {/*    /!*</td>*!/*/}
+                    {/*    <td>注册地址</td>*/}
+                    {/*    <td><Input placeholder={"请输入注册地址"} value={enterpriseData.registeredAddress} onChange={(e)=>this.changeInput(e.target.value,'address')} disabled={typeStatus}/></td>*/}
+                    {/*</tr>*/}
+                    {/*<tr>*/}
+                    {/*    <td>经营范围</td>*/}
+                    {/*    <td colSpan={5}><Input placeholder={"请输入经营范围"} value={formData.businessScope} onChange={(e)=>this.changeInput(e.target.value,'businessScope')} disabled={typeStatus}/></td>*/}
+                    {/*</tr>*/}
+                    {/*<tr>*/}
+                    {/*    <td>许可证相关记录</td>*/}
+                    {/*    <td colSpan={5}><TextArea rows={6} value={formData.licenseRecord} onChange={(e)=>this.changeInput(e.target.value,'licenseRecord')} disabled={typeStatus}/></td>*/}
+                    {/*</tr>*/}
                     <tr>
                         <td>附件信息</td>
                         <td colSpan={5}><Upload

@@ -49,9 +49,14 @@ const Option=Select.Option;
                             <td style={{background:'#F2F2F2'}}>巡查违规等级</td>
                             <td><Input value={videoInfo.level} disabled/></td>
                             <td style={{background:'#F2F2F2'}}>巡查时间</td>
-                            <td><DatePicker disabled style={{width:'100%'}}
-                                        value={videoInfo.recordTime=moment(videoInfo.recordTime)}
-                                        format="YYYY-MM-DD HH:mm:ss"/></td>
+                            <td>
+                                <Input value={videoInfo.recordTime} disabled/>
+                                {/*<DatePicker disabled style={{width:'100%'}}*/}
+                                {/*            // value = {videoInfo.recordTime}*/}
+                                {/*        value={videoInfo.recordTime=moment(videoInfo.recordTime)}*/}
+                                {/*        // format="YYYY-MM-DD HH:mm:ss"*/}
+                                {/*/>*/}
+                            </td>
                             <td style={{background:'#F2F2F2'}}>本年度违规次数</td>
                             <td><Input value={videoInfo.recordCount} disabled/></td>
                         </tr>
@@ -86,9 +91,17 @@ const Option=Select.Option;
                             <td style={{background:'#F2F2F2'}}>记录人</td>
                             <td><Input value={videoInfo.recordPerson} disabled/></td>
                             <td style={{background:'#F2F2F2'}}>记录时间</td>
-                            <td><DatePicker disabled style={{width:'100%'}}
-                                        value={videoInfo.recordTime=moment(videoInfo.recordTime)}
-                                        format="YYYY-MM-DD HH:mm:ss"/></td>
+                            <td><Input value={videoInfo.recordTime} disabled/>
+                                {/*edit by sth*/}
+
+                                {/*<DatePicker disabled style={{width:'100%'}}*/}
+                                {/*            // value = {videoInfo.recordTime}*/}
+                                {/*        value={videoInfo.recordTime=moment(videoInfo.recordTime)}*/}
+                                {/*        format="YYYY-MM-DD HH:mm:ss"*/}
+                                {/*        // format="YYYY-MM-DD"*/}
+
+                                {/* />*/}
+                            </td>
                             </tr>
                         </tbody>
                     </table></Col></Row>

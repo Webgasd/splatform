@@ -110,6 +110,24 @@ const formList = [
         })
        
     }
+
+
+     deleteRecord(id){
+         if(window.confirm("是否删除？")){
+             axios.ajax({
+                 url:'/videoRecord/delete',
+                 data:{
+                     params:{
+                         id:id
+                     }
+                 }
+             }).then((res)=>{
+                 if(res.status == "success"){
+                     this.requestList()
+                 }
+             })
+         }
+     }
     render() {
         const columns = [
             {
@@ -146,9 +164,15 @@ const formList = [
             },
             {
                 title: '操作',
-                render:(text, record)=>{  
-                    return  <Button onClick={()=> {this.handleOperator(record)}}>请审查</Button>
-                }                    
+                render:(text, record)=>{
+                    return (
+                        <span>
+                            <Button onClick={()=> {this.handleOperator(record)}}>请审查</Button>
+                            <Button onClick={()=> {this.deleteRecord(record.id)}}>删除</Button>
+                        </span>
+
+                    )
+                }
             }
         ];
        

@@ -40,6 +40,7 @@ const { TextArea } = Input;
         `http://${this.props.videoInfo.httpIp}:${this.props.videoInfo.httpPort}/live/cameraid/${this.props.videoInfo.list[0].number}%24${this.props.videoInfo.list[0].channelNumber}/substream/${this.props.videoInfo.list[0].byteType}.m3u8`
      }
      componentDidMount() {
+         console.log("我是平邑的加载视频插件")
         const {httpIp,httpPort,rtmpIp,rtmpPort,vagIp,vagPort,type} = this.props.videoInfo
         const list = this.props.videoInfo.list||[];
         let options ={
@@ -332,9 +333,9 @@ console.log(url)
                         <Col span={6}> <DatePicker showTime placeholder="选择时间" onChange={(value)=>this.changeInput(value,"recordTime")}  /></Col>
                         <Col span={3} style={{lineHeight:'32px',textAlign:"center"}}>巡查等级<span style={{color:'#FF3300'}}>*</span></Col>
                         <Col span={5}> <Select style={{width:121}}   onChange={(value)=>this.changeInput(value,'level')}>
-                                            <Option value={'一级预警'}>一级预警</Option>
-                                            <Option value={'二级预警'}>二级预警</Option>
-                                            <Option value={'三级预警'}>三级预警</Option>
+                                            <Option value={'巡查警示'}>巡查警示</Option>
+                                            {/*<Option value={'二级预警'}>二级预警</Option>*/}
+                                            {/*<Option value={'三级预警'}>三级预警</Option>*/}
                                       </Select></Col>
                     </Row>
                     <Row style={{marginTop:10}}>
