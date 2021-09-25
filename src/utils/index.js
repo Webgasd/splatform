@@ -31,7 +31,6 @@ export default {
 
 
             current:res.data.pageNo,
-            pageSize:10,
             total: res.data.total,
             showTotal:()=>{
                return `共${res.data.total}条`

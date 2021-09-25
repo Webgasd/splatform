@@ -65,7 +65,22 @@ class FilterForm extends Component{
             }
         });
     };
+    renderTreeNodes = (data) => {
+        return data.map((item) => {
+            if (item.childrenList) {
+                return (
+                    <TreeNode title={item.name} value={item.id} key={item.id}>
+                        {this.renderTreeNodes(item.childrenList)}
+                    </TreeNode>
+                );
+            } else {
+                return (
+                    <TreeNode title={item.name} value={item.id} key={item.id} isLeaf/>
 
+                );
+            }
+        });
+    };
     renderAreaTreeNodes = (data) => {
         return data.map((item) => {
             if (item.childrenList) {

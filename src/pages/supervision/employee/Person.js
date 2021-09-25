@@ -58,6 +58,7 @@ class Person extends Component{
     };
     handleChangeCa = info => {
         const fileList = info.fileList;
+        console.log(info)
         const file = fileList.pop();
         if (info.file.status === 'uploading') {
             this.setState({ loadingCa: true });
