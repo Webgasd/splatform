@@ -46,7 +46,8 @@ import BaseForm from '../../../components/BaseFormForMap';
 import Utils from "../../../utils";
 import Add from '../enterpriseEx/Add';
 import LedgerTable from "../../grid/gridSupervision/LedgerTable";
-import LiveVideo from "../../HIKResource/iscVideoPlay/HikISCVideoPlayer";
+import LiveVideoISC from "../../HIKResource/iscVideoPlay/HikISCVideoPlayer";
+import LiveVideo from  '../../video/LiveVideo';
 const { Search } = Input;
 
 const AMap = window.AMap;
@@ -746,7 +747,11 @@ class map extends React.Component {
                 }
             }
         }).then((res) => {
-            console.log(res)
+            let this_id;
+            if(videoType==="isc"){
+                this_id=res.data.id;
+            }else{this_id=res.data}
+
             if (res.status == "success") {
                 if (res.data == 0) {
                     message.info("暂无数据")
@@ -755,7 +760,7 @@ class map extends React.Component {
                         url: v2,
                         data: {
                             params: {
-                                id: res.data.id
+                                id: this_id
                             }
                         }
                     }).then((res) => {

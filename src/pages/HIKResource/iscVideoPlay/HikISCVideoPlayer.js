@@ -326,10 +326,11 @@ class HikISCVideoPlay extends Component{
                                 <Col span={3} style={{lineHeight:'32px',textAlign:"center"}}>巡查日期<span style={{color:'#FF3300'}}>*</span></Col>
                                 <Col span={6}> <DatePicker showTime placeholder="选择时间" onChange={(value)=>this.changeInput(value,"recordTime")}  /></Col>
                                 <Col span={3} style={{lineHeight:'32px',textAlign:"center"}}>巡查等级<span style={{color:'#FF3300'}}>*</span></Col>
-                                <Col span={5}> <Select style={{width:121}}   onChange={(value)=>this.changeInput(value,'level')}>
-                                    <Option value={'一级预警'}>一级预警</Option>
-                                    <Option value={'二级预警'}>二级预警</Option>
-                                    <Option value={'三级预警'}>三级预警</Option>
+                                <Col span={5}>
+                                    <Select style={{width:121}}   onChange={(value)=>this.changeInput(value,'level')}>
+                                    <Option value={'巡查警示'}>巡查警示</Option>
+                                    {/*<Option value={'二级预警'}>二级预警</Option>*/}
+                                    {/*<Option value={'三级预警'}>三级预警</Option>*/}
                                 </Select></Col>
                             </Row>
                             <Row style={{marginTop:10}}>
